@@ -1,6 +1,18 @@
 class LibrarianClient {
-  static async getAlbums() {
-    const response = await fetch('/librarian/albums');
+  static async getLibraries() {
+    const response = await fetch('/librarian/libraries');
+    const json = await response.json();
+    return json;
+  }
+
+  static async getAlbums(start, limit) {
+    const response = await fetch(`/librarian/albums?start=${start}&limit=${limit}`);
+    const json = await response.json();
+    return json;
+  }
+
+  static async getTracks() {
+    const response = await fetch('/librarian/tracks');
     const json = await response.json();
     return json;
   }

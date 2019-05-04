@@ -49,11 +49,11 @@ export class Album extends React.Component {
 
   largeAlbum() {
     const cardStyle = {
-      background: 'ransparent',
+      background: 'transparent',
       color: 'white',
       borderColor: '#708090',
-      maxWidth: '200px',
       margin: '10px',
+      maxWidth: '200px',
     };
 
     const { album, setCurrentAlbum } = this.props;
@@ -61,9 +61,9 @@ export class Album extends React.Component {
 
     return (
       <Card style={cardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
-        <Card.Img top src={coverArt} />
+        <Card.Img style={{ maxHeight: '300px', maxWidth: '250px' }} top src={coverArt} />
         <Card.Body>
-          <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
+          <Card.Title style={{ maxHeight: '25px', fontSize: '12px', overflow: 'hidden' }}>{album.name}</Card.Title>
         </Card.Body>
       </Card>
     );

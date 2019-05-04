@@ -13,9 +13,15 @@ import {
 import AlbumList from './AlbumList';
 import AlbumDetail from './AlbumDetail';
 import rootReducer from '../reducers/index';
+import QueueClient from '../lib/queue-client';
+import VolumeClient from '../lib/volume-client';
 import '../App.css';
+import { Queue } from './Queue';
+import { Tracks } from './Tracks';
+import { Settings } from './Settings';
 
 const actions = require('../actions/index');
+
 const store = createStore(rootReducer);
 
 export default class Jukebox extends React.Component {
@@ -43,16 +49,16 @@ export default class Jukebox extends React.Component {
           body = <AlbumList />;
           break;
         case 'Tracks':
-          body = '';
+          body = <Tracks />;
           break;
         case 'Playlists':
           body = '';
           break;
         case 'Queue':
-          body = '';
+          body = <Queue />;
           break;
         case 'Settings':
-          body = '';
+          body = <Settings />;
           break;
         default:
           body = <AlbumList />;
@@ -61,16 +67,16 @@ export default class Jukebox extends React.Component {
 
     return (
       <Provider store={store}>
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Brand href="#home">Jukebox</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="#home" onClick={() => { this.setNavAlbumList(); }}>Albums</Nav.Link>
-              <Nav.Link href="#features" onClick={() => { store.dispatch(actions.setMode('Tracks')); }}>Tracks</Nav.Link>
-              <Nav.Link href="#pricing" onClick={() => { store.dispatch(actions.setMode('Playlists')); }}>Playlists</Nav.Link>
-              <Nav.Link href="#pricing" onClick={() => { store.dispatch(actions.setMode('Queue')); }}>Queue</Nav.Link>
-              <Nav.Link href="#pricing" onClick={() => { store.dispatch(actions.setMode('Settings')); }}>Settings</Nav.Link>
+              <Nav.Link onClick={() => { this.setNavAlbumList(); }}>Albums</Nav.Link>
+              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Tracks')); }}>Tracks</Nav.Link>
+              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Playlists')); }}>Playlists</Nav.Link>
+              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Queue')); }}>Queue</Nav.Link>
+              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Settings')); }}>Settings</Nav.Link>
             </Nav>
             <Form inline>
               <FormControl type="text" placeholder="Search" className="mr-sm-2" />
@@ -78,11 +84,23 @@ export default class Jukebox extends React.Component {
             </Form>
           </Navbar.Collapse>
         </Navbar>
-        <Container fluid className="mx-0 px-0">
+        <Container fluid style={{ marginTop: '50px', marginBottom: '60px' }} className="mx-0 px-0">
           <Row>
             {body}
           </Row>
         </Container>
+        <Navbar fixed="bottom" collapseOnSelect expand="lg" bg="dark" variant="dark">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="ml-auto">
+              <Button style={{ margin: '5px' }} variant="outline-light">Play</Button>
+              <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.next}>Next</Button>
+              <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.stop}>Stop</Button>
+              <Button style={{ margin: '5px' }} variant="outline-light" onClick={VolumeClient.up}>Volume Up</Button>
+              <Button style={{ margin: '5px' }} variant="outline-light" className="float-right" onClick={VolumeClient.down}>Volume Down</Button>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
       </Provider>
     );
   }

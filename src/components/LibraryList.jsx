@@ -1,7 +1,7 @@
 import React from 'react';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import { connect } from 'react-redux';
-import QueueClient from '../lib/queue-client';
+import LibrianClient from '../lib/librarian-client';
 
 const actions = require('../actions/index');
 
@@ -22,19 +22,20 @@ const mapDispatchToProps = function (dispatch) {
   };
 };
 
-export class TrackList extends React.Component {
+export class LibraryList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
+    this.state = {
+      libraries: [],
+    };
+    LibrianClient.getLibraries().then((libraries) => {
+      const that = this;
 
-  playNow(track) {
-    QueueClient.enqueueTop(track.path);
-    QueueClient.play();
-  }
-
-  enqueue(track) {
-    QueueClient.enqueue(track.path);
+      that.setState({
+        libraries,
+      });
+      that.forceUpdate();
+    });
   }
 
   render() {
@@ -48,26 +49,26 @@ export class TrackList extends React.Component {
       margin: '5px',
     };
 
-    const renderTracks = [];
-    const { tracks } = this.props;
-    tracks.forEach((track) => {
-      renderTracks.push(
+    const renderLibraries = [];
+    const { libraries } = this.state;
+    libraries.forEach((library) => {
+      renderLibraries.push(
         (
           <ListGroupItem style={cardStyle}>
-            {track.name}
+            {library.path}
             <Button
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
-              onClick={() => this.playNow(track)}>
-              Play
+              >
+              Scan
             </Button>
             <Button
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
-              onClick={() => this.enqueue(track)}>
-              Enqueue
+              >
+              Delete
             </Button>
           </ListGroupItem>
         ),
@@ -76,9 +77,9 @@ export class TrackList extends React.Component {
 
     return (
       <ListGroup>
-        {renderTracks}
+        {renderLibraries}
       </ListGroup>
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(TrackList);
+export default connect(mapStateToProps, mapDispatchToProps)(LibraryList);

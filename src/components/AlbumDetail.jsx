@@ -4,6 +4,7 @@ import {
   Container,
   Row,
   Col,
+  Button,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
@@ -84,6 +85,9 @@ export class AlbumDetail extends React.Component {
                 <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
               </Card.Body>
             </Card>
+            <Button block variant="outline-light">Play Album</Button>
+            <Button block variant="outline-light">Enqueue Album</Button>
+            <Button block variant="outline-light">Add Album to Playlist</Button>
           </Col>
           <Col lg={8} xl={8}>
             <TrackList tracks={tracks} />
