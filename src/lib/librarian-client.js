@@ -11,8 +11,8 @@ class LibrarianClient {
     return json;
   }
 
-  static async getTracks() {
-    const response = await fetch('/librarian/tracks');
+  static async getTracks(start, limit) {
+    const response = await fetch(`/librarian/tracks?start=${start}&limit=${limit}`);
     const json = await response.json();
     return json;
   }

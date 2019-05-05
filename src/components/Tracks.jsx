@@ -3,6 +3,7 @@ import {
   Container,
   Row,
   Col,
+  Button,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
@@ -10,17 +11,36 @@ import TrackList from './TrackList';
 export class Tracks extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
+      start: 0,
+      limit: 100,
       tracks: [],
     };
-    LibrianClient.getTracks().then((tracks) => {
-      const that = this;
+    this.loadTracks();
+    this.loadTracks = this.loadTracks.bind(this);
+    this.loadMore = this.loadMore.bind(this);
+  }
 
+  loadTracks() {
+    const { start, limit } = this.state;
+    LibrianClient.getTracks(start, limit).then((data) => {
+      const that = this;
+      const { tracks } = this.state;
       that.setState({
-        tracks,
+        tracks: tracks.concat(data),
       });
       that.forceUpdate();
     });
+  }
+
+  loadMore() {
+    const { limit } = this.state;
+    this.setState({
+      start: limit,
+      limit: limit + 100,
+    });
+    this.loadTracks();
   }
 
   render() {
@@ -32,6 +52,9 @@ export class Tracks extends React.Component {
           <Col lg={12} xl={12}>
             <TrackList tracks={tracks} />
           </Col>
+        </Row>
+        <Row>
+          <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
         </Row>
       </Container>
     );
