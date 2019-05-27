@@ -39,6 +39,22 @@ export default class Jukebox extends React.Component {
     store.dispatch(actions.setCurrentAlbum(''));
   }
 
+  onSearch() {
+    const search = document.getElementById("searchBox").value
+    store.dispatch(actions.setSearch(search));
+  }
+
+  debounce(fn, time) {
+    let timeout;
+  
+    return function() {
+      const functionCall = () => fn.apply(this, arguments);
+      
+      clearTimeout(timeout);
+      timeout = setTimeout(functionCall, time);
+    }
+  }
+
   render() {
     let body = '';
     if (store.getState().currentAlbum) {
@@ -79,7 +95,7 @@ export default class Jukebox extends React.Component {
               <Nav.Link onClick={() => { store.dispatch(actions.setMode('Settings')); }}>Settings</Nav.Link>
             </Nav>
             <Form inline>
-              <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+              <FormControl id="searchBox" type="text" onChange={this.debounce(this.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
               <Button variant="outline-info">Search</Button>
             </Form>
           </Navbar.Collapse>

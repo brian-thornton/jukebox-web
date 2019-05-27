@@ -35,6 +35,15 @@ class QueueClient {
     return json;
   }
 
+  static async enqueueTracksTop(tracks) {
+    const response = await fetch('/queue/enqueueTracksTop', {
+      method: 'post',
+      body: JSON.stringify(tracks),
+    });
+    const json = await response.json();
+    return json;
+  }
+
   static async enqueueTop(track) {
     const response = await fetch(`/queue/enqueueTop?track=${track}`);
     const blob = await response.blob();

@@ -6,8 +6,25 @@ import {
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
+import { connect } from 'react-redux';
 
-export default class AlbumList extends React.Component {
+const actions = require("../actions/index");
+
+const mapStateToProps = function (state) {
+  return {
+    search: state.search
+  }
+}
+
+const mapDispatchToProps = function (dispatch) {
+  return {
+    setCurrentAlbum: (album) => (
+      dispatch(actions.setCurrentAlbum(album))
+    )
+  }
+}
+
+export class AlbumList extends React.Component {
   constructor(props) {
     super(props);
 
@@ -15,22 +32,44 @@ export default class AlbumList extends React.Component {
       start: 0,
       limit: 100,
       albums: [],
-    };
+    }
+
     this.loadAlbums();
     this.loadAlbums = this.loadAlbums.bind(this);
     this.loadMore = this.loadMore.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    if(this.props.search !== prevProps.search) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
+    {
+      this.loadAlbums();
+    }
+  } 
+  
+
   loadAlbums() {
     const { start, limit } = this.state;
-    LibrianClient.getAlbums(start, limit).then((data) => {
-      const that = this;
-      const { albums } = this.state;
-      that.setState({
-        albums: albums.concat(data),
+    const { search } = this.props;
+
+    if (search) {
+      LibrianClient.searchAlbums(search).then((data) => {
+        const that = this;
+        const { albums } = this.state;
+        that.setState({
+          albums: data,
+        });
+        that.forceUpdate();
       });
-      that.forceUpdate();
-    });
+    } else {
+      LibrianClient.getAlbums(start, limit).then((data) => {
+        const that = this;
+        const { albums } = this.state;
+        that.setState({
+          albums: albums.concat(data),
+        });
+        that.forceUpdate();
+      });
+    }
   }
 
   loadMore() {
@@ -65,3 +104,4 @@ export default class AlbumList extends React.Component {
     );
   }
 }
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumList);

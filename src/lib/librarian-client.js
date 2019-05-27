@@ -11,6 +11,12 @@ class LibrarianClient {
     return json;
   }
 
+  static async searchAlbums(search) {
+    const response = await fetch(`/librarian/albums/search?search=${search}`);
+    const json = await response.json();
+    return json;
+  }
+
   static async getTracks(start, limit) {
     const response = await fetch(`/librarian/tracks?start=${start}&limit=${limit}`);
     const json = await response.json();

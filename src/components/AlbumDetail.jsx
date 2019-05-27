@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
+import QueueClient from '../lib/queue-client';
 import defaultCover from '../default_album.jpg';
 import TrackList from './TrackList';
 
@@ -15,7 +16,7 @@ const actions = require('../actions/index');
 
 const mapStateToProps = function (state) {
   return {
-    currentAlbum: state.currentAlbum,
+    currentAlbum: state.currentAlbum
   };
 };
 
@@ -36,7 +37,18 @@ export class AlbumDetail extends React.Component {
     this.state = {
       tracks: [],
     };
-    LibrianClient.getCoverArt(props.album.path).then((image) => {
+
+    this.loadCoverArt = this.loadCoverArt.bind(this);
+    this.loadTracks = this.loadTracks.bind(this);
+    this.enqueueAlbum = this.enqueueAlbum.bind(this);
+    this.playAlbum = this.playAlbum.bind(this);
+    this.loadCoverArt();
+    this.loadTracks();
+  }
+
+  loadCoverArt() {
+    const { album } = this.props;
+    LibrianClient.getCoverArt(album.path).then((image) => {
       const that = this;
       let src;
 
@@ -51,17 +63,27 @@ export class AlbumDetail extends React.Component {
       });
       that.forceUpdate();
     });
+  }
 
-    LibrianClient.getAlbumTracks(props.album.path).then((tracks) => {
+  loadTracks() {
+    const { album } = this.props;
+    LibrianClient.getAlbumTracks(album.path).then((tracks) => {
       const that = this;
       that.setState({
         tracks,
       });
       that.forceUpdate();
     });
+  }
 
-    this.pageSize = 100;
-    this.currentPage = 1;
+  enqueueAlbum() {
+    const { tracks } = this.state;
+    QueueClient.enqueueTracks(tracks);
+  }
+
+  playAlbum() {
+    const { tracks } = this.state;
+    QueueClient.enqueueTracksTop(tracks);
   }
 
   largeAlbum() {
@@ -85,8 +107,8 @@ export class AlbumDetail extends React.Component {
                 <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
               </Card.Body>
             </Card>
-            <Button block variant="outline-light">Play Album</Button>
-            <Button block variant="outline-light">Enqueue Album</Button>
+            <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
+            <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
             <Button block variant="outline-light">Add Album to Playlist</Button>
           </Col>
           <Col lg={8} xl={8}>
