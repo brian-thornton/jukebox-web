@@ -111,10 +111,10 @@ export class AlbumDetail extends React.Component {
               <Card.Body>
                 <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
               </Card.Body>
+              <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
+              <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
+              <Button block variant="outline-light" onClick={this.a}>Add Album to Playlist</Button>
             </Card>
-            <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
-            <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
-            <Button block variant="outline-light" onClick={this.a}>Add Album to Playlist</Button>
           </Col>
           <Col lg={8} xl={8}>
             <TrackList tracks={tracks} />

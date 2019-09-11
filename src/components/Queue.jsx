@@ -3,9 +3,10 @@ import {
   Container,
   Row,
   Col,
+  Alert,
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
-import TrackList from './TrackList';
+import { TrackList } from './TrackList';
 
 export class Queue extends React.Component {
   constructor(props) {
@@ -25,12 +26,18 @@ export class Queue extends React.Component {
 
   render() {
     const { tracks } = this.state;
+    const message = 'There are no tracks in the queue.';
+    let content = (<Alert variant="info">{message}</Alert>);
+
+    if (tracks.length) {
+      content = (<TrackList tracks={tracks} />);
+    }
 
     return (
       <Container>
         <Row>
           <Col lg={12} xl={12}>
-            <TrackList tracks={tracks} />
+            {content}
           </Col>
         </Row>
       </Container>
