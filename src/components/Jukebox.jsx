@@ -10,8 +10,9 @@ import {
   FormControl,
   Button,
 } from 'react-bootstrap';
-import AlbumList from './AlbumList';
-import AlbumDetail from './AlbumDetail';
+import { AlbumList } from './AlbumList';
+import { Playlists } from './Playlists';
+import { AlbumDetail } from './AlbumDetail';
 import rootReducer from '../reducers/index';
 import QueueClient from '../lib/queue-client';
 import VolumeClient from '../lib/volume-client';
@@ -34,25 +35,25 @@ export default class Jukebox extends React.Component {
     store.subscribe(this.forceUpdate.bind(this));
   }
 
+  onSearch() {
+    const search = document.getElementById('searchBox').value;
+    store.dispatch(actions.setSearch(search));
+  }
+
   setNavAlbumList() {
     store.dispatch(actions.setMode('AlbumList'));
     store.dispatch(actions.setCurrentAlbum(''));
   }
 
-  onSearch() {
-    const search = document.getElementById("searchBox").value
-    store.dispatch(actions.setSearch(search));
-  }
-
   debounce(fn, time) {
     let timeout;
-  
-    return function() {
+
+    return function () {
       const functionCall = () => fn.apply(this, arguments);
-      
+
       clearTimeout(timeout);
       timeout = setTimeout(functionCall, time);
-    }
+    };
   }
 
   render() {
@@ -68,7 +69,7 @@ export default class Jukebox extends React.Component {
           body = <Tracks />;
           break;
         case 'Playlists':
-          body = '';
+          body = <Playlists />;
           break;
         case 'Queue':
           body = <Queue />;

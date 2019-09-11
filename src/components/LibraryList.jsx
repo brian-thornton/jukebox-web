@@ -16,7 +16,7 @@ const mapDispatchToProps = function (dispatch) {
     setCurrentAlbum: album => (
       dispatch(actions.setCurrentAlbum(album))
     ),
-    setMode: mode => {
+    setMode: (mode) => {
       dispatch(actions.setMode(mode));
     },
   };
@@ -54,20 +54,20 @@ export class LibraryList extends React.Component {
     libraries.forEach((library) => {
       renderLibraries.push(
         (
-          <ListGroupItem style={cardStyle}>
+          <ListGroupItem style={cardStyle} key={library.path}>
             {library.path}
             <Button
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
-              >
+            >
               Scan
             </Button>
             <Button
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
-              >
+            >
               Delete
             </Button>
           </ListGroupItem>

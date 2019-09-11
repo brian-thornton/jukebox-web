@@ -23,7 +23,7 @@ const mapDispatchToProps = function (dispatch) {
   };
 };
 
-export class Album extends React.Component {
+class Album extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};

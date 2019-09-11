@@ -42,6 +42,7 @@ export class AlbumDetail extends React.Component {
     this.loadTracks = this.loadTracks.bind(this);
     this.enqueueAlbum = this.enqueueAlbum.bind(this);
     this.playAlbum = this.playAlbum.bind(this);
+    this.addToPlaylist = this.addToPlaylist.bind(this);
     this.loadCoverArt();
     this.loadTracks();
   }
@@ -86,6 +87,10 @@ export class AlbumDetail extends React.Component {
     QueueClient.enqueueTracksTop(tracks);
   }
 
+  addToPlaylist() {
+
+  }
+
   largeAlbum() {
     const cardStyle = {
       background: 'transparent',
@@ -109,7 +114,7 @@ export class AlbumDetail extends React.Component {
             </Card>
             <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
             <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
-            <Button block variant="outline-light">Add Album to Playlist</Button>
+            <Button block variant="outline-light" onClick={this.a}>Add Album to Playlist</Button>
           </Col>
           <Col lg={8} xl={8}>
             <TrackList tracks={tracks} />

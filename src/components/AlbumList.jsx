@@ -4,25 +4,25 @@ import {
   Container,
   Row,
 } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
-import { connect } from 'react-redux';
 
-const actions = require("../actions/index");
+const actions = require('../actions/index');
 
 const mapStateToProps = function (state) {
   return {
-    search: state.search
-  }
-}
+    search: state.search,
+  };
+};
 
 const mapDispatchToProps = function (dispatch) {
   return {
-    setCurrentAlbum: (album) => (
-      dispatch(actions.setCurrentAlbum(album))
-    )
-  }
-}
+    setCurrentAlbum: (album) => {
+      dispatch(actions.setCurrentAlbum(album));
+    },
+  };
+};
 
 export class AlbumList extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ export class AlbumList extends React.Component {
       start: 0,
       limit: 100,
       albums: [],
-    }
+    };
 
     this.loadAlbums();
     this.loadAlbums = this.loadAlbums.bind(this);
@@ -40,12 +40,11 @@ export class AlbumList extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if(this.props.search !== prevProps.search) // Check if it's a new user, you can also use some unique property, like the ID  (this.props.user.id !== prevProps.user.id)
-    {
+    const { search } = this.props;
+    if (search !== prevProps.search) {
       this.loadAlbums();
     }
-  } 
-  
+  }
 
   loadAlbums() {
     const { start, limit } = this.state;
@@ -87,7 +86,7 @@ export class AlbumList extends React.Component {
     if (albums) {
       for (let i = 0; i < albums.length; i += 1) {
         renderAlbums.push(
-          <Album album={albums[i]} />
+          <Album key={i} album={albums[i]} />
         );
       }
     }

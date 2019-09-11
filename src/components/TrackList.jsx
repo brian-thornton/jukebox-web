@@ -16,7 +16,7 @@ const mapDispatchToProps = function (dispatch) {
     setCurrentAlbum: album => (
       dispatch(actions.setCurrentAlbum(album))
     ),
-    setMode: mode => {
+    setMode: (mode) => {
       dispatch(actions.setMode(mode));
     },
   };
@@ -59,14 +59,16 @@ export class TrackList extends React.Component {
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
-              onClick={() => this.playNow(track)}>
+              onClick={() => this.playNow(track)}
+            >
               Play
             </Button>
             <Button
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
-              onClick={() => this.enqueue(track)}>
+              onClick={() => this.enqueue(track)}
+            >
               Enqueue
             </Button>
           </ListGroupItem>

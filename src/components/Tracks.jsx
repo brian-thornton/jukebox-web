@@ -51,10 +51,8 @@ export class Tracks extends React.Component {
         <Row>
           <Col lg={12} xl={12}>
             <TrackList tracks={tracks} />
+            <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
           </Col>
-        </Row>
-        <Row>
-          <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
         </Row>
       </Container>
     );
