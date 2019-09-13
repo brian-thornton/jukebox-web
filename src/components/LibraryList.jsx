@@ -38,6 +38,20 @@ export class LibraryList extends React.Component {
     });
   }
 
+  delete(name) {
+    console.log(name);
+    LibrianClient.delete(name).then(() => {
+      LibrianClient.getLibraries().then((libraries) => {
+        const that = this;
+
+        that.setState({
+          libraries,
+        });
+        that.forceUpdate();
+      });
+    })
+  }
+
   render() {
     const cardStyle = {
       background: 'transparent',
@@ -49,9 +63,25 @@ export class LibraryList extends React.Component {
       margin: '5px',
     };
 
+    const enabledStyle = {
+      background: '#7CFC00',
+      color: '#000000',
+      margin: '5px',
+      width: '100px',
+    }
+
+    const disabledStyle = {
+      background: '#FF0000',
+      margin: '5px',
+      width: '100px',
+    }
+
     const renderLibraries = [];
     const { libraries } = this.state;
     libraries.forEach((library) => {
+      const enabled = library.enabled ? 'Enabled' : 'Disabled';
+      const style = library.enabled ? enabledStyle : disabledStyle;
+      console.log(library);
       renderLibraries.push(
         (
           <ListGroupItem style={cardStyle} key={library.path}>
@@ -67,8 +97,18 @@ export class LibraryList extends React.Component {
               style={buttonStyle}
               variant="outline-light"
               className="float-right"
+              onClick={() => {
+                this.delete(library.name)
+              }}
             >
               Delete
+            </Button>
+            <Button
+              style={style}
+              variant="outline-light"
+              className="float-right"
+            >
+              {enabled}
             </Button>
           </ListGroupItem>
         ),

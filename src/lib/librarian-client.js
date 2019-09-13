@@ -34,6 +34,13 @@ class LibrarianClient {
     const json = await response.json();
     return json;
   }
+
+  static async delete(name) {
+    const response = await fetch(`/librarian/?name=${name}`, {
+      method: 'delete',
+    });
+    return response;
+  }
 }
 
 module.exports = LibrarianClient;
