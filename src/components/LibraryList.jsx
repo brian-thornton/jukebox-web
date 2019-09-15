@@ -39,7 +39,6 @@ export class LibraryList extends React.Component {
   }
 
   delete(name) {
-    console.log(name);
     LibrianClient.delete(name).then(() => {
       LibrianClient.getLibraries().then((libraries) => {
         const that = this;
@@ -81,7 +80,6 @@ export class LibraryList extends React.Component {
     libraries.forEach((library) => {
       const enabled = library.enabled ? 'Enabled' : 'Disabled';
       const style = library.enabled ? enabledStyle : disabledStyle;
-      console.log(library);
       renderLibraries.push(
         (
           <ListGroupItem style={cardStyle} key={library.path}>
