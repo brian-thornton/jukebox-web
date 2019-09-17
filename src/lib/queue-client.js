@@ -21,9 +21,7 @@ class QueueClient {
   }
 
   static async enqueue(track) {
-    const response = await fetch(`/queue/enqueue?track=${track}`);
-    const blob = await response.blob();
-    return blob;
+    return QueueClient.enqueueTracks([track])
   }
 
   static async enqueueTracks(tracks) {

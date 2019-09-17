@@ -40,8 +40,8 @@ export default class Jukebox extends React.Component {
     store.dispatch(actions.setSearch(search));
   }
 
-  setNavAlbumList() {
-    store.dispatch(actions.setMode('AlbumList'));
+  setNav(mode) {
+    store.dispatch(actions.setMode(mode));
     store.dispatch(actions.setCurrentAlbum(''));
   }
 
@@ -89,11 +89,11 @@ export default class Jukebox extends React.Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={() => { this.setNavAlbumList(); }}>Albums</Nav.Link>
-              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Tracks')); }}>Tracks</Nav.Link>
-              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Playlists')); }}>Playlists</Nav.Link>
-              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Queue')); }}>Queue</Nav.Link>
-              <Nav.Link onClick={() => { store.dispatch(actions.setMode('Settings')); }}>Settings</Nav.Link>
+              <Nav.Link onClick={() => { this.setNav('AlbumList'); }}>Albums</Nav.Link>
+              <Nav.Link onClick={() => { this.setNav('Tracks'); }}>Tracks</Nav.Link>
+              <Nav.Link onClick={() => { this.setNav('Playlists'); }}>Playlists</Nav.Link>
+              <Nav.Link onClick={() => { this.setNav('Queue'); }}>Queue</Nav.Link>
+              <Nav.Link onClick={() => { this.setNav('Settings'); }}>Settings</Nav.Link>
             </Nav>
             <Form inline>
               <FormControl id="searchBox" type="text" onChange={this.debounce(this.onSearch, 500)} placeholder="Search" className="mr-sm-2" />

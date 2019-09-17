@@ -34,7 +34,7 @@ export class TrackList extends React.Component {
   }
 
   enqueue(track) {
-    QueueClient.enqueue(track.path);
+    QueueClient.enqueue(track);
   }
 
   render() {
