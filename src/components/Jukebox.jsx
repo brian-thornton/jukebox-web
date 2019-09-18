@@ -110,7 +110,7 @@ export default class Jukebox extends React.Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ml-auto">
-              <Button style={{ margin: '5px' }} variant="outline-light">Play</Button>
+              <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.next}>Play</Button>
               <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.next}>Next</Button>
               <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.stop}>Stop</Button>
               <Button style={{ margin: '5px' }} variant="outline-light" onClick={VolumeClient.up}>Volume Up</Button>
