@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Col, Container, Row,
+  ListGroup, ListGroupItem, Button, Col, Container, Row, Alert
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PlaylistClient from '../lib/playlist-client';
@@ -38,33 +38,62 @@ export class Playlists extends React.Component {
       });
       that.forceUpdate();
     });
+
+    this.addTracksToPlaylist = this.addTracksToPlaylist.bind(this);
+  }
+
+  addTracksToPlaylist(name) {
+    const { tracks } = this.props;
+    PlaylistClient.addTracksToPlaylist(name, tracks);
+  }
+
+  buttons(name) {
+    const { mode } = this.props;
+
+    const buttonStyle = {
+      margin: '5px',
+    };
+
+    const buttons = [];
+    if (mode === 'addToPlaylist') {
+      buttons.push((<Button
+        style={buttonStyle}
+        variant="outline-light"
+        className="float-right"
+        onClick={() => this.addTracksToPlaylist(name)}
+      >
+        Add
+      </Button>))
+    } else {
+      buttons.push(<Button
+        style={buttonStyle}
+        variant="outline-light"
+        className="float-right"
+      >
+        Delete
+    </Button>)
+    }
+
+    return buttons;
   }
 
   render() {
+    const { playlists } = this.state;
+
     const cardStyle = {
       background: 'transparent',
       color: 'white',
       borderColor: '#708090',
     };
 
-    const buttonStyle = {
-      margin: '5px',
-    };
-
     const renderPlaylists = [];
-    const { playlists } = this.state;
+
     playlists.forEach((playlist) => {
       renderPlaylists.push(
         (
-          <ListGroupItem style={cardStyle} key={playlist.name}>
+          <ListGroupItem style={{ verticalAlign: 'middle' }} style={cardStyle} key={playlist.name}>
             {playlist.name}
-            <Button
-              style={buttonStyle}
-              variant="outline-light"
-              className="float-right"
-            >
-              Delete
-            </Button>
+            {this.buttons(playlist.name)}
           </ListGroupItem>
         ),
       );

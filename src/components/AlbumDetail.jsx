@@ -11,6 +11,7 @@ import LibrianClient from '../lib/librarian-client';
 import QueueClient from '../lib/queue-client';
 import defaultCover from '../default_album.jpg';
 import TrackList from './TrackList';
+import Playlists from './Playlists';
 
 const actions = require('../actions/index');
 
@@ -31,7 +32,7 @@ const mapDispatchToProps = function (dispatch) {
   };
 };
 
-export class AlbumDetail extends React.Component {
+class AlbumDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,7 +89,9 @@ export class AlbumDetail extends React.Component {
   }
 
   addToPlaylist() {
-
+    this.setState({
+      addToPlaylist: true
+    })
   }
 
   largeAlbum() {
@@ -101,27 +104,34 @@ export class AlbumDetail extends React.Component {
     };
 
     const { album } = this.props;
-    const { coverArt, tracks } = this.state;
-    return (
-      <Container>
-        <Row>
-          <Col lg={4} xl={4}>
-            <Card style={cardStyle} className="h-55 w-85">
-              <Card.Img top src={coverArt} />
-              <Card.Body>
-                <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
-              </Card.Body>
-              <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
-              <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
-              <Button block variant="outline-light" onClick={this.a}>Add Album to Playlist</Button>
-            </Card>
-          </Col>
-          <Col lg={8} xl={8}>
-            <TrackList tracks={tracks} />
-          </Col>
-        </Row>
-      </Container>
-    );
+    const { coverArt, tracks, addToPlaylist } = this.state;
+
+    if (!addToPlaylist) {
+      return (
+        <Container>
+          <Row>
+            <Col lg={4} xl={4}>
+              <Card style={cardStyle} className="h-55 w-85">
+                <Card.Img top src={coverArt} />
+                <Card.Body>
+                  <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
+                </Card.Body>
+                <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
+                <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
+                <Button block variant="outline-light" onClick={this.addToPlaylist}>Add Album to Playlist</Button>
+              </Card>
+            </Col>
+            <Col lg={8} xl={8}>
+              <TrackList tracks={tracks} />
+            </Col>
+          </Row>
+        </Container>
+      );
+    } else {
+      return (
+        <Playlists mode="addToPlaylist" tracks={tracks}/>
+      )
+    }
   }
 
   render() {

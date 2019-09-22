@@ -12,7 +12,7 @@ import {
 } from 'react-bootstrap';
 import { AlbumList } from './AlbumList';
 import { Playlists } from './Playlists';
-import { AlbumDetail } from './AlbumDetail';
+import AlbumDetail from './AlbumDetail';
 import rootReducer from '../reducers/index';
 import QueueClient from '../lib/queue-client';
 import VolumeClient from '../lib/volume-client';
