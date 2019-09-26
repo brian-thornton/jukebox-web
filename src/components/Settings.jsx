@@ -6,12 +6,7 @@ import {
 } from 'react-bootstrap';
 import LibraryList from './LibraryList';
 
-export class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
+function Settings() {
     return (
       <Container>
         <Row>
@@ -21,5 +16,6 @@ export class Settings extends React.Component {
         </Row>
       </Container>
     );
-  }
 }
+
+export default Settings;

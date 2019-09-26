@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Row,
@@ -8,39 +8,29 @@ import {
 import QueueClient from '../lib/queue-client';
 import { TrackList } from './TrackList';
 
-export class Queue extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tracks: [],
-    };
-    QueueClient.getQueue().then((tracks) => {
-      const that = this;
+function Queue() {
+  const [tracks, setTracks] = useState([]);
 
-      that.setState({
-        tracks,
-      });
-      that.forceUpdate();
-    });
+  QueueClient.getQueue().then((tracks) => {
+    setTracks(tracks);
+  });
+
+  const message = 'There are no tracks in the queue.';
+  let content = (<Alert variant="info">{message}</Alert>);
+
+  if (tracks.length) {
+    content = (<TrackList tracks={tracks} />);
   }
 
-  render() {
-    const { tracks } = this.state;
-    const message = 'There are no tracks in the queue.';
-    let content = (<Alert variant="info">{message}</Alert>);
-
-    if (tracks.length) {
-      content = (<TrackList tracks={tracks} />);
-    }
-
-    return (
-      <Container>
-        <Row>
-          <Col lg={12} xl={12}>
-            {content}
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <Row>
+        <Col lg={12} xl={12}>
+          {content}
+        </Col>
+      </Row>
+    </Container>
+  );
 }
+
+export default Queue;

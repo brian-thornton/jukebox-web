@@ -17,9 +17,9 @@ import rootReducer from '../reducers/index';
 import QueueClient from '../lib/queue-client';
 import VolumeClient from '../lib/volume-client';
 import '../App.css';
-import { Queue } from './Queue';
+import Queue from './Queue';
 import { Tracks } from './Tracks';
-import { Settings } from './Settings';
+import Settings from './Settings';
 
 const actions = require('../actions/index');
 

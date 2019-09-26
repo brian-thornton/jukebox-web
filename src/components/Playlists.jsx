@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PlaylistClient from '../lib/playlist-client';
+import PlaylistDetail from './PlaylistDetail';
 
 const actions = require('../actions/index');
 
@@ -43,8 +44,9 @@ export class Playlists extends React.Component {
   }
 
   addTracksToPlaylist(name) {
-    const { tracks } = this.props;
+    const { tracks, setCurrentPlaylist } = this.props;
     PlaylistClient.addTracksToPlaylist(name, tracks);
+    setCurrentPlaylist(name);
   }
 
   buttons(name) {
@@ -79,6 +81,7 @@ export class Playlists extends React.Component {
 
   render() {
     const { playlists } = this.state;
+    const { currentPlaylist } = this.props;
 
     const cardStyle = {
       background: 'transparent',
@@ -99,22 +102,29 @@ export class Playlists extends React.Component {
       );
     });
 
-    return (
-      <Container>
-        <Row>
-          <Col lg={12} xl={12}>
-            <ListGroup>
-              {renderPlaylists}
-            </ListGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} xl={12}>
-            <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
-          </Col>
-        </Row>
-      </Container>
-    );
+
+    if (!currentPlaylist) {
+      return (
+        <Container>
+          <Row>
+            <Col lg={12} xl={12}>
+              <ListGroup>
+                {renderPlaylists}
+              </ListGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} xl={12}>
+              <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
+            </Col>
+          </Row>
+        </Container>
+      );
+    } else {
+      return (
+        <PlaylistDetail tracks={currentPlaylist.tracks}/>
+      )
+    }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Playlists);
