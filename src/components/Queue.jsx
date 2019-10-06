@@ -6,7 +6,7 @@ import {
   Alert,
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
-import { TrackList } from './TrackList';
+import TrackList from './TrackList';
 
 function Queue() {
   const [tracks, setTracks] = useState([]);

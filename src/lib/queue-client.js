@@ -57,9 +57,8 @@ class QueueClient {
   }
 
   static async enqueueTop(track) {
-    const response = await fetch(`/queue/enqueueTop?track=${track}`);
-    const blob = await response.blob();
-    return blob;
+    console.log(track);
+    return this.enqueueTracksTop([track])
   }
 }
 

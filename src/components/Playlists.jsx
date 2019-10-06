@@ -5,6 +5,7 @@ import {
 import { connect } from 'react-redux';
 import PlaylistClient from '../lib/playlist-client';
 import PlaylistDetail from './PlaylistDetail';
+import styles from './styles';
 
 const actions = require('../actions/index');
 
@@ -52,14 +53,10 @@ export class Playlists extends React.Component {
   buttons(name) {
     const { mode } = this.props;
 
-    const buttonStyle = {
-      margin: '5px',
-    };
-
     const buttons = [];
     if (mode === 'addToPlaylist') {
       buttons.push((<Button
-        style={buttonStyle}
+        style={styles.buttonStyle}
         variant="outline-light"
         className="float-right"
         onClick={() => this.addTracksToPlaylist(name)}
@@ -68,7 +65,7 @@ export class Playlists extends React.Component {
       </Button>))
     } else {
       buttons.push(<Button
-        style={buttonStyle}
+        style={styles.buttonStyle}
         variant="outline-light"
         className="float-right"
       >
@@ -82,19 +79,12 @@ export class Playlists extends React.Component {
   render() {
     const { playlists } = this.state;
     const { currentPlaylist } = this.props;
-
-    const cardStyle = {
-      background: 'transparent',
-      color: 'white',
-      borderColor: '#708090',
-    };
-
     const renderPlaylists = [];
 
     playlists.forEach((playlist) => {
       renderPlaylists.push(
         (
-          <ListGroupItem style={{ verticalAlign: 'middle' }} style={cardStyle} key={playlist.name}>
+          <ListGroupItem style={{ verticalAlign: 'middle' }} style={styles.cardStyle} key={playlist.name}>
             {playlist.name}
             {this.buttons(playlist.name)}
           </ListGroupItem>
@@ -122,7 +112,7 @@ export class Playlists extends React.Component {
       );
     } else {
       return (
-        <PlaylistDetail tracks={currentPlaylist.tracks}/>
+        <PlaylistDetail name={currentPlaylist.tracks}/>
       )
     }
   }

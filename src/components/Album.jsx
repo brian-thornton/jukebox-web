@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
+import styles from './styles';
 
 const actions = require('../actions/index');
 
@@ -48,22 +49,14 @@ class Album extends React.Component {
   }
 
   largeAlbum() {
-    const cardStyle = {
-      background: 'transparent',
-      color: 'white',
-      borderColor: '#708090',
-      margin: '10px',
-      maxWidth: '200px',
-    };
-
     const { album, setCurrentAlbum } = this.props;
     const { coverArt } = this.state;
 
     return (
-      <Card style={cardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
-        <Card.Img style={{ maxHeight: '300px', maxWidth: '250px' }} top src={coverArt} />
+      <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
+        <Card.Img style={styles.albumImage} top src={coverArt} />
         <Card.Body>
-          <Card.Title style={{ maxHeight: '25px', fontSize: '12px', overflow: 'hidden' }}>{album.name}</Card.Title>
+          <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
         </Card.Body>
       </Card>
     );

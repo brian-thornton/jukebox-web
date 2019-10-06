@@ -6,31 +6,12 @@ import {
   Col,
   Button,
 } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
 import QueueClient from '../lib/queue-client';
 import defaultCover from '../default_album.jpg';
 import TrackList from './TrackList';
 import Playlists from './Playlists';
-
-const actions = require('../actions/index');
-
-const mapStateToProps = function (state) {
-  return {
-    currentAlbum: state.currentAlbum
-  };
-};
-
-const mapDispatchToProps = function (dispatch) {
-  return {
-    setCurrentAlbum: album => (
-      dispatch(actions.setCurrentAlbum(album))
-    ),
-    setMode: (mode) => {
-      dispatch(actions.setMode(mode));
-    },
-  };
-};
+import styles from './styles';
 
 class AlbumDetail extends React.Component {
   constructor(props) {
@@ -95,14 +76,6 @@ class AlbumDetail extends React.Component {
   }
 
   largeAlbum() {
-    const cardStyle = {
-      background: 'transparent',
-      color: 'white',
-      borderColor: '#708090',
-      maxWidth: '400px',
-      margin: '10px',
-    };
-
     const { album } = this.props;
     const { coverArt, tracks, addToPlaylist } = this.state;
 
@@ -111,7 +84,7 @@ class AlbumDetail extends React.Component {
         <Container>
           <Row>
             <Col lg={4} xl={4}>
-              <Card style={cardStyle} className="h-55 w-85">
+              <Card style={styles.albumCardLarge} className="h-55 w-85">
                 <Card.Img top src={coverArt} />
                 <Card.Body>
                   <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
@@ -138,4 +111,4 @@ class AlbumDetail extends React.Component {
     return this.largeAlbum();
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AlbumDetail);
+export default AlbumDetail;
