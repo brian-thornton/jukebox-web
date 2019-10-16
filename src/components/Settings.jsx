@@ -7,15 +7,15 @@ import {
 import LibraryList from './LibraryList';
 
 function Settings() {
-    return (
-      <Container>
-        <Row>
-          <Col lg={12} xl={12}>
-            <LibraryList />
-          </Col>
-        </Row>
-      </Container>
-    );
+  return (
+    <Container>
+      <Row>
+        <Col lg={12} xl={12}>
+          <LibraryList />
+        </Col>
+      </Row>
+    </Container>
+  );
 }
 
 export default Settings;

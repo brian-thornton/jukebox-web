@@ -1,6 +1,12 @@
 class PlaylistClient {
   static async getPlaylists(start, limit) {
-    const response = await fetch(`/playlists/getAll`);
+    const response = await fetch('/playlists/getAll');
+    const json = await response.json();
+    return json;
+  }
+
+  static async getPlaylist(name) {
+    const response = await fetch(`/playlists/getPlaylist?name=${name}`);
     const json = await response.json();
     return json;
   }
@@ -19,8 +25,8 @@ class PlaylistClient {
       body: JSON.stringify(
         {
           name,
-          tracks
-        }
+          tracks,
+        },
       ),
     });
     return response;

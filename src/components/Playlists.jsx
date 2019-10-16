@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Col, Container, Row, Alert
+  ListGroup, ListGroupItem, Button, Col, Container, Row,
 } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PlaylistClient from '../lib/playlist-client';
@@ -48,6 +48,7 @@ export class Playlists extends React.Component {
     const { tracks, setCurrentPlaylist } = this.props;
     PlaylistClient.addTracksToPlaylist(name, tracks);
     setCurrentPlaylist(name);
+    this.setState({ name });
   }
 
   buttons(name) {
@@ -62,7 +63,7 @@ export class Playlists extends React.Component {
         onClick={() => this.addTracksToPlaylist(name)}
       >
         Add
-      </Button>))
+      </Button>));
     } else {
       buttons.push(<Button
         style={styles.buttonStyle}
@@ -70,10 +71,14 @@ export class Playlists extends React.Component {
         className="float-right"
       >
         Delete
-    </Button>)
+      </Button>);
     }
 
     return buttons;
+  }
+
+  selectPlaylist(name) {
+    this.setState({ name });
   }
 
   render() {
@@ -84,7 +89,7 @@ export class Playlists extends React.Component {
     playlists.forEach((playlist) => {
       renderPlaylists.push(
         (
-          <ListGroupItem style={{ verticalAlign: 'middle' }} style={styles.cardStyle} key={playlist.name}>
+          <ListGroupItem style={{ verticalAlign: 'middle' }} onClick={() => this.selectPlaylist(playlist.name)} style={styles.cardStyle} key={playlist.name}>
             {playlist.name}
             {this.buttons(playlist.name)}
           </ListGroupItem>
@@ -93,7 +98,7 @@ export class Playlists extends React.Component {
     });
 
 
-    if (!currentPlaylist) {
+    if (!currentPlaylist && !this.state.name) {
       return (
         <Container>
           <Row>
@@ -110,11 +115,10 @@ export class Playlists extends React.Component {
           </Row>
         </Container>
       );
-    } else {
-      return (
-        <PlaylistDetail name={currentPlaylist.tracks}/>
-      )
     }
+    return (
+      <PlaylistDetail name={this.state.name} />
+    );
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Playlists);

@@ -7,11 +7,11 @@ function TrackList(props) {
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
     QueueClient.play();
-  }
+  };
 
   const enqueue = (track) => {
     QueueClient.enqueue(track);
-  }
+  };
 
   const renderTracks = [];
   const { tracks } = props;
@@ -27,7 +27,7 @@ function TrackList(props) {
             onClick={() => playNow(track)}
           >
             Play
-            </Button>
+          </Button>
           <Button
             style={styles.buttonStyle}
             variant="outline-light"
@@ -35,7 +35,7 @@ function TrackList(props) {
             onClick={() => enqueue(track)}
           >
             Enqueue
-            </Button>
+          </Button>
         </ListGroupItem>
       ),
     );
@@ -46,6 +46,5 @@ function TrackList(props) {
       {renderTracks}
     </ListGroup>
   );
-
 }
 export default TrackList;

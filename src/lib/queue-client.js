@@ -21,7 +21,7 @@ class QueueClient {
   }
 
   static async enqueue(track) {
-    return QueueClient.enqueueTracks([track])
+    return QueueClient.enqueueTracks([track]);
   }
 
   static async enqueueTracks(tracks) {
@@ -31,7 +31,7 @@ class QueueClient {
       cache: 'no-cache',
       credentials: 'same-origin',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
       redirect: 'follow',
       referrer: 'no-referrer',
@@ -47,7 +47,7 @@ class QueueClient {
       cache: 'no-cache',
       credentials: 'same-origin',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
       redirect: 'follow',
       referrer: 'no-referrer',
@@ -58,7 +58,7 @@ class QueueClient {
 
   static async enqueueTop(track) {
     console.log(track);
-    return this.enqueueTracksTop([track])
+    return this.enqueueTracksTop([track]);
   }
 }
 

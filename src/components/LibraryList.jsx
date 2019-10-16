@@ -10,14 +10,14 @@ function LibraryList() {
     LibrianClient.getLibraries().then((libraries) => {
       setLibraries(libraries);
     });
-  }
+  };
 
   const deleteLibrary = (name) => {
     LibrianClient.delete(name).then(() => {
       LibrianClient.getLibraries().then((libraries) => {
         setLibraries(libraries);
       });
-    })
+    });
   };
 
   loadLibraries();
@@ -36,17 +36,17 @@ function LibraryList() {
             className="float-right"
           >
             Scan
-            </Button>
+          </Button>
           <Button
             style={styles.buttonStyle}
             variant="outline-light"
             className="float-right"
             onClick={() => {
-              deleteLibrary(library.name)
+              deleteLibrary(library.name);
             }}
           >
             Delete
-            </Button>
+          </Button>
           <Button
             style={style}
             variant="outline-light"

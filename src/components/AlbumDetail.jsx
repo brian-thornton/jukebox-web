@@ -71,8 +71,8 @@ class AlbumDetail extends React.Component {
 
   addToPlaylist() {
     this.setState({
-      addToPlaylist: true
-    })
+      addToPlaylist: true,
+    });
   }
 
   largeAlbum() {
@@ -100,11 +100,9 @@ class AlbumDetail extends React.Component {
           </Row>
         </Container>
       );
-    } else {
-      return (
-        <Playlists mode="addToPlaylist" tracks={tracks}/>
-      )
     }
+
+    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
   }
 
   render() {
