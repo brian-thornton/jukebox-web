@@ -2,38 +2,16 @@ import React from 'react';
 import {
   ListGroup, ListGroupItem, Button, Container, Row, Col,
 } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
 
-const actions = require('../actions/index');
-
-const mapStateToProps = function (state) {
-  return {
-    currentAlbum: state.currentAlbum,
-  };
-};
-
-const mapDispatchToProps = function (dispatch) {
-  return {
-    setCurrentAlbum: album => (
-      dispatch(actions.setCurrentAlbum(album))
-    ),
-    setMode: (mode) => {
-      dispatch(actions.setMode(mode));
-    },
-  };
-};
-
-export class PlaylistDetail extends React.Component {
+export default class PlaylistDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
 
-    console.log(props.name);
     PlaylistClient.getPlaylist(props.name).then((playlist) => {
       const that = this;
-      console.log(playlist);
       that.setState({
         tracks: playlist.tracks,
       });
@@ -109,4 +87,3 @@ export class PlaylistDetail extends React.Component {
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(PlaylistDetail);

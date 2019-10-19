@@ -8,7 +8,7 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
 
-export class Tracks extends React.Component {
+export default class Tracks extends React.Component {
   constructor(props) {
     super(props);
 

@@ -2,31 +2,11 @@ import React from 'react';
 import {
   ListGroup, ListGroupItem, Button, Col, Container, Row,
 } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import PlaylistClient from '../lib/playlist-client';
 import PlaylistDetail from './PlaylistDetail';
 import styles from './styles';
 
-const actions = require('../actions/index');
-
-const mapStateToProps = function (state) {
-  return {
-    currentPlaylist: state.currentPlaylist,
-  };
-};
-
-const mapDispatchToProps = function (dispatch) {
-  return {
-    setCurrentPlaylist: playlist => (
-      dispatch(actions.setCurrentPlaylist(playlist))
-    ),
-    setMode: (mode) => {
-      dispatch(actions.setMode(mode));
-    },
-  };
-};
-
-export class Playlists extends React.Component {
+export default class Playlists extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,9 +25,8 @@ export class Playlists extends React.Component {
   }
 
   addTracksToPlaylist(name) {
-    const { tracks, setCurrentPlaylist } = this.props;
+    const { tracks } = this.props;
     PlaylistClient.addTracksToPlaylist(name, tracks);
-    setCurrentPlaylist(name);
     this.setState({ name });
   }
 
@@ -56,22 +35,26 @@ export class Playlists extends React.Component {
 
     const buttons = [];
     if (mode === 'addToPlaylist') {
-      buttons.push((<Button
-        style={styles.buttonStyle}
-        variant="outline-light"
-        className="float-right"
-        onClick={() => this.addTracksToPlaylist(name)}
-      >
-        Add
-      </Button>));
+      buttons.push((
+        <Button
+          style={styles.buttonStyle}
+          variant="outline-light"
+          className="float-right"
+          onClick={() => this.addTracksToPlaylist(name)}
+        >
+          Add
+        </Button>
+      ));
     } else {
-      buttons.push(<Button
-        style={styles.buttonStyle}
-        variant="outline-light"
-        className="float-right"
-      >
-        Delete
-      </Button>);
+      buttons.push(
+        <Button
+          style={styles.buttonStyle}
+          variant="outline-light"
+          className="float-right"
+        >
+          Delete
+        </Button>,
+      );
     }
 
     return buttons;
@@ -82,14 +65,18 @@ export class Playlists extends React.Component {
   }
 
   render() {
-    const { playlists } = this.state;
+    const { playlists, name } = this.state;
     const { currentPlaylist } = this.props;
     const renderPlaylists = [];
 
     playlists.forEach((playlist) => {
       renderPlaylists.push(
         (
-          <ListGroupItem style={{ verticalAlign: 'middle' }} onClick={() => this.selectPlaylist(playlist.name)} style={styles.cardStyle} key={playlist.name}>
+          <ListGroupItem
+            onClick={() => this.selectPlaylist(playlist.name)}
+            style={styles.cardStyle}
+            key={playlist.name}
+          >
             {playlist.name}
             {this.buttons(playlist.name)}
           </ListGroupItem>
@@ -98,7 +85,7 @@ export class Playlists extends React.Component {
     });
 
 
-    if (!currentPlaylist && !this.state.name) {
+    if (!currentPlaylist && !name) {
       return (
         <Container>
           <Row>
@@ -117,8 +104,7 @@ export class Playlists extends React.Component {
       );
     }
     return (
-      <PlaylistDetail name={this.state.name} />
+      <PlaylistDetail name={name} />
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Playlists);

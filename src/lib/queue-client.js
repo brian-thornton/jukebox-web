@@ -57,7 +57,6 @@ class QueueClient {
   }
 
   static async enqueueTop(track) {
-    console.log(track);
     return this.enqueueTracksTop([track]);
   }
 }

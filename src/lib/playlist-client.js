@@ -1,5 +1,5 @@
 class PlaylistClient {
-  static async getPlaylists(start, limit) {
+  static async getPlaylists() {
     const response = await fetch('/playlists/getAll');
     const json = await response.json();
     return json;
