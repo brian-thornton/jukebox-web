@@ -1,4 +1,4 @@
-const actions = module.exports = [];
+const actions = {};
 actions.setCurrentTrack = track => ({ type: 'SET_CURRENT_TRACK', payload: track });
 actions.clearCurrentTrack = () => ({ type: 'CLEAR_CURRENT_TRACK' });
 actions.clearCurrentAlbum = () => ({ type: 'CLEAR_CURRENT_ALBUM' });
@@ -8,3 +8,4 @@ actions.setCurrentPlaylistTracks = tracks => ({ type: 'SET_CURRENT_PLAYLIST_TRAC
 actions.clearCurrentPlaylist = () => ({ type: 'CLEAR_CURRENT_PLAYLIST' });
 actions.setMode = mode => ({ type: 'SET_CURRENT_MODE', payload: mode });
 actions.setSearch = search => ({ type: 'SET_SEARCH', payload: search });
+module.exports = actions;

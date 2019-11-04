@@ -26,6 +26,27 @@ const actions = require('../actions/index');
 const store = createStore(rootReducer);
 
 export default class Jukebox extends React.Component {
+  static onSearch() {
+    const search = document.getElementById('searchBox').value;
+    store.dispatch(actions.setSearch(search));
+  }
+
+  static setNav(mode) {
+    store.dispatch(actions.setMode(mode));
+    store.dispatch(actions.setCurrentAlbum(''));
+  }
+
+  static debounce(fn, time) {
+    let timeout;
+
+    return () => {
+      const functionCall = () => fn.apply(this, arguments);
+
+      clearTimeout(timeout);
+      timeout = setTimeout(functionCall, time);
+    };
+  }
+
   constructor(props) {
     super(props);
     store.dispatch(actions.setMode('AlbumList'));
@@ -33,27 +54,6 @@ export default class Jukebox extends React.Component {
 
   componentDidMount() {
     store.subscribe(this.forceUpdate.bind(this));
-  }
-
-  onSearch() {
-    const search = document.getElementById('searchBox').value;
-    store.dispatch(actions.setSearch(search));
-  }
-
-  setNav(mode) {
-    store.dispatch(actions.setMode(mode));
-    store.dispatch(actions.setCurrentAlbum(''));
-  }
-
-  debounce(fn, time) {
-    let timeout;
-
-    return function () {
-      const functionCall = () => fn.apply(this, arguments);
-
-      clearTimeout(timeout);
-      timeout = setTimeout(functionCall, time);
-    };
   }
 
   render() {
@@ -89,14 +89,14 @@ export default class Jukebox extends React.Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={() => { this.setNav('AlbumList'); }}>Albums</Nav.Link>
-              <Nav.Link onClick={() => { this.setNav('Tracks'); }}>Tracks</Nav.Link>
-              <Nav.Link onClick={() => { this.setNav('Playlists'); }}>Playlists</Nav.Link>
-              <Nav.Link onClick={() => { this.setNav('Queue'); }}>Queue</Nav.Link>
-              <Nav.Link onClick={() => { this.setNav('Settings'); }}>Settings</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('AlbumList'); }}>Albums</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('Tracks'); }}>Tracks</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('Playlists'); }}>Playlists</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('Queue'); }}>Queue</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('Settings'); }}>Settings</Nav.Link>
             </Nav>
             <Form inline>
-              <FormControl id="searchBox" type="text" onChange={this.debounce(this.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
+              <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(Jukebox.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
               <Button variant="outline-info">Search</Button>
             </Form>
           </Navbar.Collapse>

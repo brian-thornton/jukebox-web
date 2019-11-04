@@ -11,8 +11,8 @@ import TrackList from './TrackList';
 function Queue() {
   const [tracks, setTracks] = useState([]);
 
-  QueueClient.getQueue().then((tracks) => {
-    setTracks(tracks);
+  QueueClient.getQueue().then((data) => {
+    setTracks(data);
   });
 
   const message = 'There are no tracks in the queue.';

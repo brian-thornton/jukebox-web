@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import {
   Card,
   Container,
@@ -110,3 +111,9 @@ class AlbumDetail extends React.Component {
   }
 }
 export default AlbumDetail;
+
+AlbumDetail.propTypes = {
+  album: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+  }).isRequired,
+};

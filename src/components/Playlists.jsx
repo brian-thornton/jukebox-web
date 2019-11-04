@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import {
   ListGroup, ListGroupItem, Button, Col, Container, Row,
 } from 'react-bootstrap';
@@ -108,3 +109,18 @@ export default class Playlists extends React.Component {
     );
   }
 }
+
+Playlists.propTypes = {
+  tracks: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+  })).isRequired,
+  mode: PropTypes.string,
+  currentPlaylist: PropTypes.shape({
+    name: PropTypes.string,
+  }),
+};
+
+Playlists.defaultProps = {
+  mode: '',
+  currentPlaylist: {},
+};

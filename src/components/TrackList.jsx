@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
@@ -48,3 +49,9 @@ function TrackList(props) {
   );
 }
 export default TrackList;
+
+TrackList.propTypes = {
+  tracks: PropTypes.arrayOf(PropTypes.shape({
+    name: PropTypes.string,
+  })).isRequired,
+};

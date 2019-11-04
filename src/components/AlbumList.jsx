@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import {
   Button,
   Container,
@@ -10,19 +11,15 @@ import Album from './Album';
 
 const actions = require('../actions/index');
 
-const mapStateToProps = function (state) {
-  return {
-    search: state.search,
-  };
-};
+const mapStateToProps = state => ({
+  search: state.search,
+});
 
-const mapDispatchToProps = function (dispatch) {
-  return {
-    setCurrentAlbum: (album) => {
-      dispatch(actions.setCurrentAlbum(album));
-    },
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setCurrentAlbum: (album) => {
+    dispatch(actions.setCurrentAlbum(album));
+  },
+});
 
 export class AlbumList extends React.Component {
   constructor(props) {
@@ -53,7 +50,7 @@ export class AlbumList extends React.Component {
     if (search) {
       LibrianClient.searchAlbums(search).then((data) => {
         const that = this;
-        const { albums } = this.state;
+
         that.setState({
           albums: data,
         });
@@ -104,3 +101,10 @@ export class AlbumList extends React.Component {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AlbumList);
+
+AlbumList.propTypes = {
+  search: PropTypes.string,
+};
+AlbumList.defaultProps = {
+  search: '',
+};

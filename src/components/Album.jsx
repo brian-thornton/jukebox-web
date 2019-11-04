@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
+import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
@@ -7,22 +8,18 @@ import styles from './styles';
 
 const actions = require('../actions/index');
 
-const mapStateToProps = function (state) {
-  return {
-    currentAlbum: state.currentAlbum,
-  };
-};
+const mapStateToProps = state => ({
+  currentAlbum: state.currentAlbum,
+});
 
-const mapDispatchToProps = function (dispatch) {
-  return {
-    setCurrentAlbum: album => (
-      dispatch(actions.setCurrentAlbum(album))
-    ),
-    setMode: (mode) => {
-      dispatch(actions.setMode(mode));
-    },
-  };
-};
+const mapDispatchToProps = dispatch => ({
+  setCurrentAlbum: album => (
+    dispatch(actions.setCurrentAlbum(album))
+  ),
+  setMode: (mode) => {
+    dispatch(actions.setMode(mode));
+  },
+});
 
 class Album extends React.Component {
   constructor(props) {
@@ -67,3 +64,10 @@ class Album extends React.Component {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Album);
+
+Album.propTypes = {
+  setCurrentAlbum: PropTypes.func.isRequired,
+  album: PropTypes.shape({
+    path: PropTypes.string.isRequired,
+  }).isRequired,
+};

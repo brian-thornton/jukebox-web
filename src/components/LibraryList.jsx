@@ -7,15 +7,15 @@ function LibraryList() {
   const [libraries, setLibraries] = useState([]);
 
   const loadLibraries = () => {
-    LibrianClient.getLibraries().then((libraries) => {
-      setLibraries(libraries);
+    LibrianClient.getLibraries().then((data) => {
+      setLibraries(data);
     });
   };
 
   const deleteLibrary = (name) => {
     LibrianClient.delete(name).then(() => {
-      LibrianClient.getLibraries().then((libraries) => {
-        setLibraries(libraries);
+      LibrianClient.getLibraries().then((data) => {
+        setLibraries(data);
       });
     });
   };

@@ -1,4 +1,5 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import {
   ListGroup, ListGroupItem, Button, Container, Row, Col,
 } from 'react-bootstrap';
@@ -6,6 +7,15 @@ import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
 
 export default class PlaylistDetail extends React.Component {
+  static playNow(track) {
+    QueueClient.enqueueTop(track.path);
+    QueueClient.play();
+  }
+
+  static enqueue(track) {
+    QueueClient.enqueue(track);
+  }
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -17,15 +27,6 @@ export default class PlaylistDetail extends React.Component {
       });
       that.forceUpdate();
     });
-  }
-
-  playNow(track) {
-    QueueClient.enqueueTop(track.path);
-    QueueClient.play();
-  }
-
-  enqueue(track) {
-    QueueClient.enqueue(track);
   }
 
   render() {
@@ -51,7 +52,7 @@ export default class PlaylistDetail extends React.Component {
                 style={buttonStyle}
                 variant="outline-light"
                 className="float-right"
-                onClick={() => this.playNow(track)}
+                onClick={() => PlaylistDetail.playNow(track)}
               >
                 Play
               </Button>
@@ -59,7 +60,7 @@ export default class PlaylistDetail extends React.Component {
                 style={buttonStyle}
                 variant="outline-light"
                 className="float-right"
-                onClick={() => this.enqueue(track)}
+                onClick={() => PlaylistDetail.enqueue(track)}
               >
                 Enqueue
               </Button>
@@ -87,3 +88,10 @@ export default class PlaylistDetail extends React.Component {
     );
   }
 }
+
+PlaylistDetail.propTypes = {
+  name: PropTypes.string,
+};
+PlaylistDetail.defaultProps = {
+  name: '',
+};
