@@ -26,11 +26,6 @@ const actions = require('../actions/index');
 const store = createStore(rootReducer);
 
 export default class Jukebox extends React.Component {
-  static onSearch() {
-    const search = document.getElementById('searchBox').value;
-    store.dispatch(actions.setSearch(search));
-  }
-
   static setNav(mode) {
     store.dispatch(actions.setMode(mode));
     store.dispatch(actions.setCurrentAlbum(''));
@@ -50,20 +45,28 @@ export default class Jukebox extends React.Component {
   constructor(props) {
     super(props);
     store.dispatch(actions.setMode('AlbumList'));
+    this.state = {};
+    this.onSearch = this.onSearch.bind(this);
   }
 
   componentDidMount() {
     store.subscribe(this.forceUpdate.bind(this));
   }
 
+  onSearch() {
+    this.setState({ search: document.getElementById('searchBox').value });
+  }
+
   render() {
+    const { search } = this.state;
+
     let body = '';
     if (store.getState().currentAlbum) {
-      body = <AlbumDetail album={store.getState().currentAlbum} />;
+      body = <AlbumDetail search={search} album={store.getState().currentAlbum} />;
     } else {
       switch (store.getState().mode) {
         case 'AlbumList':
-          body = <AlbumList />;
+          body = <AlbumList search={search} />;
           break;
         case 'Tracks':
           body = <Tracks />;
@@ -78,7 +81,7 @@ export default class Jukebox extends React.Component {
           body = <Settings />;
           break;
         default:
-          body = <AlbumList />;
+          body = <AlbumList search={search} />;
       }
     }
 
@@ -96,7 +99,7 @@ export default class Jukebox extends React.Component {
               <Nav.Link onClick={() => { Jukebox.setNav('Settings'); }}>Settings</Nav.Link>
             </Nav>
             <Form inline>
-              <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(Jukebox.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
+              <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(this.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
               <Button variant="outline-info">Search</Button>
             </Form>
           </Navbar.Collapse>

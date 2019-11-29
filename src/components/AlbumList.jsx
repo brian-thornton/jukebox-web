@@ -5,21 +5,8 @@ import {
   Container,
   Row,
 } from 'react-bootstrap';
-import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
-
-const actions = require('../actions/index');
-
-const mapStateToProps = state => ({
-  search: state.search,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentAlbum: (album) => {
-    dispatch(actions.setCurrentAlbum(album));
-  },
-});
 
 export class AlbumList extends React.Component {
   constructor(props) {
@@ -48,6 +35,7 @@ export class AlbumList extends React.Component {
     const { search } = this.props;
 
     if (search) {
+      this.setState({ albums: [] });
       LibrianClient.searchAlbums(search).then((data) => {
         const that = this;
 
@@ -100,7 +88,7 @@ export class AlbumList extends React.Component {
     );
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AlbumList);
+export default AlbumList;
 
 AlbumList.propTypes = {
   search: PropTypes.string,
