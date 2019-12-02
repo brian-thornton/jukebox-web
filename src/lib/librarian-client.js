@@ -41,6 +41,41 @@ class LibrarianClient {
     });
     return response;
   }
+
+  static async add(library) {
+    const response = await fetch('/librarian/add', {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(library),
+    });
+    return response;
+  }
+
+  static async scan(library) {
+    // Clear tracks from previous scans so we are not sending a large
+    // volume of data over the wire that will be overwritten.
+    delete library.tracks;
+    const response = await fetch('/librarian/scan', {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(library),
+    });
+    return response;
+  }
 }
 
 module.exports = LibrarianClient;

@@ -51,7 +51,7 @@ export class AlbumList extends React.Component {
         that.setState({
           albums: albums.concat(data),
           start: limit,
-          limit: limit + 100
+          limit: limit + 100,
         });
         that.forceUpdate();
       });
