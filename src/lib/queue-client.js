@@ -56,6 +56,26 @@ class QueueClient {
     return response;
   }
 
+  static async removeTracksFromQueue(tracks) {
+    const response = await fetch('/queue/removeFromQueue', {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(
+        {
+          tracks,
+        },
+      ),
+    });
+    return response;
+  }
+
   static async enqueueTop(track) {
     return this.enqueueTracksTop([track]);
   }

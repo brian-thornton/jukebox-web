@@ -31,6 +31,43 @@ class PlaylistClient {
     });
     return response;
   }
+
+  static async removeTracksFromPlaylist(name, tracks) {
+    const response = await fetch('/playlists/removeFromPlaylist', {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(
+        {
+          name,
+          tracks,
+        },
+      ),
+    });
+    return response;
+  }
+
+  static async add(playlist) {
+    const response = await fetch('/playlists/add', {
+      method: 'post',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(playlist),
+    });
+    return response;
+  }
 }
 
 module.exports = PlaylistClient;
