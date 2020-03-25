@@ -17,6 +17,9 @@ function TrackList(props) {
   const renderTracks = [];
   const { tracks } = props;
   tracks.forEach((track) => {
+    if (track.id) {
+      track.accessToken = window.accessToken;
+    }
     renderTracks.push(
       (
         <ListGroupItem style={styles.cardStyle}>

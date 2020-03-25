@@ -29,7 +29,9 @@ class Album extends React.Component {
       const that = this;
       let src;
 
-      if (image.type === 'image/jpeg') {
+      if (props.coverArt) {
+        src = props.coverArt;
+      } else if (image.type === 'image/jpeg') {
         src = URL.createObjectURL(image);
       } else {
         src = defaultCover;

@@ -11,6 +11,9 @@ import {
   Button,
 } from 'react-bootstrap';
 import { AlbumList } from './AlbumList';
+import NewReleases from './NewReleases';
+import SpotifyAlbums from './SpotifyAlbums';
+import Categories from './Categories';
 import Playlists from './Playlists';
 import AlbumDetail from './AlbumDetail';
 import rootReducer from '../reducers/index';
@@ -20,6 +23,7 @@ import '../App.css';
 import Queue from './Queue';
 import Tracks from './Tracks';
 import Settings from './Settings';
+import SpotifyClient from '../lib/spotify-client';
 
 const actions = require('../actions/index');
 
@@ -43,6 +47,7 @@ export default class Jukebox extends React.Component {
   }
 
   constructor(props) {
+    SpotifyClient.getAuthorizationToken('http://localhost:3000');
     super(props);
     store.dispatch(actions.setMode('AlbumList'));
     this.state = {};
@@ -67,6 +72,15 @@ export default class Jukebox extends React.Component {
       switch (store.getState().mode) {
         case 'AlbumList':
           body = <AlbumList search={search} />;
+          break;
+        case 'NewReleases':
+          body = <NewReleases />;
+          break;
+        case 'SpotifyAlbums':
+          body = <SpotifyAlbums search={search} />;
+          break;
+        case 'Categories':
+          body = <Categories />;
           break;
         case 'Tracks':
           body = <Tracks />;
@@ -93,6 +107,9 @@ export default class Jukebox extends React.Component {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link onClick={() => { Jukebox.setNav('AlbumList'); }}>Albums</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('SpotifyAlbums'); }}>Spotify Albums</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('NewReleases'); }}>New Releases</Nav.Link>
+              <Nav.Link onClick={() => { Jukebox.setNav('Categories'); }}>Categories</Nav.Link>
               <Nav.Link onClick={() => { Jukebox.setNav('Tracks'); }}>Tracks</Nav.Link>
               <Nav.Link onClick={() => { Jukebox.setNav('Playlists'); }}>Playlists</Nav.Link>
               <Nav.Link onClick={() => { Jukebox.setNav('Queue'); }}>Queue</Nav.Link>

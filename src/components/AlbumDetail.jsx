@@ -13,6 +13,7 @@ import defaultCover from '../default_album.jpg';
 import TrackList from './TrackList';
 import Playlists from './Playlists';
 import styles from './styles';
+import SpotifyClient from '../lib/spotify-client';
 
 class AlbumDetail extends React.Component {
   constructor(props) {
@@ -36,7 +37,9 @@ class AlbumDetail extends React.Component {
       const that = this;
       let src;
 
-      if (image.type === 'image/jpeg') {
+      if (album.id) {
+        src = album.images[1].url;
+      } else if (image.type === 'image/jpeg') {
         src = URL.createObjectURL(image);
       } else {
         src = defaultCover;
@@ -51,13 +54,30 @@ class AlbumDetail extends React.Component {
 
   loadTracks() {
     const { album } = this.props;
-    LibrianClient.getAlbumTracks(album.path).then((tracks) => {
-      const that = this;
-      that.setState({
-        tracks,
+
+    if (album.id) {
+      SpotifyClient.getAccessToken().then((token) => {
+        if (!window.accessToken) {
+          window.accessToken = token.access_token;
+        }
+
+        SpotifyClient.getTracks(album.id).then((tracks) => {
+          const that = this;
+          that.setState({
+            tracks: tracks.items,
+          });
+          that.forceUpdate();
+        });
       });
-      that.forceUpdate();
-    });
+    } else {
+      LibrianClient.getAlbumTracks(album.path).then((tracks) => {
+        const that = this;
+        that.setState({
+          tracks,
+        });
+        that.forceUpdate();
+      });
+    }
   }
 
   enqueueAlbum() {
