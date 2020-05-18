@@ -24,6 +24,7 @@ import Queue from './Queue';
 import Tracks from './Tracks';
 import Settings from './Settings';
 import SpotifyClient from '../lib/spotify-client';
+import SettingsClient from '../lib/settings-client';
 
 const actions = require('../actions/index');
 
@@ -47,11 +48,24 @@ export default class Jukebox extends React.Component {
   }
 
   constructor(props) {
-    SpotifyClient.getAuthorizationToken('http://localhost:3000');
     super(props);
     store.dispatch(actions.setMode('AlbumList'));
-    this.state = {};
+    this.state = {
+      navLinks: [],
+      controlButtons: []
+    };
     this.onSearch = this.onSearch.bind(this);
+    SettingsClient.getSettings().then((settings) => {
+      this.setState(
+        {
+          settings,
+        },
+      );
+
+      if (settings.spotify.useSpotify) {
+        SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
+      }
+    });
   }
 
   componentDidMount() {
@@ -60,6 +74,54 @@ export default class Jukebox extends React.Component {
 
   onSearch() {
     this.setState({ search: document.getElementById('searchBox').value });
+  }
+
+  addNavLink(navLinks, feature, navKey, navName) {
+    if (feature) {
+      navLinks.push(<Nav.Link key={navName} onClick={() => { Jukebox.setNav(navKey); }}>{navName}</Nav.Link>);
+    }
+    return navLinks;
+  }
+
+  generateNavItems() {
+    let navLinks = [];
+
+    if (this.state.settings) {
+      const { spotify, features } = this.state.settings;
+      const { spotifyFeatures } = spotify;
+
+      navLinks = this.addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
+      navLinks = this.addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');
+      navLinks = this.addNavLink(navLinks, spotifyFeatures.newReleases, 'NewReleases', 'New Releases');
+      navLinks = this.addNavLink(navLinks, spotifyFeatures.categories, 'Categories', 'Categories');
+      navLinks = this.addNavLink(navLinks, features.tracks, 'Tracks', 'Tracks');
+      navLinks = this.addNavLink(navLinks, features.playlists, 'Playlists', 'Playlists');
+      navLinks = this.addNavLink(navLinks, features.queue, 'Queue', 'Queue');
+      navLinks = this.addNavLink(navLinks, features.settings, 'Settings', 'Settings');
+    }
+    return navLinks;
+  }
+
+  addControlButton(buttons, feature, name, handler) {
+    if (feature) {
+      buttons.push(<Button key={name} style={{ margin: '5px' }} variant="outline-light" onClick={handler}>{name}</Button>);
+    }
+
+    return buttons;
+  }
+
+  generateControlButtons() {
+    let buttons = [];
+    if (this.state.settings) {
+      const { features } = this.state.settings;
+
+      buttons = this.addControlButton(buttons, features.play, 'Play', QueueClient.next);
+      buttons = this.addControlButton(buttons, features.next, 'Next', QueueClient.next);
+      buttons = this.addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
+      buttons = this.addControlButton(buttons, features.volume, 'Volume Up', VolumeClient.up);
+      buttons = this.addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
+    }
+    return buttons;
   }
 
   render() {
@@ -106,14 +168,7 @@ export default class Jukebox extends React.Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link onClick={() => { Jukebox.setNav('AlbumList'); }}>Albums</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('SpotifyAlbums'); }}>Spotify Albums</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('NewReleases'); }}>New Releases</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('Categories'); }}>Categories</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('Tracks'); }}>Tracks</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('Playlists'); }}>Playlists</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('Queue'); }}>Queue</Nav.Link>
-              <Nav.Link onClick={() => { Jukebox.setNav('Settings'); }}>Settings</Nav.Link>
+              {this.generateNavItems()}
             </Nav>
             <Form inline>
               <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(this.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
@@ -130,11 +185,7 @@ export default class Jukebox extends React.Component {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="ml-auto">
-              <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.next}>Play</Button>
-              <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.next}>Next</Button>
-              <Button style={{ margin: '5px' }} variant="outline-light" onClick={QueueClient.stop}>Stop</Button>
-              <Button style={{ margin: '5px' }} variant="outline-light" onClick={VolumeClient.up}>Volume Up</Button>
-              <Button style={{ margin: '5px' }} variant="outline-light" className="float-right" onClick={VolumeClient.down}>Volume Down</Button>
+              {this.generateControlButtons()}
             </Nav>
           </Navbar.Collapse>
         </Navbar>

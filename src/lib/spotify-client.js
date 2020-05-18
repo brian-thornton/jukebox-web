@@ -13,13 +13,14 @@ class SpotifyClient {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: window.authorizationToken,
-        redirect_uri: "http://localhost:3000",
+        redirect_uri: `http://${window.location.hostname}:3000`,
         grant_type: 'authorization_code',
-        client_id: "<some_id>",
-        client_secret: "<some_secret>",
+        client_id: "a842760e748245a6b0572b3bd8e1a953",
+        client_secret: "cc30ac64b20749ce9b9207d65cff8020",
       },
       json: true
     };
+
     return rp.post(authOptions);
   }
 
@@ -30,7 +31,7 @@ class SpotifyClient {
       window.authorizationToken = urlParams.get('code');
       return;
     }
-
+    alert(redirectUri);
     let scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-public ' +
       'playlist-read-collaborative playlist-modify-private user-read-currently-playing user-modify-playback-state ' +
       'user-read-playback-state user-read-recently-played user-top-read user-follow-read user-follow-modify ' +

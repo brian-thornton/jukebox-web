@@ -11,7 +11,12 @@ class QueueClient {
   }
 
   static async stop() {
-    const response = await fetch('/queue/stop');
+    let response;
+    if (window.accessToken) {
+      response = await fetch(`/queue/stop?token=${window.accessToken}`);
+    } else {
+      response = await fetch('/queue/stop');
+    }
     return response;
   }
 

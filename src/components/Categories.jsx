@@ -55,8 +55,7 @@ function Categories() {
   }
   return (
     <Container>
-      <Row>
-      </Row>
+      <Row />
     </Container>
   );
 }

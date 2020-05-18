@@ -31,7 +31,7 @@ function PlaylistDetail(props) {
 
   const deleteTrack = (name, track) => {
     PlaylistClient.removeTracksFromPlaylist(name, [track]);
-    loadTracks();
+    loadTracks(name);
   };
 
   const cardStyle = {
@@ -48,7 +48,7 @@ function PlaylistDetail(props) {
   const { name } = props;
 
   if (!isEmpty && !tracks.length) {
-    console.log('here')
+    console.log('here');
     loadTracks(name);
   }
 

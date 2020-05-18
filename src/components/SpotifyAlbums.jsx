@@ -23,8 +23,8 @@ function SpotifyAlbums(props) {
           window.accessToken = token.access_token;
         }
 
-        let searchBox = document.getElementById('searchBox').value;
-        let query = searchBox ? searchBox : 'Greatest Hits';
+        const searchBox = document.getElementById('searchBox').value;
+        const query = searchBox || 'Greatest Hits';
 
         SpotifyClient.findAlbums(query, limit, start).then((data) => {
           if (data.albums) {

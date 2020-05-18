@@ -1,6 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
+import {
+  ListGroup, ListGroupItem, Button, Image,
+} from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
 
@@ -20,6 +22,7 @@ function TrackList(props) {
     if (track.id) {
       track.accessToken = window.accessToken;
     }
+
     renderTracks.push(
       (
         <ListGroupItem style={styles.cardStyle}>
