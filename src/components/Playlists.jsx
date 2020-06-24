@@ -42,29 +42,17 @@ function Playlists(props) {
 
   const buttons = (playlistName) => {
     const { mode } = props;
+    const buttonProps = {
+      style: styles.buttonStyle,
+      variant: 'outline-light',
+      className: 'float-right',
+    };
 
     const playlistActions = [];
     if (mode === 'addToPlaylist') {
-      playlistActions.push((
-        <Button
-          style={styles.buttonStyle}
-          variant="outline-light"
-          className="float-right"
-          onClick={() => addTracksToPlaylist(playlistName)}
-        >
-          Add
-        </Button>
-      ));
+      playlistActions.push((<Button {...buttonProps} onClick={() => addTracksToPlaylist(playlistName)}>Add</Button>));
     } else {
-      playlistActions.push(
-        <Button
-          style={styles.buttonStyle}
-          variant="outline-light"
-          className="float-right"
-        >
-          Delete
-        </Button>,
-      );
+      playlistActions.push((<Button {...buttonProps}>Delete</Button>));
     }
 
     return playlistActions;

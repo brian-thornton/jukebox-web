@@ -22,16 +22,37 @@ export default class Tracks extends React.Component {
     this.loadMore = this.loadMore.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+    const { search } = this.props;
+    if (search !== prevProps.search) {
+      this.loadTracks();
+    }
+  }
+
   loadTracks() {
     const { start, limit } = this.state;
-    LibrianClient.getTracks(start, limit).then((data) => {
-      const that = this;
-      const { tracks } = this.state;
-      that.setState({
-        tracks: tracks.concat(data),
+    const { search } = this.props;
+
+    if (search) {
+      this.setState({ albums: [] });
+      LibrianClient.searchTracks(search).then((data) => {
+        const that = this;
+
+        that.setState({
+          tracks: data,
+        });
+        that.forceUpdate();
       });
-      that.forceUpdate();
-    });
+    } else {
+      LibrianClient.getTracks(start, limit).then((data) => {
+        const that = this;
+        const { tracks } = this.state;
+        that.setState({
+          tracks: tracks.concat(data),
+        });
+        that.forceUpdate();
+      });
+    }
   }
 
   loadMore() {

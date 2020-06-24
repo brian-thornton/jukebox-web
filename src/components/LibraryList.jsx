@@ -34,25 +34,29 @@ function LibraryList() {
     });
   };
 
-  const onScan = (library) => {
-    LibrianClient.scan(library);
-  };
+  const onScan = (library) => LibrianClient.scan(library);
 
   loadLibraries();
 
   const renderLibraries = [];
+
+  const buttonProps = {
+    style: styles.buttonStyle,
+    variant: 'outline-light',
+    className: 'float-right',
+  };
+
   libraries.forEach((library) => {
     delete library.tracks;
     const enabled = library.enabled ? 'Enabled' : 'Disabled';
     const style = library.enabled ? styles.enabledStyle : styles.disabledStyle;
+    
     renderLibraries.push(
       (
         <ListGroupItem style={styles.cardStyle} key={library.path}>
           {library.path}
           <Button
-            style={styles.buttonStyle}
-            variant="outline-light"
-            className="float-right"
+            {...buttonProps}
             onClick={() => onScan({
               name: library.name,
               path: library.path,
@@ -62,9 +66,7 @@ function LibraryList() {
             Scan
           </Button>
           <Button
-            style={styles.buttonStyle}
-            variant="outline-light"
-            className="float-right"
+            {...buttonProps}
             onClick={() => {
               deleteLibrary(library.name);
             }}

@@ -79,7 +79,7 @@ export class AlbumList extends React.Component {
     }
 
     return (
-      <Container>
+      <Container fluid style={{marginLeft: "50px"}}>
         <Row>
           {renderAlbums}
         </Row>

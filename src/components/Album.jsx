@@ -25,9 +25,9 @@ class Album extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      coverArt: defaultCover
+      coverArt: defaultCover,
     };
-    if (props.album.coverArtExists) {
+    // if (props.album.coverArtExists) {
       LibrianClient.getCoverArt(props.album.path).then((image) => {
         const that = this;
         let src;
@@ -45,7 +45,7 @@ class Album extends React.Component {
         });
         that.forceUpdate();
       });
-    } 
+    //}
 
     this.pageSize = 100;
     this.currentPage = 1;

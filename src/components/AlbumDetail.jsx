@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Card,
@@ -15,91 +15,98 @@ import Playlists from './Playlists';
 import styles from './styles';
 import SpotifyClient from '../lib/spotify-client';
 
-class AlbumDetail extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      tracks: [],
-    };
+const albumArt = require('album-art');
 
-    this.loadCoverArt = this.loadCoverArt.bind(this);
-    this.loadTracks = this.loadTracks.bind(this);
-    this.enqueueAlbum = this.enqueueAlbum.bind(this);
-    this.playAlbum = this.playAlbum.bind(this);
-    this.addToPlaylist = this.addToPlaylist.bind(this);
-    this.loadCoverArt();
-    this.loadTracks();
-  }
+export default function AlbumDetail({ album }) {
+  const [coverArt, setCoverArt] = useState('');
+  const [tracks, setTracks] = useState([]);
+  const [addToPlaylist, setAddToPlaylist] = useState(false);
+  const [isCoverArtLoaded, setIsCoverArtLoaded] = useState(false);
+  const [isCoverArtLoading, setIsCoverArtLoading] = useState(false);
+  const [areTracksLoading, setAreTracksLoading] = useState(false);
+  const [areTracksLoaded, setAreTracksLoaded] = useState(false);
 
-  loadCoverArt() {
-    const { album } = this.props;
-    LibrianClient.getCoverArt(album.path).then((image) => {
-      const that = this;
-      let src;
+  const getCoverArt = () => {
+    const nameArray = album.name.split('-');
 
-      if (album.id) {
-        src = album.images[1].url;
-      } else if (image.type === 'image/jpeg') {
-        src = URL.createObjectURL(image);
+    albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
+      if (data.toString().includes('http')) {
+        setCoverArt(data);
       } else {
-        src = defaultCover;
+        setCoverArt(defaultCover);
       }
-
-      that.setState({
-        coverArt: src,
-      });
-      that.forceUpdate();
     });
-  }
+  };
 
-  loadTracks() {
-    const { album } = this.props;
-
-    if (album.id) {
-      SpotifyClient.getAccessToken().then((token) => {
-        if (!window.accessToken) {
-          window.accessToken = token.access_token;
+  const loadCoverArt = () => {
+    if (!isCoverArtLoading) {
+      setIsCoverArtLoading(true);
+      LibrianClient.getCoverArt(album.path).then((image) => {
+        let src;
+        if (album.id) {
+          src = album.images[1].url;
+        } else if (image.type === 'image/jpeg') {
+          src = URL.createObjectURL(image);
+        } else {
+          getCoverArt();
         }
-
-        SpotifyClient.getTracks(album.id).then((tracks) => {
-          const that = this;
-          that.setState({
-            tracks: tracks.items,
-          });
-          that.forceUpdate();
-        });
-      });
-    } else {
-      LibrianClient.getAlbumTracks(album.path).then((tracks) => {
-        const that = this;
-        that.setState({
-          tracks,
-        });
-        that.forceUpdate();
+        setIsCoverArtLoading(false);
+        setIsCoverArtLoaded(true);
+        setCoverArt(src);
       });
     }
-  }
+  };
 
-  enqueueAlbum() {
-    const { tracks } = this.state;
-    QueueClient.enqueueTracks(tracks);
-  }
+  const loadTracks = () => {
+    if (!areTracksLoading) {
+      if (album.id) {
+        SpotifyClient.getAccessToken().then((token) => {
+          if (!window.accessToken) {
+            window.accessToken = token.access_token;
+          }
 
-  playAlbum() {
-    const { tracks } = this.state;
+          SpotifyClient.getTracks(album.id).then((data) => {
+            setTracks(data.items);
+            setAreTracksLoaded(true);
+            setAreTracksLoading(false);
+          });
+        });
+      } else {
+        LibrianClient.getAlbumTracks(album.path).then((data) => {
+          setTracks(data);
+          setAreTracksLoaded(true);
+          setAreTracksLoading(false);
+        });
+      }
+    }
+  };
+
+  const enqueueAlbum = () => QueueClient.enqueueTracks(tracks);
+  const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: coverArt });
+  const removeCoverArt = () => LibrianClient.removeCoverArt(album);
+
+  const playAlbum = () => {
     QueueClient.enqueueTracksTop(tracks);
-  }
+    QueueClient.next();
+  };
 
-  addToPlaylist() {
-    this.setState({
-      addToPlaylist: true,
-    });
-  }
+  const albumButtons = () => {
+    const buttons = [];
+    const props = {
+      block: true,
+      variant: 'outline-light'
+    };
 
-  largeAlbum() {
-    const { album } = this.props;
-    const { coverArt, tracks, addToPlaylist } = this.state;
+    buttons.push(<Button {...props} onClick={playAlbum}>Play Album</Button>);
+    buttons.push(<Button {...props} onClick={enqueueAlbum}>Enqueue Album</Button>);
+    buttons.push(<Button {...props} onClick={() => setAddToPlaylist(true)}>Add Album to Playlist</Button>);
+    buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
+    buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
+    buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);
+    return buttons;
+  };
 
+  const largeAlbum = () => {
     if (!addToPlaylist) {
       return (
         <Container>
@@ -110,9 +117,7 @@ class AlbumDetail extends React.Component {
                 <Card.Body>
                   <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
                 </Card.Body>
-                <Button block variant="outline-light" onClick={this.playAlbum}>Play Album</Button>
-                <Button block variant="outline-light" onClick={this.enqueueAlbum}>Enqueue Album</Button>
-                <Button block variant="outline-light" onClick={this.addToPlaylist}>Add Album to Playlist</Button>
+                {albumButtons()}
               </Card>
             </Col>
             <Col lg={8} xl={8}>
@@ -124,16 +129,15 @@ class AlbumDetail extends React.Component {
     }
 
     return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+  };
+
+  if (!isCoverArtLoaded) {
+    loadCoverArt();
   }
 
-  render() {
-    return this.largeAlbum();
+  if (!areTracksLoaded) {
+    loadTracks();
   }
+
+  return largeAlbum();
 }
-export default AlbumDetail;
-
-AlbumDetail.propTypes = {
-  album: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-};

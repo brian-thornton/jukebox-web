@@ -9,7 +9,7 @@ import styles from './styles';
 function TrackList(props) {
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
-    QueueClient.play();
+    QueueClient.next();
   };
 
   const enqueue = (track) => {

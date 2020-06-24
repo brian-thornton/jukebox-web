@@ -9,6 +9,12 @@ import PlaylistClient from '../lib/playlist-client';
 function PlaylistDetail(props) {
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
+  const buttonStyle = { margin: '5px' };
+  const cardStyle = {
+    background: 'transparent',
+    color: 'white',
+    borderColor: '#708090',
+  };
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track.path);
@@ -34,21 +40,16 @@ function PlaylistDetail(props) {
     loadTracks(name);
   };
 
-  const cardStyle = {
-    background: 'transparent',
-    color: 'white',
-    borderColor: '#708090',
-  };
-
-  const buttonStyle = {
-    margin: '5px',
+  const buttonProps = {
+    style: buttonStyle,
+    variant: 'outline-light',
+    className: 'float-right',
   };
 
   const renderTracks = [];
   const { name } = props;
 
   if (!isEmpty && !tracks.length) {
-    console.log('here');
     loadTracks(name);
   }
 
@@ -58,30 +59,9 @@ function PlaylistDetail(props) {
         (
           <ListGroupItem style={cardStyle}>
             {track.name}
-            <Button
-              style={buttonStyle}
-              variant="outline-light"
-              className="float-right"
-              onClick={() => playNow(track)}
-            >
-              Play
-            </Button>
-            <Button
-              style={buttonStyle}
-              variant="outline-light"
-              className="float-right"
-              onClick={() => enqueue(track)}
-            >
-              Enqueue
-            </Button>
-            <Button
-              style={buttonStyle}
-              variant="outline-light"
-              className="float-right"
-              onClick={() => deleteTrack(name, track)}
-            >
-              Delete
-            </Button>
+            <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
+            <Button {...buttonProps} onClick={() => enqueue(track)}>Enqueue</Button>
+            <Button {...buttonProps} onClick={() => deleteTrack(name, track)}>Delete</Button>
           </ListGroupItem>
         ),
       );

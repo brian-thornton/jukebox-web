@@ -52,7 +52,7 @@ export default class Jukebox extends React.Component {
     store.dispatch(actions.setMode('AlbumList'));
     this.state = {
       navLinks: [],
-      controlButtons: []
+      controlButtons: [],
     };
     this.onSearch = this.onSearch.bind(this);
     SettingsClient.getSettings().then((settings) => {
@@ -73,6 +73,7 @@ export default class Jukebox extends React.Component {
   }
 
   onSearch() {
+    window.stop();
     this.setState({ search: document.getElementById('searchBox').value });
   }
 
@@ -145,7 +146,7 @@ export default class Jukebox extends React.Component {
           body = <Categories />;
           break;
         case 'Tracks':
-          body = <Tracks />;
+          body = <Tracks search={search} />;
           break;
         case 'Playlists':
           body = <Playlists />;
@@ -171,15 +172,12 @@ export default class Jukebox extends React.Component {
               {this.generateNavItems()}
             </Nav>
             <Form inline>
-              <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(this.onSearch, 500)} placeholder="Search" className="mr-sm-2" />
-              <Button variant="outline-info">Search</Button>
+              <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(this.onSearch, 1000)} placeholder="Search" className="mr-sm-2" />
             </Form>
           </Navbar.Collapse>
         </Navbar>
-        <Container fluid style={{ marginTop: '50px', marginBottom: '60px' }} className="mx-0 px-0">
-          <Row>
+        <Container fluid style={{ marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
             {body}
-          </Row>
         </Container>
         <Navbar fixed="bottom" collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
