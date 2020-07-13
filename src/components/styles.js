@@ -25,6 +25,10 @@ const albumTitle = {
   overflow: 'hidden',
 };
 
+const textStyle = {
+  paddingTop: '12px'
+};
+
 const cardStyle = {
   background: 'transparent',
   borderColor: '#708090',
@@ -57,4 +61,5 @@ export default {
   cardStyle,
   disabledStyle,
   enabledStyle,
+  textStyle,
 };

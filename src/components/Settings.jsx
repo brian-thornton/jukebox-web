@@ -7,6 +7,7 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import LibraryList from './LibraryList';
+import SettingsEditor from './SettingsEditor';
 
 function Settings() {
   return (
@@ -36,6 +37,7 @@ function Settings() {
       <Row>
         <Col lg={12} xl={12}>
           <LibraryList />
+          <SettingsEditor />
         </Col>
       </Row>
     </Container>
