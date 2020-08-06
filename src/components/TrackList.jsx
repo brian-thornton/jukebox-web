@@ -12,12 +12,15 @@ function TrackList(props) {
     QueueClient.next();
   };
 
-  const enqueue = (track) => {
-    QueueClient.enqueue(track);
-  };
-
   const renderTracks = [];
   const { tracks } = props;
+
+  const buttonProps = {
+    style: styles.buttonStyle,
+    variant: "outline-light",
+    className: "float-right",
+  };
+
   tracks.forEach((track) => {
     if (track.id) {
       track.accessToken = window.accessToken;
@@ -27,31 +30,15 @@ function TrackList(props) {
       (
         <ListGroupItem style={styles.cardStyle}>
           {track.name}
-          <Button
-            style={styles.buttonStyle}
-            variant="outline-light"
-            className="float-right"
-            onClick={() => playNow(track)}
-          >
-            Play
-          </Button>
-          <Button
-            style={styles.buttonStyle}
-            variant="outline-light"
-            className="float-right"
-            onClick={() => enqueue(track)}
-          >
-            Enqueue
-          </Button>
+          <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
+          <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
         </ListGroupItem>
       ),
     );
   });
 
   return (
-    <ListGroup>
-      {renderTracks}
-    </ListGroup>
+    <ListGroup>{renderTracks}</ListGroup>
   );
 }
 export default TrackList;

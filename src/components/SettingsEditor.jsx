@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Col, Row, Container, 
+  ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
-import LibrianClient from '../lib/librarian-client';
 import styles from './styles';
 import SettingsClient from '../lib/settings-client';
 
@@ -25,26 +24,25 @@ function SettingsEditor() {
 
     return (
       <ListGroupItem style={styles.cardStyle}>
-        <Container>
-          <Row>
-            <Col style={styles.textStyle}>{name}</Col>
-            <Col>
-              <Button
-                {...buttonProps}
-                enabled={value}
-                style={style}
-              >
-                {buttonText}
-              </Button>
-            </Col>
-          </Row>
-        </Container>
-      </ListGroupItem >
+        {name}
+        <Button
+          {...buttonProps}
+          onClick={() => updateFeature(name, !value)}
+          enabled={value}
+          style={style}
+        >
+          {buttonText}
+        </Button>
+      </ListGroupItem>
     );
   };
 
-  const updateFeature = (feature, value) => {
-
+  const updateFeature = (name, value) => {
+    const deepClone = JSON.parse(JSON.stringify(settings));
+    deepClone.features[name] = value;
+    SettingsClient.updateSettings(deepClone).then(() => {
+      window.location.reload();
+    });
   };
 
   const features = () => {
@@ -54,20 +52,20 @@ function SettingsEditor() {
 
     return (
       <ListGroup>
-        {settingRow('albums', settings.features.albums)};
-        {settingRow('tracks', settings.features.tracks)};
-        {settingRow('playlists', settings.features.playlists)};
-        {settingRow('queue', settings.features.queue)};
-        {settingRow('settings', settings.features.settings)};
-        {settingRow('volume', settings.features.volume)};
-        {settingRow('next', settings.features.next)};
-        {settingRow('stop', settings.features.stop)};
-        {settingRow('play', settings.features.play)};
-        {settingRow('playNow', settings.features.playNow)};
-        {settingRow('enqueue', settings.features.enqueue)};
-        {settingRow('playAlbum', settings.features.playAlbum)};
-        {settingRow('addToPlaylist', settings.features.addToPlaylist)};
-        {settingRow('deletePlaylist', settings.features.deletePlaylist)};
+        {settingRow('albums', settings.features.albums)}
+        {settingRow('tracks', settings.features.tracks)}
+        {settingRow('playlists', settings.features.playlists)}
+        {settingRow('queue', settings.features.queue)}
+        {settingRow('settings', settings.features.settings)}
+        {settingRow('volume', settings.features.volume)}
+        {settingRow('next', settings.features.next)}
+        {settingRow('stop', settings.features.stop)}
+        {settingRow('play', settings.features.play)}
+        {settingRow('playNow', settings.features.playNow)}
+        {settingRow('enqueue', settings.features.enqueue)}
+        {settingRow('playAlbum', settings.features.playAlbum)}
+        {settingRow('addToPlaylist', settings.features.addToPlaylist)}
+        {settingRow('deletePlaylist', settings.features.deletePlaylist)}
       </ListGroup>
     );
   };

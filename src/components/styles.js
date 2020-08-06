@@ -26,7 +26,7 @@ const albumTitle = {
 };
 
 const textStyle = {
-  paddingTop: '12px'
+  paddingTop: '12px',
 };
 
 const cardStyle = {
@@ -37,6 +37,11 @@ const cardStyle = {
 
 const buttonStyle = {
   margin: '5px',
+};
+
+const settingsButtonStyle = {
+  margin: '5px',
+  width: '150px',
 };
 
 const disabledStyle = {
@@ -52,6 +57,20 @@ const enabledStyle = {
   width: '100px',
 };
 
+const totalTracksStyle = {
+  color: 'white',
+  float: "right",
+}
+
+const totalTracksCount = {
+  float: 'right',
+  marginLeft: '5px',
+}
+
+const listItem = {
+  marginTop: '5px',
+}
+
 export default {
   albumCardLarge,
   albumCardStyle,
@@ -62,4 +81,8 @@ export default {
   disabledStyle,
   enabledStyle,
   textStyle,
+  settingsButtonStyle,
+  totalTracksStyle,
+  totalTracksCount,
+  listItem,
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
+  Card, ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import styles from './styles';
@@ -34,7 +34,7 @@ function LibraryList() {
     });
   };
 
-  const onScan = (library) => LibrianClient.scan(library);
+  const onScan = library => LibrianClient.scan(library);
 
   loadLibraries();
 
@@ -46,11 +46,13 @@ function LibraryList() {
     className: 'float-right',
   };
 
+  let totalTracks = 0;
   libraries.forEach((library) => {
     delete library.tracks;
     const enabled = library.enabled ? 'Enabled' : 'Disabled';
     const style = library.enabled ? styles.enabledStyle : styles.disabledStyle;
-    
+    totalTracks += library.totalTracks;
+
     renderLibraries.push(
       (
         <ListGroupItem style={styles.cardStyle} key={library.path}>
@@ -65,19 +67,10 @@ function LibraryList() {
           >
             Scan
           </Button>
-          <Button
-            {...buttonProps}
-            onClick={() => {
-              deleteLibrary(library.name);
-            }}
-          >
+          <Button {...buttonProps} onClick={() => deleteLibrary(library.name)}>
             Delete
           </Button>
-          <Button
-            style={style}
-            variant="outline-light"
-            className="float-right"
-          >
+          <Button style={style} variant="outline-light" className="float-right">
             {enabled}
           </Button>
         </ListGroupItem>
@@ -88,6 +81,14 @@ function LibraryList() {
   return (
     <>
       <Container>
+        <Row>
+          <Col lg={12} xl={12}>
+          <div style={styles.totalTracksStyle}>
+            Total Library Tracks: 
+            <div style={styles.totalTracksCount}>{totalTracks}</div>
+          </div>
+          </Col>
+        </Row>
         <Row>
           <Col lg={12} xl={12}>
             <ListGroup>

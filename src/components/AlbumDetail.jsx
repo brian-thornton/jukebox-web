@@ -94,12 +94,17 @@ export default function AlbumDetail({ album }) {
     const buttons = [];
     const props = {
       block: true,
-      variant: 'outline-light'
+      variant: 'outline-light',
     };
 
+    buttons.push(<Button {...props}>Back to Albums</Button>);
     buttons.push(<Button {...props} onClick={playAlbum}>Play Album</Button>);
-    buttons.push(<Button {...props} onClick={enqueueAlbum}>Enqueue Album</Button>);
-    buttons.push(<Button {...props} onClick={() => setAddToPlaylist(true)}>Add Album to Playlist</Button>);
+    buttons.push(
+      <Button {...props} onClick={enqueueAlbum}>Enqueue Album</Button>,
+    );
+    buttons.push(
+      <Button {...props} onClick={() => setAddToPlaylist(true)}>Add to Playlist</Button>,
+    );
     buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
     buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
     buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);

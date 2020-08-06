@@ -1,28 +1,20 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  ListGroup, ListGroupItem, Button, Container, Row, Col,
+  Alert, ListGroup, ListGroupItem, Button, Container, Row, Col,
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
+import styles from './styles';
 
-function PlaylistDetail(props) {
+function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
-  const buttonStyle = { margin: '5px' };
-  const cardStyle = {
-    background: 'transparent',
-    color: 'white',
-    borderColor: '#708090',
-  };
+  const leftButtonStyle = { margin: '5px', width: '150px' };
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track.path);
     QueueClient.play();
-  };
-
-  const enqueue = (track) => {
-    QueueClient.enqueue(track);
   };
 
   const loadTracks = (name) => {
@@ -41,13 +33,18 @@ function PlaylistDetail(props) {
   };
 
   const buttonProps = {
-    style: buttonStyle,
+    style: styles.buttonStyle,
+    variant: 'outline-light',
+    className: 'float-right',
+  };
+
+  const leftButtonProps = {
+    style: leftButtonStyle,
     variant: 'outline-light',
     className: 'float-right',
   };
 
   const renderTracks = [];
-  const { name } = props;
 
   if (!isEmpty && !tracks.length) {
     loadTracks(name);
@@ -57,10 +54,10 @@ function PlaylistDetail(props) {
     tracks.forEach((track) => {
       renderTracks.push(
         (
-          <ListGroupItem style={cardStyle}>
+          <ListGroupItem style={styles.cardStyle}>
             {track.name}
             <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
-            <Button {...buttonProps} onClick={() => enqueue(track)}>Enqueue</Button>
+            <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
             <Button {...buttonProps} onClick={() => deleteTrack(name, track)}>Delete</Button>
           </ListGroupItem>
         ),
@@ -71,10 +68,19 @@ function PlaylistDetail(props) {
   return (
     <Container>
       <Row>
-        <Col lg={12} xl={12}>
-          <ListGroup>
-            {renderTracks}
-          </ListGroup>
+        <Col lg={12} xl={12} >
+          <Alert variant="primary">{`Playlist: ${name}`}</Alert>
+        </Col>
+      </Row>
+      <Row>
+        <Col lg={2} xl={2}>
+          <Button {...leftButtonProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
+          <Button {...leftButtonProps}>Shuffle Playlist</Button>
+          <Button {...leftButtonProps}>Save As...</Button>
+          <Button {...leftButtonProps}>Delete Playlist</Button>
+        </Col>
+        <Col lg={10} xl={10}>
+          <ListGroup>{renderTracks}</ListGroup>
         </Col>
       </Row>
     </Container>

@@ -73,13 +73,13 @@ export class AlbumList extends React.Component {
     if (albums) {
       for (let i = 0; i < albums.length; i += 1) {
         renderAlbums.push(
-          <Album key={i} album={albums[i]} />,
+          <Album key={i} album={albums[i]} setCurrentAlbum={this.props.setCurrentAlbum}/>,
         );
       }
     }
 
     return (
-      <Container fluid style={{marginLeft: "50px"}}>
+      <Container fluid style={{ marginLeft: '50px' }}>
         <Row>
           {renderAlbums}
         </Row>

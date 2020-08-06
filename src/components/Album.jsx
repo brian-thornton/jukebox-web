@@ -1,25 +1,9 @@
 import React from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { connect } from 'react-redux';
 import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
 import styles from './styles';
-
-const actions = require('../actions/index');
-
-const mapStateToProps = state => ({
-  currentAlbum: state.currentAlbum,
-});
-
-const mapDispatchToProps = dispatch => ({
-  setCurrentAlbum: album => (
-    dispatch(actions.setCurrentAlbum(album))
-  ),
-  setMode: (mode) => {
-    dispatch(actions.setMode(mode));
-  },
-});
 
 class Album extends React.Component {
   constructor(props) {
@@ -28,24 +12,24 @@ class Album extends React.Component {
       coverArt: defaultCover,
     };
     // if (props.album.coverArtExists) {
-      LibrianClient.getCoverArt(props.album.path).then((image) => {
-        const that = this;
-        let src;
+    LibrianClient.getCoverArt(props.album.path).then((image) => {
+      const that = this;
+      let src;
 
-        if (props.coverArt) {
-          src = props.coverArt;
-        } else if (image.type === 'image/jpeg') {
-          src = URL.createObjectURL(image);
-        } else {
-          src = defaultCover;
-        }
+      if (props.coverArt) {
+        src = props.coverArt;
+      } else if (image.type === 'image/jpeg') {
+        src = URL.createObjectURL(image);
+      } else {
+        src = defaultCover;
+      }
 
-        that.setState({
-          coverArt: src,
-        });
-        that.forceUpdate();
+      that.setState({
+        coverArt: src,
       });
-    //}
+      that.forceUpdate();
+    });
+    // }
 
     this.pageSize = 100;
     this.currentPage = 1;
@@ -69,7 +53,7 @@ class Album extends React.Component {
     return this.largeAlbum();
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Album);
+export default Album;
 
 Album.propTypes = {
   setCurrentAlbum: PropTypes.func.isRequired,

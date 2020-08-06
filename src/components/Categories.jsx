@@ -16,10 +16,7 @@ function Categories() {
         window.accessToken = token.access_token;
       }
 
-      SpotifyClient.categories().then((data) => {
-        setCategories(data);
-        console.log(data);
-      });
+      SpotifyClient.categories().then(data => setCategories(data));
     });
   };
 
@@ -33,9 +30,15 @@ function Categories() {
       for (let i = 0; i < categories.categories.items.length; i += 1) {
         items.push(
           <Card style={styles.albumCardStyle} className="h-55 w-85">
-            <Card.Img style={styles.albumImage} top src={categories.categories.items[i].icons[0].url} />
+            <Card.Img
+              style={styles.albumImage}
+              top
+              src={categories.categories.items[i].icons[0].url}
+            />
             <Card.Body>
-              <Card.Title style={styles.albumTitle}>{categories.categories.items[i].name}</Card.Title>
+              <Card.Title style={styles.albumTitle}>
+                {categories.categories.items[i].name}
+              </Card.Title>
             </Card.Body>
           </Card>,
         );

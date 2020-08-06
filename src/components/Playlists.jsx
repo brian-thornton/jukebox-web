@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  ListGroup, ListGroupItem, Button, Col, Container, Row, Modal, InputGroup, FormControl,
+  Alert, ListGroup, ListGroupItem, Button, Col, Container, Row, Modal, InputGroup, FormControl,
 } from 'react-bootstrap';
 import PlaylistClient from '../lib/playlist-client';
 import PlaylistDetail from './PlaylistDetail';
@@ -58,9 +58,8 @@ function Playlists(props) {
     return playlistActions;
   };
 
-  const selectPlaylist = (playlistName) => {
-    setName(playlistName);
-  };
+  const selectPlaylist = playlistName => setName(playlistName);
+  const handleBackToPlaylists = () => setName('');
 
   const { currentPlaylist } = props;
   const renderPlaylists = [];
@@ -85,17 +84,12 @@ function Playlists(props) {
       <>
         <Container>
           <Row>
-            <Col lg={12} xl={12}>
-              <ListGroup>
-                {renderPlaylists}
-              </ListGroup>
+            <Col lg={12} xl={12} >
+              <Alert variant="primary">Playlists</Alert>
             </Col>
           </Row>
           <Row>
-            <Col lg={12} xl={12} />
-          </Row>
-          <Row>
-            <Col lg={12} xl={12}>
+            <Col lg={1} xl={1}>
               <Button
                 variant="outline-light"
                 className="float-right"
@@ -104,6 +98,12 @@ function Playlists(props) {
                 Add
               </Button>
             </Col>
+            <Col lg={11} xl={11}>
+              <ListGroup>{renderPlaylists}</ListGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} xl={12} />
           </Row>
         </Container>
 
@@ -122,9 +122,7 @@ function Playlists(props) {
             </InputGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
+            <Button variant="secondary" onClick={handleClose}>Close</Button>
             <Button variant="primary" onClick={() => handleClose(document.getElementById('name').value)}>
               Save Changes
             </Button>
@@ -134,7 +132,7 @@ function Playlists(props) {
     );
   }
   return (
-    <PlaylistDetail name={name} />
+    <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} />
   );
 }
 

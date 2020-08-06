@@ -64,14 +64,27 @@ function Queue() {
     );
   });
 
+  const buttonProps = {
+    style: styles.settingsButtonStyle,
+    variant: 'outline-light',
+  };
+
   if (renderTracks.length) {
     return (
       <Container>
         <Row>
-          <Col lg={12} xl={12}>
-            <ListGroup>
-              {renderTracks}
-            </ListGroup>
+          <Col lg={12} xl={12} >
+            <Alert variant="primary">These queued tracks are up next!</Alert>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={2} xl={2}>
+            <Button {...buttonProps}>Clear Queue</Button>
+            <Button {...buttonProps}>Shuffle Queue</Button>
+            <Button {...buttonProps}>Save to Playlist</Button>
+          </Col>
+          <Col lg={10} xl={10}>
+            <ListGroup>{renderTracks}</ListGroup>
           </Col>
         </Row>
       </Container>

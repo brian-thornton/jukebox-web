@@ -1,6 +1,4 @@
-import React from 'react';
-import { createStore } from 'redux';
-import { Provider } from 'react-redux';
+import React, { useState } from 'react';
 import {
   Row,
   Container,
@@ -16,7 +14,6 @@ import SpotifyAlbums from './SpotifyAlbums';
 import Categories from './Categories';
 import Playlists from './Playlists';
 import AlbumDetail from './AlbumDetail';
-import rootReducer from '../reducers/index';
 import QueueClient from '../lib/queue-client';
 import VolumeClient from '../lib/volume-client';
 import '../App.css';
@@ -26,17 +23,77 @@ import Settings from './Settings';
 import SpotifyClient from '../lib/spotify-client';
 import SettingsClient from '../lib/settings-client';
 
-const actions = require('../actions/index');
+function Jukebox() {
+  const [mode, setMode] = useState('AlbumList');
+  const [search, setSearch] = useState('');
+  const [settings, setSettings] = useState();
+  const [currentAlbum, setCurrentAlbum] = useState();
 
-const store = createStore(rootReducer);
+  SettingsClient.getSettings().then((settings) => {
+    setSettings(settings);
 
-export default class Jukebox extends React.Component {
-  static setNav(mode) {
-    store.dispatch(actions.setMode(mode));
-    store.dispatch(actions.setCurrentAlbum(''));
-  }
+    if (settings.spotify.useSpotify) {
+      SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
+    }
+  });
 
-  static debounce(fn, time) {
+  const generateNavItems = () => {
+    let navLinks = [];
+
+    if (settings) {
+      const { spotify, features } = settings;
+      const { spotifyFeatures } = spotify;
+
+      navLinks = addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
+      navLinks = addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');
+      navLinks = addNavLink(navLinks, spotifyFeatures.newReleases, 'NewReleases', 'New Releases');
+      navLinks = addNavLink(navLinks, spotifyFeatures.categories, 'Categories', 'Categories');
+      navLinks = addNavLink(navLinks, features.tracks, 'Tracks', 'Tracks');
+      navLinks = addNavLink(navLinks, features.playlists, 'Playlists', 'Playlists');
+      navLinks = addNavLink(navLinks, features.queue, 'Queue', 'Queue');
+      navLinks = addNavLink(navLinks, features.settings, 'Settings', 'Settings');
+    }
+    return navLinks;
+  };
+
+  const onSearch = () => {
+    window.stop();
+    setSearch(document.getElementById('searchBox').value);
+  };
+
+  const addNavLink = (navLinks, feature, navKey, navName) => {
+    if (feature) {
+      navLinks.push(<Nav.Link key={navName} onClick={() => { 
+        setMode(navKey); 
+        setCurrentAlbum('');
+      }}>{navName}</Nav.Link>);
+    }
+    return navLinks;
+  };
+
+  const addControlButton = (buttons, feature, name, handler) => {
+    if (feature) {
+      buttons.push(<Button key={name} style={{ margin: '5px' }} variant="outline-light" onClick={handler}>{name}</Button>);
+    }
+
+    return buttons;
+  };
+
+  const generateControlButtons = () => {
+    let buttons = [];
+    if (settings) {
+      const { features } = settings;
+
+      buttons = addControlButton(buttons, features.play, 'Play', QueueClient.next);
+      buttons = addControlButton(buttons, features.next, 'Next', QueueClient.next);
+      buttons = addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
+      buttons = addControlButton(buttons, features.volume, 'Volume Up', VolumeClient.up);
+      buttons = addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
+    }
+    return buttons;
+  };
+
+  const debounce = (fn, time) => {
     let timeout;
 
     return () => {
@@ -47,147 +104,67 @@ export default class Jukebox extends React.Component {
     };
   }
 
-  constructor(props) {
-    super(props);
-    store.dispatch(actions.setMode('AlbumList'));
-    this.state = {
-      navLinks: [],
-      controlButtons: [],
-    };
-    this.onSearch = this.onSearch.bind(this);
-    SettingsClient.getSettings().then((settings) => {
-      this.setState(
-        {
-          settings,
-        },
-      );
-
-      if (settings.spotify.useSpotify) {
-        SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
-      }
-    });
-  }
-
-  componentDidMount() {
-    store.subscribe(this.forceUpdate.bind(this));
-  }
-
-  onSearch() {
-    window.stop();
-    this.setState({ search: document.getElementById('searchBox').value });
-  }
-
-  addNavLink(navLinks, feature, navKey, navName) {
-    if (feature) {
-      navLinks.push(<Nav.Link key={navName} onClick={() => { Jukebox.setNav(navKey); }}>{navName}</Nav.Link>);
+  let body = '';
+  if (currentAlbum) {
+    body = <AlbumDetail search={search} album={currentAlbum} />;
+  } else {
+    switch (mode) {
+      case 'AlbumList':
+        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} />;
+        break;
+      case 'NewReleases':
+        body = <NewReleases />;
+        break;
+      case 'SpotifyAlbums':
+        body = <SpotifyAlbums search={search} />;
+        break;
+      case 'Categories':
+        body = <Categories />;
+        break;
+      case 'Tracks':
+        body = <Tracks search={search} />;
+        break;
+      case 'Playlists':
+        body = <Playlists />;
+        break;
+      case 'Queue':
+        body = <Queue />;
+        break;
+      case 'Settings':
+        body = <Settings />;
+        break;
+      default:
+        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum}/>;
     }
-    return navLinks;
   }
 
-  generateNavItems() {
-    let navLinks = [];
-
-    if (this.state.settings) {
-      const { spotify, features } = this.state.settings;
-      const { spotifyFeatures } = spotify;
-
-      navLinks = this.addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
-      navLinks = this.addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');
-      navLinks = this.addNavLink(navLinks, spotifyFeatures.newReleases, 'NewReleases', 'New Releases');
-      navLinks = this.addNavLink(navLinks, spotifyFeatures.categories, 'Categories', 'Categories');
-      navLinks = this.addNavLink(navLinks, features.tracks, 'Tracks', 'Tracks');
-      navLinks = this.addNavLink(navLinks, features.playlists, 'Playlists', 'Playlists');
-      navLinks = this.addNavLink(navLinks, features.queue, 'Queue', 'Queue');
-      navLinks = this.addNavLink(navLinks, features.settings, 'Settings', 'Settings');
-    }
-    return navLinks;
-  }
-
-  addControlButton(buttons, feature, name, handler) {
-    if (feature) {
-      buttons.push(<Button key={name} style={{ margin: '5px' }} variant="outline-light" onClick={handler}>{name}</Button>);
-    }
-
-    return buttons;
-  }
-
-  generateControlButtons() {
-    let buttons = [];
-    if (this.state.settings) {
-      const { features } = this.state.settings;
-
-      buttons = this.addControlButton(buttons, features.play, 'Play', QueueClient.next);
-      buttons = this.addControlButton(buttons, features.next, 'Next', QueueClient.next);
-      buttons = this.addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
-      buttons = this.addControlButton(buttons, features.volume, 'Volume Up', VolumeClient.up);
-      buttons = this.addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
-    }
-    return buttons;
-  }
-
-  render() {
-    const { search } = this.state;
-
-    let body = '';
-    if (store.getState().currentAlbum) {
-      body = <AlbumDetail search={search} album={store.getState().currentAlbum} />;
-    } else {
-      switch (store.getState().mode) {
-        case 'AlbumList':
-          body = <AlbumList search={search} />;
-          break;
-        case 'NewReleases':
-          body = <NewReleases />;
-          break;
-        case 'SpotifyAlbums':
-          body = <SpotifyAlbums search={search} />;
-          break;
-        case 'Categories':
-          body = <Categories />;
-          break;
-        case 'Tracks':
-          body = <Tracks search={search} />;
-          break;
-        case 'Playlists':
-          body = <Playlists />;
-          break;
-        case 'Queue':
-          body = <Queue />;
-          break;
-        case 'Settings':
-          body = <Settings />;
-          break;
-        default:
-          body = <AlbumList search={search} />;
-      }
-    }
-
-    return (
-      <Provider store={store}>
-        <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">Jukebox</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              {this.generateNavItems()}
-            </Nav>
-            <Form inline>
-              <FormControl id="searchBox" type="text" onChange={Jukebox.debounce(this.onSearch, 1000)} placeholder="Search" className="mr-sm-2" />
-            </Form>
-          </Navbar.Collapse>
-        </Navbar>
-        <Container fluid style={{ marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
-            {body}
-        </Container>
-        <Navbar fixed="bottom" collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="ml-auto">
-              {this.generateControlButtons()}
-            </Nav>
-          </Navbar.Collapse>
-        </Navbar>
-      </Provider>
-    );
-  }
+  return (
+    <React.Fragment>
+      <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Brand href="#home">Jukebox</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            {generateNavItems()}
+          </Nav>
+          <Form inline>
+            <FormControl id="searchBox" type="text" onChange={debounce(onSearch, 1000)} placeholder="Search" className="mr-sm-2" />
+          </Form>
+        </Navbar.Collapse>
+      </Navbar>
+      <Container fluid style={{ marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
+        {body}
+      </Container>
+      <Navbar fixed="bottom" collapseOnSelect expand="lg" bg="dark" variant="dark">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="ml-auto">
+            {generateControlButtons()}
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </React.Fragment>
+  );
 }
+
+export default Jukebox;
