@@ -11,25 +11,25 @@ class Album extends React.Component {
     this.state = {
       coverArt: defaultCover,
     };
-    // if (props.album.coverArtExists) {
-    LibrianClient.getCoverArt(props.album.path).then((image) => {
-      const that = this;
-      let src;
+    if (props.album.coverArtExists) {
+      LibrianClient.getCoverArt(props.album.path).then((image) => {
+        const that = this;
+        let src;
 
-      if (props.coverArt) {
-        src = props.coverArt;
-      } else if (image.type === 'image/jpeg') {
-        src = URL.createObjectURL(image);
-      } else {
-        src = defaultCover;
-      }
+        if (props.coverArt) {
+          src = props.coverArt;
+        } else if (image.type === 'image/jpeg') {
+          src = URL.createObjectURL(image);
+        } else {
+          src = defaultCover;
+        }
 
-      that.setState({
-        coverArt: src,
+        that.setState({
+          coverArt: src,
+        });
+        that.forceUpdate();
       });
-      that.forceUpdate();
-    });
-    // }
+    }
 
     this.pageSize = 100;
     this.currentPage = 1;

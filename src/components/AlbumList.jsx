@@ -1,82 +1,61 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import {
+  Alert,
   Button,
   Container,
+  Col,
   Row,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 
-export class AlbumList extends React.Component {
-  constructor(props) {
-    super(props);
+function AlbumList({ search, setCurrentAlbum }) {
+  const [start, setStart] = useState(0);
+  const [limit, setLimit] = useState(100);
+  const [albums, setAlbums] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-    this.state = {
-      start: 0,
-      limit: 100,
-      albums: [],
-    };
-
-    this.loadAlbums();
-    this.loadAlbums = this.loadAlbums.bind(this);
-    this.loadMore = this.loadMore.bind(this);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { search } = this.props;
-    if (search !== prevProps.search) {
-      this.loadAlbums();
-    }
-  }
-
-  loadAlbums() {
-    const { start, limit } = this.state;
-    const { search } = this.props;
-
+  const loadAlbums = () => {
+    setIsLoading(true);
     if (search) {
-      this.setState({ albums: [] });
-      LibrianClient.searchAlbums(search).then((data) => {
-        const that = this;
-
-        that.setState({
-          albums: data,
-        });
-        that.forceUpdate();
-      });
+      LibrianClient.searchAlbums(search).then(data => setAlbums(data));
+      setIsLoading(false);
     } else {
       LibrianClient.getAlbums(start, limit).then((data) => {
-        const that = this;
-        const { albums } = this.state;
-        that.setState({
-          albums: albums.concat(data),
-          start: limit,
-          limit: limit + 100,
-        });
-        that.forceUpdate();
+        if (start === 0) {
+          setAlbums(data);
+        } else {
+          setAlbums(albums.concat(data));
+        }
+        setStart(limit);
+        setLimit(limit + 100);
+        setIsLoading(false);
       });
     }
+  };
+
+  useEffect(() => {
+    setStart(0);
+    setLimit(100);
+    loadAlbums();
+  }, [search]);
+
+  const loadMore = () => {
+    setStart(limit);
+    setLimit(limit + 100);
+    loadAlbums();
+  };
+
+  if (!albums.length && !isLoading) {
+    loadAlbums();
   }
 
-  loadMore() {
-    const { limit } = this.state;
-    this.setState({
-      start: limit,
-      limit: limit + 100,
-    });
-    this.loadAlbums();
-  }
-
-  render() {
-    const { albums } = this.state;
+  if (albums.length) {
     const renderAlbums = [];
-    if (albums) {
-      for (let i = 0; i < albums.length; i += 1) {
-        renderAlbums.push(
-          <Album key={i} album={albums[i]} setCurrentAlbum={this.props.setCurrentAlbum}/>,
-        );
-      }
-    }
+    albums.forEach(album => {
+      renderAlbums.push(<Album album={album} setCurrentAlbum={setCurrentAlbum} />);
+    })
 
     return (
       <Container fluid style={{ marginLeft: '50px' }}>
@@ -84,17 +63,21 @@ export class AlbumList extends React.Component {
           {renderAlbums}
         </Row>
         <Row>
-          <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
+          <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
         </Row>
       </Container>
     );
   }
-}
-export default AlbumList;
 
-AlbumList.propTypes = {
-  search: PropTypes.string,
-};
-AlbumList.defaultProps = {
-  search: '',
-};
+  return (
+    <Container fluid style={{ marginLeft: '50px' }}>
+      <Row>
+        <Col lg={12} xl={12} >
+          <Alert variant="primary">Loading albums.  If you don't see any results, set up your library in Settings.</Alert>
+        </Col>
+      </Row>
+    </Container>
+  );
+}
+
+export default AlbumList;

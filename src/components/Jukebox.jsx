@@ -8,7 +8,7 @@ import {
   FormControl,
   Button,
 } from 'react-bootstrap';
-import { AlbumList } from './AlbumList';
+import AlbumList from './AlbumList';
 import NewReleases from './NewReleases';
 import SpotifyAlbums from './SpotifyAlbums';
 import Categories from './Categories';
@@ -29,13 +29,15 @@ function Jukebox() {
   const [settings, setSettings] = useState();
   const [currentAlbum, setCurrentAlbum] = useState();
 
-  SettingsClient.getSettings().then((settings) => {
-    setSettings(settings);
+  if (!settings) {
+    SettingsClient.getSettings().then((settings) => {
+      setSettings(settings);
 
-    if (settings.spotify.useSpotify) {
-      SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
-    }
-  });
+      if (settings.spotify.useSpotify) {
+        SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
+      }
+    });
+  }
 
   const generateNavItems = () => {
     let navLinks = [];
@@ -57,14 +59,14 @@ function Jukebox() {
   };
 
   const onSearch = () => {
-    window.stop();
+    // window.stop();
     setSearch(document.getElementById('searchBox').value);
   };
 
   const addNavLink = (navLinks, feature, navKey, navName) => {
     if (feature) {
-      navLinks.push(<Nav.Link key={navName} onClick={() => { 
-        setMode(navKey); 
+      navLinks.push(<Nav.Link key={navName} onClick={() => {
+        setMode(navKey);
         setCurrentAlbum('');
       }}>{navName}</Nav.Link>);
     }
@@ -134,7 +136,7 @@ function Jukebox() {
         body = <Settings />;
         break;
       default:
-        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum}/>;
+        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} />;
     }
   }
 

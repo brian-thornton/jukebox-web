@@ -8,6 +8,8 @@ import styles from './styles';
 function LibraryList() {
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isScanning, setIsScanning] = useState(false);
 
   const handleClose = (path) => {
     if (path) {
@@ -21,8 +23,10 @@ function LibraryList() {
   const handleShow = () => setShow(true);
 
   const loadLibraries = () => {
+    setIsLoading(true);
     LibrianClient.getLibraries().then((data) => {
       setLibraries(data);
+      setIsLoading(false);
     });
   };
 
@@ -34,9 +38,17 @@ function LibraryList() {
     });
   };
 
-  const onScan = library => LibrianClient.scan(library);
+  const onScan = library => {
+    setIsScanning(true);
+    LibrianClient.scan(library).then(() => {
+      setIsScanning(false)
+      loadLibraries();
+    });
+  };
 
-  loadLibraries();
+  if (!isLoading && !libraries.length) {
+    loadLibraries();
+  }
 
   const renderLibraries = [];
 
@@ -46,17 +58,23 @@ function LibraryList() {
     className: 'float-right',
   };
 
+  if (isScanning) {
+    buttonProps.disabled = true;
+  }
+
   let totalTracks = 0;
   libraries.forEach((library) => {
     delete library.tracks;
     const enabled = library.enabled ? 'Enabled' : 'Disabled';
     const style = library.enabled ? styles.enabledStyle : styles.disabledStyle;
-    totalTracks += library.totalTracks;
+    if (library.totalTracks) {
+      totalTracks += library.totalTracks;
+    }
 
     renderLibraries.push(
       (
         <ListGroupItem style={styles.cardStyle} key={library.path}>
-          {library.path}
+          {`${library.path} - Tracks: ${library.totalTracks || 0}`}
           <Button
             {...buttonProps}
             onClick={() => onScan({
@@ -70,7 +88,7 @@ function LibraryList() {
           <Button {...buttonProps} onClick={() => deleteLibrary(library.name)}>
             Delete
           </Button>
-          <Button style={style} variant="outline-light" className="float-right">
+          <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>
             {enabled}
           </Button>
         </ListGroupItem>
@@ -83,10 +101,10 @@ function LibraryList() {
       <Container>
         <Row>
           <Col lg={12} xl={12}>
-          <div style={styles.totalTracksStyle}>
-            Total Library Tracks: 
+            <div style={styles.totalTracksStyle}>
+              Total Library Tracks:
             <div style={styles.totalTracksCount}>{totalTracks}</div>
-          </div>
+            </div>
           </Col>
         </Row>
         <Row>
@@ -109,7 +127,7 @@ function LibraryList() {
         </Row>
       </Container>
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={() => setShow(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Add Library</Modal.Title>
         </Modal.Header>
@@ -124,7 +142,7 @@ function LibraryList() {
           </InputGroup>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={() => setShow(false)}>
             Close
           </Button>
           <Button variant="primary" onClick={() => handleClose(document.getElementById('path').value)}>
