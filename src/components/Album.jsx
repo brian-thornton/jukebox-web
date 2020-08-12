@@ -1,44 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
 import styles from './styles';
 
-class Album extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      coverArt: defaultCover,
-    };
-    if (props.album.coverArtExists) {
-      LibrianClient.getCoverArt(props.album.path).then((image) => {
-        const that = this;
+function Album({ album, cover, setCurrentAlbum }) {
+  const [coverArt, setCoverArt] = useState(defaultCover);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const loadCoverArt = () => {
+    if (album.coverArtExists) {
+      LibrianClient.getCoverArt(album.path).then((image) => {
         let src;
 
-        if (props.coverArt) {
-          src = props.coverArt;
+        if (cover) {
+          src = cover;
         } else if (image.type === 'image/jpeg') {
           src = URL.createObjectURL(image);
         } else {
           src = defaultCover;
         }
-
-        that.setState({
-          coverArt: src,
-        });
-        that.forceUpdate();
+        setCoverArt(src);
       });
     }
+    setIsLoaded(true);
+  };
 
-    this.pageSize = 100;
-    this.currentPage = 1;
-  }
-
-  largeAlbum() {
-    const { album, setCurrentAlbum } = this.props;
-    const { coverArt } = this.state;
-
+  const largeAlbum = () => {
     return (
       <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
         <Card.Img style={styles.albumImage} top src={coverArt} />
@@ -49,15 +38,11 @@ class Album extends React.Component {
     );
   }
 
-  render() {
-    return this.largeAlbum();
+  if (!isLoaded) {
+    loadCoverArt();
   }
-}
-export default Album;
 
-Album.propTypes = {
-  setCurrentAlbum: PropTypes.func.isRequired,
-  album: PropTypes.shape({
-    path: PropTypes.string.isRequired,
-  }).isRequired,
-};
+  return largeAlbum();
+}
+
+export default Album;
