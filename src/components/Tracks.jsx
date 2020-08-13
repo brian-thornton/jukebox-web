@@ -17,38 +17,39 @@ function Tracks({ search }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const loadTracks = () => {
-    console.log(`loading tracks for ${search}`);
     setIsLoading(true);
     if (search) {
-      LibrianClient.searchTracks(search).then(data => {
+      LibrianClient.searchTracks(search).then((data) => {
         setTracks(data);
         setIsLoading(false);
         setIsLoaded(true);
       });
     } else {
-      LibrianClient.getTracks(start, limit).then(data => {
+      LibrianClient.getTracks(start, limit).then((data) => {
         setTracks(tracks.concat(data));
         setIsLoading(false);
-;      });
+      });
     }
-  }
+  };
+
+  useEffect(() => loadTracks(), [search]);
 
   const loadMore = () => {
     setStart(limit);
     setLimit(limit + 100);
     loadTracks();
-  }
+  };
 
   if ((search && !isLoaded && !isLoading) || (!tracks.length && !isLoading)) {
     loadTracks();
   }
 
   const alert = () => {
+    const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
     if (!tracks || !tracks.length) {
-      return <Alert variant="primary">Loading tracks.  If you don't see any results, set up your library in Settings.</Alert>;
-    } else {
-      return <React.Fragment />;
+      return <Alert variant="primary">{alertText}</Alert>;
     }
+    return <React.Fragment />;
   };
 
   return (

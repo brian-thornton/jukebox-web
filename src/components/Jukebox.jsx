@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Row,
   Container,
   Navbar,
   Nav,
@@ -30,14 +29,31 @@ function Jukebox() {
   const [currentAlbum, setCurrentAlbum] = useState();
 
   if (!settings) {
-    SettingsClient.getSettings().then((settings) => {
-      setSettings(settings);
+    SettingsClient.getSettings().then((data) => {
+      setSettings(data);
 
-      if (settings.spotify.useSpotify) {
+      if (data.spotify.useSpotify) {
         SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
       }
     });
   }
+
+  const addNavLink = (navLinks, feature, navKey, navName) => {
+    if (feature) {
+      navLinks.push(
+        <Nav.Link
+          key={navName}
+          onClick={() => {
+            setMode(navKey);
+            setCurrentAlbum('');
+          }}
+        >
+          {navName}
+        </Nav.Link>,
+      );
+    }
+    return navLinks;
+  };
 
   const generateNavItems = () => {
     let navLinks = [];
@@ -61,16 +77,6 @@ function Jukebox() {
   const onSearch = () => {
     // window.stop();
     setSearch(document.getElementById('searchBox').value);
-  };
-
-  const addNavLink = (navLinks, feature, navKey, navName) => {
-    if (feature) {
-      navLinks.push(<Nav.Link key={navName} onClick={() => {
-        setMode(navKey);
-        setCurrentAlbum('');
-      }}>{navName}</Nav.Link>);
-    }
-    return navLinks;
   };
 
   const addControlButton = (buttons, feature, name, handler) => {
@@ -104,7 +110,7 @@ function Jukebox() {
       clearTimeout(timeout);
       timeout = setTimeout(functionCall, time);
     };
-  }
+  };
 
   let body = '';
   if (currentAlbum) {

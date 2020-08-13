@@ -38,25 +38,21 @@ function Queue() {
   };
 
   const renderTracks = [];
+  const buttonProps = {
+    style: styles.buttonStyle,
+    variant: 'outline-light',
+    className: 'float-right',
+  };
+
   tracks.forEach((track) => {
     renderTracks.push(
       (
         <ListGroupItem style={styles.cardStyle}>
           {track.name}
-          <Button
-            style={styles.buttonStyle}
-            variant="outline-light"
-            className="float-right"
-            onClick={() => playNow(track)}
-          >
+          <Button {...buttonProps} onClick={() => playNow(track)}>
             Play
           </Button>
-          <Button
-            style={styles.buttonStyle}
-            variant="outline-light"
-            className="float-right"
-            onClick={() => remove(track)}
-          >
+          <Button {...buttonProps} onClick={() => remove(track)}>
             Delete
           </Button>
         </ListGroupItem>
@@ -64,7 +60,7 @@ function Queue() {
     );
   });
 
-  const buttonProps = {
+  const settingsProps = {
     style: styles.settingsButtonStyle,
     variant: 'outline-light',
   };
@@ -73,15 +69,15 @@ function Queue() {
     return (
       <Container>
         <Row>
-          <Col lg={12} xl={12} >
+          <Col lg={12} xl={12}>
             <Alert variant="primary">These queued tracks are up next!</Alert>
           </Col>
         </Row>
         <Row>
           <Col lg={2} xl={2}>
-            <Button {...buttonProps}>Clear Queue</Button>
-            <Button {...buttonProps}>Shuffle Queue</Button>
-            <Button {...buttonProps}>Save to Playlist</Button>
+            <Button {...settingsProps}>Clear Queue</Button>
+            <Button {...settingsProps}>Shuffle Queue</Button>
+            <Button {...settingsProps}>Save to Playlist</Button>
           </Col>
           <Col lg={10} xl={10}>
             <ListGroup>{renderTracks}</ListGroup>

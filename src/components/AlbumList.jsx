@@ -53,9 +53,9 @@ function AlbumList({ search, setCurrentAlbum }) {
 
   if (albums.length) {
     const renderAlbums = [];
-    albums.forEach(album => {
+    albums.forEach((album) => {
       renderAlbums.push(<Album album={album} setCurrentAlbum={setCurrentAlbum} />);
-    })
+    });
 
     return (
       <Container fluid style={{ marginLeft: '50px' }}>
@@ -69,11 +69,12 @@ function AlbumList({ search, setCurrentAlbum }) {
     );
   }
 
+  const alertText = "Loading albums.  If you don't see any results, set up your library in Settings.";
   return (
     <Container fluid style={{ marginLeft: '50px' }}>
       <Row>
-        <Col lg={12} xl={12} >
-          <Alert variant="primary">Loading albums.  If you don't see any results, set up your library in Settings.</Alert>
+        <Col lg={12} xl={12}>
+          <Alert variant="primary">{alertText}</Alert>
         </Col>
       </Row>
     </Container>

@@ -18,6 +18,14 @@ function SettingsEditor() {
     className: 'float-right',
   };
 
+  const updateFeature = (name, value) => {
+    const deepClone = JSON.parse(JSON.stringify(settings));
+    deepClone.features[name] = value;
+    SettingsClient.updateSettings(deepClone).then(() => {
+      window.location.reload();
+    });
+  };
+
   const settingRow = (name, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
     const style = value ? styles.enabledStyle : styles.disabledStyle;
@@ -35,14 +43,6 @@ function SettingsEditor() {
         </Button>
       </ListGroupItem>
     );
-  };
-
-  const updateFeature = (name, value) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.features[name] = value;
-    SettingsClient.updateSettings(deepClone).then(() => {
-      window.location.reload();
-    });
   };
 
   const features = () => {

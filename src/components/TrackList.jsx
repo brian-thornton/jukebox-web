@@ -17,8 +17,8 @@ function TrackList(props) {
 
   const buttonProps = {
     style: styles.buttonStyle,
-    variant: "outline-light",
-    className: "float-right",
+    variant: 'outline-light',
+    className: 'float-right',
   };
 
   tracks.forEach((track) => {

@@ -34,7 +34,7 @@ function Settings() {
   return (
     <Container>
       <Row>
-        <Col lg={12} xl={12} >
+        <Col lg={12} xl={12}>
           <Alert variant="primary">Configure settings below to control your jukebox.</Alert>
         </Col>
       </Row>

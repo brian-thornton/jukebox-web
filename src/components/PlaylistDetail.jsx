@@ -68,7 +68,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   return (
     <Container>
       <Row>
-        <Col lg={12} xl={12} >
+        <Col lg={12} xl={12}>
           <Alert variant="primary">{`Playlist: ${name}`}</Alert>
         </Col>
       </Row>

@@ -50,7 +50,14 @@ function Playlists(props) {
 
     const playlistActions = [];
     if (mode === 'addToPlaylist') {
-      playlistActions.push((<Button {...buttonProps} onClick={() => addTracksToPlaylist(playlistName)}>Add</Button>));
+      playlistActions.push((
+        <Button
+          {...buttonProps}
+          onClick={() => addTracksToPlaylist(playlistName)}
+        >
+Add
+        </Button>
+      ));
     } else {
       playlistActions.push((<Button {...buttonProps}>Delete</Button>));
     }
@@ -84,7 +91,7 @@ function Playlists(props) {
       <>
         <Container>
           <Row>
-            <Col lg={12} xl={12} >
+            <Col lg={12} xl={12}>
               <Alert variant="primary">Playlists</Alert>
             </Col>
           </Row>

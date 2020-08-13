@@ -59,17 +59,17 @@ const enabledStyle = {
 
 const totalTracksStyle = {
   color: 'white',
-  float: "right",
-}
+  float: 'right',
+};
 
 const totalTracksCount = {
   float: 'right',
   marginLeft: '5px',
-}
+};
 
 const listItem = {
   marginTop: '5px',
-}
+};
 
 export default {
   albumCardLarge,

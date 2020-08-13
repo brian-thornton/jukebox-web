@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Card, ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
+  ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import styles from './styles';
@@ -38,10 +38,10 @@ function LibraryList() {
     });
   };
 
-  const onScan = library => {
+  const onScan = (library) => {
     setIsScanning(true);
     LibrianClient.scan(library).then(() => {
-      setIsScanning(false)
+      setIsScanning(false);
       loadLibraries();
     });
   };
@@ -103,7 +103,7 @@ function LibraryList() {
           <Col lg={12} xl={12}>
             <div style={styles.totalTracksStyle}>
               Total Library Tracks:
-            <div style={styles.totalTracksCount}>{totalTracks}</div>
+              <div style={styles.totalTracksCount}>{totalTracks}</div>
             </div>
           </Col>
         </Row>

@@ -27,16 +27,14 @@ function Album({ album, cover, setCurrentAlbum }) {
     setIsLoaded(true);
   };
 
-  const largeAlbum = () => {
-    return (
-      <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
-        <Card.Img style={styles.albumImage} top src={coverArt} />
-        <Card.Body>
-          <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
-        </Card.Body>
-      </Card>
-    );
-  }
+  const largeAlbum = () => (
+    <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
+      <Card.Img style={styles.albumImage} top src={coverArt} />
+      <Card.Body>
+        <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
+      </Card.Body>
+    </Card>
+  );
 
   if (!isLoaded) {
     loadCoverArt();
