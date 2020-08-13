@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
+  Alert,
   Container,
   Row,
   Col,
@@ -8,74 +9,59 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
 
-export default class Tracks extends React.Component {
-  constructor(props) {
-    super(props);
+function Tracks({ search }) {
+  const [start, setStart] = useState(0);
+  const [limit, setLimit] = useState(100);
+  const [tracks, setTracks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-    this.state = {
-      start: 0,
-      limit: 100,
-      tracks: [],
-    };
-    this.loadTracks();
-    this.loadTracks = this.loadTracks.bind(this);
-    this.loadMore = this.loadMore.bind(this);
-  }
-
-  componentDidUpdate(prevProps) {
-    const { search } = this.props;
-    if (search !== prevProps.search) {
-      this.loadTracks();
-    }
-  }
-
-  loadTracks() {
-    const { start, limit } = this.state;
-    const { search } = this.props;
-
+  const loadTracks = () => {
+    console.log(`loading tracks for ${search}`);
+    setIsLoading(true);
     if (search) {
-      this.setState({ albums: [] });
-      LibrianClient.searchTracks(search).then((data) => {
-        const that = this;
-
-        that.setState({
-          tracks: data,
-        });
-        that.forceUpdate();
+      LibrianClient.searchTracks(search).then(data => {
+        setTracks(data);
+        setIsLoading(false);
+        setIsLoaded(true);
       });
     } else {
-      LibrianClient.getTracks(start, limit).then((data) => {
-        const that = this;
-        const { tracks } = this.state;
-        that.setState({
-          tracks: tracks.concat(data),
-        });
-        that.forceUpdate();
-      });
+      LibrianClient.getTracks(start, limit).then(data => {
+        setTracks(tracks.concat(data));
+        setIsLoading(false);
+;      });
     }
   }
 
-  loadMore() {
-    const { limit } = this.state;
-    this.setState({
-      start: limit,
-      limit: limit + 100,
-    });
-    this.loadTracks();
+  const loadMore = () => {
+    setStart(limit);
+    setLimit(limit + 100);
+    loadTracks();
   }
 
-  render() {
-    const { tracks } = this.state;
-
-    return (
-      <Container>
-        <Row>
-          <Col lg={12} xl={12}>
-            <TrackList tracks={tracks} />
-            <Button block variant="outline-info" onClick={this.loadMore}>Load More</Button>
-          </Col>
-        </Row>
-      </Container>
-    );
+  if ((search && !isLoaded && !isLoading) || (!tracks.length && !isLoading)) {
+    loadTracks();
   }
+
+  const alert = () => {
+    if (!tracks || !tracks.length) {
+      return <Alert variant="primary">Loading tracks.  If you don't see any results, set up your library in Settings.</Alert>;
+    } else {
+      return <React.Fragment />;
+    }
+  };
+
+  return (
+    <Container>
+      <Row>
+        <Col lg={12} xl={12}>
+          {alert()}
+          <TrackList tracks={tracks} />
+          <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
+        </Col>
+      </Row>
+    </Container>
+  );
 }
+
+export default Tracks;
