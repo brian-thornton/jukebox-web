@@ -17,7 +17,7 @@ import SpotifyClient from '../lib/spotify-client';
 
 const albumArt = require('album-art');
 
-export default function AlbumDetail({ album }) {
+export default function AlbumDetail({ album, clearCurrentAlbum }) {
   const [coverArt, setCoverArt] = useState('');
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
@@ -97,7 +97,7 @@ export default function AlbumDetail({ album }) {
       variant: 'outline-light',
     };
 
-    buttons.push(<Button {...props}>Back to Albums</Button>);
+    buttons.push(<Button {...props} onClick={clearCurrentAlbum}>Back to Albums</Button>);
     buttons.push(<Button {...props} onClick={playAlbum}>Play Album</Button>);
     buttons.push(
       <Button {...props} onClick={enqueueAlbum}>Enqueue Album</Button>,

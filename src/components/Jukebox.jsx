@@ -114,7 +114,11 @@ function Jukebox() {
 
   let body = '';
   if (currentAlbum) {
-    body = <AlbumDetail search={search} album={currentAlbum} />;
+    body = <AlbumDetail
+      search={search}
+      album={currentAlbum}
+      clearCurrentAlbum={() => setCurrentAlbum(null)}
+    />;
   } else {
     switch (mode) {
       case 'AlbumList':
