@@ -13,14 +13,19 @@ import styles from './styles';
 
 function Queue() {
   const [tracks, setTracks] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadQueue = () => {
     QueueClient.getQueue().then((data) => {
       setTracks(data);
+      setIsLoading(false);
+      setIsLoaded(true);
     });
   };
 
-  if (!tracks.length) {
+  if (!isLoading && !isLoaded && !tracks.length) {
+    setIsLoading(true);
     loadQueue();
   }
 
@@ -65,6 +70,8 @@ function Queue() {
     variant: 'outline-light',
   };
 
+  const clear = () => QueueClient.clearQueue().then(loadQueue());
+
   if (renderTracks.length) {
     return (
       <Container>
@@ -75,7 +82,7 @@ function Queue() {
         </Row>
         <Row>
           <Col lg={2} xl={2}>
-            <Button {...settingsProps}>Clear Queue</Button>
+            <Button {...settingsProps} onClick={clear}>Clear Queue</Button>
             <Button {...settingsProps}>Shuffle Queue</Button>
             <Button {...settingsProps}>Save to Playlist</Button>
           </Col>

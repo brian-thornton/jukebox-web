@@ -1,4 +1,6 @@
-class LibrarianClient {
+import { postParams } from './service-helper';
+
+export default class LibrarianClient {
   static async getLibraries() {
     const response = await fetch('/librarian/libraries');
     const json = await response.json();
@@ -49,18 +51,7 @@ class LibrarianClient {
   }
 
   static async add(library) {
-    const response = await fetch('/librarian/add', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(library),
-    });
+    const response = await fetch('/librarian/add', postParams(library));
     return response;
   }
 
@@ -68,52 +59,17 @@ class LibrarianClient {
     // Clear tracks from previous scans so we are not sending a large
     // volume of data over the wire that will be overwritten.
     delete library.tracks;
-    const response = await fetch('/librarian/scan', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(library),
-    });
+    const response = await fetch('/librarian/scan', postParams(library));
     return response;
   }
 
   static async saveCoverArt(cover) {
-    const response = await fetch('/librarian/saveCoverArt', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(cover),
-    });
+    const response = await fetch('/librarian/saveCoverArt', postParams(cover));
     return response;
   }
 
   static async removeCoverArt(album) {
-    const response = await fetch('/librarian/removeCoverArt', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(album),
-    });
+    const response = await fetch('/librarian/removeCoverArt', postParams(album));
     return response;
   }
 }
-
-module.exports = LibrarianClient;

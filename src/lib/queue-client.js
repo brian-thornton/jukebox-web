@@ -1,4 +1,6 @@
-class QueueClient {
+import { postParams } from './service-helper';
+
+export default class QueueClient {
   static async getQueue() {
     const response = await fetch('/queue/getQueue');
     const json = await response.json();
@@ -30,54 +32,22 @@ class QueueClient {
   }
 
   static async enqueueTracks(tracks) {
-    const response = await fetch('/queue/enqueueTracks', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(tracks),
-    });
+    const response = await fetch('/queue/enqueueTracks', postParams(tracks));
     return response;
   }
 
   static async enqueueTracksTop(tracks) {
-    const response = await fetch('/queue/enqueueTracksTop', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(tracks),
-    });
+    const response = await fetch('/queue/enqueueTracksTop', postParams(tracks));
     return response;
   }
 
   static async removeTracksFromQueue(tracks) {
-    const response = await fetch('/queue/removeFromQueue', {
-      method: 'post',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      redirect: 'follow',
-      referrer: 'no-referrer',
-      body: JSON.stringify(
-        {
-          tracks,
-        },
-      ),
-    });
+    const response = await fetch('/queue/removeFromQueue', postParams(tracks));
+    return response;
+  }
+
+  static async clearQueue() {
+    const response = await fetch('/queue/clearQueue', postParams({}));
     return response;
   }
 
@@ -85,5 +55,3 @@ class QueueClient {
     return this.enqueueTracksTop([track]);
   }
 }
-
-module.exports = QueueClient;
