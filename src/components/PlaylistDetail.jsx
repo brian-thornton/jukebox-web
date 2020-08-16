@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  Alert, ListGroup, ListGroupItem, Button, Container, Row, Col,
-} from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
 import ContentWithControls from './ContentWithControls';

@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  Alert, ListGroup, ListGroupItem, Button, Col, Container, Row, Modal, InputGroup, FormControl,
+  ListGroup, ListGroupItem, Button, Modal, InputGroup, FormControl,
 } from 'react-bootstrap';
 import PlaylistClient from '../lib/playlist-client';
 import PlaylistDetail from './PlaylistDetail';
 import styles from './styles';
+import ContentWithControls from './ContentWithControls';
 
 function Playlists(props) {
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const selectPlaylist = playlistName => setName(playlistName);
+  const handleBackToPlaylists = () => setName('');
+  const renderPlaylists = [];
+  const alertText = 'Playlists';
 
   const loadPlaylists = () => {
     PlaylistClient.getPlaylists().then((data) => {
@@ -33,8 +39,6 @@ function Playlists(props) {
     loadPlaylists();
   };
 
-  const handleShow = () => setShow(true);
-
   const addTracksToPlaylist = (playlistName) => {
     const { tracks } = props;
     PlaylistClient.addTracksToPlaylist(playlistName, tracks);
@@ -55,7 +59,7 @@ function Playlists(props) {
           {...buttonProps}
           onClick={() => addTracksToPlaylist(playlistName)}
         >
-Add
+          Add
         </Button>
       ));
     } else {
@@ -63,13 +67,9 @@ Add
     }
 
     return playlistActions;
-  };
-
-  const selectPlaylist = playlistName => setName(playlistName);
-  const handleBackToPlaylists = () => setName('');
+  }
 
   const { currentPlaylist } = props;
-  const renderPlaylists = [];
 
   playlists.forEach((playlist) => {
     renderPlaylists.push(
@@ -86,34 +86,22 @@ Add
     );
   });
 
+  const controls = () => (
+    <Button
+      variant="outline-light"
+      className="float-right"
+      onClick={handleShow}
+    >
+      Add
+    </Button>
+  );
+
+  const content = () => <ListGroup>{renderPlaylists}</ListGroup>;
+
   if (!currentPlaylist.name && !name) {
     return (
-      <>
-        <Container>
-          <Row>
-            <Col lg={12} xl={12}>
-              <Alert variant="primary">Playlists</Alert>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={1} xl={1}>
-              <Button
-                variant="outline-light"
-                className="float-right"
-                onClick={handleShow}
-              >
-                Add
-              </Button>
-            </Col>
-            <Col lg={11} xl={11}>
-              <ListGroup>{renderPlaylists}</ListGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg={12} xl={12} />
-          </Row>
-        </Container>
-
+      <React.Fragment>
+        <ContentWithControls content={content()} controls={controls()} alertText={alertText} />
         <Modal show={show} onHide={handleClose}>
           <Modal.Header closeButton>
             <Modal.Title>Add Playlist</Modal.Title>
@@ -135,7 +123,7 @@ Add
             </Button>
           </Modal.Footer>
         </Modal>
-      </>
+      </React.Fragment>
     );
   }
   return (
