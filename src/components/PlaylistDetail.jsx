@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
+import ContentWithControls from './ContentWithControls';
 import styles from './styles';
 
 function PlaylistDetail({ name, handleBackToPlaylists }) {
@@ -65,26 +66,17 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     });
   }
 
-  return (
-    <Container>
-      <Row>
-        <Col lg={12} xl={12}>
-          <Alert variant="primary">{`Playlist: ${name}`}</Alert>
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={2} xl={2}>
-          <Button {...leftButtonProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
-          <Button {...leftButtonProps}>Shuffle Playlist</Button>
-          <Button {...leftButtonProps}>Save As...</Button>
-          <Button {...leftButtonProps}>Delete Playlist</Button>
-        </Col>
-        <Col lg={10} xl={10}>
-          <ListGroup>{renderTracks}</ListGroup>
-        </Col>
-      </Row>
-    </Container>
+  const controls = () => (
+    <React.Fragment>
+      <Button {...leftButtonProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
+      <Button {...leftButtonProps}>Shuffle Playlist</Button>
+      <Button {...leftButtonProps}>Save As...</Button>
+      <Button {...leftButtonProps}>Delete Playlist</Button>
+    </React.Fragment>
   );
+
+  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
+  return <ContentWithControls alertText={`Playlist: ${name}`} controls={controls()} content={content()} />;
 }
 
 export default PlaylistDetail;

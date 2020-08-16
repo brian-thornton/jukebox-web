@@ -10,6 +10,7 @@ import {
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
+import ContentWithControls from './ContentWithControls';
 
 function Queue() {
   const [tracks, setTracks] = useState([]);
@@ -30,7 +31,7 @@ function Queue() {
   }
 
   const message = 'There are no tracks in the queue.';
-  const content = (<Alert variant="info">{message}</Alert>);
+  const alert = (<Alert variant="info">{message}</Alert>);
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
@@ -72,32 +73,24 @@ function Queue() {
 
   const clear = () => QueueClient.clearQueue().then(loadQueue());
 
+  const controls = () => (
+    <React.Fragment>
+      <Button {...settingsProps} onClick={clear}>Clear Queue</Button>
+      <Button {...settingsProps}>Shuffle Queue</Button>
+      <Button {...settingsProps}>Save to Playlist</Button>
+    </React.Fragment>
+  );
+
+  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
+
   if (renderTracks.length) {
-    return (
-      <Container>
-        <Row>
-          <Col lg={12} xl={12}>
-            <Alert variant="primary">These queued tracks are up next!</Alert>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={2} xl={2}>
-            <Button {...settingsProps} onClick={clear}>Clear Queue</Button>
-            <Button {...settingsProps}>Shuffle Queue</Button>
-            <Button {...settingsProps}>Save to Playlist</Button>
-          </Col>
-          <Col lg={10} xl={10}>
-            <ListGroup>{renderTracks}</ListGroup>
-          </Col>
-        </Row>
-      </Container>
-    );
+    return <ContentWithControls alertText={"These queued tracks are up next!"} controls={controls()} content={content()} />
   }
   return (
     <Container>
       <Row>
         <Col lg={12} xl={12}>
-          {content}
+          {alert}
         </Col>
       </Row>
     </Container>
