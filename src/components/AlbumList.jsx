@@ -15,15 +15,23 @@ function AlbumList({ search, setCurrentAlbum }) {
   const [limit, setLimit] = useState(100);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [alertText, setAlertText] = useState("Loading albums...");
 
   const loadAlbums = () => {
     setIsLoading(true);
     if (search) {
-      LibrianClient.searchAlbums(search).then(data => setAlbums(data));
-      setIsLoading(false);
+      setAlbums([]);
+      setAlertText("Searching...");
+      LibrianClient.searchAlbums(search).then(data => {
+        setAlbums(data)
+        setIsLoading(false);
+      });
     } else {
       LibrianClient.getAlbums(start, limit).then((data) => {
         if (start === 0) {
+          if (!data.length) {
+            setAlertText("No albums found. Set up your library in settings.");
+          }
           setAlbums(data);
         } else {
           setAlbums(albums.concat(data));
@@ -36,9 +44,11 @@ function AlbumList({ search, setCurrentAlbum }) {
   };
 
   useEffect(() => {
-    setStart(0);
-    setLimit(100);
-    loadAlbums();
+    if (!isLoading) {
+      setStart(0);
+      setLimit(100);
+      loadAlbums();
+    }
   }, [search]);
 
   const loadMore = () => {
@@ -69,7 +79,6 @@ function AlbumList({ search, setCurrentAlbum }) {
     );
   }
 
-  const alertText = "Loading albums.  If you don't see any results, set up your library in Settings.";
   return (
     <Container fluid style={{ marginLeft: '50px' }}>
       <Row>

@@ -16,6 +16,8 @@ function Queue() {
   const [tracks, setTracks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const clear = () => QueueClient.clearQueue().then(loadQueue());
+  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
 
   const loadQueue = () => {
     QueueClient.getQueue().then((data) => {
@@ -71,8 +73,6 @@ function Queue() {
     variant: 'outline-light',
   };
 
-  const clear = () => QueueClient.clearQueue().then(loadQueue());
-
   const controls = () => (
     <React.Fragment>
       <Button {...settingsProps} onClick={clear}>Clear Queue</Button>
@@ -80,8 +80,6 @@ function Queue() {
       <Button {...settingsProps}>Save to Playlist</Button>
     </React.Fragment>
   );
-
-  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
 
   if (renderTracks.length) {
     return <ContentWithControls alertText={"These queued tracks are up next!"} controls={controls()} content={content()} />
