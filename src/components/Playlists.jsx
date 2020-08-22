@@ -86,14 +86,14 @@ function Playlists(props) {
     );
   });
 
+  const buttonProps = {
+    style: styles.settingsButtonStyle,
+    variant: 'outline-light',
+    className: 'float-right',
+  };
+
   const controls = () => (
-    <Button
-      variant="outline-light"
-      className="float-right"
-      onClick={handleShow}
-    >
-      Add
-    </Button>
+    <Button {...buttonProps} onClick={handleShow}>Add</Button>
   );
 
   const content = () => <ListGroup>{renderPlaylists}</ListGroup>;
