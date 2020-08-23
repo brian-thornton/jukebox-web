@@ -19,12 +19,17 @@ export default class PlaylistClient {
   }
 
   static async removeTracksFromPlaylist(name, tracks) {
-    const response = await fetch('/playlists/removeFromPlaylist', postParams({name,tracks}));
+    const response = await fetch('/playlists/removeFromPlaylist', postParams({ name, tracks }));
     return response;
   }
 
   static async add(playlist) {
     const response = await fetch('/playlists/add', postParams(playlist));
+    return response;
+  }
+
+  static async delete(name) {
+    const response = await fetch('/playlists/delete', postParams({ name }));
     return response;
   }
 }

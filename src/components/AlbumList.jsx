@@ -10,7 +10,7 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 
-function AlbumList({ search, setCurrentAlbum }) {
+function AlbumList({ search, setCurrentAlbum, settings }) {
   const [start, setStart] = useState(0);
   const [limit, setLimit] = useState(100);
   const [albums, setAlbums] = useState([]);
@@ -64,7 +64,7 @@ function AlbumList({ search, setCurrentAlbum }) {
   if (albums.length) {
     const renderAlbums = [];
     albums.forEach((album) => {
-      renderAlbums.push(<Album album={album} setCurrentAlbum={setCurrentAlbum} />);
+      renderAlbums.push(<Album album={album} setCurrentAlbum={setCurrentAlbum} settings={settings} />);
     });
 
     return (

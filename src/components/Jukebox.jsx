@@ -118,11 +118,12 @@ function Jukebox() {
       search={search}
       album={currentAlbum}
       clearCurrentAlbum={() => setCurrentAlbum(null)}
+      settings={settings}
     />;
   } else {
     switch (mode) {
       case 'AlbumList':
-        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} />;
+        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} settings={settings}/>;
         break;
       case 'NewReleases':
         body = <NewReleases />;

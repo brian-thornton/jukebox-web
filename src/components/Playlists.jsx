@@ -14,9 +14,13 @@ function Playlists(props) {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const selectPlaylist = playlistName => setName(playlistName);
-  const handleBackToPlaylists = () => setName('');
   const renderPlaylists = [];
   const alertText = 'Playlists';
+
+  const handleBackToPlaylists = () => {
+    setName('');
+    loadPlaylists();
+  }
 
   const loadPlaylists = () => {
     PlaylistClient.getPlaylists().then((data) => {
@@ -29,7 +33,7 @@ function Playlists(props) {
   }
 
   const handleClose = (data) => {
-    if (data) {
+    if ((typeof data) === 'string') {
       PlaylistClient.add({
         name: data,
         tracks: [],
@@ -62,8 +66,6 @@ function Playlists(props) {
           Add
         </Button>
       ));
-    } else {
-      playlistActions.push((<Button {...buttonProps}>Delete</Button>));
     }
 
     return playlistActions;

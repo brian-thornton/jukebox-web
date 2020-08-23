@@ -17,7 +17,7 @@ import SpotifyClient from '../lib/spotify-client';
 
 const albumArt = require('album-art');
 
-export default function AlbumDetail({ album, clearCurrentAlbum }) {
+export default function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   const [coverArt, setCoverArt] = useState('');
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
@@ -105,9 +105,12 @@ export default function AlbumDetail({ album, clearCurrentAlbum }) {
     buttons.push(
       <Button {...props} onClick={() => setAddToPlaylist(true)}>Add to Playlist</Button>,
     );
-    buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
-    buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
-    buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);
+
+    if (settings.features.admin) {
+      buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
+      buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
+      buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);
+    }
     return buttons;
   };
 
