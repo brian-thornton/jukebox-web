@@ -129,7 +129,7 @@ export default function AlbumDetail({ album, clearCurrentAlbum, settings }) {
               </Card>
             </Col>
             <Col lg={8} xl={8}>
-              <TrackList tracks={tracks} />
+              <TrackList tracks={tracks} settings={settings} />
             </Col>
           </Row>
         </Container>

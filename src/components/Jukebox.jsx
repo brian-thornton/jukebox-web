@@ -147,7 +147,7 @@ function Jukebox() {
         body = <Settings />;
         break;
       default:
-        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} />;
+        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} settings={settings}/>;
     }
   }
 

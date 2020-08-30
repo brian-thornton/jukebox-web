@@ -5,12 +5,12 @@ import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
 import styles from './styles';
 
-function Album({ album, cover, setCurrentAlbum }) {
+function Album({ album, cover, setCurrentAlbum, settings }) {
   const [coverArt, setCoverArt] = useState(defaultCover);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const loadCoverArt = () => {
-    if (album.coverArtExists) {
+    if (album.coverArtExists || settings.features.admin) {
       LibrianClient.getCoverArt(album.path).then((image) => {
         let src;
 

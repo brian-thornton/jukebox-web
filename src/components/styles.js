@@ -62,6 +62,13 @@ const totalTracksStyle = {
   float: 'right',
 };
 
+const albumLocationStyle = {
+  color: 'white',
+  float: 'right',
+  paddingTop: '5px',
+  paddingBottom: '5px',
+}
+
 const totalTracksCount = {
   float: 'right',
   marginLeft: '5px',

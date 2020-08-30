@@ -5,21 +5,44 @@ import {
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
+import LibrianClient from '../lib/librarian-client';
+import download from 'downloadjs';
+const streamToBlob = require('stream-to-blob');
 
-function TrackList(props) {
+function TrackList({ tracks, settings }) {
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
     QueueClient.next();
   };
 
   const renderTracks = [];
-  const { tracks } = props;
 
   const buttonProps = {
     style: styles.buttonStyle,
     variant: 'outline-light',
     className: 'float-right',
   };
+
+  const handleDownload = (track) => {
+    LibrianClient.downloadTrack(track).then(response => {
+      response.blob().then(blob => {
+        let url = window.URL.createObjectURL(blob);
+        let a = document.createElement('a');
+        a.href = url;
+        a.download = track.name;
+        a.click();
+      })
+    })
+  }
+
+  const link = (track) => {
+    if (settings.features.admin) {
+      return <div style={{ color: 'white', cursor: 'pointer', textDecoration: 'underline'}}><a onClick={() => handleDownload(track)}>Download</a></div>;
+    }
+
+    return <React.Fragment />;
+  }
+
 
   tracks.forEach((track) => {
     if (track.id) {
@@ -32,6 +55,7 @@ function TrackList(props) {
           {track.name}
           <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
           <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
+          {link(track)}
         </ListGroupItem>
       ),
     );

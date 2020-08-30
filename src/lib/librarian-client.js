@@ -72,4 +72,9 @@ export default class LibrarianClient {
     const response = await fetch('/librarian/removeCoverArt', postParams(album));
     return response;
   }
+
+  static async downloadTrack(track) {
+    const response = await fetch(`/librarian/downloadTrack?file=${track.path}`);
+    return response;
+  }
 }
