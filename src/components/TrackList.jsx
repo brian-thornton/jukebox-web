@@ -6,8 +6,6 @@ import {
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
-import download from 'downloadjs';
-const streamToBlob = require('stream-to-blob');
 
 function TrackList({ tracks, settings }) {
   const playNow = (track) => {
