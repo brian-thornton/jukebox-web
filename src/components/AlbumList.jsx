@@ -15,6 +15,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   const [limit, setLimit] = useState(100);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [alertText, setAlertText] = useState("Loading albums...");
 
   const loadAlbums = () => {
@@ -31,6 +32,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
         if (start === 0) {
           if (!data.length) {
             setAlertText("No albums found. Set up your library in settings.");
+            setIsLoaded(true);
           }
           setAlbums(data);
         } else {
@@ -57,7 +59,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     loadAlbums();
   };
 
-  if (!albums.length && !isLoading) {
+  if (!albums.length && !isLoading && !isLoaded) {
     loadAlbums();
   }
 

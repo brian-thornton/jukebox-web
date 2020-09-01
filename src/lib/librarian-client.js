@@ -77,4 +77,10 @@ export default class LibrarianClient {
     const response = await fetch(`/librarian/downloadTrack?file=${track.path}`);
     return response;
   }
+
+  static async discover(path) {
+    const response = await fetch(`/librarian/discover?path=${path}`);
+    const json = await response.json();
+    return json;
+  }
 }

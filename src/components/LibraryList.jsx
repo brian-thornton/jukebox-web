@@ -4,11 +4,14 @@ import {
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import styles from './styles';
+import LibrarianClient from '../lib/librarian-client';
 
 function LibraryList() {
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
+  const [showDiscover, setShowDiscover] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
 
   const handleClose = (path) => {
@@ -20,13 +23,24 @@ function LibraryList() {
     setShow(false);
   };
 
+  const handleCloseDiscover = (path) => {
+    if (path) {
+      LibrarianClient.discover(path).then(libs => {
+        libs.forEach(lib => LibrarianClient.add({path: lib}));
+      })
+    }
+    setShowDiscover(false);
+  };
+
   const handleShow = () => setShow(true);
+  const handleDiscover = () => setShowDiscover(true);
 
   const loadLibraries = () => {
     setIsLoading(true);
     LibrianClient.getLibraries().then((data) => {
       setLibraries(data);
       setIsLoading(false);
+      setIsLoaded(true);
     });
   };
 
@@ -46,7 +60,7 @@ function LibraryList() {
     });
   };
 
-  if (!isLoading && !libraries.length) {
+  if (!isLoaded && !isLoading && !libraries.length) {
     loadLibraries();
   }
 
@@ -123,6 +137,13 @@ function LibraryList() {
             >
               Add
             </Button>
+            <Button
+              variant="outline-light"
+              className="float-right"
+              onClick={handleDiscover}
+            >
+              Discover
+            </Button>
           </Col>
         </Row>
       </Container>
@@ -147,6 +168,30 @@ function LibraryList() {
           </Button>
           <Button variant="primary" onClick={() => handleClose(document.getElementById('path').value)}>
             Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal show={showDiscover} onHide={() => setShowDiscover(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Discover</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <InputGroup className="mb-3">
+            <FormControl
+              id="path"
+              placeholder="Path"
+              aria-label="Path"
+              aria-describedby="basic-addon1"
+            />
+          </InputGroup>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDiscover(false)}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={() => handleCloseDiscover(document.getElementById('path').value)}>
+            Discover
           </Button>
         </Modal.Footer>
       </Modal>
