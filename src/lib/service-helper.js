@@ -11,4 +11,4 @@ export function postParams(body) {
     referrer: 'no-referrer',
     body: JSON.stringify(body),
   };
-};
+}

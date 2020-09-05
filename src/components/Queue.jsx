@@ -82,7 +82,7 @@ function Queue() {
   );
 
   if (renderTracks.length) {
-    return <ContentWithControls alertText={"These queued tracks are up next!"} controls={controls()} content={content()} />
+    return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
   }
   return (
     <Container>

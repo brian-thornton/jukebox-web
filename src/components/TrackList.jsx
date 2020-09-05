@@ -1,8 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  ListGroup, ListGroupItem, Button, Image,
-} from 'react-bootstrap';
+import { ListGroup, ListGroupItem, Button } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
@@ -22,24 +20,24 @@ function TrackList({ tracks, settings }) {
   };
 
   const handleDownload = (track) => {
-    LibrianClient.downloadTrack(track).then(response => {
-      response.blob().then(blob => {
-        let url = window.URL.createObjectURL(blob);
-        let a = document.createElement('a');
+    LibrianClient.downloadTrack(track).then((response) => {
+      response.blob().then((blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
         a.href = url;
         a.download = track.name;
         a.click();
-      })
-    })
-  }
+      });
+    });
+  };
 
   const link = (track) => {
-    if (settings.features.admin) {
-      return <div style={{ color: 'white', cursor: 'pointer', textDecoration: 'underline'}}><a onClick={() => handleDownload(track)}>Download</a></div>;
+    if (settings && settings.features.admin) {
+      return <div style={{ color: 'white', cursor: 'pointer', textDecoration: 'underline' }}><a onClick={() => handleDownload(track)}>Download</a></div>;
     }
 
     return <React.Fragment />;
-  }
+  };
 
 
   tracks.forEach((track) => {
@@ -59,9 +57,7 @@ function TrackList({ tracks, settings }) {
     );
   });
 
-  return (
-    <ListGroup>{renderTracks}</ListGroup>
-  );
+  return <ListGroup>{renderTracks}</ListGroup>;
 }
 export default TrackList;
 

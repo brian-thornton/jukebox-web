@@ -14,10 +14,16 @@ import TrackList from './TrackList';
 import Playlists from './Playlists';
 import styles from './styles';
 import SpotifyClient from '../lib/spotify-client';
+import { Album } from './shapes';
 
 const albumArt = require('album-art');
 
-export default function AlbumDetail({ album, clearCurrentAlbum, settings }) {
+const propTypes = {
+  album: Album.isRequired,
+  clearCurrentAlbum: PropTypes.func.isRequired,
+};
+
+function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   const [coverArt, setCoverArt] = useState('');
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
@@ -149,3 +155,7 @@ export default function AlbumDetail({ album, clearCurrentAlbum, settings }) {
 
   return largeAlbum();
 }
+
+AlbumDetail.propTypes = propTypes;
+
+export default AlbumDetail;

@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  Alert, ListGroup, ListGroupItem, Button, Container, Row, Col,
+  Alert, Container, Row, Col,
 } from 'react-bootstrap';
+
+const propTypes = {
+  alertText: PropTypes.string,
+  content: PropTypes.node.isRequired,
+  controls: PropTypes.node.isRequired,
+};
 
 function ContentWithControls({ controls, content, alertText }) {
   return (
@@ -24,5 +30,10 @@ function ContentWithControls({ controls, content, alertText }) {
   );
 }
 
-export default ContentWithControls;
+ContentWithControls.defaultProps = {
+  alertText: '',
+};
 
+ContentWithControls.propTypes = propTypes;
+
+export default ContentWithControls;

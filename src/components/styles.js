@@ -67,7 +67,7 @@ const albumLocationStyle = {
   float: 'right',
   paddingTop: '5px',
   paddingBottom: '5px',
-}
+};
 
 const totalTracksCount = {
   float: 'right',

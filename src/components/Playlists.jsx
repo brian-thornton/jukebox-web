@@ -20,7 +20,7 @@ function Playlists(props) {
   const handleBackToPlaylists = () => {
     setName('');
     loadPlaylists();
-  }
+  };
 
   const loadPlaylists = () => {
     PlaylistClient.getPlaylists().then((data) => {
@@ -69,7 +69,7 @@ function Playlists(props) {
     }
 
     return playlistActions;
-  }
+  };
 
   const { currentPlaylist } = props;
 

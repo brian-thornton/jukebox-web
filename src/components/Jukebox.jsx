@@ -58,7 +58,7 @@ function Jukebox() {
   const generateNavItems = () => {
     let navLinks = [];
 
-    if (settings) {
+    if (settings && settings.features) {
       const { spotify, features } = settings;
       const { spotifyFeatures } = spotify;
 
@@ -112,42 +112,58 @@ function Jukebox() {
     };
   };
 
-  let body = '';
-  if (currentAlbum) {
-    body = <AlbumDetail
-      search={search}
-      album={currentAlbum}
-      clearCurrentAlbum={() => setCurrentAlbum(null)}
-      settings={settings}
-    />;
-  } else {
-    switch (mode) {
-      case 'AlbumList':
-        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} settings={settings}/>;
-        break;
-      case 'NewReleases':
-        body = <NewReleases />;
-        break;
-      case 'SpotifyAlbums':
-        body = <SpotifyAlbums search={search} />;
-        break;
-      case 'Categories':
-        body = <Categories />;
-        break;
-      case 'Tracks':
-        body = <Tracks search={search} />;
-        break;
-      case 'Playlists':
-        body = <Playlists />;
-        break;
-      case 'Queue':
-        body = <Queue />;
-        break;
-      case 'Settings':
-        body = <Settings />;
-        break;
-      default:
-        body = <AlbumList search={search} setCurrentAlbum={setCurrentAlbum} settings={settings}/>;
+  let body = <React.Fragment />;
+  if (settings) {
+    if (currentAlbum) {
+      body = (
+        <AlbumDetail
+          search={search}
+          album={currentAlbum}
+          clearCurrentAlbum={() => setCurrentAlbum(null)}
+          settings={settings}
+        />
+      );
+    } else {
+      switch (mode) {
+        case 'AlbumList':
+          body = (
+            <AlbumList
+              search={search}
+              setCurrentAlbum={setCurrentAlbum}
+              settings={settings}
+            />
+          );
+          break;
+        case 'NewReleases':
+          body = <NewReleases />;
+          break;
+        case 'SpotifyAlbums':
+          body = <SpotifyAlbums search={search} />;
+          break;
+        case 'Categories':
+          body = <Categories />;
+          break;
+        case 'Tracks':
+          body = <Tracks search={search} settings={settings} />;
+          break;
+        case 'Playlists':
+          body = <Playlists settings={settings} />;
+          break;
+        case 'Queue':
+          body = <Queue settings={settings} />;
+          break;
+        case 'Settings':
+          body = <Settings />;
+          break;
+        default:
+          body = (
+            <AlbumList
+              search={search}
+              setCurrentAlbum={setCurrentAlbum}
+              settings={settings}
+            />
+          );
+      }
     }
   }
 

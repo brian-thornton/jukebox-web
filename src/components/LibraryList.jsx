@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import {
   ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
 } from 'react-bootstrap';
-import LibrianClient from '../lib/librarian-client';
-import styles from './styles';
 import LibrarianClient from '../lib/librarian-client';
+import styles from './styles';
 
 function LibraryList() {
   const [libraries, setLibraries] = useState([]);
@@ -16,7 +15,7 @@ function LibraryList() {
 
   const handleClose = (path) => {
     if (path) {
-      LibrianClient.add({
+      LibrarianClient.add({
         path,
       });
     }
@@ -25,9 +24,9 @@ function LibraryList() {
 
   const handleCloseDiscover = (path) => {
     if (path) {
-      LibrarianClient.discover(path).then(libs => {
-        libs.forEach(lib => LibrarianClient.add({path: lib}));
-      })
+      LibrarianClient.discover(path).then((libs) => {
+        libs.forEach(lib => LibrarianClient.add({ path: lib }));
+      });
     }
     setShowDiscover(false);
   };
@@ -37,7 +36,7 @@ function LibraryList() {
 
   const loadLibraries = () => {
     setIsLoading(true);
-    LibrianClient.getLibraries().then((data) => {
+    LibrarianClient.getLibraries().then((data) => {
       setLibraries(data);
       setIsLoading(false);
       setIsLoaded(true);
@@ -45,8 +44,8 @@ function LibraryList() {
   };
 
   const deleteLibrary = (name) => {
-    LibrianClient.delete(name).then(() => {
-      LibrianClient.getLibraries().then((data) => {
+    LibrarianClient.delete(name).then(() => {
+      LibrarianClient.getLibraries().then((data) => {
         setLibraries(data);
       });
     });
@@ -54,7 +53,7 @@ function LibraryList() {
 
   const onScan = (library) => {
     setIsScanning(true);
-    LibrianClient.scan(library).then(() => {
+    LibrarianClient.scan(library).then(() => {
       setIsScanning(false);
       loadLibraries();
     });

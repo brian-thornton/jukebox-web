@@ -16,22 +16,27 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [alertText, setAlertText] = useState("Loading albums...");
+  const [alertText, setAlertText] = useState('Loading albums...');
 
   const loadAlbums = () => {
     setIsLoading(true);
     if (search) {
       setAlbums([]);
-      setAlertText("Searching...");
-      LibrianClient.searchAlbums(search).then(data => {
-        setAlbums(data)
+      setAlertText('Searching...');
+      LibrianClient.searchAlbums(search).then((data) => {
+        if (!data.length) {
+          setAlertText('No results found.');
+        } else {
+          setAlbums(data);
+        }
         setIsLoading(false);
+        setIsLoaded(true);
       });
     } else {
       LibrianClient.getAlbums(start, limit).then((data) => {
         if (start === 0) {
           if (!data.length) {
-            setAlertText("No albums found. Set up your library in settings.");
+            setAlertText('No albums found. Set up your library in settings.');
             setIsLoaded(true);
           }
           setAlbums(data);
@@ -66,7 +71,13 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   if (albums.length) {
     const renderAlbums = [];
     albums.forEach((album) => {
-      renderAlbums.push(<Album album={album} setCurrentAlbum={setCurrentAlbum} settings={settings} />);
+      renderAlbums.push(
+        <Album
+          album={album}
+          setCurrentAlbum={setCurrentAlbum}
+          settings={settings}
+        />,
+      );
     });
 
     return (

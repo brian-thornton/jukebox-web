@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
-import { ListGroup, ListGroupItem, Button, Modal } from 'react-bootstrap';
+import {
+  ListGroup, ListGroupItem, Button, Modal,
+} from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
 import ContentWithControls from './ContentWithControls';
@@ -87,7 +89,8 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
       <ContentWithControls
         alertText={`Playlist: ${name}`}
         controls={controls()}
-        content={content()} />
+        content={content()}
+      />
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Delete Playlist?</Modal.Title>
@@ -99,7 +102,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>No</Button>
           <Button variant="primary" onClick={handleDelete}>
             Yes
-            </Button>
+          </Button>
         </Modal.Footer>
       </Modal>
     </React.Fragment>
