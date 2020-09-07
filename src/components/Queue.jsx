@@ -8,6 +8,7 @@ import {
   ListGroup,
   ListGroupItem,
 } from 'react-bootstrap';
+import Playlists from './Playlists';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
@@ -16,6 +17,7 @@ function Queue() {
   const [tracks, setTracks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [addToPlaylist, setAddToPlaylist] = useState(false);
   const clear = () => QueueClient.clearQueue().then(loadQueue());
   const content = () => (<ListGroup>{renderTracks}</ListGroup>);
 
@@ -25,6 +27,14 @@ function Queue() {
       setIsLoading(false);
       setIsLoaded(true);
     });
+  };
+
+  const shuffle = () => {
+    QueueClient.clearQueue().then(() => {
+      QueueClient.enqueueTracks(tracks.sort(() => Math.random() - 0.5)).then(() => {
+        loadQueue();
+      });
+    })
   };
 
   if (!isLoading && !isLoaded && !tracks.length) {
@@ -76,13 +86,17 @@ function Queue() {
   const controls = () => (
     <React.Fragment>
       <Button {...settingsProps} onClick={clear}>Clear Queue</Button>
-      <Button {...settingsProps}>Shuffle Queue</Button>
-      <Button {...settingsProps}>Save to Playlist</Button>
+      <Button {...settingsProps} onClick={() => shuffle()}>Shuffle Queue</Button>
+      <Button {...settingsProps} onClick={() => setAddToPlaylist(true)}>Save to Playlist</Button>
     </React.Fragment>
   );
 
   if (renderTracks.length) {
-    return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
+    if (!addToPlaylist) {
+      return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
+    } else {
+      return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+    }
   }
   return (
     <Container>

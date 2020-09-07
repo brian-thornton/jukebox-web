@@ -8,7 +8,7 @@ import PlaylistDetail from './PlaylistDetail';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 
-function Playlists(props) {
+function Playlists({tracks, mode, currentPlaylist}) {
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -44,12 +44,10 @@ function Playlists(props) {
   };
 
   const addTracksToPlaylist = (playlistName) => {
-    const { tracks } = props;
     PlaylistClient.addTracksToPlaylist(playlistName, tracks);
   };
 
   const buttons = (playlistName) => {
-    const { mode } = props;
     const buttonProps = {
       style: styles.buttonStyle,
       variant: 'outline-light',
@@ -70,8 +68,6 @@ function Playlists(props) {
 
     return playlistActions;
   };
-
-  const { currentPlaylist } = props;
 
   playlists.forEach((playlist) => {
     renderPlaylists.push(
