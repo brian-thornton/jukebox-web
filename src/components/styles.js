@@ -6,6 +6,14 @@ const albumCardStyle = {
   maxWidth: '200px',
 };
 
+const albumCardStyleSmall = {
+  background: 'transparent',
+  color: 'white',
+  borderColor: '#708090',
+  margin: '10px',
+  maxWidth: '75px',
+};
+
 const albumCardLarge = {
   background: 'transparent',
   color: 'white',
@@ -17,6 +25,11 @@ const albumCardLarge = {
 const albumImage = {
   maxHeight: '300px',
   maxWidth: '250px',
+};
+
+const albumImageSmall = {
+  maxHeight: '100px',
+  maxWidth: '75px',
 };
 
 const albumTitle = {
@@ -82,6 +95,8 @@ export default {
   albumCardLarge,
   albumCardStyle,
   albumImage,
+  albumImageSmall,
+  albumCardStyleSmall,
   albumTitle,
   buttonStyle,
   cardStyle,

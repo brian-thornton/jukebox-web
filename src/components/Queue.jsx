@@ -34,7 +34,7 @@ function Queue() {
       QueueClient.enqueueTracks(tracks.sort(() => Math.random() - 0.5)).then(() => {
         loadQueue();
       });
-    })
+    });
   };
 
   if (!isLoading && !isLoaded && !tracks.length) {
@@ -94,9 +94,8 @@ function Queue() {
   if (renderTracks.length) {
     if (!addToPlaylist) {
       return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
-    } else {
-      return (<Playlists mode="addToPlaylist" tracks={tracks} />);
     }
+    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
   }
   return (
     <Container>

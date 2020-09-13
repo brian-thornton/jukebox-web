@@ -13,6 +13,19 @@ export default class LibrarianClient {
     return json;
   }
 
+  static async getTrackAlbum(track) {
+    const response = await fetch(`/librarian/getTrackAlbum?track=${track}`);
+    const json = await response.json();
+    return json;
+  }
+
+  static async getTrackAlbums(tracks) {
+    console.log(tracks);
+    const response = await fetch('/librarian/getTrackAlbums', postParams(tracks));
+    const json = await response.json();
+    return json;
+  }
+
   static async searchAlbums(search) {
     const response = await fetch(`/librarian/albums/search?search=${search}`);
     const json = await response.json();

@@ -5,7 +5,9 @@ import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
 import styles from './styles';
 
-function Album({ album, cover, setCurrentAlbum, settings }) {
+function Album({
+  album, cover, setCurrentAlbum, settings, coverArtOnly,
+}) {
   const [coverArt, setCoverArt] = useState(defaultCover);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -27,14 +29,24 @@ function Album({ album, cover, setCurrentAlbum, settings }) {
     setIsLoaded(true);
   };
 
-  const largeAlbum = () => (
-    <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
-      <Card.Img style={styles.albumImage} top src={coverArt} />
-      <Card.Body>
-        <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
-      </Card.Body>
-    </Card>
-  );
+  const largeAlbum = () => {
+    if (coverArtOnly) {
+      return (
+        <Card style={styles.albumCardStyleSmall} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
+          <Card.Img style={styles.albumImageSmall} top src={coverArt} />
+        </Card>
+      );
+    }
+
+    return (
+      <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
+        <Card.Img style={styles.albumImage} top src={coverArt} />
+        <Card.Body>
+          <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
+        </Card.Body>
+      </Card>
+    );
+  };
 
   if (!isLoaded) {
     loadCoverArt();

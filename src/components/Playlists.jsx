@@ -8,7 +8,7 @@ import PlaylistDetail from './PlaylistDetail';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 
-function Playlists({tracks, mode, currentPlaylist}) {
+function Playlists({ tracks, mode, currentPlaylist }) {
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);

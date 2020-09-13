@@ -9,9 +9,9 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
 
-function Tracks({ search }) {
+function Tracks({ search, settings }) {
   const [start, setStart] = useState(0);
-  const [limit, setLimit] = useState(100);
+  const [limit, setLimit] = useState(50);
   const [tracks, setTracks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -36,7 +36,7 @@ function Tracks({ search }) {
 
   const loadMore = () => {
     setStart(limit);
-    setLimit(limit + 100);
+    setLimit(limit + 50);
     loadTracks();
   };
 
@@ -52,13 +52,25 @@ function Tracks({ search }) {
     return <React.Fragment />;
   };
 
+  const trackList = () => {
+    if (tracks.length) {
+      return (
+        <React.Fragment>
+          <TrackList tracks={tracks} settings={settings} showAlbumCovers />
+          <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
+        </React.Fragment>
+      );
+    }
+
+    return <React.Fragment />;
+  };
+
   return (
     <Container>
       <Row>
         <Col lg={12} xl={12}>
           {alert()}
-          <TrackList tracks={tracks} />
-          <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
+          {trackList()}
         </Col>
       </Row>
     </Container>
