@@ -17,15 +17,15 @@ function Playlists({ tracks, mode, currentPlaylist }) {
   const renderPlaylists = [];
   const alertText = 'Playlists';
 
-  const handleBackToPlaylists = () => {
-    setName('');
-    loadPlaylists();
-  };
-
   const loadPlaylists = () => {
     PlaylistClient.getPlaylists().then((data) => {
       setPlaylists(data);
     });
+  };
+
+  const handleBackToPlaylists = () => {
+    setName('');
+    loadPlaylists();
   };
 
   if (!playlists.length) {

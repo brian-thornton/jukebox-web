@@ -5,6 +5,7 @@ import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
 import SpotifySettings from './SpotifySettings';
 import ContentWithControls from './ContentWithControls';
+import PinModal from './PinModal';
 
 function Settings() {
   const [mode, setMode] = useState('LIBRARY');
@@ -33,7 +34,12 @@ function Settings() {
   );
 
   const alertText = 'Configure settings below to control your jukebox.';
-  return <ContentWithControls controls={controls()} content={content()} alertText={alertText} />;
+  return (
+    <React.Fragment>
+      <ContentWithControls controls={controls()} content={content()} alertText={alertText} />
+      <PinModal isOpen />
+    </React.Fragment>
+  );
 }
 
 export default Settings;

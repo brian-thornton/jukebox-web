@@ -9,6 +9,13 @@ import {
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
+import { Settings } from './shapes';
+
+const propTypes = {
+  search: PropTypes.string,
+  setCurrentAlbum: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
+};
 
 function AlbumList({ search, setCurrentAlbum, settings }) {
   const [start, setStart] = useState(0);
@@ -102,5 +109,11 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     </Container>
   );
 }
+
+AlbumList.propTypes = propTypes;
+
+AlbumList.defaultProps = {
+  search: '',
+};
 
 export default AlbumList;

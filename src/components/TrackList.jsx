@@ -8,7 +8,7 @@ import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 
-function TrackList({ tracks, settings, showAlbumCovers }) {
+function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDownloadLink }) {
   const [trackAlbum, setTrackAlbum] = useState();
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
@@ -41,15 +41,13 @@ function TrackList({ tracks, settings, showAlbumCovers }) {
 
   const getAlbum = (track) => {
     if (trackAlbumsLoaded) {
-      console.log(trackAlbums.find(trackAlbum => trackAlbum.track.path === track.path));
-      return trackAlbums.find(trackAlbum => trackAlbum.track.path === track.path);
+      return trackAlbums.find(trackAlbum => trackAlbum.path === track.path.substr(0, track.path.lastIndexOf('/')));
     }
   };
 
   const getTrackAlbums = (tracks) => {
     setTrackAlbumsLoading(true);
     LibrianClient.getTrackAlbums(tracks).then((data) => {
-      console.log(data);
       setTrackAlbums(data);
       setTrackAlbumsLoaded(true);
       setTrackAlbumsLoading(false);
@@ -63,7 +61,7 @@ function TrackList({ tracks, settings, showAlbumCovers }) {
   }
 
   const link = (track) => {
-    if (settings && settings.features.admin) {
+    if (settings && settings.features.admin && showDownloadLink) {
       return <div style={{ color: 'white', cursor: 'pointer', textDecoration: 'underline' }}><a onClick={() => handleDownload(track)}>Download</a></div>;
     }
 
@@ -72,10 +70,10 @@ function TrackList({ tracks, settings, showAlbumCovers }) {
 
   const album = (track) => {
     const ta = getAlbum(track);
-
+    console.log(ta);
     if (showAlbumCovers && ta) {
       if (settings && settings.features) {
-        return <Album album={ta} settings={settings} coverArtOnly />;
+        return <Album album={ta} settings={settings} coverArtOnly setCurrentAlbum={setCurrentAlbum} />;
       }
     }
 

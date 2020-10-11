@@ -4,6 +4,15 @@ import { PropTypes } from 'prop-types';
 import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
 import styles from './styles';
+import { Album as albumShape, Settings } from './shapes';
+
+const propTypes = {
+  album: albumShape.isRequired,
+  cover: PropTypes.string,
+  setCurrentAlbum: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
+  coverArtOnly: PropTypes.bool,
+};
 
 function Album({
   album, cover, setCurrentAlbum, settings, coverArtOnly,
@@ -54,5 +63,7 @@ function Album({
 
   return largeAlbum();
 }
+
+Album.propTypes = propTypes;
 
 export default Album;

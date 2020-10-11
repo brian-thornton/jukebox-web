@@ -18,9 +18,8 @@ function Queue() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
-  const clear = () => QueueClient.clearQueue().then(loadQueue());
-  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
-
+  const renderTracks = [];
+  
   const loadQueue = () => {
     QueueClient.getQueue().then((data) => {
       setTracks(data);
@@ -28,6 +27,9 @@ function Queue() {
       setIsLoaded(true);
     });
   };
+
+  const clear = () => QueueClient.clearQueue().then(loadQueue());
+  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
 
   const shuffle = () => {
     QueueClient.clearQueue().then(() => {
@@ -43,7 +45,7 @@ function Queue() {
   }
 
   const message = 'There are no tracks in the queue.';
-  const alert = (<Alert variant="info">{message}</Alert>);
+  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
@@ -55,7 +57,6 @@ function Queue() {
     loadQueue();
   };
 
-  const renderTracks = [];
   const buttonProps = {
     style: styles.buttonStyle,
     variant: 'outline-light',

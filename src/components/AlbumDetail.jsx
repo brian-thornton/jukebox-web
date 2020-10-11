@@ -14,13 +14,14 @@ import TrackList from './TrackList';
 import Playlists from './Playlists';
 import styles from './styles';
 import SpotifyClient from '../lib/spotify-client';
-import { Album } from './shapes';
+import { Album, Settings } from './shapes';
 
 const albumArt = require('album-art');
 
 const propTypes = {
   album: Album.isRequired,
   clearCurrentAlbum: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
 };
 
 function AlbumDetail({ album, clearCurrentAlbum, settings }) {
@@ -135,7 +136,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
               </Card>
             </Col>
             <Col lg={8} xl={8}>
-              <TrackList tracks={tracks} settings={settings} />
+              <TrackList tracks={tracks} settings={settings} showDownloadLink />
             </Col>
           </Row>
         </Container>

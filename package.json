@@ -5,6 +5,7 @@
   "dependencies": {
     "album-art": "^2.0.2",
     "bootstrap": "^4.3.1",
+    "downloadjs": "^1.4.7",
     "node-spotify-api": "^1.1.1",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
@@ -13,14 +14,15 @@
     "react-redux": "^7.0.2",
     "react-scripts": "^3.4.0",
     "redux": "^4.0.1",
-    "request-promise": "^4.2.5"
+    "request-promise": "^4.2.5",
+    "stream-to-blob": "^2.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "./node_modules/eslint/bin/eslint.js --fix ./src/**/*"
+    "lint": "./node_modules/eslint/bin/eslint.js ./src/**/*"
   },
   "proxy": "http://localhost:3001/",
   "eslintConfig": {
