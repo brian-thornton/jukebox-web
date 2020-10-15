@@ -1,49 +1,78 @@
-import React, { useState } from 'react';
-import { Button, Modal } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Button, Modal, Container, Row } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Album as albumShape, Settings } from './shapes';
+import { Settings } from './shapes';
 
 const propTypes = {
-  album: albumShape.isRequired,
-  cover: PropTypes.string,
-  setCurrentAlbum: PropTypes.func.isRequired,
+  isOpen: PropTypes.bool,
   settings: Settings.isRequired,
-  coverArtOnly: PropTypes.bool,
+  handleClose: PropTypes.func.isRequired,
 };
 
-function PinModal({isOpen}) {
+function PinModal({ isOpen, settings, handleClose }) {
   const [pin, setPin] = useState('');
 
-  const numberButton = (number) => (
-    <Button key={number} style={{ margin: '5px' }} variant="outline-light" onClick={() => setPin(`${pin}${number}`)}>{number}</Button>
-  );
+  useEffect(() => {
+    if (pin === settings.pin) {
+      handleClose(true);
+    }
+  }, [pin])
 
-  const handleClose = () => {
+  const numberButton = (number) => {
+    const numberButtonStyle = {
+      width: '75px',
+      height: '75px',
+      margin: '5px',
+    }
 
+    return (
+      <Button
+        key={number}
+        style={numberButtonStyle}
+        variant="outline-light"
+        onClick={() => setPin(`${pin}${number}`)}
+      >
+        {number}
+      </Button>
+    );
   };
 
+  const headerStyle = { backgroundColor: 'dimGray', color: 'white' };
+  const bodyStyle = { backgroundColor: 'dimGray' };
+  const footerStyle = { backgroundColor: 'dimGray' };
+  const clearButtonStyle = { width: '160px', height: '75px', margin: '5px' };
+
   return (
-    <Modal show={isOpen} onHide={handleClose}>
-      <Modal.Header closeButton>
+    <Modal size="sm" show={isOpen} onHide={() => handleClose(pin === settings.pin)}>
+      <Modal.Header closeButton style={headerStyle}>
         <Modal.Title>Enter Pin</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {numberButton(1)}
-        {numberButton(2)}
-        {numberButton(3)}
-        {numberButton(4)}
-        {numberButton(5)}
-        {numberButton(6)}
-        {numberButton(7)}
-        {numberButton(8)}
-        {numberButton(9)}
-        {numberButton(0)}
+      <Modal.Body style={bodyStyle}>
+        <Container>
+          <Row>
+            {numberButton(1)}
+            {numberButton(2)}
+            {numberButton(3)}
+          </Row>
+          <Row>
+            {numberButton(4)}
+            {numberButton(5)}
+            {numberButton(6)}
+          </Row>
+          <Row>
+            {numberButton(7)}
+            {numberButton(8)}
+            {numberButton(9)}
+          </Row>
+          <Row>
+            {numberButton(0)}
+            <Button variant="outline-light" style={clearButtonStyle} onClick={() => setPin('')}>Clear</Button>
+          </Row>
+        </Container>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="primary" onClick={() => handleClose(pin)}>
-          OK
-    </Button>
+      <Modal.Footer style={footerStyle}>
+        <Button variant="secondary" onClick={() => handleClose(false)}>Close</Button>
+        <Button variant="primary" onClick={() => handleClose(pin === settings.pin)}>OK</Button>
       </Modal.Footer>
     </Modal>
   );

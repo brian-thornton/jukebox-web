@@ -22,6 +22,8 @@ import Settings from './Settings';
 import SpotifyClient from '../lib/spotify-client';
 import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';
+import Search from './SearchModal';
+import SearchModal from './SearchModal';
 
 function Jukebox() {
   const [mode, setMode] = useState('AlbumList');
@@ -29,6 +31,7 @@ function Jukebox() {
   const [settings, setSettings] = useState();
   const [currentAlbum, setCurrentAlbum] = useState();
   const [nowPlaying, setNowPlaying] = useState('');
+  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   setInterval(() => {
     StatusClient.getStatus().then(status => {
@@ -90,6 +93,11 @@ function Jukebox() {
       navLinks = addNavLink(navLinks, features.settings, 'Settings', 'Settings');
     }
     return navLinks;
+  };
+
+  const handleSearch = (searchText) => {
+    setIsSearchModalOpen(false);
+    setSearch(searchText);
   };
 
   const onSearch = () => {
@@ -171,7 +179,7 @@ function Jukebox() {
           body = <Queue settings={settings} />;
           break;
         case 'Settings':
-          body = <Settings />;
+          body = <Settings settings={settings} />;
           break;
         default:
           body = (
@@ -185,6 +193,18 @@ function Jukebox() {
     }
   }
 
+  const searchResults = () => {
+    if (search) {
+      return (
+        <div style={{ float: 'left', color: 'white', fontSize: '20px', paddingRight: '20px'}}>
+          {`Search Results: ${search}`}
+        </div>
+      );
+    }
+
+    return <React.Fragment />
+  };
+
   if (settings) {
     return (
       <React.Fragment>
@@ -195,9 +215,8 @@ function Jukebox() {
             <Nav className="mr-auto">
               {generateNavItems()}
             </Nav>
-            <Form inline>
-              <FormControl id="searchBox" type="text" onChange={debounce(onSearch, 1000)} placeholder="Search" className="mr-sm-2" />
-            </Form>
+            {searchResults()}
+            <Button style={{ margin: '5px' }} variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
           </Navbar.Collapse>
         </Navbar>
         <Container fluid style={{ marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
@@ -214,6 +233,7 @@ function Jukebox() {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
+        <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} />
       </React.Fragment>
     );
   }
