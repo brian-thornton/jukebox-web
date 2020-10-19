@@ -20,7 +20,6 @@ export default class LibrarianClient {
   }
 
   static async getTrackAlbums(tracks) {
-    console.log(tracks);
     const response = await fetch('/librarian/getTrackAlbums', postParams(tracks));
     const json = await response.json();
     return json;

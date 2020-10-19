@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
+import React, { useState } from 'react';
 import {
   ListGroup, ListGroupItem, Button, Container, Row, Col,
 } from 'react-bootstrap';
@@ -7,6 +7,18 @@ import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
+import { Track, Settings } from './shapes';
+
+import './TrackList.css';
+
+const propTypes = {
+  tracks: PropTypes.arrayOf(Track),
+  settings: Settings.isRequired,
+  showAlbumCovers: PropTypes.bool,
+  setCurrentAlbum: PropTypes.func.isRequired,
+  showDownloadLink: PropTypes.bool,
+};
+
 
 function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDownloadLink }) {
   const [trackAlbum, setTrackAlbum] = useState();
@@ -62,7 +74,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
 
   const link = (track) => {
     if (settings && settings.features.admin && showDownloadLink) {
-      return <div style={{ color: 'white', cursor: 'pointer', textDecoration: 'underline' }}><a onClick={() => handleDownload(track)}>Download</a></div>;
+      return <div className="download"><a onClick={() => handleDownload(track)}>Download</a></div>;
     }
 
     return <React.Fragment />;
@@ -73,7 +85,14 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
     console.log(ta);
     if (showAlbumCovers && ta) {
       if (settings && settings.features) {
-        return <Album album={ta} settings={settings} coverArtOnly setCurrentAlbum={setCurrentAlbum} />;
+        return (
+          <Album
+            album={ta}
+            settings={settings}
+            coverArtOnly
+            setCurrentAlbum={setCurrentAlbum}
+          />
+        );
       }
     }
 
@@ -82,6 +101,11 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
 
   if (settings && settings.features) {
     tracks.forEach((track) => {
+      const playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
+      const enqueueButton = (
+        <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
+      );
+
       if (track.id) {
         track.accessToken = window.accessToken;
       }
@@ -96,9 +120,9 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
                     {album(track)}
                   </Col>
                   <Col lg={10} xl={10}>
-                    <div style={{ paddingTop: '30px' }}>{track.name}</div>
-                    <Button style={{ paddingTop: '-30px' }} {...buttonProps} onClick={() => playNow(track)}>Play</Button>
-                    <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
+                    <div className="track-name">{track.name}</div>
+                    {playButton}
+                    {enqueueButton}
                   </Col>
                 </Row>
               </Container>
@@ -111,8 +135,8 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
           (
             <ListGroupItem style={styles.cardStyle}>
               {track.name}
-              <Button style={{ paddingTop: '-30px' }} {...buttonProps} onClick={() => playNow(track)}>Play</Button>
-              <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
+              {playButton}
+              {enqueueButton}
               {link(track)}
             </ListGroupItem>
           ),
@@ -125,10 +149,11 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
 
   return <React.Fragment />;
 }
-export default TrackList;
 
-TrackList.propTypes = {
-  tracks: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string,
-  })).isRequired,
+TrackList.propTypes = propTypes;
+TrackList.defaultProps = {
+  showAlbumCovers: false,
+  showDownloadLink: false,
 };
+
+export default TrackList;

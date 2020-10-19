@@ -71,6 +71,14 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     loadAlbums();
   };
 
+  const loadButton = () => {
+    if (!search) {
+      return <Button block variant="outline-info" onClick={loadMore}>Load More</Button>;
+    }
+
+    return <React.Fragment />;
+  };
+
   if (!albums.length && !isLoading && !isLoaded) {
     loadAlbums();
   }
@@ -93,7 +101,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
           {renderAlbums}
         </Row>
         <Row>
-          <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
+          {loadButton()}
         </Row>
       </Container>
     );

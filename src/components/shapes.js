@@ -7,6 +7,12 @@ export const Album = PropTypes.shape({
   trackCount: PropTypes.number,
 });
 
+export const Track = PropTypes.shape({
+  name: PropTypes.string,
+  path: PropTypes.string,
+  id: PropTypes.string,
+});
+
 export const Settings = PropTypes.shape({
   spotify: {
     useSpotify: PropTypes.bool,
@@ -15,8 +21,8 @@ export const Settings = PropTypes.shape({
     spotifyFeatures: {
       albums: PropTypes.bool,
       newReleases: PropTypes.bool,
-      categories: PropTypes.bool
-    }
+      categories: PropTypes.bool,
+    },
   },
   features: {
     albums: PropTypes.bool,
@@ -33,9 +39,9 @@ export const Settings = PropTypes.shape({
     playAlbum: PropTypes.bool,
     addToPlaylist: PropTypes.bool,
     deletePlaylist: PropTypes.bool,
-    admin: PropTypes.bool
+    admin: PropTypes.bool,
   },
   preferences: {
-    name: PropTypes.string
-  }
+    name: PropTypes.string,
+  },
 });

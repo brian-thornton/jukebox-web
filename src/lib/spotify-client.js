@@ -2,7 +2,7 @@ const rp = require('request-promise');
 
 class SpotifyClient {
   static getAccessToken() {
-    let urlParams = new URLSearchParams(window.location.search);
+    const urlParams = new URLSearchParams(window.location.search);
     window.authorizationToken = urlParams.get('code');
 
     if (window.accessToken) {
@@ -15,33 +15,33 @@ class SpotifyClient {
         code: window.authorizationToken,
         redirect_uri: `http://${window.location.hostname}:3000`,
         grant_type: 'authorization_code',
-        client_id: "a842760e748245a6b0572b3bd8e1a953",
-        client_secret: "cc30ac64b20749ce9b9207d65cff8020",
+        client_id: 'a842760e748245a6b0572b3bd8e1a953',
+        client_secret: 'cc30ac64b20749ce9b9207d65cff8020',
       },
-      json: true
+      json: true,
     };
 
     return rp.post(authOptions);
   }
 
-  static getAuthorizationToken = (redirectUri) => {
-    let urlParams = new URLSearchParams(window.location.search);
+  static getAuthorizationToken(redirectUri) {
+    const urlParams = new URLSearchParams(window.location.search);
 
     if (urlParams.get('code')) {
       window.authorizationToken = urlParams.get('code');
       return;
     }
-    alert(redirectUri);
-    let scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-public ' +
-      'playlist-read-collaborative playlist-modify-private user-read-currently-playing user-modify-playback-state ' +
-      'user-read-playback-state user-read-recently-played user-top-read user-follow-read user-follow-modify ' +
-      'app-remote-control streaming user-read-private user-read-email user-library-modify user-library-read';
 
-    window.location.replace('https://accounts.spotify.com/authorize' +
-      '?response_type=code' +
-      '&client_id=a842760e748245a6b0572b3bd8e1a953' +
-      (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-      '&redirect_uri=' + redirectUri);
+    const scopes = 'user-read-private user-read-email playlist-read-private playlist-modify-public '
+      + 'playlist-read-collaborative playlist-modify-private user-read-currently-playing user-modify-playback-state '
+      + 'user-read-playback-state user-read-recently-played user-top-read user-follow-read user-follow-modify '
+      + 'app-remote-control streaming user-read-private user-read-email user-library-modify user-library-read';
+
+    window.location.replace('https://accounts.spotify.com/authorize'
+      + '?response_type=code'
+      + '&client_id=a842760e748245a6b0572b3bd8e1a953'
+      + (scopes ? '&scope=' + encodeURIComponent(scopes) : '')
+      + '&redirect_uri=' + redirectUri);
   }
 
   static async findAlbums(search, limit, offset) {

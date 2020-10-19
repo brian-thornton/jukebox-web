@@ -6,6 +6,8 @@ import defaultCover from '../default_album.jpg';
 import styles from './styles';
 import { Album as albumShape, Settings } from './shapes';
 
+import './Album.css';
+
 const propTypes = {
   album: albumShape.isRequired,
   cover: PropTypes.string,
@@ -41,7 +43,7 @@ function Album({
   const largeAlbum = () => {
     if (coverArtOnly) {
       return (
-        <Card style={styles.albumCardStyleSmall} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
+        <Card className="h-55 w-85 album-card-small" onClick={() => setCurrentAlbum(album)}>
           <Card.Img style={styles.albumImageSmall} top src={coverArt} />
         </Card>
       );

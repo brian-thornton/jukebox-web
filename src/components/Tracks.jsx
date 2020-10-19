@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import {
   Alert,
@@ -8,6 +9,13 @@ import {
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
+import { Settings } from './shapes';
+
+const propTypes = {
+  search: PropTypes.string,
+  setCurrentAlbum: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
+};
 
 function Tracks({ search, settings, setCurrentAlbum }) {
   const [start, setStart] = useState(0);
@@ -56,7 +64,12 @@ function Tracks({ search, settings, setCurrentAlbum }) {
     if (tracks.length) {
       return (
         <React.Fragment>
-          <TrackList tracks={tracks} settings={settings} showAlbumCovers setCurrentAlbum={setCurrentAlbum} />
+          <TrackList
+            tracks={tracks}
+            settings={settings}
+            showAlbumCovers
+            setCurrentAlbum={setCurrentAlbum}
+          />
           <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
         </React.Fragment>
       );
@@ -76,5 +89,10 @@ function Tracks({ search, settings, setCurrentAlbum }) {
     </Container>
   );
 }
+
+Tracks.propTypes = propTypes;
+Tracks.defaultProps = {
+  search: '',
+};
 
 export default Tracks;
