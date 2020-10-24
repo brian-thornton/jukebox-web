@@ -101,53 +101,11 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
 
   if (settings && settings.features) {
     tracks.forEach((track) => {
-<<<<<<< HEAD
       if (track.path.split('.').pop().toLowerCase() === 'mp3') {
         const playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
         const enqueueButton = (
           <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
-=======
-      const playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
-      const enqueueButton = (
-        <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
-      );
-
-      if (track.id) {
-        track.accessToken = window.accessToken;
-      }
-
-      if (showAlbumCovers) {
-        renderTracks.push(
-          (
-            <ListGroupItem style={styles.cardStyle}>
-              <Container>
-                <Row>
-                  <Col lg={2} xl={2}>
-                    {album(track)}
-                  </Col>
-                  <Col lg={10} xl={10}>
-                    <div className="track-name">{track.name}</div>
-                    {playButton}
-                    {enqueueButton}
-                  </Col>
-                </Row>
-              </Container>
-              {link(track)}
-            </ListGroupItem>
-          ),
-        );
-      } else {
-        renderTracks.push(
-          (
-            <ListGroupItem style={styles.cardStyle}>
-              {track.name}
-              {playButton}
-              {enqueueButton}
-              {link(track)}
-            </ListGroupItem>
-          ),
->>>>>>> debc92e16760441eafb0b455f72e02964433a5b2
-        );
+        )
 
         if (track.id) {
           track.accessToken = window.accessToken;
@@ -184,9 +142,47 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
               </ListGroupItem>
             ),
           );
+
+          if (track.id) {
+            track.accessToken = window.accessToken;
+          }
+
+          if (showAlbumCovers) {
+            renderTracks.push(
+              (
+                <ListGroupItem style={styles.cardStyle}>
+                  <Container>
+                    <Row>
+                      <Col lg={2} xl={2}>
+                        {album(track)}
+                      </Col>
+                      <Col lg={10} xl={10}>
+                        <div className="track-name">{track.name}</div>
+                        {playButton}
+                        {enqueueButton}
+                      </Col>
+                    </Row>
+                  </Container>
+                  {link(track)}
+                </ListGroupItem>
+              ),
+            );
+          } else {
+            renderTracks.push(
+              (
+                <ListGroupItem style={styles.cardStyle}>
+                  {track.name}
+                  {playButton}
+                  {enqueueButton}
+                  {link(track)}
+                </ListGroupItem>
+              ),
+            );
+          }
         }
       }
-    });
+    }
+    );
 
     return <ListGroup>{renderTracks}</ListGroup>;
   }
