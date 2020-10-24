@@ -25,6 +25,8 @@ import Libraries from './Libraries';
 
 import './Jukebox.css';
 
+import './Jukebox.css';
+
 function Jukebox() {
   const [mode, setMode] = useState('AlbumList');
   const [search, setSearch] = useState('');
