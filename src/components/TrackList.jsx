@@ -82,7 +82,6 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
 
   const album = (track) => {
     const ta = getAlbum(track);
-    console.log(ta);
     if (showAlbumCovers && ta) {
       if (settings && settings.features) {
         return (
@@ -103,9 +102,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
     tracks.forEach((track) => {
       if (track.path.split('.').pop().toLowerCase() === 'mp3') {
         const playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
-        const enqueueButton = (
-          <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
-        )
+        const enqueueButton = <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>;
 
         if (track.id) {
           track.accessToken = window.accessToken;
@@ -142,47 +139,9 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
               </ListGroupItem>
             ),
           );
-
-          if (track.id) {
-            track.accessToken = window.accessToken;
-          }
-
-          if (showAlbumCovers) {
-            renderTracks.push(
-              (
-                <ListGroupItem style={styles.cardStyle}>
-                  <Container>
-                    <Row>
-                      <Col lg={2} xl={2}>
-                        {album(track)}
-                      </Col>
-                      <Col lg={10} xl={10}>
-                        <div className="track-name">{track.name}</div>
-                        {playButton}
-                        {enqueueButton}
-                      </Col>
-                    </Row>
-                  </Container>
-                  {link(track)}
-                </ListGroupItem>
-              ),
-            );
-          } else {
-            renderTracks.push(
-              (
-                <ListGroupItem style={styles.cardStyle}>
-                  {track.name}
-                  {playButton}
-                  {enqueueButton}
-                  {link(track)}
-                </ListGroupItem>
-              ),
-            );
-          }
         }
       }
-    }
-    );
+    });
 
     return <ListGroup>{renderTracks}</ListGroup>;
   }
