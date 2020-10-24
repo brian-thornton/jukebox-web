@@ -80,7 +80,7 @@ function Jukebox() {
       const { spotifyFeatures } = spotify;
 
       navLinks = addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
-      navLinks = addNavLink(navLinks, features.albums, 'Libraries', 'Libraries');
+      navLinks = addNavLink(navLinks, features.libraries, 'Libraries', 'Libraries');
 
       if (settings.spotify.useSpotify) {
         navLinks = addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');

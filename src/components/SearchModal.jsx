@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Modal,
@@ -16,6 +16,31 @@ const propTypes = {
 
 function SearchModal({ isOpen, handleClose }) {
   const [searchText, setSearchText] = useState('Enter Search');
+
+  const keydownListener = (event) => {
+    const whitelistKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
+      'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '.'];
+
+    if (whitelistKeys.includes(event.key.toLowerCase())) {
+      if (searchText === 'Enter Search') {
+        setSearchText(event.key);
+      } else {
+        setSearchText(`${searchText}${event.key}`);
+      }
+    } else if (event.key.toLowerCase() === ' ') {
+      if (searchText === 'Enter Search') {
+        setSearchText(' ');
+      } else {
+        setSearchText(`${searchText} `);
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("keydown", keydownListener, true);
+    return () => window.removeEventListener("keydown", keydownListener, true);
+  }, [keydownListener]);
 
   const inputButton = (value, padding) => {
     const inputButtonStyle = {
@@ -58,7 +83,7 @@ function SearchModal({ isOpen, handleClose }) {
       <Modal.Body className="body">
         <Container>
           <Row>
-            {inputButton(1)}
+            {inputButton(1, 60)}
             {inputButton(2)}
             {inputButton(3)}
             {inputButton(4)}
@@ -70,7 +95,7 @@ function SearchModal({ isOpen, handleClose }) {
             {inputButton(0)}
           </Row>
           <Row>
-            {inputButton('Q')}
+            {inputButton('Q', 60)}
             {inputButton('W')}
             {inputButton('E')}
             {inputButton('R')}
@@ -82,7 +107,7 @@ function SearchModal({ isOpen, handleClose }) {
             {inputButton('P')}
           </Row>
           <Row>
-            {inputButton('A', 50)}
+            {inputButton('A', 100)}
             {inputButton('S')}
             {inputButton('D')}
             {inputButton('F')}
@@ -93,7 +118,7 @@ function SearchModal({ isOpen, handleClose }) {
             {inputButton('L')}
           </Row>
           <Row>
-            {inputButton('Z', 100)}
+            {inputButton('Z', 150)}
             {inputButton('X')}
             {inputButton('C')}
             {inputButton('V')}
@@ -105,13 +130,10 @@ function SearchModal({ isOpen, handleClose }) {
           <Row>
             <Button variant="outline-light" className="space-button" onClick={() => setSearchText(`${searchText} `)}>Space</Button>
             <Button variant="outline-light" className="clear-button" onClick={() => setSearchText('')}>Clear</Button>
+            <Button variant="outline-light" className="search-button" onClick={() => handleClose(searchText)}>Search Now</Button>
           </Row>
         </Container>
       </Modal.Body>
-      <Modal.Footer className="footer">
-        <Button variant="secondary" onClick={() => handleClose(false)}>Close</Button>
-        <Button variant="primary" onClick={() => handleClose(searchText)}>OK</Button>
-      </Modal.Footer>
     </Modal>
   );
 }

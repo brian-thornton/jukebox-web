@@ -55,6 +55,7 @@ function SettingsEditor() {
         {settingRow('admin', settings.features.admin)}
         {settingRow('useSpotify', settings.spotify.useSpotify)}
         {settingRow('albums', settings.features.albums)}
+        {settingRow('libraries', settings.features.libraries)}
         {settingRow('tracks', settings.features.tracks)}
         {settingRow('playlists', settings.features.playlists)}
         {settingRow('queue', settings.features.queue)}

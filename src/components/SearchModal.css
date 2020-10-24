@@ -18,14 +18,20 @@
 }
 
 .modal-90w {
-  max-width: 50% !important;
+  max-width: 70% !important;
 }
 
 .space-button {
   height: 75px;
   margin-bottom: 5px;
-  margin-left: 100px;
+  margin-left: 150px;
   margin-top: 5px;
-  width: 500px;
+  width: 300px;
 }
 
+.search-button {
+  height: 75px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  width: 200px;
+}

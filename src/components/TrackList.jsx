@@ -19,7 +19,6 @@ const propTypes = {
   showDownloadLink: PropTypes.bool,
 };
 
-
 function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDownloadLink }) {
   const [trackAlbum, setTrackAlbum] = useState();
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();

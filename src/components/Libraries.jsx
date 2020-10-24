@@ -27,6 +27,9 @@ function Libraries({ search, settings, setCurrentAlbum }) {
   const loadLibraries = () => {
     setIsLoading(true);
     LibrianClient.getLibraries().then((data) => {
+      if (!data.length) {
+        setAlertText('No libraries found.  Set up your libraries in Settings.');
+      }
       setLibraries(data);
       setIsLoading(false);
       setIsLoaded(true);
