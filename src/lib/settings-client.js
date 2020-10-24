@@ -1,5 +1,5 @@
 class SettingsClient {
-  static postProps = () => ({
+  static postProps = {
     method: 'post',
     mode: 'cors',
     cache: 'no-cache',
@@ -9,7 +9,7 @@ class SettingsClient {
     },
     redirect: 'follow',
     referrer: 'no-referrer',
-  });
+  };
 
   static async getSettings() {
     const response = await fetch('/settings/getSettings');
@@ -19,7 +19,7 @@ class SettingsClient {
 
   static async updateSettings(settings) {
     const response = await fetch('/settings/updateSettings', {
-      ...SettingsClient.postProps(),
+      ...SettingsClient.postProps,
       body: JSON.stringify(settings),
     });
     return response;

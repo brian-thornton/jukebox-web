@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Modal, Container, Row } from 'react-bootstrap';
+import React, { useState } from 'react';
+import {
+  Button,
+  Modal,
+  Container,
+  Row,
+} from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Settings } from './shapes';
 
 import './SearchModal.css';
 
 const propTypes = {
-  isOpen: PropTypes.bool,
-  settings: Settings.isRequired,
+  isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 
-function SearchModal({ isOpen, settings, handleClose }) {
+function SearchModal({ isOpen, handleClose }) {
   const [searchText, setSearchText] = useState('Enter Search');
 
   const inputButton = (value, padding) => {
@@ -29,7 +32,6 @@ function SearchModal({ isOpen, settings, handleClose }) {
       inputButtonStyle.margin = '5px';
     }
 
-
     return (
       <Button
         key={value}
@@ -37,9 +39,9 @@ function SearchModal({ isOpen, settings, handleClose }) {
         variant="outline-light"
         onClick={() => {
           if (searchText === 'Enter Search') {
-            setSearchText(value)
+            setSearchText(value);
           } else {
-            setSearchText(`${searchText}${value}`)
+            setSearchText(`${searchText}${value}`);
           }
         }}
       >
@@ -48,28 +50,12 @@ function SearchModal({ isOpen, settings, handleClose }) {
     );
   };
 
-  const headerStyle = { backgroundColor: 'dimGray', color: 'white' };
-  const bodyStyle = { backgroundColor: 'dimGray' };
-  const footerStyle = { backgroundColor: 'dimGray' };
-  const spaceButtonStyle = {
-    width: '500px',
-    height: '75px',
-    marginTop: '5px',
-    marginBottom: '5px',
-    marginLeft: '100px',
-  };
-  const clearButtonStyle = {
-    width: '160px',
-    height: '75px',
-    margin: '5px',
-  };
-
   return (
     <Modal dialogClassName="modal-90w" show={isOpen} onHide={() => handleClose('')}>
-      <Modal.Header closeButton style={headerStyle}>
+      <Modal.Header closeButton className="header">
         <Modal.Title>{searchText}</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={bodyStyle}>
+      <Modal.Body className="body">
         <Container>
           <Row>
             {inputButton(1)}
@@ -117,12 +103,12 @@ function SearchModal({ isOpen, settings, handleClose }) {
             {inputButton('.')}
           </Row>
           <Row>
-            <Button variant="outline-light" style={spaceButtonStyle} onClick={() => setSearchText(`${searchText} `)}>Space</Button>
-            <Button variant="outline-light" style={clearButtonStyle} onClick={() => setSearchText('')}>Clear</Button>
+            <Button variant="outline-light" className="space-button" onClick={() => setSearchText(`${searchText} `)}>Space</Button>
+            <Button variant="outline-light" className="clear-button" onClick={() => setSearchText('')}>Clear</Button>
           </Row>
         </Container>
       </Modal.Body>
-      <Modal.Footer style={footerStyle}>
+      <Modal.Footer className="footer">
         <Button variant="secondary" onClick={() => handleClose(false)}>Close</Button>
         <Button variant="primary" onClick={() => handleClose(searchText)}>OK</Button>
       </Modal.Footer>

@@ -113,6 +113,7 @@ export default PlaylistDetail;
 
 PlaylistDetail.propTypes = {
   name: PropTypes.string,
+  handleBackToPlaylists: PropTypes.func.isRequired,
 };
 PlaylistDetail.defaultProps = {
   name: '',

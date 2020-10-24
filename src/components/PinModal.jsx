@@ -1,10 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Modal, Container, Row } from 'react-bootstrap';
+import {
+  Button,
+  Modal,
+  Container,
+  Row,
+} from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { Settings } from './shapes';
 
+import './PinModal.css';
+
 const propTypes = {
-  isOpen: PropTypes.bool,
+  isOpen: PropTypes.bool.isRequired,
   settings: Settings.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
@@ -16,38 +23,25 @@ function PinModal({ isOpen, settings, handleClose }) {
     if (pin === settings.pin) {
       handleClose(true);
     }
-  }, [pin])
+  }, [pin]);
 
-  const numberButton = (number) => {
-    const numberButtonStyle = {
-      width: '75px',
-      height: '75px',
-      margin: '5px',
-    }
-
-    return (
-      <Button
-        key={number}
-        style={numberButtonStyle}
-        variant="outline-light"
-        onClick={() => setPin(`${pin}${number}`)}
-      >
-        {number}
-      </Button>
-    );
-  };
-
-  const headerStyle = { backgroundColor: 'dimGray', color: 'white' };
-  const bodyStyle = { backgroundColor: 'dimGray' };
-  const footerStyle = { backgroundColor: 'dimGray' };
-  const clearButtonStyle = { width: '160px', height: '75px', margin: '5px' };
+  const numberButton = number => (
+    <Button
+      key={number}
+      className="number-button"
+      variant="outline-light"
+      onClick={() => setPin(`${pin}${number}`)}
+    >
+      {number}
+    </Button>
+  );
 
   return (
     <Modal size="sm" show={isOpen} onHide={() => handleClose(pin === settings.pin)}>
-      <Modal.Header closeButton style={headerStyle}>
+      <Modal.Header closeButton className="header">
         <Modal.Title>Enter Pin</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={bodyStyle}>
+      <Modal.Body className="body">
         <Container>
           <Row>
             {numberButton(1)}
@@ -66,11 +60,11 @@ function PinModal({ isOpen, settings, handleClose }) {
           </Row>
           <Row>
             {numberButton(0)}
-            <Button variant="outline-light" style={clearButtonStyle} onClick={() => setPin('')}>Clear</Button>
+            <Button variant="outline-light" className="clear-button" onClick={() => setPin('')}>Clear</Button>
           </Row>
         </Container>
       </Modal.Body>
-      <Modal.Footer style={footerStyle}>
+      <Modal.Footer className="footer">
         <Button variant="secondary" onClick={() => handleClose(false)}>Close</Button>
         <Button variant="primary" onClick={() => handleClose(pin === settings.pin)}>OK</Button>
       </Modal.Footer>

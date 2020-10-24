@@ -12,10 +12,6 @@ function SpotifyAlbums(props) {
   const [start, setStart] = useState(0);
   const [albums, setAlbums] = useState([]);
 
-  useEffect(() => {
-    loadAlbums(0, limit);
-  }, [props.search]);
-
   const loadAlbums = (start, limit) => {
     if (start >= 0 && limit) {
       SpotifyClient.getAccessToken().then((token) => {
@@ -28,13 +24,18 @@ function SpotifyAlbums(props) {
 
         SpotifyClient.findAlbums(query, limit, start).then((data) => {
           if (data.albums) {
-            start === 0 ? setAlbums(data.albums.items) : setAlbums(albums.concat(data.albums.items));
+            const { items } = data.albums;
+            start === 0 ? setAlbums(items) : setAlbums(albums.concat(items));
             setStart(start + limit);
           }
         });
       });
     }
   };
+
+  useEffect(() => {
+    loadAlbums(0, limit);
+  }, [props.search]);
 
   if (!albums.length) {
     loadAlbums(start, limit);

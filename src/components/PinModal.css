@@ -17,15 +17,8 @@
   color: #ffffff;
 }
 
-.modal-90w {
-  max-width: 50% !important;
-}
-
-.space-button {
+.number-button {
   height: 75px;
-  margin-bottom: 5px;
-  margin-left: 100px;
-  margin-top: 5px;
-  width: 500px;
+  margin: 5px;
+  width: 75px;
 }
-

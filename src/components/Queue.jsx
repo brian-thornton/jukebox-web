@@ -19,7 +19,7 @@ function Queue() {
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const renderTracks = [];
-  
+
   const loadQueue = () => {
     QueueClient.getQueue().then((data) => {
       setTracks(data);

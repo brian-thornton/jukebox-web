@@ -26,6 +26,7 @@ function LibraryList() {
     if (path) {
       LibrarianClient.discover(path).then((libs) => {
         libs.forEach(lib => LibrarianClient.add({ path: lib }));
+        loadLibraries();
       });
     }
     setShowDiscover(false);

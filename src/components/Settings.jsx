@@ -6,6 +6,7 @@ import SettingsEditor from './SettingsEditor';
 import SpotifySettings from './SpotifySettings';
 import ContentWithControls from './ContentWithControls';
 import PinModal from './PinModal';
+import Preferences from './Preferences';
 
 function Settings({ settings }) {
   const [mode, setMode] = useState('LIBRARY');
@@ -25,6 +26,8 @@ function Settings({ settings }) {
         return <SettingsEditor />;
       } if (mode === 'SPOTIFY') {
         return <SpotifySettings />;
+      } if (mode === 'PREFERENCES') {
+        return <Preferences />;
       }
     }
 
@@ -37,11 +40,10 @@ function Settings({ settings }) {
   };
 
   const handleClose = (isAuthorized) => {
-    console.log(`isAuthorized: ${isAuthorized}`);
     setIsPinOpen(false);
     setIsAuthorized(isAuthorized);
     setModalClosed(true);
-  }
+  };
 
   const controls = () => {
     if (isAuthorized) {
@@ -49,6 +51,7 @@ function Settings({ settings }) {
         <React.Fragment>
           <Button {...buttonProps} onClick={() => setMode('LIBRARY')}>Library</Button>
           <Button {...buttonProps} onClick={() => setMode('SETTINGS')}>Features</Button>
+          <Button {...buttonProps} onClick={() => setMode('PREFERENCES')}>Preferences</Button>
           <Button {...buttonProps} onClick={() => setMode('SPOTIFY')}>Spotify</Button>
         </React.Fragment>
       );

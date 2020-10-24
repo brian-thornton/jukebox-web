@@ -3,8 +3,6 @@ import {
   Container,
   Navbar,
   Nav,
-  Form,
-  FormControl,
   Button,
 } from 'react-bootstrap';
 import AlbumList from './AlbumList';
@@ -22,8 +20,10 @@ import Settings from './Settings';
 import SpotifyClient from '../lib/spotify-client';
 import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';
-import Search from './SearchModal';
 import SearchModal from './SearchModal';
+import Libraries from './Libraries';
+
+import './Jukebox.css';
 
 function Jukebox() {
   const [mode, setMode] = useState('AlbumList');
@@ -34,16 +34,14 @@ function Jukebox() {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
 
   setInterval(() => {
-    StatusClient.getStatus().then(status => {
-      console.log(status);
+    StatusClient.getStatus().then((status) => {
       if (status.nowPlaying) {
         setNowPlaying(status.nowPlaying.name);
       } else {
-        setNowPlaying('')
+        setNowPlaying('');
       }
-    })
-  }, 3000)
-
+    });
+  }, 3000);
 
   if (!settings) {
     SettingsClient.getSettings().then((data) => {
@@ -80,6 +78,7 @@ function Jukebox() {
       const { spotifyFeatures } = spotify;
 
       navLinks = addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
+      navLinks = addNavLink(navLinks, features.albums, 'Libraries', 'Libraries');
 
       if (settings.spotify.useSpotify) {
         navLinks = addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');
@@ -98,11 +97,6 @@ function Jukebox() {
   const handleSearch = (searchText) => {
     setIsSearchModalOpen(false);
     setSearch(searchText);
-  };
-
-  const onSearch = () => {
-    // window.stop();
-    setSearch(document.getElementById('searchBox').value);
   };
 
   const addControlButton = (buttons, feature, name, handler) => {
@@ -125,17 +119,6 @@ function Jukebox() {
       buttons = addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
     }
     return buttons;
-  };
-
-  const debounce = (fn, time) => {
-    let timeout;
-
-    return () => {
-      const functionCall = () => fn.apply(this, arguments);
-
-      clearTimeout(timeout);
-      timeout = setTimeout(functionCall, time);
-    };
   };
 
   let body = <React.Fragment />;
@@ -163,6 +146,9 @@ function Jukebox() {
         case 'NewReleases':
           body = <NewReleases />;
           break;
+          case 'Libraries':
+            body = <Libraries search={search} settings={settings} setCurrentAlbum={setCurrentAlbum}/>;
+            break;
         case 'SpotifyAlbums':
           body = <SpotifyAlbums search={search} />;
           break;
@@ -196,13 +182,13 @@ function Jukebox() {
   const searchResults = () => {
     if (search) {
       return (
-        <div style={{ float: 'left', color: 'white', fontSize: '20px', paddingRight: '20px'}}>
+        <div className="search-result">
           {`Search Results: ${search}`}
         </div>
       );
     }
 
-    return <React.Fragment />
+    return <React.Fragment />;
   };
 
   if (settings) {
@@ -225,7 +211,7 @@ function Jukebox() {
         <Navbar fixed="bottom" collapseOnSelect expand="lg" bg="dark" variant="dark">
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <div style={{ float: 'left', color: 'white', fontSize: '20px' }}>
+            <div className="now-playing">
               {`Now Playing: ${nowPlaying}`}
             </div>
             <Nav className="ml-auto">
