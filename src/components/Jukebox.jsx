@@ -25,8 +25,6 @@ import Libraries from './Libraries';
 
 import './Jukebox.css';
 
-import './Jukebox.css';
-
 function Jukebox() {
   const [mode, setMode] = useState('AlbumList');
   const [search, setSearch] = useState('');
@@ -148,9 +146,15 @@ function Jukebox() {
         case 'NewReleases':
           body = <NewReleases />;
           break;
-          case 'Libraries':
-            body = <Libraries search={search} settings={settings} setCurrentAlbum={setCurrentAlbum}/>;
-            break;
+        case 'Libraries':
+          body = (
+            <Libraries
+              search={search}
+              settings={settings}
+              setCurrentAlbum={setCurrentAlbum}
+            />
+          );
+          break;
         case 'SpotifyAlbums':
           body = <SpotifyAlbums search={search} />;
           break;

@@ -14,7 +14,7 @@ function NewReleases() {
   const [start, setStart] = useState(0);
   const [albums, setAlbums] = useState([]);
 
-  const loadAlbums = (start, limit) => {
+  const loadAlbums = () => {
     SpotifyClient.getAccessToken().then((token) => {
       if (!window.accessToken) {
         window.accessToken = token.access_token;

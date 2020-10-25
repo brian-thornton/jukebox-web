@@ -25,11 +25,11 @@ function PinModal({ isOpen, settings, handleClose }) {
     if (whitelistKeys.includes(event.key.toLowerCase())) {
       setPin(`${pin}${event.key}`);
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener("keydown", keydownListener, true);
-    return () => window.removeEventListener("keydown", keydownListener, true);
+    window.addEventListener('keydown', keydownListener, true);
+    return () => window.removeEventListener('keydown', keydownListener, true);
   }, [keydownListener]);
 
   useEffect(() => {

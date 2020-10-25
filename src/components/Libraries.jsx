@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Alert,
@@ -15,9 +15,12 @@ import defaultCover from '../default_album.jpg';
 
 import styles from './styles';
 
-function Libraries({ search, settings, setCurrentAlbum }) {
-  const [start, setStart] = useState(0);
-  const [limit, setLimit] = useState(100);
+const propTypes = {
+  settings: Settings.isRequired,
+  setCurrentAlbum: PropTypes.func.isRequired,
+};
+
+function Libraries({ settings, setCurrentAlbum }) {
   const [libraries, setLibraries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -42,11 +45,18 @@ function Libraries({ search, settings, setCurrentAlbum }) {
 
   const backButton = () => {
     if (currentLibrary) {
-      return <Button style={styles.buttonStyle} onClick={() => setCurrentLibrary(null)}>Back to Libraries</Button>;
+      return (
+        <Button
+          style={styles.buttonStyle}
+          onClick={() => setCurrentLibrary(null)}
+        >
+          Back to Libraries
+        </Button>
+      );
     }
 
     return <React.Fragment />;
-  }
+  };
 
   if (libraries.length && !currentLibrary) {
     const renderLibraries = [];
@@ -57,7 +67,7 @@ function Libraries({ search, settings, setCurrentAlbum }) {
           <Card.Body>
             <Card.Title style={styles.albumTitle}>{library.name}</Card.Title>
           </Card.Body>
-        </Card>
+        </Card>,
       );
     });
 
@@ -100,5 +110,7 @@ function Libraries({ search, settings, setCurrentAlbum }) {
     </Container>
   );
 }
+
+Libraries.propTypes = propTypes;
 
 export default Libraries;

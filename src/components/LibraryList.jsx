@@ -22,6 +22,15 @@ function LibraryList() {
     setShow(false);
   };
 
+  const loadLibraries = () => {
+    setIsLoading(true);
+    LibrarianClient.getLibraries().then((data) => {
+      setLibraries(data);
+      setIsLoading(false);
+      setIsLoaded(true);
+    });
+  };
+
   const handleCloseDiscover = (path) => {
     if (path) {
       LibrarianClient.discover(path).then((libs) => {
@@ -34,15 +43,6 @@ function LibraryList() {
 
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
-
-  const loadLibraries = () => {
-    setIsLoading(true);
-    LibrarianClient.getLibraries().then((data) => {
-      setLibraries(data);
-      setIsLoading(false);
-      setIsLoaded(true);
-    });
-  };
 
   const deleteLibrary = (name) => {
     LibrarianClient.delete(name).then(() => {

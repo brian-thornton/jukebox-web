@@ -19,7 +19,7 @@ function SearchModal({ isOpen, handleClose }) {
 
   const keydownListener = (event) => {
     const whitelistKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
-      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
+      'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
       'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '.'];
 
     if (whitelistKeys.includes(event.key.toLowerCase())) {
@@ -35,11 +35,11 @@ function SearchModal({ isOpen, handleClose }) {
         setSearchText(`${searchText} `);
       }
     }
-  }
+  };
 
   useEffect(() => {
-    window.addEventListener("keydown", keydownListener, true);
-    return () => window.removeEventListener("keydown", keydownListener, true);
+    window.addEventListener('keydown', keydownListener, true);
+    return () => window.removeEventListener('keydown', keydownListener, true);
   }, [keydownListener]);
 
   const inputButton = (value, padding) => {
