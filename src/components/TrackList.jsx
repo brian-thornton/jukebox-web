@@ -24,6 +24,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
   const [trackAlbums, setTrackAlbums] = useState([]);
+  const isScreenSmall = window.innerWidth < 700;
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
@@ -72,7 +73,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
   }
 
   const link = (track) => {
-    if (settings && settings.features.admin && showDownloadLink) {
+    if (settings && settings.features.admin && showDownloadLink && !isScreenSmall) {
       return <div className="download"><a onClick={() => handleDownload(track)}>Download</a></div>;
     }
 

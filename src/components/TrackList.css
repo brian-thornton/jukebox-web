@@ -17,3 +17,9 @@
 .track-name {
   padding-top: 30px;
 }
+
+@media screen and (max-width: 1026px) { 
+  #download { 
+    display: none; 
+  } 
+}

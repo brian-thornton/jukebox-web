@@ -52,7 +52,7 @@ function Album({
     return (
       <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
         <Card.Img style={styles.albumImage} top src={coverArt} />
-        <Card.Body>
+        <Card.Body style={{padding: '0px'}}>
           <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
         </Card.Body>
       </Card>

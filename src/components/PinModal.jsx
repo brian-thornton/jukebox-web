@@ -19,19 +19,6 @@ const propTypes = {
 function PinModal({ isOpen, settings, handleClose }) {
   const [pin, setPin] = useState('');
 
-  const keydownListener = (event) => {
-    const whitelistKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-
-    if (whitelistKeys.includes(event.key.toLowerCase())) {
-      setPin(`${pin}${event.key}`);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('keydown', keydownListener, true);
-    return () => window.removeEventListener('keydown', keydownListener, true);
-  }, [keydownListener]);
-
   useEffect(() => {
     if (pin === settings.pin) {
       handleClose(true);

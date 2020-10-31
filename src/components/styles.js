@@ -23,7 +23,9 @@ const albumCardLarge = {
 };
 
 const albumImage = {
-  maxHeight: '300px',
+  maxHeight: '200px',
+  height: '200px',
+  minHeight: '200px',
   maxWidth: '250px',
 };
 

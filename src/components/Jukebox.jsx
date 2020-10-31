@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   Container,
   Navbar,
@@ -22,6 +22,8 @@ import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';
 import SearchModal from './SearchModal';
 import Libraries from './Libraries';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
+import { cloneDeep, debounce } from 'lodash';
 
 import './Jukebox.css';
 
@@ -32,6 +34,18 @@ function Jukebox() {
   const [currentAlbum, setCurrentAlbum] = useState();
   const [nowPlaying, setNowPlaying] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [tempSearch, setTempSearch] = useState('');
+
+  const debouncedSearch = useCallback(
+    debounce((tempSearch) => {
+      if (tempSearch.length > 3) {
+        if (search) {
+          setSearch(`${search}${tempSearch}`);
+        } else {
+          setSearch(tempSearch);
+        }
+      }
+    }, 500), [],);
 
   setInterval(() => {
     StatusClient.getStatus().then((status) => {
@@ -136,11 +150,31 @@ function Jukebox() {
       switch (mode) {
         case 'AlbumList':
           body = (
-            <AlbumList
-              search={search}
-              setCurrentAlbum={setCurrentAlbum}
-              settings={settings}
-            />
+            <React.Fragment>
+              <KeyboardEventHandler
+                handleKeys={['all']}
+                onKeyEvent={(key, e) => {
+                  let newSearch = cloneDeep(tempSearch);
+                  if (key === 'space') {
+                    newSearch = `${tempSearch} `;
+                    setTempSearch(`${tempSearch} `);
+                  } else if (key === 'backspace') {
+                    newSearch = `${tempSearch.substring(0, tempSearch.length - 1)}`;
+                    setTempSearch(`${tempSearch.substring(0, tempSearch.length - 1)}`);
+                  } else {
+                    newSearch = `${tempSearch}${key}`;
+                    setTempSearch(`${tempSearch}${key}`);
+                  }
+
+                  debouncedSearch(newSearch);
+                }
+                } />
+              <AlbumList
+                search={search}
+                setCurrentAlbum={setCurrentAlbum}
+                settings={settings}
+              />
+            </React.Fragment >
           );
           break;
         case 'NewReleases':
@@ -225,7 +259,7 @@ function Jukebox() {
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} />
+        <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} search={search} />
       </React.Fragment>
     );
   }
