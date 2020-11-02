@@ -20,8 +20,8 @@ function SearchModal({ isOpen, handleClose, search }) {
 
   const inputButton = (value, padding) => {
     const inputButtonStyle = {
-      width: '75px',
-      height: '75px',
+      width: '55px',
+      height: '55px',
     };
 
     if (padding) {

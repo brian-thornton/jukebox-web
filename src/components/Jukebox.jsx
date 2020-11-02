@@ -24,6 +24,7 @@ import SearchModal from './SearchModal';
 import Libraries from './Libraries';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { cloneDeep, debounce } from 'lodash';
+import { Search, VolumeUp, VolumeDown } from 'react-bootstrap-icons';
 
 import './Jukebox.css';
 
@@ -35,6 +36,8 @@ function Jukebox() {
   const [nowPlaying, setNowPlaying] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [tempSearch, setTempSearch] = useState('');
+  const isScreenSmall = window.innerWidth < 700;
+  const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
@@ -45,7 +48,7 @@ function Jukebox() {
           setSearch(tempSearch);
         }
       }
-    }, 500), [],);
+    }, 500), []);
 
   setInterval(() => {
     StatusClient.getStatus().then((status) => {
@@ -103,7 +106,10 @@ function Jukebox() {
       navLinks = addNavLink(navLinks, features.tracks, 'Tracks', 'Tracks');
       navLinks = addNavLink(navLinks, features.playlists, 'Playlists', 'Playlists');
       navLinks = addNavLink(navLinks, features.queue, 'Queue', 'Queue');
-      navLinks = addNavLink(navLinks, features.settings, 'Settings', 'Settings');
+
+      if (!isScreenSmall) {
+        navLinks = addNavLink(navLinks, features.settings, 'Settings', 'Settings');
+      }
     }
     return navLinks;
   };
@@ -115,7 +121,7 @@ function Jukebox() {
 
   const addControlButton = (buttons, feature, name, handler) => {
     if (feature) {
-      buttons.push(<Button key={name} style={{ margin: '5px' }} variant="outline-light" onClick={handler}>{name}</Button>);
+      buttons.push(<Button key={name} className="button" variant="outline-light" onClick={handler}>{name}</Button>);
     }
 
     return buttons;
@@ -126,11 +132,31 @@ function Jukebox() {
     if (settings) {
       const { features } = settings;
 
+      if (isScreenSmall) {
+        const props = {
+          className: "button",
+          variant: "outline-light",
+        };
+
+        buttons.push(<Button {...props} onClick={() => setIsSmallSearchEnabled(true)}><Search className="volume-icon" /></Button>);
+      }
+
       buttons = addControlButton(buttons, features.play, 'Play', QueueClient.next);
       buttons = addControlButton(buttons, features.next, 'Next', QueueClient.next);
       buttons = addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
-      buttons = addControlButton(buttons, features.volume, 'Volume Up', VolumeClient.up);
-      buttons = addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
+
+      if (isScreenSmall) {
+        const props = {
+          className: "button",
+          variant: "outline-light",
+        };
+
+        buttons.push(<Button {...props} onClick={VolumeClient.up}><VolumeUp className="volume-icon" /></Button>);
+        buttons.push(<Button {...props} onClick={VolumeClient.down}><VolumeDown className="volume-icon" /></Button>);
+      } else {
+        buttons = addControlButton(buttons, features.volume, 'Volume Up', VolumeClient.up);
+        buttons = addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
+      }
     }
     return buttons;
   };
@@ -231,33 +257,55 @@ function Jukebox() {
     return <React.Fragment />;
   };
 
+  const nowPlayingText = () => {
+    if (isScreenSmall) {
+      return <React.Fragment />
+    }
+
+    return <div className="now-playing">{`Now Playing: ${nowPlaying}`}</div>;
+  };
+
+  const brand = () => {
+    if (isScreenSmall) {
+      return <React.Fragment />
+    }
+
+    return <Navbar.Brand href="#home">{settings.preferences.name}</Navbar.Brand>;
+  };
+
+  const searchButton = () => {
+    if (isScreenSmall) {
+      return <React.Fragment />
+    }
+
+    return <Button className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+  };
+
+  const footerContent = () => {
+    if (isSmallSearchEnabled) {
+      return <Nav className="ml-auto"><input type="text" /></Nav>;
+    } else {
+      return <Nav className="ml-auto">{generateControlButtons()}</Nav>;
+    }
+  };
+
   if (settings) {
     return (
       <React.Fragment>
-        <Navbar fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="#home">{settings.preferences.name}</Navbar.Brand>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              {generateNavItems()}
-            </Nav>
-            {searchResults()}
-            <Button style={{ margin: '5px' }} variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
-          </Navbar.Collapse>
+        <Navbar fixed="top" collapseOnSelect bg="dark" variant="dark">
+          {brand()}
+          <Nav className="mr-auto">
+            {generateNavItems()}
+          </Nav>
+          {searchResults()}
+          {searchButton()}
         </Navbar>
         <Container fluid style={{ marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
           {body}
         </Container>
-        <Navbar fixed="bottom" collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <div className="now-playing">
-              {`Now Playing: ${nowPlaying}`}
-            </div>
-            <Nav className="ml-auto">
-              {generateControlButtons()}
-            </Nav>
-          </Navbar.Collapse>
+        <Navbar fixed="bottom" collapseOnSelect bg="dark" variant="dark">
+          {nowPlayingText()}
+          {footerContent()}
         </Navbar>
         <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} search={search} />
       </React.Fragment>
