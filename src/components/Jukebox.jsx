@@ -24,7 +24,7 @@ import SearchModal from './SearchModal';
 import Libraries from './Libraries';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { cloneDeep, debounce } from 'lodash';
-import { Search, VolumeUp, VolumeDown } from 'react-bootstrap-icons';
+import { ChevronDoubleRight, Play, Search, VolumeUp, VolumeDown, XSquare, XOctagonFill } from 'react-bootstrap-icons';
 
 import './Jukebox.css';
 
@@ -132,25 +132,30 @@ function Jukebox() {
     if (settings) {
       const { features } = settings;
 
-      if (isScreenSmall) {
-        const props = {
-          className: "button",
-          variant: "outline-light",
-        };
+      const props = {
+        className: "button",
+        variant: "outline-light",
+      };
 
-        buttons.push(<Button {...props} onClick={() => setIsSmallSearchEnabled(true)}><Search className="volume-icon" /></Button>);
+      if (isScreenSmall) {
+        buttons.push(<Button {...props} onClick={() => {
+          document.activeElement.blur();
+          setIsSmallSearchEnabled(true);
+        }
+        }><Search className="volume-icon" /></Button>);
       }
 
-      buttons = addControlButton(buttons, features.play, 'Play', QueueClient.next);
-      buttons = addControlButton(buttons, features.next, 'Next', QueueClient.next);
-      buttons = addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
+      if (isScreenSmall) {
+        buttons.push(<Button {...props} onClick={QueueClient.next}><Play className="volume-icon" /></Button>);
+        buttons.push(<Button {...props} onClick={QueueClient.next}><ChevronDoubleRight className="volume-icon" /></Button>);
+        buttons.push(<Button {...props} onClick={QueueClient.stop}><XOctagonFill className="volume-icon" /></Button>);
+      } else {
+        buttons = addControlButton(buttons, features.play, 'Play', QueueClient.next);
+        buttons = addControlButton(buttons, features.next, 'Next', QueueClient.next);
+        buttons = addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
+      }
 
       if (isScreenSmall) {
-        const props = {
-          className: "button",
-          variant: "outline-light",
-        };
-
         buttons.push(<Button {...props} onClick={VolumeClient.up}><VolumeUp className="volume-icon" /></Button>);
         buttons.push(<Button {...props} onClick={VolumeClient.down}><VolumeDown className="volume-icon" /></Button>);
       } else {
@@ -246,7 +251,7 @@ function Jukebox() {
   }
 
   const searchResults = () => {
-    if (search) {
+    if (search && !isScreenSmall) {
       return (
         <div className="search-result">
           {`Search Results: ${search}`}
@@ -282,8 +287,21 @@ function Jukebox() {
   };
 
   const footerContent = () => {
+    const props = {
+      className: "button",
+      variant: "outline-light",
+    };
+
     if (isSmallSearchEnabled) {
-      return <Nav className="ml-auto"><input type="text" /></Nav>;
+      return (
+        <Nav className="ml-auto">
+          <Button {...props} onClick={() => {
+            document.activeElement.blur();
+            setIsSmallSearchEnabled(false);
+          }}><XSquare className="volume-icon" /></Button>]
+          <input type="text" onChange={(event) => debouncedSearch(event.target.value)} />
+        </Nav>
+      );
     } else {
       return <Nav className="ml-auto">{generateControlButtons()}</Nav>;
     }

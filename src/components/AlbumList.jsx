@@ -24,6 +24,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
+  const isScreenSmall = window.innerWidth < 700;
 
   const loadAlbums = () => {
     setIsLoading(true);
@@ -83,6 +84,14 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     loadAlbums();
   }
 
+  const albumsMargin = () => {
+    if (isScreenSmall) {
+      return { };
+    } else {
+      return { marginLeft: '50px' };
+    }
+  };
+
   if (albums.length) {
     const renderAlbums = [];
     albums.forEach((album) => {
@@ -96,7 +105,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     });
 
     return (
-      <Container fluid style={{ marginLeft: '50px' }}>
+      <Container fluid style={albumsMargin()}>
         <Row>
           {renderAlbums}
         </Row>
@@ -108,7 +117,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   }
 
   return (
-    <Container fluid style={{ marginLeft: '50px' }}>
+    <Container fluid style={albumsMargin()}>
       <Row>
         <Col lg={12} xl={12}>
           <Alert variant="primary">{alertText}</Alert>

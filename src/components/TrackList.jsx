@@ -8,8 +8,10 @@ import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 import { Track, Settings } from './shapes';
+import { CollectionPlay, ChevronDoubleRight, Play, Search, VolumeUp, VolumeDown, XSquare, XOctagonFill } from 'react-bootstrap-icons';
 
 import './TrackList.css';
+import { isSymbol } from 'lodash';
 
 const propTypes = {
   tracks: PropTypes.arrayOf(Track),
@@ -101,14 +103,21 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
   if (settings && settings.features) {
     tracks.forEach((track) => {
       if (track.path.split('.').pop().toLowerCase() === 'mp3') {
-        const playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
-        const enqueueButton = <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>;
+        let playButton;
+        let enqueueButton;
+        if (isScreenSmall) {
+          playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}><Play /></Button>;
+          enqueueButton = <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}><CollectionPlay /></Button>;
+        } else {
+          playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
+          enqueueButton = <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>;
+        }
 
         if (track.id) {
           track.accessToken = window.accessToken;
         }
 
-        if (showAlbumCovers) {
+        if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
               <ListGroupItem style={styles.cardStyle}>
@@ -133,6 +142,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
             (
               <ListGroupItem style={styles.cardStyle}>
                 {track.name}
+                <br />
                 {playButton}
                 {enqueueButton}
                 {link(track)}
