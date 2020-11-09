@@ -26,7 +26,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   const [alertText, setAlertText] = useState('Loading albums...');
   const isScreenSmall = window.innerWidth < 700;
 
-  const loadAlbums = () => {
+  const loadAlbums = (targetHeight) => {
     setIsLoading(true);
     if (search) {
       setAlbums([]);
@@ -37,6 +37,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
         } else {
           setAlbums(data);
         }
+        window.scrollTo(0, targetHeight - 300 );
         setIsLoading(false);
         setIsLoaded(true);
       });
@@ -51,6 +52,8 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
         } else {
           setAlbums(albums.concat(data));
         }
+
+        window.scrollTo(0, targetHeight - 300 );
         setStart(limit);
         setLimit(limit + 100);
         setIsLoading(false);
@@ -69,7 +72,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   const loadMore = () => {
     setStart(limit);
     setLimit(limit + 100);
-    loadAlbums();
+    loadAlbums(document.getElementById('albums').clientHeight);
   };
 
   const loadButton = () => {
@@ -105,7 +108,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     });
 
     return (
-      <Container fluid style={albumsMargin()}>
+      <Container id="albums" fluid style={albumsMargin()}>
         <Row>
           {renderAlbums}
         </Row>
