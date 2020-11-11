@@ -8,10 +8,9 @@ import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 import { Track, Settings } from './shapes';
-import { CollectionPlay, ChevronDoubleRight, Play, Search, VolumeUp, VolumeDown, XSquare, XOctagonFill } from 'react-bootstrap-icons';
+import { CollectionPlay, Play } from 'react-bootstrap-icons';
 
 import './TrackList.css';
-import { isSymbol } from 'lodash';
 
 const propTypes = {
   tracks: PropTypes.arrayOf(Track),
@@ -120,14 +119,14 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
         if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <ListGroupItem style={styles.cardStyle}>
-                <Container>
+              <ListGroupItem style={styles.trackRow}>
+                <Container style={styles.trackRow}>
                   <Row>
                     <Col lg={2} xl={2}>
                       {album(track)}
                     </Col>
                     <Col lg={10} xl={10}>
-                      <div className="track-name">{track.name}</div>
+                      <div style={{paddingTop: '10px'}}>{track.name}</div>
                       {playButton}
                       {enqueueButton}
                     </Col>
@@ -153,7 +152,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
       }
     });
 
-    return <ListGroup>{renderTracks}</ListGroup>;
+    return <ListGroup style={{marginTop: '15px'}}>{renderTracks}</ListGroup>;
   }
 
   return <React.Fragment />;

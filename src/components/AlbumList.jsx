@@ -37,7 +37,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
         } else {
           setAlbums(data);
         }
-        window.scrollTo(0, targetHeight - 300 );
+        window.scrollTo(0, targetHeight - 300);
         setIsLoading(false);
         setIsLoaded(true);
       });
@@ -53,8 +53,8 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
           setAlbums(albums.concat(data));
         }
 
-        window.scrollTo(0, targetHeight - 300 );
-        setStart(limit);
+        window.scrollTo(0, targetHeight - 300);
+        setStart(limit + 1);
         setLimit(limit + 100);
         setIsLoading(false);
       });
@@ -89,7 +89,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
 
   const albumsMargin = () => {
     if (isScreenSmall) {
-      return { };
+      return {};
     } else {
       return { marginLeft: '50px' };
     }

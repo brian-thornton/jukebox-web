@@ -86,6 +86,15 @@ const listItem = {
   marginTop: '5px',
 };
 
+const trackRow = {
+  marginTop: '0px',
+  marginBottom: '0px',
+  paddingTop: '0px',
+  background: 'transparent',
+  borderColor: '#708090',
+  color: '#FFFFFF',
+}
+
 export default {
   albumCardLarge,
   albumCardStyle,
@@ -102,4 +111,5 @@ export default {
   totalTracksStyle,
   totalTracksCount,
   listItem,
+  trackRow,
 };
