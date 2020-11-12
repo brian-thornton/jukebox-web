@@ -6,6 +6,7 @@ import {
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
 import ContentWithControls from './ContentWithControls';
+import PlaylistAddModal from './PlaylistAddModal';
 import styles from './styles';
 
 function PlaylistDetail({ name, handleBackToPlaylists }) {
@@ -13,6 +14,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [isEmpty, setIsEmpty] = useState(false);
   const leftButtonStyle = { margin: '5px', width: '150px' };
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track.path);
@@ -78,7 +80,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     <React.Fragment>
       <Button {...leftButtonProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
       <Button {...leftButtonProps}>Shuffle Playlist</Button>
-      <Button {...leftButtonProps}>Save As...</Button>
+      <Button {...leftButtonProps} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
       <Button {...leftButtonProps} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
     </React.Fragment>
   );
@@ -91,6 +93,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         controls={controls()}
         content={content()}
       />
+      <PlaylistAddModal isOpen={isSaveAsOpen} handleClose={() => setIsSaveAsOpen(false)} handleSave={() => console.log('')} existingPlaylistName={name}/>
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Delete Playlist?</Modal.Title>

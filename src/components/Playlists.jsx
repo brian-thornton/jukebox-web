@@ -5,6 +5,7 @@ import {
 } from 'react-bootstrap';
 import PlaylistClient from '../lib/playlist-client';
 import PlaylistDetail from './PlaylistDetail';
+import PlaylistAddModal from './PlaylistAddModal';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 
@@ -96,31 +97,13 @@ function Playlists({ tracks, mode, currentPlaylist }) {
 
   const content = () => <ListGroup>{renderPlaylists}</ListGroup>;
 
+
+
   if (!currentPlaylist.name && !name) {
     return (
       <React.Fragment>
         <ContentWithControls content={content()} controls={controls()} alertText={alertText} />
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Playlist</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <InputGroup className="mb-3">
-              <FormControl
-                id="name"
-                placeholder="Name"
-                aria-label="Name"
-                aria-describedby="basic-addon1"
-              />
-            </InputGroup>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>Close</Button>
-            <Button variant="primary" onClick={() => handleClose(document.getElementById('name').value)}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
+        <PlaylistAddModal isOpen={show} onHide={handleClose} handleSave={() => handleClose(document.getElementById('name').value)} />
       </React.Fragment>
     );
   }
