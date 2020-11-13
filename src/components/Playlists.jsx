@@ -14,6 +14,7 @@ function Playlists({ tracks, mode, currentPlaylist }) {
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
+  const [added, setAdded] = useState(false);
   const selectPlaylist = playlistName => setName(playlistName);
   const renderPlaylists = [];
   const alertText = 'Playlists';
@@ -56,11 +57,14 @@ function Playlists({ tracks, mode, currentPlaylist }) {
     };
 
     const playlistActions = [];
-    if (mode === 'addToPlaylist') {
+    if (mode === 'addToPlaylist' && !added) {
       playlistActions.push((
         <Button
           {...buttonProps}
-          onClick={() => addTracksToPlaylist(playlistName)}
+          onClick={() => {
+            addTracksToPlaylist(playlistName)
+            setAdded(true);
+          }}
         >
           Add
         </Button>
@@ -103,7 +107,7 @@ function Playlists({ tracks, mode, currentPlaylist }) {
     return (
       <React.Fragment>
         <ContentWithControls content={content()} controls={controls()} alertText={alertText} />
-        <PlaylistAddModal isOpen={show} onHide={handleClose} handleSave={() => handleClose(document.getElementById('name').value)} />
+        <PlaylistAddModal isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
       </React.Fragment>
     );
   }

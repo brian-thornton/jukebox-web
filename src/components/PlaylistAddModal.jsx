@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   Button,
   Modal,
@@ -8,8 +8,6 @@ import {
 import { PropTypes } from 'prop-types';
 import { Settings } from './shapes';
 
-import './PinModal.css';
-
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   settings: Settings.isRequired,
@@ -17,7 +15,7 @@ const propTypes = {
   existingPlaylistName: PropTypes.string
 };
 
-function PlaylistAddModal({ isOpen, settings, handleClose, handleSave, existingPlaylistName }) {
+function PlaylistAddModal({ isOpen, handleClose, handleSave, existingPlaylistName }) {
   const title = existingPlaylistName ? `Save Playlist '${existingPlaylistName}' as...` : 'Add Playlist';
 
   return (

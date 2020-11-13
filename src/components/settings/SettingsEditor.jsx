@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
-import styles from './styles';
-import SettingsClient from '../lib/settings-client';
+import styles from '../styles';
+import SettingsClient from '../../lib/settings-client';
 
 function SettingsEditor() {
   const [settings, setSettings] = useState();

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
-import styles from './styles';
+import styles from '../styles';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
-import SpotifySettings from './SpotifySettings';
-import ContentWithControls from './ContentWithControls';
+import SpotifySettings from '../SpotifySettings';
+import ContentWithControls from '../ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
 

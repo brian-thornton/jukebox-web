@@ -6,7 +6,7 @@ import {
   Row,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Settings } from './shapes';
+import { Settings } from '../shapes';
 
 import './PinModal.css';
 

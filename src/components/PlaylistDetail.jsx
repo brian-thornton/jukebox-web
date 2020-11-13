@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  ListGroup, ListGroupItem, Button, Modal,
+  ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import PlaylistClient from '../lib/playlist-client';
 import ContentWithControls from './ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
+import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from './styles';
 
 function PlaylistDetail({ name, handleBackToPlaylists }) {
@@ -19,6 +20,17 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const playNow = (track) => {
     QueueClient.enqueueTop(track.path);
     QueueClient.play();
+  };
+
+  const handleSave = (data) => {
+    if ((typeof data) === 'string') {
+      PlaylistClient.add({
+        name: data,
+        tracks: tracks,
+      });
+    }
+    setIsSaveAsOpen(false);
+    handleBackToPlaylists();
   };
 
   const loadTracks = (name) => {
@@ -93,21 +105,8 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         controls={controls()}
         content={content()}
       />
-      <PlaylistAddModal isOpen={isSaveAsOpen} handleClose={() => setIsSaveAsOpen(false)} handleSave={() => console.log('')} existingPlaylistName={name}/>
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Delete Playlist?</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Are you sure that you want to delete the playlist?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>No</Button>
-          <Button variant="primary" onClick={handleDelete}>
-            Yes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <PlaylistAddModal isOpen={isSaveAsOpen} handleClose={() => setIsSaveAsOpen(false)} handleSave={handleSave} existingPlaylistName={name}/>
+      <PlaylistDeleteModal isOpen={showDeleteModal} handleClose={() => setShowDeleteModal(false)} handleDelete={handleDelete}/>
     </React.Fragment>
   );
 }

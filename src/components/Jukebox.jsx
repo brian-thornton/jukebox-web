@@ -16,7 +16,7 @@ import VolumeClient from '../lib/volume-client';
 import '../App.css';
 import Queue from './Queue';
 import Tracks from './Tracks';
-import Settings from './Settings';
+import Settings from './settings/Settings';
 import SpotifyClient from '../lib/spotify-client';
 import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';

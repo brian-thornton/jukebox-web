@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import {
   ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
 } from 'react-bootstrap';
-import LibrarianClient from '../lib/librarian-client';
-import styles from './styles';
+import LibrarianClient from '../../lib/librarian-client';
+import LibraryAddModal from './LibraryAddModal';
+import LibraryDiscoverModal from './LibraryDiscoverModal';
+import styles from '../styles';
 
 function LibraryList() {
   const [libraries, setLibraries] = useState([]);
@@ -148,53 +150,8 @@ function LibraryList() {
         </Row>
       </Container>
 
-      <Modal show={show} onHide={() => setShow(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Library</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InputGroup className="mb-3">
-            <FormControl
-              id="path"
-              placeholder="Path"
-              aria-label="Path"
-              aria-describedby="basic-addon1"
-            />
-          </InputGroup>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShow(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={() => handleClose(document.getElementById('path').value)}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-      <Modal show={showDiscover} onHide={() => setShowDiscover(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Discover</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <InputGroup className="mb-3">
-            <FormControl
-              id="path"
-              placeholder="Path"
-              aria-label="Path"
-              aria-describedby="basic-addon1"
-            />
-          </InputGroup>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDiscover(false)}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={() => handleCloseDiscover(document.getElementById('path').value)}>
-            Discover
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
+      <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
     </>
   );
 }
