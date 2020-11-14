@@ -22,6 +22,17 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     QueueClient.play();
   };
 
+  const shuffle = () => {
+    PlaylistClient.delete(name).then(() => {
+      const newOrder = tracks.sort(() => Math.random() - 0.5);
+
+      PlaylistClient.add({
+        name,
+        tracks: tracks,
+      }).then(() => loadTracks(name));
+    });
+  };
+
   const handleSave = (data) => {
     if ((typeof data) === 'string') {
       PlaylistClient.add({
@@ -91,7 +102,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const controls = () => (
     <React.Fragment>
       <Button {...leftButtonProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
-      <Button {...leftButtonProps}>Shuffle Playlist</Button>
+      <Button {...leftButtonProps} onClick={shuffle}>Shuffle Playlist</Button>
       <Button {...leftButtonProps} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
       <Button {...leftButtonProps} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
     </React.Fragment>

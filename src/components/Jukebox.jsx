@@ -283,6 +283,18 @@ function Jukebox() {
       return <React.Fragment />
     }
 
+    if (search) {
+      return (
+        <React.Fragment>
+          <Button className="button" variant="outline-light" onClick={() => {
+            setSearch('');
+            setTempSearch('');
+          }}>Clear</Button>;
+          <Button className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+        </React.Fragment>
+      );
+    }
+
     return <Button className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
   };
 

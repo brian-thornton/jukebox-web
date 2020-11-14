@@ -62,6 +62,10 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   };
 
   useEffect(() => {
+    if (!search) {
+      setAlbums([]);
+    }
+
     if (!isLoading) {
       setStart(0);
       setLimit(100);
