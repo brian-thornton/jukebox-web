@@ -29,12 +29,8 @@ function LibraryAddModal({ isOpen, handleHide, handleSave }) {
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleHide}>
-          Close
-    </Button>
-        <Button variant="primary" onClick={handleSave}>
-          Save Changes
-    </Button>
+        <Button variant="secondary" onClick={handleHide}>Close</Button>
+        <Button variant="primary" onClick={handleSave}>Save Changes</Button>
       </Modal.Footer>
     </Modal>
   )

@@ -6,6 +6,9 @@ import LibrarianClient from '../../lib/librarian-client';
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import styles from '../styles';
+import { Check, CloudDownload, Search, Trash, X } from 'react-bootstrap-icons';
+
+const albumArt = require('album-art');
 
 function LibraryList() {
   const [libraries, setLibraries] = useState([]);
@@ -62,6 +65,26 @@ function LibraryList() {
     });
   };
 
+  const downloadCoverArt = (library) => {
+    const tasks = [];
+    let count = 0;
+    library.albums.forEach(album => {
+      if (!album.coverArtExists) {
+        console.log(`Searching for Cover Art for ${album.name}`);
+        const nameArray = album.name.split('-');
+        setTimeout(() => {
+          albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
+            if (data.toString().includes('http')) {
+              console.log(`Saving cover art for ${album.name}`);
+              LibrarianClient.saveCoverArt({ album, url: data });
+            }
+          })
+        }, 2000 * count);
+        count += 1;
+      }
+    });
+  };
+
   if (!isLoaded && !isLoading && !libraries.length) {
     loadLibraries();
   }
@@ -81,7 +104,7 @@ function LibraryList() {
   let totalTracks = 0;
   libraries.forEach((library) => {
     delete library.tracks;
-    const enabled = library.enabled ? 'Enabled' : 'Disabled';
+    const enabled = library.enabled ? <Check /> : <X />;
     const style = library.enabled ? styles.enabledStyle : styles.disabledStyle;
     if (library.totalTracks) {
       totalTracks += library.totalTracks;
@@ -99,10 +122,13 @@ function LibraryList() {
               enabled: library.enabled,
             })}
           >
-            Scan
+            <Search />
           </Button>
           <Button {...buttonProps} onClick={() => deleteLibrary(library.name)}>
-            Delete
+            <Trash />
+          </Button>
+          <Button {...buttonProps} variant="outline-light" className="float-right" disabled={isScanning} onClick={() => downloadCoverArt(library)}>
+            <CloudDownload />
           </Button>
           <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>
             {enabled}

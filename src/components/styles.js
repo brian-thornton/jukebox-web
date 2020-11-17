@@ -62,14 +62,12 @@ const settingsButtonStyle = {
 const disabledStyle = {
   background: '#FF0000',
   margin: '5px',
-  width: '100px',
 };
 
 const enabledStyle = {
   background: '#7CFC00',
   color: '#000000',
   margin: '5px',
-  width: '100px',
 };
 
 const totalTracksStyle = {

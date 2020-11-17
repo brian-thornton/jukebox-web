@@ -7,6 +7,7 @@ import {
   Col,
   Button,
 } from 'react-bootstrap';
+import CoverArtSearchModal from './CoverArtSearchModal';
 import LibrianClient from '../lib/librarian-client';
 import QueueClient from '../lib/queue-client';
 import defaultCover from '../default_album.jpg';
@@ -32,6 +33,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   const [isCoverArtLoading, setIsCoverArtLoading] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
+  const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
 
   const getCoverArt = () => {
     const nameArray = album.name.split('-');
@@ -116,6 +118,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
     if (settings.features.admin) {
       buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
       buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
+      buttons.push(<Button {...props} onClick={() => setIsCustomSearchOpen(true)}>Custom Search</Button>);
       buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);
     }
     return buttons;
@@ -124,22 +127,25 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   const largeAlbum = () => {
     if (!addToPlaylist) {
       return (
-        <Container>
-          <Row>
-            <Col lg={4} xl={4}>
-              <Card style={styles.albumCardLarge} className="h-55 w-85">
-                <Card.Img top src={coverArt} />
-                <Card.Body>
-                  <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
-                </Card.Body>
-                {albumButtons()}
-              </Card>
-            </Col>
-            <Col lg={8} xl={8}>
-              <TrackList tracks={tracks} settings={settings} showDownloadLink />
-            </Col>
-          </Row>
-        </Container>
+        <React.Fragment>
+          <Container>
+            <Row>
+              <Col lg={4} xl={4}>
+                <Card style={styles.albumCardLarge} className="h-55 w-85">
+                  <Card.Img top src={coverArt} />
+                  <Card.Body>
+                    <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
+                  </Card.Body>
+                  {albumButtons()}
+                </Card>
+              </Col>
+              <Col lg={8} xl={8}>
+                <TrackList tracks={tracks} settings={settings} showDownloadLink />
+              </Col>
+            </Row>
+          </Container>
+          <CoverArtSearchModal album={album} isOpen={isCustomSearchOpen} handleClose={() => setIsCustomSearchOpen(false)} />
+        </React.Fragment>
       );
     }
 
