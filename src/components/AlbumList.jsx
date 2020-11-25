@@ -113,12 +113,8 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
 
     return (
       <Container id="albums" fluid style={albumsMargin()}>
-        <Row>
-          {renderAlbums}
-        </Row>
-        <Row>
-          {loadButton()}
-        </Row>
+        <Row>{renderAlbums}</Row>
+        <Row>{loadButton()}</Row>
       </Container>
     );
   }

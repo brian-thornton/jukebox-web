@@ -19,6 +19,10 @@ function Queue() {
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const renderTracks = [];
+  const clear = () => QueueClient.clearQueue().then(loadQueue());
+  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
+  const message = 'There are no tracks in the queue.';
+  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const loadQueue = () => {
     QueueClient.getQueue().then((data) => {
@@ -27,9 +31,6 @@ function Queue() {
       setIsLoaded(true);
     });
   };
-
-  const clear = () => QueueClient.clearQueue().then(loadQueue());
-  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
 
   const shuffle = () => {
     QueueClient.clearQueue().then(() => {
@@ -43,9 +44,6 @@ function Queue() {
     setIsLoading(true);
     loadQueue();
   }
-
-  const message = 'There are no tracks in the queue.';
-  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
@@ -68,12 +66,8 @@ function Queue() {
       (
         <ListGroupItem style={styles.cardStyle}>
           {track.name}
-          <Button {...buttonProps} onClick={() => playNow(track)}>
-            Play
-          </Button>
-          <Button {...buttonProps} onClick={() => remove(track)}>
-            Delete
-          </Button>
+          <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
+          <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
         </ListGroupItem>
       ),
     );

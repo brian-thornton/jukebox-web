@@ -7,6 +7,11 @@ import SpotifySettings from '../SpotifySettings';
 import ContentWithControls from '../ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
+import { Settings as SettingsShape } from '../shapes';
+
+const propTypes = {
+  settings: SettingsShape.isRequired,
+};
 
 function Settings({ settings }) {
   const [mode, setMode] = useState('LIBRARY');
@@ -73,5 +78,7 @@ function Settings({ settings }) {
     </React.Fragment>
   );
 }
+
+Settings.propTypes = propTypes;
 
 export default Settings;

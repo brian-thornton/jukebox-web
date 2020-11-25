@@ -16,23 +16,9 @@ function Preferences() {
     });
   }
 
-  const buttonProps = {
-    style: styles.buttonStyle,
-    variant: 'outline-light',
-    className: 'float-right',
-  };
-
-  const updateFeature = (name, value) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.features[name] = value;
-    SettingsClient.updateSettings(deepClone).then(() => {
-      window.location.reload();
-    });
-  };
-
   const handleSave = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.preferences['name'] = name;
+    deepClone.preferences.name = name;
     SettingsClient.updateSettings(deepClone).then(() => {
       window.location.reload();
     });
@@ -55,7 +41,7 @@ function Preferences() {
                 placeholder={settings.preferences.name}
                 aria-label="name"
                 aria-describedby="basic-addon1"
-                onChange={(event) => setName(event.target.value)}
+                onChange={event => setName(event.target.value)}
               />
             </InputGroup>
           </ListGroupItem>

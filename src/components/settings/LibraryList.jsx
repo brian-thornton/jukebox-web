@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Col, Row, Container, Modal, InputGroup, FormControl,
+  ListGroup, ListGroupItem, Button, Col, Row, Container,
 } from 'react-bootstrap';
+import {
+  Check,
+  CloudDownload,
+  Search,
+  Trash,
+  X,
+} from 'react-bootstrap-icons';
+
 import LibrarianClient from '../../lib/librarian-client';
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import styles from '../styles';
-import { Check, CloudDownload, Search, Trash, X } from 'react-bootstrap-icons';
 
 const albumArt = require('album-art');
 
@@ -66,19 +73,16 @@ function LibraryList() {
   };
 
   const downloadCoverArt = (library) => {
-    const tasks = [];
     let count = 0;
-    library.albums.forEach(album => {
+    library.albums.forEach((album) => {
       if (!album.coverArtExists) {
-        console.log(`Searching for Cover Art for ${album.name}`);
         const nameArray = album.name.split('-');
         setTimeout(() => {
           albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
             if (data.toString().includes('http')) {
-              console.log(`Saving cover art for ${album.name}`);
               LibrarianClient.saveCoverArt({ album, url: data });
             }
-          })
+          });
         }, 2000 * count);
         count += 1;
       }
@@ -124,15 +128,11 @@ function LibraryList() {
           >
             <Search />
           </Button>
-          <Button {...buttonProps} onClick={() => deleteLibrary(library.name)}>
-            <Trash />
-          </Button>
+          <Button {...buttonProps} onClick={() => deleteLibrary(library.name)}><Trash /></Button>
           <Button {...buttonProps} variant="outline-light" className="float-right" disabled={isScanning} onClick={() => downloadCoverArt(library)}>
             <CloudDownload />
           </Button>
-          <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>
-            {enabled}
-          </Button>
+          <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>{enabled}</Button>
         </ListGroupItem>
       ),
     );

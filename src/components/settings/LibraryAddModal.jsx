@@ -9,7 +9,8 @@ import { PropTypes } from 'prop-types';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  handleHide: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
 };
 
 function LibraryAddModal({ isOpen, handleHide, handleSave }) {
@@ -33,10 +34,9 @@ function LibraryAddModal({ isOpen, handleHide, handleSave }) {
         <Button variant="primary" onClick={handleSave}>Save Changes</Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 }
 
 LibraryAddModal.propTypes = propTypes;
 
 export default LibraryAddModal;
-

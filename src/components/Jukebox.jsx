@@ -11,8 +11,6 @@ import SpotifyAlbums from './SpotifyAlbums';
 import Categories from './Categories';
 import Playlists from './Playlists';
 import AlbumDetail from './AlbumDetail';
-import QueueClient from '../lib/queue-client';
-import VolumeClient from '../lib/volume-client';
 import '../App.css';
 import Queue from './Queue';
 import Tracks from './Tracks';
@@ -24,7 +22,9 @@ import SearchModal from './SearchModal';
 import Libraries from './Libraries';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { cloneDeep, debounce } from 'lodash';
-import { ChevronDoubleRight, Play, Search, VolumeUp, VolumeDown, XSquare, XOctagonFill } from 'react-bootstrap-icons';
+import { XSquare } from 'react-bootstrap-icons';
+import ControlButtons from './ControlButtons';
+import NavigationButtons from './NavigationButtons';
 
 import './Jukebox.css';
 
@@ -70,100 +70,9 @@ function Jukebox() {
     });
   }
 
-  const addNavLink = (navLinks, feature, navKey, navName) => {
-    if (feature) {
-      navLinks.push(
-        <Nav.Link
-          key={navName}
-          onClick={() => {
-            setMode(navKey);
-            setCurrentAlbum('');
-          }}
-        >
-          {navName}
-        </Nav.Link>,
-      );
-    }
-    return navLinks;
-  };
-
-  const generateNavItems = () => {
-    let navLinks = [];
-
-    if (settings && settings.features) {
-      const { spotify, features } = settings;
-      const { spotifyFeatures } = spotify;
-
-      navLinks = addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
-      navLinks = addNavLink(navLinks, features.libraries, 'Libraries', 'Libraries');
-
-      if (settings.spotify.useSpotify) {
-        navLinks = addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');
-        navLinks = addNavLink(navLinks, spotifyFeatures.newReleases, 'NewReleases', 'New Releases');
-        navLinks = addNavLink(navLinks, spotifyFeatures.categories, 'Categories', 'Categories');
-      }
-
-      navLinks = addNavLink(navLinks, features.tracks, 'Tracks', 'Tracks');
-      navLinks = addNavLink(navLinks, features.playlists, 'Playlists', 'Playlists');
-      navLinks = addNavLink(navLinks, features.queue, 'Queue', 'Queue');
-
-      if (!isScreenSmall) {
-        navLinks = addNavLink(navLinks, features.settings, 'Settings', 'Settings');
-      }
-    }
-    return navLinks;
-  };
-
   const handleSearch = (searchText) => {
     setIsSearchModalOpen(false);
     setSearch(searchText);
-  };
-
-  const addControlButton = (buttons, feature, name, handler) => {
-    if (feature) {
-      buttons.push(<Button key={name} className="button" variant="outline-light" onClick={handler}>{name}</Button>);
-    }
-
-    return buttons;
-  };
-
-  const generateControlButtons = () => {
-    let buttons = [];
-    if (settings) {
-      const { features } = settings;
-
-      const props = {
-        className: "button",
-        variant: "outline-light",
-      };
-
-      if (isScreenSmall) {
-        buttons.push(<Button {...props} onClick={() => {
-          document.activeElement.blur();
-          setIsSmallSearchEnabled(true);
-        }
-        }><Search className="volume-icon" /></Button>);
-      }
-
-      if (isScreenSmall) {
-        buttons.push(<Button {...props} onClick={QueueClient.next}><Play className="volume-icon" /></Button>);
-        buttons.push(<Button {...props} onClick={QueueClient.next}><ChevronDoubleRight className="volume-icon" /></Button>);
-        buttons.push(<Button {...props} onClick={QueueClient.stop}><XOctagonFill className="volume-icon" /></Button>);
-      } else {
-        buttons = addControlButton(buttons, features.play, 'Play', QueueClient.next);
-        buttons = addControlButton(buttons, features.next, 'Next', QueueClient.next);
-        buttons = addControlButton(buttons, features.stop, 'Stop', QueueClient.stop);
-      }
-
-      if (isScreenSmall) {
-        buttons.push(<Button {...props} onClick={VolumeClient.up}><VolumeUp className="volume-icon" /></Button>);
-        buttons.push(<Button {...props} onClick={VolumeClient.down}><VolumeDown className="volume-icon" /></Button>);
-      } else {
-        buttons = addControlButton(buttons, features.volume, 'Volume Up', VolumeClient.up);
-        buttons = addControlButton(buttons, features.volume, 'Volume Down', VolumeClient.down);
-      }
-    }
-    return buttons;
   };
 
   let body = <React.Fragment />;
@@ -315,7 +224,9 @@ function Jukebox() {
         </Nav>
       );
     } else {
-      return <Nav className="ml-auto">{generateControlButtons()}</Nav>;
+      return <Nav className="ml-auto">
+        <ControlButtons settings={settings} isScreenSmall={isScreenSmall} setIsSmallSearchEnabled={setIsSmallSearchEnabled} />
+      </Nav>;
     }
   };
 
@@ -325,7 +236,11 @@ function Jukebox() {
         <Navbar fixed="top" collapseOnSelect bg="dark" variant="dark">
           {brand()}
           <Nav className="mr-auto">
-            {generateNavItems()}
+            <NavigationButtons
+              settings={settings}
+              isScreenSmall={isScreenSmall}
+              setMode={setMode}
+              setCurrentAlbum={setCurrentAlbum} />
           </Nav>
           {searchResults()}
           {searchButton()}

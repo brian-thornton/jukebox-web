@@ -3,10 +3,7 @@ import './App.css';
 import Jukebox from './components/Jukebox';
 
 function App() {
-  return (<div>
-    <Jukebox />
-  </div>);
-
+  return <Jukebox />;
 }
 
 export default App;

@@ -36,6 +36,8 @@ function PinModal({ isOpen, settings, handleClose }) {
     </Button>
   );
 
+  const row = (content) => content.map(number => numberButton(number));
+
   return (
     <Modal size="sm" show={isOpen} onHide={() => handleClose(pin === settings.pin)}>
       <Modal.Header closeButton className="header">
@@ -43,21 +45,9 @@ function PinModal({ isOpen, settings, handleClose }) {
       </Modal.Header>
       <Modal.Body className="body">
         <Container>
-          <Row>
-            {numberButton(1)}
-            {numberButton(2)}
-            {numberButton(3)}
-          </Row>
-          <Row>
-            {numberButton(4)}
-            {numberButton(5)}
-            {numberButton(6)}
-          </Row>
-          <Row>
-            {numberButton(7)}
-            {numberButton(8)}
-            {numberButton(9)}
-          </Row>
+          <Row>{row([1,2,3])}</Row>
+          <Row>{row([4,5,6])}</Row>
+          <Row>{row([7,8,9])}</Row>
           <Row>
             {numberButton(0)}
             <Button variant="outline-light" className="clear-button" onClick={() => setPin('')}>Clear</Button>

@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Modal,
   Container,
   Row,
-  Form,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
@@ -17,6 +16,7 @@ const propTypes = {
 
 function SearchModal({ isOpen, handleClose, search }) {
   const [searchText, setSearchText] = useState(search || 'Enter Search');
+  const row = (content) => content.map(char => inputButton(char));
 
   const inputButton = (value, padding) => {
     const inputButtonStyle = {
@@ -53,9 +53,7 @@ function SearchModal({ isOpen, handleClose, search }) {
 
   return (
     <React.Fragment>
-      <Modal dialogClassName="modal-90w" show={isOpen} onHide={() => {
-        handleClose('');
-      }}>
+      <Modal dialogClassName="modal-90w" show={isOpen} onHide={() => handleClose('')}>
         <Modal.Header closeButton className="header">
           <Modal.Title>{searchText}</Modal.Title>
         </Modal.Header>
@@ -63,56 +61,24 @@ function SearchModal({ isOpen, handleClose, search }) {
           <Container>
             <Row>
               {inputButton(1, 60)}
-              {inputButton(2)}
-              {inputButton(3)}
-              {inputButton(4)}
-              {inputButton(5)}
-              {inputButton(6)}
-              {inputButton(7)}
-              {inputButton(8)}
-              {inputButton(9)}
-              {inputButton(0)}
+              {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
             </Row>
             <Row>
               {inputButton('Q', 60)}
-              {inputButton('W')}
-              {inputButton('E')}
-              {inputButton('R')}
-              {inputButton('T')}
-              {inputButton('Y')}
-              {inputButton('U')}
-              {inputButton('I')}
-              {inputButton('O')}
-              {inputButton('P')}
+              {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
             </Row>
             <Row>
               {inputButton('A', 100)}
-              {inputButton('S')}
-              {inputButton('D')}
-              {inputButton('F')}
-              {inputButton('G')}
-              {inputButton('H')}
-              {inputButton('J')}
-              {inputButton('K')}
-              {inputButton('L')}
+              {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
             </Row>
             <Row>
               {inputButton('Z', 150)}
-              {inputButton('X')}
-              {inputButton('C')}
-              {inputButton('V')}
-              {inputButton('B')}
-              {inputButton('N')}
-              {inputButton('M')}
-              {inputButton('.')}
+              {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
             <Row>
               <Button variant="outline-light" className="space-button" onClick={() => setSearchText(`${searchText} `)}>Space</Button>
               <Button variant="outline-light" className="clear-button" onClick={() => setSearchText('')}>Clear</Button>
-              <Button variant="outline-light" className="search-button" onClick={() => {
-                handleClose(searchText);
-              }
-              }>Search Now</Button>
+              <Button variant="outline-light" className="search-button" onClick={() => handleClose(searchText)}>Search Now</Button>
             </Row>
           </Container>
         </Modal.Body>

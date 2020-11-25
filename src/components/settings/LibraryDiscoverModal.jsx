@@ -9,7 +9,8 @@ import { PropTypes } from 'prop-types';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
+  handleHide: PropTypes.func.isRequired,
 };
 
 function LibraryDiscoverModal({ isOpen, handleHide, handleSave }) {
@@ -31,16 +32,15 @@ function LibraryDiscoverModal({ isOpen, handleHide, handleSave }) {
       <Modal.Footer>
         <Button variant="secondary" onClick={handleHide}>
           Close
-      </Button>
+        </Button>
         <Button variant="primary" onClick={handleSave}>
           Discover
-      </Button>
+        </Button>
       </Modal.Footer>
     </Modal>
-  )
+  );
 }
 
 LibraryDiscoverModal.propTypes = propTypes;
 
 export default LibraryDiscoverModal;
-
