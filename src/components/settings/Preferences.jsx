@@ -9,6 +9,12 @@ function Preferences() {
   const [settings, setSettings] = useState();
   const [name, setName] = useState('');
 
+  const buttonProps = {
+    style: styles.buttonStyle,
+    variant: 'outline-light',
+    className: 'float-right',
+  };
+
   if (!settings) {
     SettingsClient.getSettings().then((data) => {
       setSettings(data);
@@ -22,6 +28,33 @@ function Preferences() {
     SettingsClient.updateSettings(deepClone).then(() => {
       window.location.reload();
     });
+  };
+
+  const updatePreference = (name, value) => {
+    const deepClone = JSON.parse(JSON.stringify(settings));
+    deepClone.preferences[name] = value;
+    SettingsClient.updateSettings(deepClone).then(() => {
+      window.location.reload();
+    });
+  };
+
+  const preferencesRow = (name, value) => {
+    const buttonText = value ? 'Enabled' : 'Disabled';
+    const style = value ? styles.enabledStyle : styles.disabledStyle;
+
+    return (
+      <ListGroupItem style={styles.cardStyle}>
+        {name}
+        <Button
+          {...buttonProps}
+          onClick={() => updatePreference(name, !value)}
+          enabled={value}
+          style={style}
+        >
+          {buttonText}
+        </Button>
+      </ListGroupItem>
+    );
   };
 
   const preferences = () => {
@@ -45,6 +78,8 @@ function Preferences() {
               />
             </InputGroup>
           </ListGroupItem>
+          {preferencesRow('showAlbumName', settings.preferences.showAlbumName)}
+          {preferencesRow('showAlbumsWithoutCoverArt', settings.preferences.showAlbumsWithoutCoverArt)}
         </ListGroup>
       </React.Fragment>
     );

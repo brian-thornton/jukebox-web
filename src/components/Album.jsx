@@ -40,7 +40,19 @@ function Album({
     setIsLoaded(true);
   };
 
+  const albumName = () => {
+    if (settings && settings.preferences.showAlbumName) {
+      return <Card.Title style={{...styles.albumTitle, color: settings.styles.fontColor}}>{album.name}</Card.Title>;
+    }
+
+    return <React.Fragment />;
+  }
+
   const largeAlbum = () => {
+    if (!settings.preferences.showAlbumsWithoutCoverArt && coverArt === defaultCover) {
+      return <React.Fragment />;
+    }
+
     if (coverArtOnly) {
       return (
         <Card className="h-55 w-85 album-card-small" onClick={() => setCurrentAlbum(album)}>
@@ -52,8 +64,8 @@ function Album({
     return (
       <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
         <Card.Img style={styles.albumImage} top src={coverArt} />
-        <Card.Body style={{padding: '0px'}}>
-          <Card.Title style={styles.albumTitle}>{album.name}</Card.Title>
+        <Card.Body style={{ padding: '0px' }}>
+          {albumName()}
         </Card.Body>
       </Card>
     );

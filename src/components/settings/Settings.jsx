@@ -4,10 +4,13 @@ import styles from '../styles';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
 import SpotifySettings from '../SpotifySettings';
+import StyleEditor from './StyleEditor';
+import ThemeList from './ThemeList';
 import ContentWithControls from '../ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
 import { Settings as SettingsShape } from '../shapes';
+import { useEffect } from 'react';
 
 const propTypes = {
   settings: SettingsShape.isRequired,
@@ -18,6 +21,8 @@ function Settings({ settings }) {
   const [isPinOpen, setIsPinOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
+  const [hideControls, setHideControls] = useState(false);
+  const [controls, setControls] = useState(null);
 
   if (!isAuthorized && !isPinOpen && !modalClosed) {
     setIsPinOpen(true);
@@ -33,6 +38,8 @@ function Settings({ settings }) {
         return <SpotifySettings />;
       } if (mode === 'PREFERENCES') {
         return <Preferences />;
+      } if (mode === 'STYLE') {
+        return <ThemeList settings={settings} resetControls={resetControls} setControls={setControls}/>;
       }
     }
 
@@ -44,19 +51,24 @@ function Settings({ settings }) {
     variant: 'outline-light',
   };
 
+  useEffect(() => {
+    console.log('controls updated');
+  }, [controls])
+
   const handleClose = (isAuthorized) => {
     setIsPinOpen(false);
     setIsAuthorized(isAuthorized);
     setModalClosed(true);
   };
 
-  const controls = () => {
+  const leftControls = () => {
     if (isAuthorized) {
       return (
         <React.Fragment>
           <Button {...buttonProps} onClick={() => setMode('LIBRARY')}>Library</Button>
           <Button {...buttonProps} onClick={() => setMode('SETTINGS')}>Features</Button>
           <Button {...buttonProps} onClick={() => setMode('PREFERENCES')}>Preferences</Button>
+          <Button {...buttonProps} onClick={() => setMode('STYLE')}>Style</Button>
           <Button {...buttonProps} onClick={() => setMode('SPOTIFY')}>Spotify</Button>
         </React.Fragment>
       );
@@ -65,9 +77,21 @@ function Settings({ settings }) {
     return <React.Fragment />;
   };
 
+  if (isAuthorized && !controls) {
+    setControls(leftControls());
+  }
+
+  const resetControls = () => {
+    setControls(leftControls());
+  }
+
   if (isAuthorized) {
     const alertText = 'Configure settings below to control your jukebox.';
-    return <ContentWithControls controls={controls()} content={content()} alertText={alertText} />;
+    if (!hideControls) {
+      return <ContentWithControls controls={controls} content={content()} alertText={alertText} />;
+    }
+
+    return content();
   }
 
   const notAuthorizedText = 'Please enter pin number to access settings.';

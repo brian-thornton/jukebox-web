@@ -57,9 +57,7 @@ function NewReleases() {
   }
   return (
     <Container>
-      <Row>
-        {renderAlbums()}
-      </Row>
+      <Row>{renderAlbums()}</Row>
     </Container>
   );
 }

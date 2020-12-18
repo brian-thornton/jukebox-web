@@ -13,7 +13,7 @@ import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 
-function Queue() {
+function Queue({ settings }) {
   const [tracks, setTracks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +56,7 @@ function Queue() {
   };
 
   const buttonProps = {
-    style: styles.buttonStyle,
+    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
@@ -64,7 +64,7 @@ function Queue() {
   tracks.forEach((track) => {
     renderTracks.push(
       (
-        <ListGroupItem style={styles.cardStyle}>
+        <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
           {track.name}
           <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
           <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
@@ -74,7 +74,7 @@ function Queue() {
   });
 
   const settingsProps = {
-    style: styles.settingsButtonStyle,
+    style: { ...styles.settingsButtonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
   };
 
@@ -90,7 +90,7 @@ function Queue() {
     if (!addToPlaylist) {
       return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
     }
-    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+    return (<Playlists mode="addToPlaylist" tracks={tracks} settings={settings}/>);
   }
   return (
     <Container>

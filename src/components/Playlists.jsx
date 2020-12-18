@@ -9,7 +9,8 @@ import PlaylistAddModal from './PlaylistAddModal';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 
-function Playlists({ tracks, mode, currentPlaylist }) {
+
+function Playlists({ tracks, mode, currentPlaylist, settings }) {
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -51,7 +52,7 @@ function Playlists({ tracks, mode, currentPlaylist }) {
 
   const buttons = (playlistName) => {
     const buttonProps = {
-      style: styles.buttonStyle,
+      style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
       variant: 'outline-light',
       className: 'float-right',
     };
@@ -79,18 +80,18 @@ function Playlists({ tracks, mode, currentPlaylist }) {
       (
         <ListGroupItem
           onClick={() => selectPlaylist(playlist.name)}
-          style={styles.cardStyle}
+          style={{ ...styles.cardStyle, color: settings.styles.fontColor }}
           key={playlist.name}
         >
-          {playlist.name}
-          {buttons(playlist.name)}
-        </ListGroupItem>
+          { playlist.name}
+          { buttons(playlist.name)}
+        </ListGroupItem >
       ),
     );
   });
 
   const buttonProps = {
-    style: styles.settingsButtonStyle,
+    style: { ...styles.settingsButtonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
@@ -112,7 +113,7 @@ function Playlists({ tracks, mode, currentPlaylist }) {
     );
   }
   return (
-    <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} />
+    <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} settings={settings} />
   );
 }
 

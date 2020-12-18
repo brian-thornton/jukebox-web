@@ -10,7 +10,7 @@ import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from './styles';
 
-function PlaylistDetail({ name, handleBackToPlaylists }) {
+function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const leftButtonStyle = { margin: '5px', width: '150px' };
@@ -60,13 +60,13 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   };
 
   const buttonProps = {
-    style: styles.buttonStyle,
+    style: {...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
 
   const leftButtonProps = {
-    style: leftButtonStyle,
+    style: {...leftButtonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
@@ -81,7 +81,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     tracks.forEach((track) => {
       renderTracks.push(
         (
-          <ListGroupItem style={styles.cardStyle}>
+          <ListGroupItem style={{...styles.cardStyle, color: settings.styles.fontColor}}>
             {track.name}
             <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
             <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>

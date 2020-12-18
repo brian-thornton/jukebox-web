@@ -38,6 +38,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
     style: styles.buttonStyle,
     variant: 'outline-light',
     className: 'float-right',
+    style: { background: settings.styles.buttonBackgroundColor },
   };
 
   const handleDownload = (track) => {
@@ -119,14 +120,14 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
         if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <ListGroupItem style={styles.trackRow}>
+              <ListGroupItem style={{...styles.trackRow, color: settings.styles.fontColor}}>
                 <Container style={styles.trackRow}>
                   <Row>
                     <Col lg={2} xl={2}>
                       {album(track)}
                     </Col>
                     <Col lg={10} xl={10}>
-                      <div style={{paddingTop: '10px'}}>{track.name}</div>
+                      <div style={{ paddingTop: '10px' }}>{track.name}</div>
                       {playButton}
                       {enqueueButton}
                     </Col>
@@ -139,7 +140,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
         } else {
           renderTracks.push(
             (
-              <ListGroupItem style={styles.cardStyle}>
+              <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
                 {track.name}
                 <br />
                 {playButton}
@@ -152,7 +153,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
       }
     });
 
-    return <ListGroup style={{marginTop: '15px'}}>{renderTracks}</ListGroup>;
+    return <ListGroup style={{ marginTop: '15px' }}>{renderTracks}</ListGroup>;
   }
 
   return <React.Fragment />;

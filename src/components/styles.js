@@ -90,7 +90,6 @@ const trackRow = {
   paddingTop: '0px',
   background: 'transparent',
   borderColor: '#708090',
-  color: '#FFFFFF',
 }
 
 export default {

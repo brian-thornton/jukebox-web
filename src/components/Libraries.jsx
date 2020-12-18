@@ -46,10 +46,7 @@ function Libraries({ settings, setCurrentAlbum }) {
   const backButton = () => {
     if (currentLibrary) {
       return (
-        <Button
-          style={styles.buttonStyle}
-          onClick={() => setCurrentLibrary(null)}
-        >
+        <Button style={styles.buttonStyle} onClick={() => setCurrentLibrary(null)}>
           Back to Libraries
         </Button>
       );
@@ -73,9 +70,7 @@ function Libraries({ settings, setCurrentAlbum }) {
 
     return (
       <Container fluid style={{ marginLeft: '50px' }}>
-        <Row>
-          {renderLibraries}
-        </Row>
+        <Row>{renderLibraries}</Row>
       </Container>
     );
   } else if (currentLibrary) {
@@ -93,9 +88,7 @@ function Libraries({ settings, setCurrentAlbum }) {
     return (
       <Container fluid style={{ marginLeft: '50px' }}>
         <Row>{backButton()}</Row>
-        <Row>
-          {renderAlbums}
-        </Row>
+        <Row>{renderAlbums}</Row>
       </Container>
     );
   }

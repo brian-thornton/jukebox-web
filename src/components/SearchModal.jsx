@@ -14,7 +14,7 @@ const propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
 
-function SearchModal({ isOpen, handleClose, search }) {
+function SearchModal({ isOpen, handleClose, search, settings }) {
   const [searchText, setSearchText] = useState(search || 'Enter Search');
   const row = (content) => content.map(char => inputButton(char));
 
@@ -22,6 +22,7 @@ function SearchModal({ isOpen, handleClose, search }) {
     const inputButtonStyle = {
       width: '55px',
       height: '55px',
+      background: settings.styles.buttonBackgroundColor,
     };
 
     if (padding) {
@@ -54,10 +55,10 @@ function SearchModal({ isOpen, handleClose, search }) {
   return (
     <React.Fragment>
       <Modal dialogClassName="modal-90w" show={isOpen} onHide={() => handleClose('')}>
-        <Modal.Header closeButton className="header">
+        <Modal.Header style={{background: settings.styles.headerColor}}  closeButton className="header">
           <Modal.Title>{searchText}</Modal.Title>
         </Modal.Header>
-        <Modal.Body className="body">
+        <Modal.Body style={{background: settings.styles.popupBackgroundColor}} className="body">
           <Container>
             <Row>
               {inputButton(1, 60)}
@@ -76,9 +77,9 @@ function SearchModal({ isOpen, handleClose, search }) {
               {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
             <Row>
-              <Button variant="outline-light" className="space-button" onClick={() => setSearchText(`${searchText} `)}>Space</Button>
-              <Button variant="outline-light" className="clear-button" onClick={() => setSearchText('')}>Clear</Button>
-              <Button variant="outline-light" className="search-button" onClick={() => handleClose(searchText)}>Search Now</Button>
+              <Button style={{background: settings.styles.buttonBackgroundColor}} variant="outline-light" className="space-button" onClick={() => setSearchText(`${searchText} `)}>Space</Button>
+              <Button style={{background: settings.styles.buttonBackgroundColor}} variant="outline-light" className="clear-button" onClick={() => setSearchText('')}>Clear</Button>
+              <Button style={{background: settings.styles.buttonBackgroundColor}} variant="outline-light" className="search-button" onClick={() => handleClose(searchText)}>Search Now</Button>
             </Row>
           </Container>
         </Modal.Body>

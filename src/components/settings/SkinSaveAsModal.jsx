@@ -6,37 +6,45 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+import StyleClient from '../../lib/style-client';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  handleSave: PropTypes.func.isRequired,
   handleHide: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
 };
 
-function LibraryDiscoverModal({ isOpen, handleHide, handleSave }) {
+function SkinSaveAsModal({ goBackToThemeList, isOpen, handleHide, colors }) {
+
+  const handleSave = () => {
+    StyleClient.createSkin({ name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value }});
+    handleHide();
+    goBackToThemeList();
+  };
+
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header closeButton>
-        <Modal.Title>Discover</Modal.Title>
+        <Modal.Title>Add Library</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <InputGroup className="mb-3">
           <FormControl
-            id="path"
-            placeholder="Path"
-            aria-label="Path"
+            id="name"
+            placeholder="Skin Name"
+            aria-label="name"
             aria-describedby="basic-addon1"
           />
         </InputGroup>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleHide}>Close</Button>
-        <Button variant="primary" onClick={handleSave}>Discover</Button>
+        <Button variant="primary" onClick={handleSave}>Save Changes</Button>
       </Modal.Footer>
     </Modal>
   );
 }
 
-LibraryDiscoverModal.propTypes = propTypes;
+SkinSaveAsModal.propTypes = propTypes;
 
-export default LibraryDiscoverModal;
+export default SkinSaveAsModal;

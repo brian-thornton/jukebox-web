@@ -184,7 +184,7 @@ function Jukebox() {
       return <React.Fragment />
     }
 
-    return <Navbar.Brand href="#home">{settings.preferences.name}</Navbar.Brand>;
+    return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor }}>{settings.preferences.name}</Navbar.Brand>;
   };
 
   const searchButton = () => {
@@ -195,16 +195,16 @@ function Jukebox() {
     if (search) {
       return (
         <React.Fragment>
-          <Button className="button" variant="outline-light" onClick={() => {
+          <Button style={{ background: settings.styles.buttonBackgroundColor }} className="button" variant="outline-light" onClick={() => {
             setSearch('');
             setTempSearch('');
           }}>Clear</Button>;
-          <Button className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+          <Button style={{background: settings.styles.buttonBackgroundColor}} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
         </React.Fragment>
       );
     }
 
-    return <Button className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+    return <Button style={{background: settings.styles.buttonBackgroundColor}} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
   };
 
   const footerContent = () => {
@@ -233,7 +233,7 @@ function Jukebox() {
   if (settings) {
     return (
       <React.Fragment>
-        <Navbar fixed="top" collapseOnSelect bg="dark" variant="dark">
+        <Navbar fixed="top" collapseOnSelect variant="dark" style={{ background: settings.styles.headerColor }}>
           {brand()}
           <Nav className="mr-auto">
             <NavigationButtons
@@ -245,14 +245,14 @@ function Jukebox() {
           {searchResults()}
           {searchButton()}
         </Navbar>
-        <Container fluid style={{ marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
+        <Container fluid style={{ background: settings.styles.backgroundColor, marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
           {body}
         </Container>
-        <Navbar fixed="bottom" collapseOnSelect bg="dark" variant="dark">
+        <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
           {nowPlayingText()}
           {footerContent()}
         </Navbar>
-        <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} search={search} />
+        <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} search={search} settings={settings} />
       </React.Fragment>
     );
   }

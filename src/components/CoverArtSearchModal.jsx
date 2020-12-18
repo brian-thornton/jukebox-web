@@ -20,7 +20,7 @@ const propTypes = {
   album: Album.shape
 };
 
-function CoverArtSearchModal({ isOpen, handleClose, album }) {
+function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
   const [results, setResults] = useState();
   const title = "Custom Cover Art Search";
   const [query, setQuery] = useState(album.name);
@@ -48,10 +48,10 @@ function CoverArtSearchModal({ isOpen, handleClose, album }) {
 
   return (
     <Modal show={isOpen} onHide={handleClose}>
-      <Modal.Header closeButton>
+      <Modal.Header style={{background: settings.styles.headerColor}} closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{background: settings.styles.popupBackgroundColor}}>
         <InputGroup className="mb-3">
           <FormControl
             id="name"
@@ -67,7 +67,7 @@ function CoverArtSearchModal({ isOpen, handleClose, album }) {
           <Card.Img style={styles.albumCardLarge} top src={results} style={{ width: '150px' }} />
         </Card>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer style={{background: settings.styles.footerColor}}>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
         <Button variant="primary" onClick={handleSave}>Save</Button>
       </Modal.Footer>

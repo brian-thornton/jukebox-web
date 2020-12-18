@@ -104,6 +104,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
     const props = {
       block: true,
       variant: 'outline-light',
+      style: { background: settings.styles.buttonBackgroundColor }
     };
 
     buttons.push(<Button {...props} onClick={clearCurrentAlbum}>Back to Albums</Button>);
@@ -144,12 +145,12 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
               </Col>
             </Row>
           </Container>
-          <CoverArtSearchModal album={album} isOpen={isCustomSearchOpen} handleClose={() => setIsCustomSearchOpen(false)} />
+          <CoverArtSearchModal settings={settings} album={album} isOpen={isCustomSearchOpen} handleClose={() => setIsCustomSearchOpen(false)} />
         </React.Fragment>
       );
     }
 
-    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+    return (<Playlists mode="addToPlaylist" tracks={tracks} settings={settings} />);
   };
 
   if (!isCoverArtLoaded) {

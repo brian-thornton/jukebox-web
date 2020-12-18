@@ -8,7 +8,7 @@ import QueueClient from '../lib/queue-client';
 function ControlButtons({ isScreenSmall, settings, setIsSmallSearchEnabled }) {
   const addControlButton = (buttons, feature, name, handler) => {
     if (feature) {
-      buttons.push(<Button content={name} onClick={handler} />)
+      buttons.push(<Button style={{background: settings.styles.buttonBackgroundColor}} content={name} onClick={handler} />)
     }
 
     return buttons;
@@ -17,11 +17,6 @@ function ControlButtons({ isScreenSmall, settings, setIsSmallSearchEnabled }) {
   let buttons = [];
   if (settings) {
     const { features } = settings;
-
-    const props = {
-      className: "button",
-      variant: "outline-light",
-    };
 
     if (isScreenSmall) {
       buttons.push(<Button onClick={() => {

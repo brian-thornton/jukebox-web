@@ -1,0 +1,109 @@
+import React, { useState, useEffect } from 'react';
+import {
+  ListGroup, ListGroupItem, Button,
+} from 'react-bootstrap';
+import styles from '../styles';
+import SettingsClient from '../../lib/settings-client';
+import StyleClient from '../../lib/style-client';
+import StyleEditor from './StyleEditor';
+
+function ThemeList({ settings, resetControls, setControls }) {
+  const [skins, setSkins] = useState();
+  const [selectedSkin, setSelectedSkin] = useState();
+  const [skinsLoaded, setSkinsLoaded] = useState(false);
+  const [skinsLoading, setSkinsLoading] = useState(false);
+  const [editSkin, setEditSkin] = useState();
+
+  if (!skinsLoaded && !skinsLoading) {
+    setSkinsLoading(true);
+  }
+
+  useEffect(() => {
+    if (!skinsLoaded && skinsLoading) {
+      StyleClient.getSkins().then(data => {
+        setSkinsLoading(false);
+        setSkinsLoaded(true);
+        setSkins(data)
+      });
+    }
+  }, [skinsLoading]);
+
+  useEffect(() => {
+    if (settings && selectedSkin) {
+      const deepClone = JSON.parse(JSON.stringify(settings));
+      deepClone.styles.headerColor = selectedSkin.headerColor;
+      deepClone.styles.footerColor = selectedSkin.footerColor;
+      deepClone.styles.fontColor = selectedSkin.fontColor;
+      deepClone.styles.backgroundColor = selectedSkin.backgroundColor;
+      deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
+      deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
+
+      SettingsClient.updateSettings(deepClone).then(() => {
+        window.location.reload();
+      });
+    }
+  }, [selectedSkin]);
+
+  const goBackToThemeList = () => {
+    setSelectedSkin(null);
+    setEditSkin(null);
+    resetControls();
+
+    StyleClient.getSkins().then(data => {
+      setSkinsLoading(false);
+      setSkinsLoaded(true);
+      setSkins(data)
+    });
+  }
+
+  const deleteSkin = (skin) => {
+    StyleClient.deleteSkin(skin.name).then(() => {
+      StyleClient.getSkins().then(data => {
+        setSkinsLoading(false);
+        setSkinsLoaded(true);
+        setSkins(data)
+      });
+    })
+  };
+
+  const skinRows = () => {
+    if (skins && skins.length) {
+      const rows = [];
+
+      const buttonProps = {
+        style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
+        variant: 'outline-light',
+        className: 'float-right',
+      };
+
+      skins.forEach(skin => {
+        rows.push(<ListGroupItem style={styles.cardStyle}>
+          {skin.name}
+          <Button {...buttonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
+          <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
+          <Button {...buttonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
+        </ListGroupItem>);
+      });
+
+      return rows;
+    }
+
+    return <React.Fragment />;
+  };
+
+  if (editSkin) {
+    return <StyleEditor skin={editSkin} settings={settings} goBackToThemeList={goBackToThemeList} setControls={setControls} />;
+  }
+
+  if (skins && skins.length) {
+    return (
+      <ListGroup>
+        {skinRows()}
+      </ListGroup>
+    )
+  }
+
+  return <React.Fragment />;
+};
+
+export default ThemeList;
