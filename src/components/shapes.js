@@ -44,4 +44,22 @@ export const Settings = PropTypes.shape({
   preferences: {
     name: PropTypes.string,
   },
+  pin: PropTypes.string,
+  styles: {
+    headerColor: PropTypes.string,
+    footerColor: PropTypes.string,
+    fontColor: PropTypes.string,
+    backgroundColor: PropTypes.string,
+    popupBackgroundColor: PropTypes.string,
+    buttonBackgroundColor: PropTypes.string,
+  },
+});
+
+export const Colors = PropTypes.shape({
+  headerColor: PropTypes.string,
+  footerColor: PropTypes.string,
+  fontColor: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  popupBackgroundColor: PropTypes.string,
+  buttonBackgroundColor: PropTypes.string,
 });

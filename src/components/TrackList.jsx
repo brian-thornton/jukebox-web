@@ -1,3 +1,4 @@
+import { CollectionPlay, Play } from 'react-bootstrap-icons';
 import { PropTypes } from 'prop-types';
 import React, { useState } from 'react';
 import {
@@ -8,7 +9,6 @@ import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 import { Track, Settings } from './shapes';
-import { CollectionPlay, Play } from 'react-bootstrap-icons';
 
 import './TrackList.css';
 
@@ -57,6 +57,8 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
     if (trackAlbumsLoaded) {
       return trackAlbums.find(trackAlbum => trackAlbum.path === track.path.substr(0, track.path.lastIndexOf('/')));
     }
+
+    return null;
   };
 
   const getTrackAlbums = (tracks) => {
@@ -107,10 +109,24 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
         let enqueueButton;
         if (isScreenSmall) {
           playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}><Play /></Button>;
-          enqueueButton = <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}><CollectionPlay /></Button>;
+          enqueueButton = (
+            <Button
+              {...buttonProps}
+              onClick={() => QueueClient.enqueue(track)}
+            >
+              <CollectionPlay />
+            </Button>
+          );
         } else {
           playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
-          enqueueButton = <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>;
+          enqueueButton = (
+            <Button
+              {...buttonProps}
+              onClick={() => QueueClient.enqueue(track)}
+            >
+              Enqueue
+            </Button>
+          );
         }
 
         if (track.id) {
@@ -120,7 +136,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
         if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <ListGroupItem style={{...styles.trackRow, color: settings.styles.fontColor}}>
+              <ListGroupItem style={{ ...styles.trackRow, color: settings.styles.fontColor }}>
                 <Container style={styles.trackRow}>
                   <Row>
                     <Col lg={2} xl={2}>

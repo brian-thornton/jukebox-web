@@ -7,17 +7,23 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import StyleClient from '../../lib/style-client';
+import { Colors } from '../shapes';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  colors: Colors.isRequired,
+  goBackToThemeList: PropTypes.func.isRequired,
 };
 
-function SkinSaveAsModal({ goBackToThemeList, isOpen, handleHide, colors }) {
-
+function SkinSaveAsModal({
+  goBackToThemeList,
+  isOpen,
+  handleHide,
+  colors,
+}) {
   const handleSave = () => {
-    StyleClient.createSkin({ name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value }});
+    StyleClient.createSkin({ name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
     handleHide();
     goBackToThemeList();
   };

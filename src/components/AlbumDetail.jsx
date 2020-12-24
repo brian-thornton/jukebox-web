@@ -104,7 +104,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
     const props = {
       block: true,
       variant: 'outline-light',
-      style: { background: settings.styles.buttonBackgroundColor }
+      style: { background: settings.styles.buttonBackgroundColor },
     };
 
     buttons.push(<Button {...props} onClick={clearCurrentAlbum}>Back to Albums</Button>);
@@ -119,7 +119,11 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
     if (settings.features.admin) {
       buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
       buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
-      buttons.push(<Button {...props} onClick={() => setIsCustomSearchOpen(true)}>Custom Search</Button>);
+      buttons.push((
+        <Button {...props} onClick={() => setIsCustomSearchOpen(true)}>
+          Custom Search
+        </Button>
+      ));
       buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);
     }
     return buttons;
@@ -145,7 +149,12 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
               </Col>
             </Row>
           </Container>
-          <CoverArtSearchModal settings={settings} album={album} isOpen={isCustomSearchOpen} handleClose={() => setIsCustomSearchOpen(false)} />
+          <CoverArtSearchModal
+            settings={settings}
+            album={album}
+            isOpen={isCustomSearchOpen}
+            handleClose={() => setIsCustomSearchOpen(false)}
+          />
         </React.Fragment>
       );
     }

@@ -12,6 +12,11 @@ import Playlists from './Playlists';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
+import { Settings } from './shapes';
+
+const propTypes = {
+  settings: Settings.isRequired,
+};
 
 function Queue({ settings }) {
   const [tracks, setTracks] = useState([]);
@@ -19,10 +24,6 @@ function Queue({ settings }) {
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const renderTracks = [];
-  const clear = () => QueueClient.clearQueue().then(loadQueue());
-  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
-  const message = 'There are no tracks in the queue.';
-  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const loadQueue = () => {
     QueueClient.getQueue().then((data) => {
@@ -31,6 +32,11 @@ function Queue({ settings }) {
       setIsLoaded(true);
     });
   };
+
+  const clear = () => QueueClient.clearQueue().then(loadQueue());
+  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
+  const message = 'There are no tracks in the queue.';
+  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const shuffle = () => {
     QueueClient.clearQueue().then(() => {
@@ -90,7 +96,7 @@ function Queue({ settings }) {
     if (!addToPlaylist) {
       return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
     }
-    return (<Playlists mode="addToPlaylist" tracks={tracks} settings={settings}/>);
+    return (<Playlists mode="addToPlaylist" tracks={tracks} settings={settings} />);
   }
   return (
     <Container>
@@ -102,5 +108,7 @@ function Queue({ settings }) {
     </Container>
   );
 }
+
+Queue.propTypes = propTypes;
 
 export default Queue;

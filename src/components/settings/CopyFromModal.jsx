@@ -5,14 +5,21 @@ import {
   Form,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+import { Colors } from '../shapes';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  colors: Colors.isRequired,
+  handleCopyColor: PropTypes.func.isRequired,
 };
 
-function CopyFromModal({ isOpen, handleHide, colors, handleCopyColor }) {
+function CopyFromModal({
+  isOpen,
+  handleHide,
+  colors,
+  handleCopyColor,
+}) {
   const [copiedColor, setCopiedColor] = useState();
 
   return (
@@ -22,7 +29,7 @@ function CopyFromModal({ isOpen, handleHide, colors, handleCopyColor }) {
       </Modal.Header>
       <Modal.Body>
         <Form.Group>
-          <Form.Control as="select" size="lg" onChange={(event) => setCopiedColor(event.target.value)}>
+          <Form.Control as="select" size="lg" onChange={event => setCopiedColor(event.target.value)}>
             <option value={colors.headerColor}>Header Color</option>
             <option value={colors.footerColor}>Footer Color</option>
             <option value={colors.fontColor}>Font Color</option>
@@ -35,11 +42,15 @@ function CopyFromModal({ isOpen, handleHide, colors, handleCopyColor }) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleHide}>Close</Button>
-        <Button variant="primary" onClick={() => {
-          handleCopyColor(copiedColor);
-          handleHide();
-        }
-        }>Save</Button>
+        <Button
+          variant="primary"
+          onClick={() => {
+            handleCopyColor(copiedColor);
+            handleHide();
+          }}
+        >
+          Save
+        </Button>
       </Modal.Footer>
     </Modal>
   );

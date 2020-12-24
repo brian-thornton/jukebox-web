@@ -37,14 +37,14 @@ function PinModal({ isOpen, settings, handleClose }) {
     </Button>
   );
 
-  const row = (content) => content.map(number => numberButton(number));
+  const row = content => content.map(number => numberButton(number));
 
   return (
     <Modal size="sm" show={isOpen} onHide={() => handleClose(pin === settings.pin)}>
-      <Modal.Header style={{background: settings.styles.headerColor}} closeButton className="header">
+      <Modal.Header style={{ background: settings.styles.headerColor }} closeButton className="header">
         <Modal.Title>Enter Pin</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{background: settings.styles.popupBackgroundColor}} className="body">
+      <Modal.Body style={{ background: settings.styles.popupBackgroundColor }} className="body">
         <Container>
           <Row>{row([1, 2, 3])}</Row>
           <Row>{row([4, 5, 6])}</Row>

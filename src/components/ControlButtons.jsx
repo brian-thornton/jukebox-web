@@ -1,11 +1,22 @@
 import React from 'react';
-import { ChevronDoubleRight, Play, Search, VolumeUp, VolumeDown, XSquare, XOctagonFill } from 'react-bootstrap-icons';
+import {
+  ChevronDoubleRight,
+  Play,
+  Search,
+  VolumeUp,
+  VolumeDown,
+  XOctagonFill,
+} from 'react-bootstrap-icons';
 import VolumeClient from '../lib/volume-client';
 
 import Button from './Button';
 import QueueClient from '../lib/queue-client';
 
-function ControlButtons({ isScreenSmall, settings, setIsSmallSearchEnabled }) {
+function ControlButtons({
+  isScreenSmall,
+  settings,
+  setIsSmallSearchEnabled,
+}) {
   const addControlButton = (buttons, feature, name, handler) => {
     if (feature) {
       buttons.push(<Button style={{background: settings.styles.buttonBackgroundColor}} content={name} onClick={handler} />)

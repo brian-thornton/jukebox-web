@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
@@ -6,6 +7,13 @@ import styles from '../styles';
 import SettingsClient from '../../lib/settings-client';
 import StyleClient from '../../lib/style-client';
 import StyleEditor from './StyleEditor';
+import { Settings } from '../shapes';
+
+const propTypes = {
+  settings: Settings.isRequired,
+  resetControls: PropTypes.func.isRequired,
+  setControls: PropTypes.func.isRequired,
+};
 
 function ThemeList({ settings, resetControls, setControls }) {
   const [skins, setSkins] = useState();
@@ -18,13 +26,17 @@ function ThemeList({ settings, resetControls, setControls }) {
     setSkinsLoading(true);
   }
 
+  const loadSkins = () => {
+    StyleClient.getSkins().then((data) => {
+      setSkinsLoading(false);
+      setSkinsLoaded(true);
+      setSkins(data);
+    });
+  };
+
   useEffect(() => {
     if (!skinsLoaded && skinsLoading) {
-      StyleClient.getSkins().then(data => {
-        setSkinsLoading(false);
-        setSkinsLoaded(true);
-        setSkins(data)
-      });
+      loadSkins();
     }
   }, [skinsLoading]);
 
@@ -48,22 +60,13 @@ function ThemeList({ settings, resetControls, setControls }) {
     setSelectedSkin(null);
     setEditSkin(null);
     resetControls();
-
-    StyleClient.getSkins().then(data => {
-      setSkinsLoading(false);
-      setSkinsLoaded(true);
-      setSkins(data)
-    });
-  }
+    loadSkins();
+  };
 
   const deleteSkin = (skin) => {
     StyleClient.deleteSkin(skin.name).then(() => {
-      StyleClient.getSkins().then(data => {
-        setSkinsLoading(false);
-        setSkinsLoaded(true);
-        setSkins(data)
-      });
-    })
+      loadSkins();
+    });
   };
 
   const skinRows = () => {
@@ -76,13 +79,15 @@ function ThemeList({ settings, resetControls, setControls }) {
         className: 'float-right',
       };
 
-      skins.forEach(skin => {
-        rows.push(<ListGroupItem style={styles.cardStyle}>
-          {skin.name}
-          <Button {...buttonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
-          <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
-          <Button {...buttonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
-        </ListGroupItem>);
+      skins.forEach((skin) => {
+        rows.push(
+          <ListGroupItem style={styles.cardStyle}>
+            {skin.name}
+            <Button {...buttonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
+            <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
+            <Button {...buttonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
+          </ListGroupItem>,
+        );
       });
 
       return rows;
@@ -92,7 +97,14 @@ function ThemeList({ settings, resetControls, setControls }) {
   };
 
   if (editSkin) {
-    return <StyleEditor skin={editSkin} settings={settings} goBackToThemeList={goBackToThemeList} setControls={setControls} />;
+    return (
+      <StyleEditor
+        skin={editSkin}
+        settings={settings}
+        goBackToThemeList={goBackToThemeList}
+        setControls={setControls}
+      />
+    );
   }
 
   if (skins && skins.length) {
@@ -100,10 +112,12 @@ function ThemeList({ settings, resetControls, setControls }) {
       <ListGroup>
         {skinRows()}
       </ListGroup>
-    )
+    );
   }
 
   return <React.Fragment />;
-};
+}
+
+ThemeList.propTypes = propTypes;
 
 export default ThemeList;

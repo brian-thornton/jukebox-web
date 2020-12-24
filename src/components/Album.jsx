@@ -42,11 +42,15 @@ function Album({
 
   const albumName = () => {
     if (settings && settings.preferences.showAlbumName) {
-      return <Card.Title style={{...styles.albumTitle, color: settings.styles.fontColor}}>{album.name}</Card.Title>;
+      return (
+        <Card.Title style={{ ...styles.albumTitle, color: settings.styles.fontColor }}>
+          {album.name}
+        </Card.Title>
+      );
     }
 
     return <React.Fragment />;
-  }
+  };
 
   const largeAlbum = () => {
     if (!settings.preferences.showAlbumsWithoutCoverArt && coverArt === defaultCover) {

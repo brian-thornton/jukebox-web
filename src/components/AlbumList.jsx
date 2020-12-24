@@ -94,9 +94,9 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
   const albumsMargin = () => {
     if (isScreenSmall) {
       return {};
-    } else {
-      return { marginLeft: '50px' };
     }
+
+    return { marginLeft: '50px' };
   };
 
   if (albums.length) {

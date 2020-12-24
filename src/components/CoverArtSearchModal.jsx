@@ -11,13 +11,15 @@ import { Album } from './shapes';
 import LibrianClient from '../lib/librarian-client';
 
 import styles from './styles';
+import { Settings } from './shapes';
 
 const albumArt = require('album-art');
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  album: Album.shape
+  album: Album.shape,
+  settings: Settings.isRequired,
 };
 
 function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
@@ -48,10 +50,10 @@ function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
 
   return (
     <Modal show={isOpen} onHide={handleClose}>
-      <Modal.Header style={{background: settings.styles.headerColor}} closeButton>
+      <Modal.Header style={{ background: settings.styles.headerColor }} closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{background: settings.styles.popupBackgroundColor}}>
+      <Modal.Body style={{ background: settings.styles.popupBackgroundColor }}>
         <InputGroup className="mb-3">
           <FormControl
             id="name"
@@ -67,7 +69,7 @@ function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
           <Card.Img style={styles.albumCardLarge} top src={results} style={{ width: '150px' }} />
         </Card>
       </Modal.Body>
-      <Modal.Footer style={{background: settings.styles.footerColor}}>
+      <Modal.Footer style={{ background: settings.styles.footerColor }}>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
         <Button variant="primary" onClick={handleSave}>Save</Button>
       </Modal.Footer>

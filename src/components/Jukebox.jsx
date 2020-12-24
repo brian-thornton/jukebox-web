@@ -1,10 +1,14 @@
 import React, { useState, useCallback } from 'react';
+import KeyboardEventHandler from 'react-keyboard-event-handler';
 import {
   Container,
   Navbar,
   Nav,
   Button,
 } from 'react-bootstrap';
+import { cloneDeep, debounce } from 'lodash';
+import { XSquare } from 'react-bootstrap-icons';
+
 import AlbumList from './AlbumList';
 import NewReleases from './NewReleases';
 import SpotifyAlbums from './SpotifyAlbums';
@@ -20,9 +24,6 @@ import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';
 import SearchModal from './SearchModal';
 import Libraries from './Libraries';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
-import { cloneDeep, debounce } from 'lodash';
-import { XSquare } from 'react-bootstrap-icons';
 import ControlButtons from './ControlButtons';
 import NavigationButtons from './NavigationButtons';
 
@@ -93,7 +94,7 @@ function Jukebox() {
             <React.Fragment>
               <KeyboardEventHandler
                 handleKeys={['all']}
-                onKeyEvent={(key, e) => {
+                onKeyEvent={(key) => {
                   let newSearch = cloneDeep(tempSearch);
                   if (key === 'space') {
                     newSearch = `${tempSearch} `;
@@ -107,14 +108,14 @@ function Jukebox() {
                   }
 
                   debouncedSearch(newSearch);
-                }
-                } />
+                }}
+              />
               <AlbumList
                 search={search}
                 setCurrentAlbum={setCurrentAlbum}
                 settings={settings}
               />
-            </React.Fragment >
+            </React.Fragment>
           );
           break;
         case 'NewReleases':
@@ -173,7 +174,7 @@ function Jukebox() {
 
   const nowPlayingText = () => {
     if (isScreenSmall) {
-      return <React.Fragment />
+      return <React.Fragment />;
     }
 
     return <div className="now-playing">{`Now Playing: ${nowPlaying}`}</div>;
@@ -181,7 +182,7 @@ function Jukebox() {
 
   const brand = () => {
     if (isScreenSmall) {
-      return <React.Fragment />
+      return <React.Fragment />;
     }
 
     return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor }}>{settings.preferences.name}</Navbar.Brand>;
@@ -189,45 +190,63 @@ function Jukebox() {
 
   const searchButton = () => {
     if (isScreenSmall) {
-      return <React.Fragment />
+      return <React.Fragment />;
     }
 
     if (search) {
       return (
         <React.Fragment>
-          <Button style={{ background: settings.styles.buttonBackgroundColor }} className="button" variant="outline-light" onClick={() => {
-            setSearch('');
-            setTempSearch('');
-          }}>Clear</Button>;
-          <Button style={{background: settings.styles.buttonBackgroundColor}} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+          <Button
+            style={{ background: settings.styles.buttonBackgroundColor }}
+            className="button"
+            variant="outline-light"
+            onClick={() => {
+              setSearch('');
+              setTempSearch('');
+            }}
+          >
+            Clear
+          </Button>
+          <Button style={{ background: settings.styles.buttonBackgroundColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
         </React.Fragment>
       );
     }
 
-    return <Button style={{background: settings.styles.buttonBackgroundColor}} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+    return <Button style={{ background: settings.styles.buttonBackgroundColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
   };
 
   const footerContent = () => {
     const props = {
-      className: "button",
-      variant: "outline-light",
+      className: 'button',
+      variant: 'outline-light',
     };
 
     if (isSmallSearchEnabled) {
       return (
         <Nav className="ml-auto">
-          <Button {...props} onClick={() => {
-            document.activeElement.blur();
-            setIsSmallSearchEnabled(false);
-          }}><XSquare className="volume-icon" /></Button>]
-          <input type="text" onChange={(event) => debouncedSearch(event.target.value)} />
+          <Button
+            {...props}
+            onClick={() => {
+              document.activeElement.blur();
+              setIsSmallSearchEnabled(false);
+            }}
+          >
+            <XSquare className="volume-icon" />
+          </Button>
+          <input type="text" onChange={event => debouncedSearch(event.target.value)} />
         </Nav>
       );
-    } else {
-      return <Nav className="ml-auto">
-        <ControlButtons settings={settings} isScreenSmall={isScreenSmall} setIsSmallSearchEnabled={setIsSmallSearchEnabled} />
-      </Nav>;
     }
+
+    return (
+      <Nav className="ml-auto">
+        <ControlButtons
+          settings={settings}
+          isScreenSmall={isScreenSmall}
+          setIsSmallSearchEnabled={setIsSmallSearchEnabled}
+        />
+      </Nav>
+    );
   };
 
   if (settings) {
@@ -240,12 +259,13 @@ function Jukebox() {
               settings={settings}
               isScreenSmall={isScreenSmall}
               setMode={setMode}
-              setCurrentAlbum={setCurrentAlbum} />
+              setCurrentAlbum={setCurrentAlbum}
+            />
           </Nav>
           {searchResults()}
           {searchButton()}
         </Navbar>
-        <Container fluid style={{ background: settings.styles.backgroundColor, marginTop: '50px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
+        <Container fluid style={{ background: settings.styles.backgroundColor, marginTop: '50px', height: '4000px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
           {body}
         </Container>
         <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">

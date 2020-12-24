@@ -9,6 +9,11 @@ import ContentWithControls from './ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from './styles';
+import { Settings } from './shapes';
+
+const propTypes = {
+  settings: Settings.isRequired,
+};
 
 function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   const [tracks, setTracks] = useState([]);
@@ -60,13 +65,13 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   };
 
   const buttonProps = {
-    style: {...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
+    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
 
   const leftButtonProps = {
-    style: {...leftButtonStyle, background: settings.styles.buttonBackgroundColor },
+    style: { ...leftButtonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
@@ -81,7 +86,7 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     tracks.forEach((track) => {
       renderTracks.push(
         (
-          <ListGroupItem style={{...styles.cardStyle, color: settings.styles.fontColor}}>
+          <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
             {track.name}
             <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
             <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
@@ -116,18 +121,12 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         controls={controls()}
         content={content()}
       />
-      <PlaylistAddModal isOpen={isSaveAsOpen} handleClose={() => setIsSaveAsOpen(false)} handleSave={handleSave} existingPlaylistName={name}/>
-      <PlaylistDeleteModal isOpen={showDeleteModal} handleClose={() => setShowDeleteModal(false)} handleDelete={handleDelete}/>
+      <PlaylistAddModal isOpen={isSaveAsOpen} handleClose={() => setIsSaveAsOpen(false)} handleSave={handleSave} existingPlaylistName={name} />
+      <PlaylistDeleteModal isOpen={showDeleteModal} handleClose={() => setShowDeleteModal(false)} handleDelete={handleDelete} />
     </React.Fragment>
   );
 }
 
-export default PlaylistDetail;
+PlaylistDetail.propTypes = propTypes;
 
-PlaylistDetail.propTypes = {
-  name: PropTypes.string,
-  handleBackToPlaylists: PropTypes.func.isRequired,
-};
-PlaylistDetail.defaultProps = {
-  name: '',
-};
+export default PlaylistDetail;

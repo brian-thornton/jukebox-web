@@ -4,13 +4,11 @@ import styles from '../styles';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
 import SpotifySettings from '../SpotifySettings';
-import StyleEditor from './StyleEditor';
 import ThemeList from './ThemeList';
 import ContentWithControls from '../ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
 import { Settings as SettingsShape } from '../shapes';
-import { useEffect } from 'react';
 
 const propTypes = {
   settings: SettingsShape.isRequired,
@@ -28,37 +26,9 @@ function Settings({ settings }) {
     setIsPinOpen(true);
   }
 
-  const content = () => {
-    if (isAuthorized) {
-      if (mode === 'LIBRARY') {
-        return <LibraryList />;
-      } if (mode === 'SETTINGS') {
-        return <SettingsEditor />;
-      } if (mode === 'SPOTIFY') {
-        return <SpotifySettings />;
-      } if (mode === 'PREFERENCES') {
-        return <Preferences />;
-      } if (mode === 'STYLE') {
-        return <ThemeList settings={settings} resetControls={resetControls} setControls={setControls}/>;
-      }
-    }
-
-    return <React.Fragment />;
-  };
-
   const buttonProps = {
     style: styles.settingsButtonStyle,
     variant: 'outline-light',
-  };
-
-  useEffect(() => {
-    console.log('controls updated');
-  }, [controls])
-
-  const handleClose = (isAuthorized) => {
-    setIsPinOpen(false);
-    setIsAuthorized(isAuthorized);
-    setModalClosed(true);
   };
 
   const leftControls = () => {
@@ -77,11 +47,37 @@ function Settings({ settings }) {
     return <React.Fragment />;
   };
 
-  if (isAuthorized && !controls) {
-    setControls(leftControls());
-  }
+  const content = () => {
+    if (isAuthorized) {
+      if (mode === 'LIBRARY') {
+        return <LibraryList />;
+      } if (mode === 'SETTINGS') {
+        return <SettingsEditor />;
+      } if (mode === 'SPOTIFY') {
+        return <SpotifySettings />;
+      } if (mode === 'PREFERENCES') {
+        return <Preferences />;
+      } if (mode === 'STYLE') {
+        return (
+          <ThemeList
+            settings={settings}
+            resetControls={() => setControls(leftControls())}
+            setControls={setControls}
+          />
+        );
+      }
+    }
 
-  const resetControls = () => {
+    return <React.Fragment />;
+  };
+
+  const handleClose = (authorized) => {
+    setIsPinOpen(false);
+    setIsAuthorized(authorized);
+    setModalClosed(true);
+  };
+
+  if (isAuthorized && !controls) {
     setControls(leftControls());
   }
 

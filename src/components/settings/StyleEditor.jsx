@@ -8,7 +8,12 @@ import SkinSaveAsModal from './SkinSaveAsModal';
 import ColorPicker from './ColorPicker';
 import CopyFromModal from './CopyFromModal';
 
-function StyleEditor({ skin, settings, goBackToThemeList, setControls }) {
+function StyleEditor({
+  skin,
+  settings,
+  goBackToThemeList,
+  setControls,
+}) {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [colorMode, setColorMode] = useState();
   const [allowGradient, setAllowGradient] = useState();
@@ -26,28 +31,23 @@ function StyleEditor({ skin, settings, goBackToThemeList, setControls }) {
   });
 
   const buttonProps = {
-    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
+    style: { ...styles.settings, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
 
-  const handleSave = () => {
-    StyleClient.deleteSkin(skin.name).then(() => {
-      StyleClient.createSkin({ name: skin.name, skin: { name: skin.name, ...colors}}).then(() => {
-        goBackToThemeList();
-      });
-    });
+  const controlButtonProps = {
+    style: { ...styles.settingsButtonStyle, background: settings.styles.buttonBackgroundColor },
+    variant: 'outline-light',
+    className: 'float-right',
   };
 
-  const controls = () => {
-    return (
-      <React.Fragment>
-        <Button {...buttonProps} onClick={goBackToThemeList}>Back to Settings</Button>
-        <Button {...buttonProps} onClick={handleSave}>Save</Button>
-        <Button {...buttonProps} onClick={() => setIsSaveAsModalOpen(true)}>Save As</Button>
-      </React.Fragment>
-    )
-  };
+  const controls = () => (
+    <React.Fragment>
+      <Button {...controlButtonProps} onClick={goBackToThemeList}>Back to Settings</Button>
+      <Button {...controlButtonProps} onClick={() => setIsSaveAsModalOpen(true)}>Save As</Button>
+    </React.Fragment>
+  );
 
   useEffect(() => {
     if (colorMode) {
@@ -60,11 +60,12 @@ function StyleEditor({ skin, settings, goBackToThemeList, setControls }) {
     setIsContextSet(true);
   }
 
-  const styleRow = (name) => {
-    return (
-      <ListGroupItem style={styles.cardStyle}>
-        {name}
-        <Button style={{ float: 'right', width: '100px', background: colors[name] }} onClick={() => {
+  const styleRow = name => (
+    <ListGroupItem style={styles.cardStyle}>
+      {name}
+      <Button
+        style={{ float: 'right', width: '100px', background: colors[name] }}
+        onClick={() => {
           setColorMode(name);
 
           const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor'];
@@ -74,26 +75,26 @@ function StyleEditor({ skin, settings, goBackToThemeList, setControls }) {
           } else {
             setAllowGradient(false);
           }
-        }}>
-          &nbsp;
-          </Button>
-        <Button
-          {...buttonProps}
-          onClick={() => {
-            setCopyTo(name);
-            setIsCopyFromOpen(true);
-          }}
-        >
-          Copy From
-          </Button>
-      </ListGroupItem>
-    );
-  };
+        }}
+      >
+        &nbsp;
+      </Button>
+      <Button
+        {...buttonProps}
+        onClick={() => {
+          setCopyTo(name);
+          setIsCopyFromOpen(true);
+        }}
+      >
+        Copy From
+      </Button>
+    </ListGroupItem>
+  );
 
   const handleColorCopy = (color) => {
     const updated = {
       ...colors,
-      [copyTo]: color
+      [copyTo]: color,
     };
 
     setColors(updated);
@@ -104,8 +105,8 @@ function StyleEditor({ skin, settings, goBackToThemeList, setControls }) {
 
     const updated = {
       ...colors,
-      [colorMode]: color
-    }
+      [colorMode]: color,
+    };
 
     setColors(updated);
 
@@ -116,29 +117,43 @@ function StyleEditor({ skin, settings, goBackToThemeList, setControls }) {
 
   useEffect(() => {
     StyleClient.deleteSkin(skin.name).then(() => {
-      StyleClient.createSkin({ name: skin.name, skin: { name: skin.name, ...colors}}).then(() => {
+      StyleClient.createSkin({ name: skin.name, skin: { name: skin.name, ...colors } }).then(() => {
       });
     });
   }, [colors]);
 
-  const content = () => {
-    return (
-      <React.Fragment>
-        <ListGroup>
-          {styleRow('headerColor')}
-          {styleRow('footerColor')}
-          {styleRow('fontColor')}
-          {styleRow('backgroundColor')}
-          {styleRow('popupBackgroundColor')}
-          {styleRow('buttonBackgroundColor')}
-          {styleRow('buttonTextColor')}
-        </ListGroup>
-        <ColorPicker isOpen={isColorModalOpen} setIsOpen={setIsColorModalOpen} color={colors[colorMode]} setColor={handleSetColor} allowGradient={allowGradient} />
-        <SkinSaveAsModal goBackToThemeList={goBackToThemeList} handleHide={() => setIsSaveAsModalOpen(false)} isOpen={isSaveAsModalOpen} colors={colors} />
-        <CopyFromModal isOpen={isCopyFromOpen} colors={colors} handleHide={() => setIsCopyFromOpen(false)} handleCopyColor={handleColorCopy} />
-      </React.Fragment>
-    );
-  };
+  const content = () => (
+    <React.Fragment>
+      <ListGroup>
+        {styleRow('headerColor')}
+        {styleRow('footerColor')}
+        {styleRow('fontColor')}
+        {styleRow('backgroundColor')}
+        {styleRow('popupBackgroundColor')}
+        {styleRow('buttonBackgroundColor')}
+        {styleRow('buttonTextColor')}
+      </ListGroup>
+      <ColorPicker
+        isOpen={isColorModalOpen}
+        setIsOpen={setIsColorModalOpen}
+        color={colors[colorMode]}
+        setColor={handleSetColor}
+        allowGradient={allowGradient}
+      />
+      <SkinSaveAsModal
+        goBackToThemeList={goBackToThemeList}
+        handleHide={() => setIsSaveAsModalOpen(false)}
+        isOpen={isSaveAsModalOpen}
+        colors={colors}
+      />
+      <CopyFromModal
+        isOpen={isCopyFromOpen}
+        colors={colors}
+        handleHide={() => setIsCopyFromOpen(false)}
+        handleCopyColor={handleColorCopy}
+      />
+    </React.Fragment>
+  );
 
   return content();
 }
