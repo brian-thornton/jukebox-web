@@ -265,14 +265,29 @@ function Jukebox() {
           {searchResults()}
           {searchButton()}
         </Navbar>
-        <Container fluid style={{ background: settings.styles.backgroundColor, marginTop: '50px', height: '4000px', marginBottom: '60px', marginLeft: '60px' }} className="mx-0 px-0">
+        <Container
+          fluid
+          style={{
+            background: settings.styles.backgroundColor,
+            marginTop: '50px',
+            height: '4000px',
+            marginBottom: '60px',
+            marginLeft: '60px',
+          }}
+          className="mx-0 px-0"
+        >
           {body}
         </Container>
         <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
           {nowPlayingText()}
           {footerContent()}
         </Navbar>
-        <SearchModal isOpen={isSearchModalOpen} handleClose={handleSearch} search={search} settings={settings} />
+        <SearchModal
+          isOpen={isSearchModalOpen}
+          handleClose={handleSearch}
+          search={search}
+          settings={settings}
+        />
       </React.Fragment>
     );
   }

@@ -1,7 +1,12 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
 
-function NavigationButtons({ settings, isScreenSmall, setMode, setCurrentAlbum }) {
+function NavigationButtons({
+  settings,
+  isScreenSmall,
+  setMode,
+  setCurrentAlbum,
+}) {
   const addNavLink = (navLinks, feature, navKey, navName) => {
     if (feature) {
       navLinks.push(

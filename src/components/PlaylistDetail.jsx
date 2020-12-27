@@ -12,6 +12,8 @@ import styles from './styles';
 import { Settings } from './shapes';
 
 const propTypes = {
+  handleBackToPlaylists: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
   settings: Settings.isRequired,
 };
 
@@ -121,8 +123,17 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         controls={controls()}
         content={content()}
       />
-      <PlaylistAddModal isOpen={isSaveAsOpen} handleClose={() => setIsSaveAsOpen(false)} handleSave={handleSave} existingPlaylistName={name} />
-      <PlaylistDeleteModal isOpen={showDeleteModal} handleClose={() => setShowDeleteModal(false)} handleDelete={handleDelete} />
+      <PlaylistAddModal
+        isOpen={isSaveAsOpen}
+        handleClose={() => setIsSaveAsOpen(false)}
+        handleSave={handleSave}
+        existingPlaylistName={name}
+      />
+      <PlaylistDeleteModal
+        isOpen={showDeleteModal}
+        handleClose={() => setShowDeleteModal(false)}
+        handleDelete={handleDelete}
+      />
     </React.Fragment>
   );
 }

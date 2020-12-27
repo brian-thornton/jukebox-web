@@ -7,26 +7,35 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Album } from './shapes';
+import { Album, Settings } from './shapes';
 import LibrianClient from '../lib/librarian-client';
-
 import styles from './styles';
-import { Settings } from './shapes';
 
 const albumArt = require('album-art');
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  album: Album.shape,
+  album: Album.shape.isRequired,
   settings: Settings.isRequired,
 };
 
-function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
+function CoverArtSearchModal({
+  isOpen,
+  handleClose,
+  album,
+  settings,
+}) {
   const [results, setResults] = useState();
-  const title = "Custom Cover Art Search";
+  const title = 'Custom Cover Art Search';
   const [query, setQuery] = useState(album.name);
   const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: results });
+
+  const handleResult = (data) => {
+    if (data.toString().includes('http')) {
+      setResults(data);
+    }
+  };
 
   const handleSearch = () => {
     if (query.includes('-')) {
@@ -34,12 +43,6 @@ function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
       albumArt(nameArray[0], { album: nameArray[1] }).then(data => handleResult(data));
     } else {
       albumArt(query).then(data => handleResult(data));
-    }
-  };
-
-  const handleResult = (data) => {
-    if (data.toString().includes('http')) {
-      setResults(data);
     }
   };
 
@@ -65,8 +68,8 @@ function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
           />
         </InputGroup>
         <Button variant="primary" onClick={handleSearch}>Search</Button>
-        <Card className="h-55 w-85 album-card-small" >
-          <Card.Img style={styles.albumCardLarge} top src={results} style={{ width: '150px' }} />
+        <Card className="h-55 w-85 album-card-small">
+          <Card.Img style={{ ...styles.albumCardLarge, width: '150px' }} top src={results} />
         </Card>
       </Modal.Body>
       <Modal.Footer style={{ background: settings.styles.footerColor }}>
@@ -80,4 +83,3 @@ function CoverArtSearchModal({ isOpen, handleClose, album, settings }) {
 CoverArtSearchModal.propTypes = propTypes;
 
 export default CoverArtSearchModal;
-

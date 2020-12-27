@@ -19,7 +19,13 @@ function ControlButtons({
 }) {
   const addControlButton = (buttons, feature, name, handler) => {
     if (feature) {
-      buttons.push(<Button style={{background: settings.styles.buttonBackgroundColor}} content={name} onClick={handler} />)
+      buttons.push((
+        <Button
+          style={{ background: settings.styles.buttonBackgroundColor }}
+          content={name}
+          onClick={handler}
+        />
+      ));
     }
 
     return buttons;
@@ -30,12 +36,14 @@ function ControlButtons({
     const { features } = settings;
 
     if (isScreenSmall) {
-      buttons.push(<Button onClick={() => {
-        document.activeElement.blur();
-        setIsSmallSearchEnabled(true);
-      }}
-        content={<Search className="volume-icon" />}
-      />);
+      buttons.push((
+        <Button
+          onClick={() => {
+            document.activeElement.blur();
+            setIsSmallSearchEnabled(true);
+          }}
+          content={<Search className="volume-icon" />}
+        />));
     }
 
     if (isScreenSmall) {

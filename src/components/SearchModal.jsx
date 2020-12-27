@@ -16,7 +16,12 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function SearchModal({ isOpen, handleClose, search, settings }) {
+function SearchModal({
+  isOpen,
+  handleClose,
+  search,
+  settings,
+}) {
   const [searchText, setSearchText] = useState(search || 'Enter Search');
   const row = (content) => content.map(char => inputButton(char));
 

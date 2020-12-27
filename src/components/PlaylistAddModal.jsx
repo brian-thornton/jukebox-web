@@ -37,7 +37,7 @@ function PlaylistAddModal({ isOpen, handleClose, handleSave, existingPlaylistNam
         <Button variant="secondary" onClick={handleClose}>Close</Button>
         <Button variant="primary" onClick={() => handleSave(document.getElementById('name').value)}>
           Save
-    </Button>
+        </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -46,4 +46,3 @@ function PlaylistAddModal({ isOpen, handleClose, handleSave, existingPlaylistNam
 PlaylistAddModal.propTypes = propTypes;
 
 export default PlaylistAddModal;
-

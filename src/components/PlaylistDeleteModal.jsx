@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  existingPlaylistName: PropTypes.string
+  existingPlaylistName: PropTypes.string,
 };
 
 function PlaylistDeleteModal({ isOpen, handleClose, handleDelete }) {
@@ -16,12 +16,12 @@ function PlaylistDeleteModal({ isOpen, handleClose, handleDelete }) {
       </Modal.Header>
       <Modal.Body>
         Are you sure that you want to delete the playlist?
-        </Modal.Body>
+      </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>No</Button>
         <Button variant="primary" onClick={handleDelete}>
           Yes
-          </Button>
+        </Button>
       </Modal.Footer>
     </Modal>
   );
@@ -30,4 +30,3 @@ function PlaylistDeleteModal({ isOpen, handleClose, handleDelete }) {
 PlaylistDeleteModal.propTypes = propTypes;
 
 export default PlaylistDeleteModal;
-

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  ListGroup, ListGroupItem, Button, Modal, InputGroup, FormControl,
+  ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
 import PlaylistClient from '../lib/playlist-client';
 import PlaylistDetail from './PlaylistDetail';
@@ -14,7 +14,12 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function Playlists({ tracks, mode, currentPlaylist, settings }) {
+function Playlists({
+  tracks,
+  mode,
+  currentPlaylist,
+  settings,
+}) {
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -67,7 +72,7 @@ function Playlists({ tracks, mode, currentPlaylist, settings }) {
         <Button
           {...buttonProps}
           onClick={() => {
-            addTracksToPlaylist(playlistName)
+            addTracksToPlaylist(playlistName);
             setAdded(true);
           }}
         >
@@ -89,7 +94,7 @@ function Playlists({ tracks, mode, currentPlaylist, settings }) {
         >
           { playlist.name}
           { buttons(playlist.name)}
-        </ListGroupItem >
+        </ListGroupItem>
       ),
     );
   });
@@ -106,8 +111,6 @@ function Playlists({ tracks, mode, currentPlaylist, settings }) {
 
   const content = () => <ListGroup>{renderPlaylists}</ListGroup>;
 
-
-
   if (!currentPlaylist.name && !name) {
     return (
       <React.Fragment>
@@ -121,7 +124,6 @@ function Playlists({ tracks, mode, currentPlaylist, settings }) {
   );
 }
 
-Playlists.propTypes = propTypes;  
+Playlists.propTypes = propTypes;
 
 export default Playlists;
-
