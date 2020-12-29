@@ -16,7 +16,7 @@ const albumArt = require('album-art');
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  album: Album.shape.isRequired,
+  album: Album.isRequired,
   settings: Settings.isRequired,
 };
 

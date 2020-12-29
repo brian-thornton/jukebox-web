@@ -8,10 +8,13 @@ import PlaylistDetail from './PlaylistDetail';
 import PlaylistAddModal from './PlaylistAddModal';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
-import { Settings } from './shapes';
+import { Settings, Tracks } from './shapes';
 
 const propTypes = {
+  currentPlaylist: PropTypes.string,
+  mode: PropTypes.string,
   settings: Settings.isRequired,
+  tracks: Tracks.isRequired,
 };
 
 function Playlists({
@@ -125,5 +128,11 @@ function Playlists({
 }
 
 Playlists.propTypes = propTypes;
+
+Playlists.defaultProps = {
+  currentPlaylist: '',
+  mode: '',
+};
+
 
 export default Playlists;

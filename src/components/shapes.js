@@ -13,6 +13,8 @@ export const Track = PropTypes.shape({
   id: PropTypes.string,
 });
 
+export const Tracks = PropTypes.arrayOf(Track);
+
 export const Settings = PropTypes.shape({
   spotify: {
     useSpotify: PropTypes.bool,
@@ -63,3 +65,12 @@ export const Colors = PropTypes.shape({
   popupBackgroundColor: PropTypes.string,
   buttonBackgroundColor: PropTypes.string,
 });
+
+export const Style = PropTypes.shape({
+  headerColor: PropTypes.string,
+  footerColor: PropTypes.string,
+  fontColor: PropTypes.string,
+  backgroundColor: PropTypes.string,
+  popupBackgroundColor: PropTypes.string,
+  buttonBackgroundColor: PropTypes.string,
+})

@@ -6,16 +6,20 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Settings } from './shapes';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  settings: Settings.isRequired,
   handleClose: PropTypes.func.isRequired,
-  existingPlaylistName: PropTypes.string
+  handleSave: PropTypes.func.isRequired,
+  existingPlaylistName: PropTypes.string,
 };
 
-function PlaylistAddModal({ isOpen, handleClose, handleSave, existingPlaylistName }) {
+function PlaylistAddModal({
+  isOpen,
+  handleClose,
+  handleSave,
+  existingPlaylistName,
+}) {
   const title = existingPlaylistName ? `Save Playlist '${existingPlaylistName}' as...` : 'Add Playlist';
 
   return (
@@ -44,5 +48,9 @@ function PlaylistAddModal({ isOpen, handleClose, handleSave, existingPlaylistNam
 }
 
 PlaylistAddModal.propTypes = propTypes;
+
+PlaylistAddModal.defaultProps = {
+  existingPlaylistName: '',
+};
 
 export default PlaylistAddModal;

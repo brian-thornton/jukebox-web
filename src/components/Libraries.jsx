@@ -73,7 +73,9 @@ function Libraries({ settings, setCurrentAlbum }) {
         <Row>{renderLibraries}</Row>
       </Container>
     );
-  } else if (currentLibrary) {
+  }
+
+  if (currentLibrary) {
     const renderAlbums = [];
     currentLibrary.albums.forEach((album) => {
       renderAlbums.push(

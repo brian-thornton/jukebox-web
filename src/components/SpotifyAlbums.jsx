@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import {
   Button,
@@ -7,7 +8,11 @@ import {
 import Album from './Album';
 import SpotifyClient from '../lib/spotify-client';
 
-function SpotifyAlbums(props) {
+const propTypes = {
+  search: PropTypes.string,
+};
+
+function SpotifyAlbums({ search }) {
   const limit = 20;
   const [start, setStart] = useState(0);
   const [albums, setAlbums] = useState([]);
@@ -35,7 +40,7 @@ function SpotifyAlbums(props) {
 
   useEffect(() => {
     loadAlbums(0, limit);
-  }, [props.search]);
+  }, [search]);
 
   if (!albums.length) {
     loadAlbums(start, limit);
@@ -64,4 +69,10 @@ function SpotifyAlbums(props) {
     </Container>
   );
 }
+
+SpotifyAlbums.propTypes = propTypes;
+SpotifyAlbums.defaultProps = {
+  search: '',
+};
+
 export default SpotifyAlbums;

@@ -107,7 +107,6 @@ function LibraryList() {
 
   let totalTracks = 0;
   libraries.forEach((library) => {
-    delete library.tracks;
     const enabled = library.enabled ? <Check /> : <X />;
     const style = library.enabled ? styles.enabledStyle : styles.disabledStyle;
     if (library.totalTracks) {

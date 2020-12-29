@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  existingPlaylistName: PropTypes.string,
+  handleDelete: PropTypes.func.isRequired,
 };
 
 function PlaylistDeleteModal({ isOpen, handleClose, handleDelete }) {

@@ -1,10 +1,12 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button as ReactButton } from 'react-bootstrap';
+import { Style } from './shapes';
 
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   content: PropTypes.string,
+  style: Style.isRequired,
 };
 
 function Button({ onClick, content, style }) {
@@ -12,5 +14,9 @@ function Button({ onClick, content, style }) {
 }
 
 Button.propTypes = propTypes;
+
+Button.defaultProps = {
+  content: '',
+};
 
 export default Button;

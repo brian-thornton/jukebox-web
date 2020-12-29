@@ -20,7 +20,13 @@ const propTypes = {
   showDownloadLink: PropTypes.bool,
 };
 
-function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDownloadLink }) {
+function TrackList({
+  tracks,
+  settings,
+  showAlbumCovers,
+  setCurrentAlbum,
+  showDownloadLink,
+}) {
   const [trackAlbum, setTrackAlbum] = useState();
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
@@ -38,7 +44,7 @@ function TrackList({ tracks, settings, showAlbumCovers, setCurrentAlbum, showDow
     style: styles.buttonStyle,
     variant: 'outline-light',
     className: 'float-right',
-    style: { background: settings.styles.buttonBackgroundColor },
+    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
   };
 
   const handleDownload = (track) => {
@@ -179,6 +185,7 @@ TrackList.propTypes = propTypes;
 TrackList.defaultProps = {
   showAlbumCovers: false,
   showDownloadLink: false,
+  tracks: [],
 };
 
 export default TrackList;

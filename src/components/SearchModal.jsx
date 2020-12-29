@@ -14,6 +14,7 @@ const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   settings: Settings.isRequired,
+  search: PropTypes.string.isRequired,
 };
 
 function SearchModal({
@@ -23,7 +24,6 @@ function SearchModal({
   settings,
 }) {
   const [searchText, setSearchText] = useState(search || 'Enter Search');
-  const row = (content) => content.map(char => inputButton(char));
 
   const inputButton = (value, padding) => {
     const inputButtonStyle = {
@@ -58,6 +58,8 @@ function SearchModal({
       </Button>
     );
   };
+
+  const row = content => content.map(char => inputButton(char));
 
   return (
     <React.Fragment>

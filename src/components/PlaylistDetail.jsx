@@ -24,6 +24,16 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
 
+  const loadTracks = (name) => {
+    PlaylistClient.getPlaylist(name).then((playlist) => {
+      if (!playlist.tracks.length) {
+        setIsEmpty(true);
+      } else {
+        setTracks(playlist.tracks);
+      }
+    });
+  };
+
   const playNow = (track) => {
     QueueClient.enqueueTop(track.path);
     QueueClient.play();
@@ -35,7 +45,7 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
 
       PlaylistClient.add({
         name,
-        tracks: tracks,
+        tracks: newOrder,
       }).then(() => loadTracks(name));
     });
   };
@@ -49,16 +59,6 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     }
     setIsSaveAsOpen(false);
     handleBackToPlaylists();
-  };
-
-  const loadTracks = (name) => {
-    PlaylistClient.getPlaylist(name).then((playlist) => {
-      if (!playlist.tracks.length) {
-        setIsEmpty(true);
-      } else {
-        setTracks(playlist.tracks);
-      }
-    });
   };
 
   const deleteTrack = (name, track) => {

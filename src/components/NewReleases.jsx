@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { PropTypes } from 'prop-types';
 import {
   Button,
   Container,
@@ -62,10 +61,3 @@ function NewReleases() {
   );
 }
 export default NewReleases;
-
-NewReleases.propTypes = {
-  search: PropTypes.string,
-};
-NewReleases.defaultProps = {
-  search: '',
-};
