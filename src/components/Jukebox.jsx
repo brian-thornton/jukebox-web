@@ -39,6 +39,7 @@ function Jukebox() {
   const [tempSearch, setTempSearch] = useState('');
   const isScreenSmall = window.innerWidth < 700;
   const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
+  const [page, setPage] = useState({ start: 0, limit: 12 });
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
@@ -111,6 +112,8 @@ function Jukebox() {
                 }}
               />
               <AlbumList
+                page={page}
+                setPage={setPage}
                 search={search}
                 setCurrentAlbum={setCurrentAlbum}
                 settings={settings}
@@ -151,6 +154,8 @@ function Jukebox() {
         default:
           body = (
             <AlbumList
+              initialPage={page}
+              setPage={setPage}
               search={search}
               setCurrentAlbum={setCurrentAlbum}
               settings={settings}
@@ -270,9 +275,8 @@ function Jukebox() {
           style={{
             background: settings.styles.backgroundColor,
             marginTop: '50px',
-            height: '4000px',
             marginBottom: '60px',
-            marginLeft: '60px',
+            marginLeft: '0px',
           }}
           className="mx-0 px-0"
         >

@@ -17,17 +17,17 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function AlbumList({ search, setCurrentAlbum, settings }) {
-  const [start, setStart] = useState(0);
-  const [limit, setLimit] = useState(100);
+function AlbumList({ search, setCurrentAlbum, settings, page, setPage }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
   const isScreenSmall = window.innerWidth < 700;
 
-  const loadAlbums = (targetHeight) => {
+  const loadAlbums = () => {
     setIsLoading(true);
+    setAlbums([]);
+
     if (search) {
       setAlbums([]);
       setAlertText('Searching...');
@@ -37,25 +37,24 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
         } else {
           setAlbums(data);
         }
-        window.scrollTo(0, targetHeight - 300);
+        window.scrollTo(0, 0);
         setIsLoading(false);
         setIsLoaded(true);
       });
     } else {
-      LibrianClient.getAlbums(start, limit).then((data) => {
-        if (start === 0) {
+      LibrianClient.getAlbums(page.start, page.limit).then((data) => {
+        console.log(data);
+        if (page.start === 0) {
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
             setIsLoaded(true);
           }
           setAlbums(data);
         } else {
-          setAlbums(albums.concat(data));
+          setAlbums(data);
         }
 
-        window.scrollTo(0, targetHeight - 300);
-        setStart(limit + 1);
-        setLimit(limit + 100);
+        window.scrollTo(0, 0);
         setIsLoading(false);
       });
     }
@@ -67,25 +66,43 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     }
 
     if (!isLoading) {
-      setStart(0);
-      setLimit(100);
+      setPage({
+        start: 0,
+        limit: 12
+      });
+
       loadAlbums();
     }
   }, [search]);
 
   const loadMore = () => {
-    setStart(limit);
-    setLimit(limit + 100);
-    loadAlbums(document.getElementById('albums').clientHeight);
+    setPage({
+      start: page.limit,
+      limit: page.limit + 12
+    });
   };
 
-  const loadButton = () => {
-    if (!search) {
-      return <Button block variant="outline-info" onClick={loadMore}>Load More</Button>;
+  const loadPrevious = () => {
+    let newStart = page.start - 12;
+    if (newStart < 0) {
+      newStart = 0;
     }
 
-    return <React.Fragment />;
+    let newLimit = page.limit - 12;
+    if (newLimit < 12) {
+      newLimit = 12;
+    }
+
+    setPage({
+      start: newStart,
+      limit: newLimit,
+    });
   };
+
+  useEffect(() => {
+    console.log(page);
+    loadAlbums();
+  }, [page])
 
   if (!albums.length && !isLoading && !isLoaded) {
     loadAlbums();
@@ -96,8 +113,21 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
       return {};
     }
 
-    return { marginLeft: '50px' };
+    return { marginLeft: '0px', marginTop: '90px' };
   };
+
+  const rightControls = () => {
+    if (!search) {
+      return (
+        <React.Fragment>
+          <Button style={{ marginTop: '20px' }} block variant="outline-info" onClick={loadMore}>Next</Button>;
+          <Button style={{ marginTop: '20px' }} block variant="outline-info" onClick={loadPrevious}>Previous</Button>;
+        </React.Fragment>
+      )
+    }
+
+    return <React.Fragment />;
+  }
 
   if (albums.length) {
     const renderAlbums = [];
@@ -113,8 +143,14 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
 
     return (
       <Container id="albums" fluid style={albumsMargin()}>
-        <Row>{renderAlbums}</Row>
-        <Row>{loadButton()}</Row>
+        <Row>
+          <Col lg={11} xl={11}>
+            <Row>{renderAlbums}</Row>
+          </Col>
+          <Col lg={1} xl={1}>
+              {rightControls()}
+          </Col>
+        </Row>
       </Container>
     );
   }
@@ -123,7 +159,7 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
     <Container fluid style={albumsMargin()}>
       <Row>
         <Col lg={12} xl={12}>
-          <Alert variant="primary">{alertText}</Alert>
+          {/* <Alert variant="primary">{alertText}</Alert> */}
         </Col>
       </Row>
     </Container>
