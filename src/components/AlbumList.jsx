@@ -17,14 +17,21 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function AlbumList({ search, setCurrentAlbum, settings, page, setPage }) {
+function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPage, totalAlbums, pages }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
   const isScreenSmall = window.innerWidth < 700;
+  const pageSize = page.limit - page.start;
+  const [pageDisabled, setPageDisabled] = useState(true);
+  let totalPages;
 
-  const loadAlbums = () => {
+  if (totalAlbums) {
+    totalPages = Math.ceil(totalAlbums / pageSize);
+  }
+
+  const loadAlbums = (loadPage) => {
     setIsLoading(true);
     setAlbums([]);
 
@@ -42,8 +49,7 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage }) {
         setIsLoaded(true);
       });
     } else {
-      LibrianClient.getAlbums(page.start, page.limit).then((data) => {
-        console.log(data);
+      LibrianClient.getAlbums(loadPage ? loadPage.start : page.start, loadPage ? loadPage.limit : page.limit).then((data) => {
         if (page.start === 0) {
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
@@ -68,60 +74,54 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage }) {
     if (!isLoading) {
       setPage({
         start: 0,
-        limit: 12
+        limit: pageSize
       });
 
       loadAlbums();
     }
   }, [search]);
 
-  const loadMore = () => {
-    setPage({
-      start: page.limit,
-      limit: page.limit + 12
-    });
-  };
+  const findPage = () => pages.findIndex(p => p.start === page.start && p.limit === page.limit);
+  const loadMore = () => setPage(pages[findPage() + 1]);
+  const loadPrevious = () => setPage(pages[findPage() - 1]);
 
-  const loadPrevious = () => {
-    let newStart = page.start - 12;
-    if (newStart < 0) {
-      newStart = 0;
-    }
+  const getRandomInt = () => {
+    const min = Math.ceil(0);
+    const max = Math.floor(pages.length);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  }
 
-    let newLimit = page.limit - 12;
-    if (newLimit < 12) {
-      newLimit = 12;
-    }
-
-    setPage({
-      start: newStart,
-      limit: newLimit,
-    });
-  };
+  const loadRandom = () => {
+    setPage(pages[getRandomInt()]);
+  }
 
   useEffect(() => {
-    console.log(page);
+    setIsLoading(true);
     loadAlbums();
   }, [page])
-
-  if (!albums.length && !isLoading && !isLoaded) {
-    loadAlbums();
-  }
 
   const albumsMargin = () => {
     if (isScreenSmall) {
       return {};
     }
 
-    return { marginLeft: '0px', marginTop: '90px' };
+    return { marginLeft: '0px', marginTop: '90px', height: '100%' };
   };
+
+  useEffect(() => {
+    if (totalAlbums) {
+      setPageDisabled(false);
+    }
+  }, [totalAlbums])
 
   const rightControls = () => {
     if (!search) {
       return (
         <React.Fragment>
-          <Button style={{ marginTop: '20px' }} block variant="outline-info" onClick={loadMore}>Next</Button>;
-          <Button style={{ marginTop: '20px' }} block variant="outline-info" onClick={loadPrevious}>Previous</Button>;
+          <Button style={{ background: settings.styles.buttonBackgroundColor, height: '75px', marginTop: '20px', color: '#FFFFFF' }} disabled={pageDisabled} block variant="outline-light" onClick={loadMore}>Next</Button>;
+          <Button style={{ background: settings.styles.buttonBackgroundColor, height: '75px', marginTop: '-10px', }} disabled={pageDisabled} block variant="outline-light" onClick={loadPrevious}>Previous</Button>;
+          <Button style={{ background: settings.styles.buttonBackgroundColor, height: '75px', marginTop: '-10px', }} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}>Random</Button>;
+          <div style={{ color: '#FFFFFF' }}>{pages.length ? `${pages.findIndex(p => p.start === page.start && p.limit === page.limit)} of ${pages.length}` : 'Loading...'}</div>
         </React.Fragment>
       )
     }
@@ -148,7 +148,7 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage }) {
             <Row>{renderAlbums}</Row>
           </Col>
           <Col lg={1} xl={1}>
-              {rightControls()}
+            {rightControls()}
           </Col>
         </Row>
       </Container>

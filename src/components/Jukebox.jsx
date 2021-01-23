@@ -30,16 +30,66 @@ import NavigationButtons from './NavigationButtons';
 import './Jukebox.css';
 
 function Jukebox() {
+  const getWidth = () => {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );
+  }
+
+  const getHeight = () => {
+    return Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight,
+      document.documentElement.clientHeight
+    );
+  }
+
+  const pageRows = () => {
+    return Math.floor(getHeight() / 300);
+  }
+
   const [mode, setMode] = useState('AlbumList');
   const [search, setSearch] = useState('');
   const [settings, setSettings] = useState();
   const [currentAlbum, setCurrentAlbum] = useState();
-  const [nowPlaying, setNowPlaying] = useState('');
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [tempSearch, setTempSearch] = useState('');
   const isScreenSmall = window.innerWidth < 700;
+  const [nowPlaying, setNowPlaying] = useState('');
   const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
-  const [page, setPage] = useState({ start: 0, limit: 12 });
+  const [pageSize, setPageSize] = useState((Math.floor(getWidth() / 250) * pageRows()));
+  const [page, setPage] = useState({ start: 0, limit: pageSize -1 });
+  const [isStatusLoading, setIsStatusLoading] = useState(false);
+  const [totalAlbums, setTotalAlbums] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
+  let pages = [];
+
+  const calculatePages = (totalAlbums) => {
+    const calcPages = [];
+
+    let counter = 1;
+    let albumCounter = 0;
+    let pageStart = 0;
+    while (albumCounter <= totalAlbums) {
+      if (counter === pageSize) {
+        calcPages.push({ start: pageStart, limit: albumCounter });
+        counter = 0;
+        pageStart = albumCounter + 1;
+      } else {
+
+
+        counter += 1;
+      }
+      albumCounter += 1;
+    }
+    return calcPages;
+  }
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
@@ -53,11 +103,13 @@ function Jukebox() {
     }, 500), []);
 
   setInterval(() => {
-    StatusClient.getStatus().then((status) => {
-      if (status.nowPlaying) {
-        setNowPlaying(status.nowPlaying.name);
+    StatusClient.getStatus().then((data) => {
+      if (data.nowPlaying && data.nowPlaying.name) {
+        setNowPlaying(data.nowPlaying.name);
+        setTotalAlbums(data.totalAlbums);
       } else {
         setNowPlaying('');
+        setTotalAlbums(data.totalAlbums);
       }
     });
   }, 3000);
@@ -112,6 +164,10 @@ function Jukebox() {
                 }}
               />
               <AlbumList
+                pages={calculatePages(totalAlbums)}
+                currentPage={currentPage}
+                totalAlbums={totalAlbums}
+                pageSize={pageSize}
                 page={page}
                 setPage={setPage}
                 search={search}
@@ -154,6 +210,10 @@ function Jukebox() {
         default:
           body = (
             <AlbumList
+              pages={calculatePages(totalAlbums)}
+              currentPage={currentPage}
+              totalAlbums={totalAlbums}
+              pageSize={pageSize}
               initialPage={page}
               setPage={setPage}
               search={search}
@@ -202,7 +262,7 @@ function Jukebox() {
       return (
         <React.Fragment>
           <Button
-            style={{ background: settings.styles.buttonBackgroundColor }}
+            style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }}
             className="button"
             variant="outline-light"
             onClick={() => {
@@ -212,12 +272,12 @@ function Jukebox() {
           >
             Clear
           </Button>
-          <Button style={{ background: settings.styles.buttonBackgroundColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
+          <Button style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
         </React.Fragment>
       );
     }
 
-    return <Button style={{ background: settings.styles.buttonBackgroundColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+    return <Button style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
   };
 
   const footerContent = () => {
@@ -274,11 +334,12 @@ function Jukebox() {
           fluid
           style={{
             background: settings.styles.backgroundColor,
-            marginTop: '50px',
-            marginBottom: '60px',
+            paddingTop: '5px',
+            marginTop: '0px',
             marginLeft: '0px',
+            height: getHeight() - 60,
           }}
-          className="mx-0 px-0"
+          
         >
           {body}
         </Container>

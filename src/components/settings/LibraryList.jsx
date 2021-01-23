@@ -9,6 +9,7 @@ import {
   Trash,
   X,
 } from 'react-bootstrap-icons';
+import StatusClient from '../../lib/status-client';
 
 import LibrarianClient from '../../lib/librarian-client';
 import LibraryAddModal from './LibraryAddModal';
@@ -40,8 +41,21 @@ function LibraryList() {
       setLibraries(data);
       setIsLoading(false);
       setIsLoaded(true);
+      updateTotals(data);
     });
   };
+
+  const updateTotals = (data) => {
+    let totalTracks = 0;
+    let totalAlbums = 0;
+    data.forEach(lib => {
+      totalTracks += lib.totalTracks;
+      totalAlbums += lib.albums.length;
+    });
+    StatusClient.getStatus().then((data) => {
+      StatusClient.updateStatus({ ...data, totalTracks: totalTracks, totalAlbums: totalAlbums });
+    });
+  }
 
   const handleCloseDiscover = (path) => {
     if (path) {

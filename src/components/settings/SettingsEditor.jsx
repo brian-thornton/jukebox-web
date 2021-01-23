@@ -68,6 +68,7 @@ function SettingsEditor() {
         {settingRow('enqueue', settings.features.enqueue)}
         {settingRow('playAlbum', settings.features.playAlbum)}
         {settingRow('addToPlaylist', settings.features.addToPlaylist)}
+        {settingRow('downloadTrack', settings.features.downloadTrack)}
         {settingRow('deletePlaylist', settings.features.deletePlaylist)}
       </ListGroup>
     );

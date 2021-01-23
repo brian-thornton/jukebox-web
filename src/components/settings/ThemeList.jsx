@@ -46,9 +46,12 @@ function ThemeList({ settings, resetControls, setControls }) {
       deepClone.styles.headerColor = selectedSkin.headerColor;
       deepClone.styles.footerColor = selectedSkin.footerColor;
       deepClone.styles.fontColor = selectedSkin.fontColor;
+      deepClone.styles.fontWeight = selectedSkin.fontWeight;
       deepClone.styles.backgroundColor = selectedSkin.backgroundColor;
       deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
       deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
+      deepClone.styles.buttonFontColor = selectedSkin.buttonFontColor;
+      deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
 
       SettingsClient.updateSettings(deepClone).then(() => {
         window.location.reload();

@@ -18,7 +18,7 @@ const albumCardLarge = {
   background: 'transparent',
   color: 'white',
   borderColor: '#708090',
-  maxWidth: '400px',
+  maxWidth: '375px',
   margin: '10px',
 };
 

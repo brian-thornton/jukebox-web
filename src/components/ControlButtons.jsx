@@ -21,7 +21,7 @@ function ControlButtons({
     if (feature) {
       buttons.push((
         <Button
-          style={{ background: settings.styles.buttonBackgroundColor }}
+          style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }}
           content={name}
           onClick={handler}
         />

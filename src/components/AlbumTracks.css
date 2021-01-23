@@ -1,0 +1,27 @@
+.track-row {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  background: transparent;
+  border-color: #708090;
+}
+
+.download {
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.play-now {
+  padding-top: -30px;
+}
+
+.track-name {
+  padding-top: 30px;
+}
+
+@media screen and (max-width: 1026px) { 
+  #download { 
+    display: none; 
+  } 
+}

@@ -5,17 +5,17 @@ import {
   Container,
   Row,
   Col,
-  Button,
 } from 'react-bootstrap';
-import CoverArtSearchModal from './CoverArtSearchModal';
+
 import LibrianClient from '../lib/librarian-client';
-import QueueClient from '../lib/queue-client';
 import defaultCover from '../default_album.jpg';
-import TrackList from './TrackList';
+import AlbumTracks from './AlbumTracks';
 import Playlists from './Playlists';
 import styles from './styles';
 import SpotifyClient from '../lib/spotify-client';
 import { Album, Settings } from './shapes';
+import AlbumAdminButtons from './AlbumAdminButtons';
+import AlbumButtons from './AlbumButtons';
 
 const albumArt = require('album-art');
 
@@ -33,7 +33,6 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   const [isCoverArtLoading, setIsCoverArtLoading] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
-  const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
 
   const getCoverArt = () => {
     const nameArray = album.name.split('-');
@@ -90,71 +89,31 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
     }
   };
 
-  const enqueueAlbum = () => QueueClient.enqueueTracks(tracks);
-  const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: coverArt });
-  const removeCoverArt = () => LibrianClient.removeCoverArt(album);
-
-  const playAlbum = () => {
-    QueueClient.enqueueTracksTop(tracks);
-    QueueClient.next();
-  };
-
-  const albumButtons = () => {
-    const buttons = [];
-    const props = {
-      block: true,
-      variant: 'outline-light',
-      style: { background: settings.styles.buttonBackgroundColor },
-    };
-
-    buttons.push(<Button {...props} onClick={clearCurrentAlbum}>Back to Albums</Button>);
-    buttons.push(<Button {...props} onClick={playAlbum}>Play Album</Button>);
-    buttons.push(
-      <Button {...props} onClick={enqueueAlbum}>Enqueue Album</Button>,
-    );
-    buttons.push(
-      <Button {...props} onClick={() => setAddToPlaylist(true)}>Add to Playlist</Button>,
-    );
-
-    if (settings.features.admin) {
-      buttons.push(<Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>);
-      buttons.push(<Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>);
-      buttons.push((
-        <Button {...props} onClick={() => setIsCustomSearchOpen(true)}>
-          Custom Search
-        </Button>
-      ));
-      buttons.push(<Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>);
-    }
-    return buttons;
-  };
+  const albumButtons = (
+    <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
+      <AlbumButtons album={album} clearCurrentAlbum={clearCurrentAlbum} settings={settings} initialCoverArt={coverArt} tracks={tracks} setAddToPlaylist={setAddToPlaylist} />
+      <AlbumAdminButtons album={album} settings={settings} initialCoverArt={coverArt} />
+    </Container>
+  );
 
   const largeAlbum = () => {
     if (!addToPlaylist) {
       return (
         <React.Fragment>
-          <Container>
-            <Row>
-              <Col lg={4} xl={4}>
-                <Card style={styles.albumCardLarge} className="h-55 w-85">
-                  <Card.Img top src={coverArt} />
-                  <Card.Body>
-                    <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
-                  </Card.Body>
-                  {albumButtons()}
-                </Card>
-              </Col>
-              <Col lg={8} xl={8}>
-                <TrackList tracks={tracks} settings={settings} showDownloadLink />
-              </Col>
-            </Row>
-          </Container>
-          <CoverArtSearchModal
-            settings={settings}
-            album={album}
-            isOpen={isCustomSearchOpen}
-            handleClose={() => setIsCustomSearchOpen(false)}
-          />
+          <Row style={{ marginTop: '70px' }}>
+            <Col lg={3} xl={3}>
+              <Card style={styles.albumCardLarge} className="h-55 w-85">
+                <Card.Img top src={coverArt} />
+                <Card.Body>
+                  <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
+                </Card.Body>
+                {albumButtons}
+              </Card>
+            </Col>
+            <Col lg={9} xl={9}>
+              <AlbumTracks tracks={tracks} settings={settings} showDownloadLink />
+            </Col>
+          </Row>
         </React.Fragment>
       );
     }
