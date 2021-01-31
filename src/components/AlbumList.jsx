@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  Alert,
   Button,
   Container,
   Col,
@@ -116,11 +115,17 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
 
   const rightControls = () => {
     if (!search) {
+      const pageButtonProps = {
+        background: settings.styles.buttonBackgroundColor,
+        height: '75px',
+        color: settings.styles.fontColor
+      }
+
       return (
         <React.Fragment>
-          <Button style={{ background: settings.styles.buttonBackgroundColor, height: '75px', marginTop: '20px', color: '#FFFFFF' }} disabled={pageDisabled} block variant="outline-light" onClick={loadMore}>Next</Button>;
-          <Button style={{ background: settings.styles.buttonBackgroundColor, height: '75px', marginTop: '-10px', }} disabled={pageDisabled} block variant="outline-light" onClick={loadPrevious}>Previous</Button>;
-          <Button style={{ background: settings.styles.buttonBackgroundColor, height: '75px', marginTop: '-10px', }} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}>Random</Button>;
+          <Button style={{ ...pageButtonProps, marginTop: '20px'}} disabled={pageDisabled} block variant="outline-light" onClick={loadMore}>Next</Button>;
+          <Button style={{ ...pageButtonProps, marginTop: '-10px'}} disabled={pageDisabled} block variant="outline-light" onClick={loadPrevious}>Previous</Button>;
+          <Button style={{ ...pageButtonProps, marginTop: '-10px'}} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}>Random</Button>;
           <div style={{ color: '#FFFFFF' }}>{pages.length ? `${pages.findIndex(p => p.start === page.start && p.limit === page.limit)} of ${pages.length}` : 'Loading...'}</div>
         </React.Fragment>
       )
@@ -155,15 +160,7 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
     );
   }
 
-  return (
-    <Container fluid style={albumsMargin()}>
-      <Row>
-        <Col lg={12} xl={12}>
-          {/* <Alert variant="primary">{alertText}</Alert> */}
-        </Col>
-      </Row>
-    </Container>
-  );
+  return <React.Fragment />;
 }
 
 AlbumList.propTypes = propTypes;

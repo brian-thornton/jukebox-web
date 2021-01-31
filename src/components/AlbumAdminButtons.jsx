@@ -41,7 +41,10 @@ function AlbumAdminButtons({ album, settings }) {
     const props = {
       block: true,
       variant: 'outline-light',
-      style: { background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor },
+      style: {
+        background: settings.styles.buttonBackgroundColor,
+        color: settings.styles.fontColor,
+      },
     };
 
     if (settings.features.admin) {
@@ -49,10 +52,10 @@ function AlbumAdminButtons({ album, settings }) {
         <React.Fragment>
           <Row>
             <Col lg={6} style={{ padding: '0px' }}>
-              <Button {...props} onClick={removeCoverArt}>Remove Cover Art</Button>
+              <Button {...props} onClick={removeCoverArt}>Remove Cover</Button>
             </Col>
             <Col lg={6} style={{ padding: '0px' }}>
-              <Button {...props} onClick={getCoverArt}>Refresh Cover Art</Button>
+              <Button {...props} onClick={getCoverArt}>Refresh Cover</Button>
             </Col>
           </Row>
           <Row>
@@ -67,12 +70,12 @@ function AlbumAdminButtons({ album, settings }) {
       );
     }
 
-    return <React.Fragment />
+    return <React.Fragment />;
   };
 
   return (
     <React.Fragment>
-      { adminButtons() }
+      { adminButtons()}
       <CoverArtSearchModal
         settings={settings}
         album={album}
@@ -80,7 +83,7 @@ function AlbumAdminButtons({ album, settings }) {
         handleClose={() => setIsCustomSearchOpen(false)}
       />
     </React.Fragment>
-  )
+  );
 }
 
 AlbumAdminButtons.propTypes = propTypes;

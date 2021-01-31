@@ -9,6 +9,7 @@ import PlaylistAddModal from './PlaylistAddModal';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 import { Settings, Tracks } from './shapes';
+import { buttonProps } from '../lib/styleHelper';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -63,17 +64,11 @@ function Playlists({
   };
 
   const buttons = (playlistName) => {
-    const buttonProps = {
-      style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
-      variant: 'outline-light',
-      className: 'float-right',
-    };
-
     const playlistActions = [];
     if (mode === 'addToPlaylist' && !added) {
       playlistActions.push((
         <Button
-          {...buttonProps}
+          {...buttonProps(settings)}
           onClick={() => {
             addTracksToPlaylist(playlistName);
             setAdded(true);

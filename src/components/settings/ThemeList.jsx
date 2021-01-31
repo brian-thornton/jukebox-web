@@ -52,6 +52,7 @@ function ThemeList({ settings, resetControls, setControls }) {
       deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
       deepClone.styles.buttonFontColor = selectedSkin.buttonFontColor;
       deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
+      deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
 
       SettingsClient.updateSettings(deepClone).then(() => {
         window.location.reload();
@@ -82,13 +83,23 @@ function ThemeList({ settings, resetControls, setControls }) {
         className: 'float-right',
       };
 
+
       skins.forEach((skin) => {
+        const controlButtonProps = {
+          ...buttonProps
+        };
+
+        if (!skin.isEditable) {
+          console.log(`${skin.name}: ${skin.isEditable}`);
+          controlButtonProps.disabled = true;
+        }
+
         rows.push(
           <ListGroupItem style={styles.cardStyle}>
             {skin.name}
-            <Button {...buttonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
+            <Button {...controlButtonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
             <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
-            <Button {...buttonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
+            <Button {...controlButtonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
           </ListGroupItem>,
         );
       });

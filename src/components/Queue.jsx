@@ -70,7 +70,7 @@ function Queue({ settings }) {
   tracks.forEach((track) => {
     renderTracks.push(
       (
-        <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
+        <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor}}>
           {track.name}
           <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
           <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>

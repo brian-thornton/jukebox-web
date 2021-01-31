@@ -7,15 +7,21 @@ import {
 } from 'react-bootstrap';
 
 import QueueClient from '../lib/queue-client';
-import { Album, Settings } from './shapes';
+import { Settings, Tracks } from './shapes';
 
 const propTypes = {
-  album: Album.isRequired,
+  setAddToPlaylist: PropTypes.func.isRequired,
   clearCurrentAlbum: PropTypes.func.isRequired,
   settings: Settings.isRequired,
+  tracks: Tracks.isRequired,
 };
 
-function AlbumButtons({ clearCurrentAlbum, settings, tracks, setAddToPlaylist }) {
+function AlbumButtons({
+  clearCurrentAlbum,
+  settings,
+  tracks,
+  setAddToPlaylist,
+}) {
   const enqueueAlbum = () => QueueClient.enqueueTracks(tracks);
 
   const playAlbum = () => {
@@ -26,7 +32,10 @@ function AlbumButtons({ clearCurrentAlbum, settings, tracks, setAddToPlaylist })
   const props = {
     block: true,
     variant: 'outline-light',
-    style: { background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor },
+    style: {
+      background: settings.styles.buttonBackgroundColor,
+      color: settings.styles.fontColor,
+    },
   };
 
   return (

@@ -9,6 +9,7 @@ import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 import { Track, Settings } from './shapes';
+import { buttonProps } from '../lib/styleHelper';
 
 import './TrackList.css';
 
@@ -32,19 +33,11 @@ function TrackList({
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
   const [trackAlbums, setTrackAlbums] = useState([]);
   const isScreenSmall = window.innerWidth < 700;
+  const renderTracks = [];
 
   const playNow = (track) => {
     QueueClient.enqueueTop(track);
     QueueClient.next();
-  };
-
-  const renderTracks = [];
-
-  const buttonProps = {
-    style: styles.buttonStyle,
-    variant: 'outline-light',
-    className: 'float-right',
-    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
   };
 
   const handleDownload = (track) => {
@@ -114,20 +107,20 @@ function TrackList({
         let playButton;
         let enqueueButton;
         if (isScreenSmall) {
-          playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}><Play /></Button>;
+          playButton = <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}><Play /></Button>;
           enqueueButton = (
             <Button
-              {...buttonProps}
+              {...buttonProps(settings)}
               onClick={() => QueueClient.enqueue(track)}
             >
               <CollectionPlay />
             </Button>
           );
         } else {
-          playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
+          playButton = <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}>Play</Button>;
           enqueueButton = (
             <Button
-              {...buttonProps}
+              {...buttonProps(settings)}
               onClick={() => QueueClient.enqueue(track)}
             >
               Enqueue
@@ -157,7 +150,7 @@ function TrackList({
         } else {
           renderTracks.push(
             (
-              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '500px', margin: '10px' }}>
+              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '500px', margin: '10px' , background: settings.styles.trackBackgroundColor }}>
                 <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
                   <Row>
                     {track.name}

@@ -28,6 +28,7 @@ function StyleEditor({
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    trackBackgroundColor: skin.trackBackgroundColor,
   });
 
   const buttonProps = {
@@ -68,7 +69,7 @@ function StyleEditor({
         onClick={() => {
           setColorMode(name);
 
-          const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor'];
+          const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor', 'trackBackgroundColor'];
 
           if (gradientTypes.includes(name)) {
             setAllowGradient(true);
@@ -132,6 +133,7 @@ function StyleEditor({
         {styleRow('popupBackgroundColor')}
         {styleRow('buttonBackgroundColor')}
         {styleRow('buttonTextColor')}
+        {styleRow('trackBackgroundColor')}
       </ListGroup>
       <ColorPicker
         isOpen={isColorModalOpen}

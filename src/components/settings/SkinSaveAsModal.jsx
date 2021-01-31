@@ -23,7 +23,7 @@ function SkinSaveAsModal({
   colors,
 }) {
   const handleSave = () => {
-    StyleClient.createSkin({ name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
+    StyleClient.createSkin({ isEditable: true, name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
     handleHide();
     goBackToThemeList();
   };

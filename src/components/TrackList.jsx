@@ -142,7 +142,7 @@ function TrackList({
         if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <ListGroupItem style={{ ...styles.trackRow, color: settings.styles.fontColor }}>
+              <ListGroupItem style={{ ...styles.trackRow, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
                 <Container style={styles.trackRow}>
                   <Row>
                     <Col lg={2} xl={2}>
@@ -162,7 +162,7 @@ function TrackList({
         } else {
           renderTracks.push(
             (
-              <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
+              <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
                 {track.name}
                 <br />
                 {playButton}

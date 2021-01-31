@@ -9,6 +9,7 @@ import ContentWithControls from './ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from './styles';
+import { buttonProps } from '../lib/styleHelper';
 import { Settings } from './shapes';
 
 const propTypes = {
@@ -66,12 +67,6 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     loadTracks(name);
   };
 
-  const buttonProps = {
-    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
-    variant: 'outline-light',
-    className: 'float-right',
-  };
-
   const leftButtonProps = {
     style: { ...leftButtonStyle, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
@@ -90,9 +85,9 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         (
           <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
             {track.name}
-            <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
-            <Button {...buttonProps} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
-            <Button {...buttonProps} onClick={() => deleteTrack(name, track)}>Delete</Button>
+            <Button {...buttonProps(settings)} onClick={() => playNow(track)}>Play</Button>
+            <Button {...buttonProps(settings)} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
+            <Button {...buttonProps(settings)} onClick={() => deleteTrack(name, track)}>Delete</Button>
           </ListGroupItem>
         ),
       );

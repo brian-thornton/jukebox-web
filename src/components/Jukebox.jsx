@@ -1,13 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import {
-  Container,
-  Navbar,
-  Nav,
-  Button,
+  Container
 } from 'react-bootstrap';
 import { cloneDeep, debounce } from 'lodash';
-import { XSquare } from 'react-bootstrap-icons';
 
 import AlbumList from './AlbumList';
 import NewReleases from './NewReleases';
@@ -24,36 +20,13 @@ import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';
 import SearchModal from './SearchModal';
 import Libraries from './Libraries';
-import ControlButtons from './ControlButtons';
-import NavigationButtons from './NavigationButtons';
+import JukeboxFooter from './JukeboxFooter';
+import JukeboxHeader from './JukeboxHeader';
+import { getHeight, getWidth, calculatePages, pageRows } from '../lib/pageHelper';
 
 import './Jukebox.css';
 
 function Jukebox() {
-  const getWidth = () => {
-    return Math.max(
-      document.body.scrollWidth,
-      document.documentElement.scrollWidth,
-      document.body.offsetWidth,
-      document.documentElement.offsetWidth,
-      document.documentElement.clientWidth
-    );
-  }
-
-  const getHeight = () => {
-    return Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.documentElement.clientHeight
-    );
-  }
-
-  const pageRows = () => {
-    return Math.floor(getHeight() / 300);
-  }
-
   const [mode, setMode] = useState('AlbumList');
   const [search, setSearch] = useState('');
   const [settings, setSettings] = useState();
@@ -62,34 +35,12 @@ function Jukebox() {
   const [tempSearch, setTempSearch] = useState('');
   const isScreenSmall = window.innerWidth < 700;
   const [nowPlaying, setNowPlaying] = useState('');
-  const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
   const [pageSize, setPageSize] = useState((Math.floor(getWidth() / 250) * pageRows()));
-  const [page, setPage] = useState({ start: 0, limit: pageSize -1 });
+  const [page, setPage] = useState({ start: 0, limit: pageSize - 1 });
   const [isStatusLoading, setIsStatusLoading] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   let pages = [];
-
-  const calculatePages = (totalAlbums) => {
-    const calcPages = [];
-
-    let counter = 1;
-    let albumCounter = 0;
-    let pageStart = 0;
-    while (albumCounter <= totalAlbums) {
-      if (counter === pageSize) {
-        calcPages.push({ start: pageStart, limit: albumCounter });
-        counter = 0;
-        pageStart = albumCounter + 1;
-      } else {
-
-
-        counter += 1;
-      }
-      albumCounter += 1;
-    }
-    return calcPages;
-  }
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
@@ -164,7 +115,7 @@ function Jukebox() {
                 }}
               />
               <AlbumList
-                pages={calculatePages(totalAlbums)}
+                pages={calculatePages(totalAlbums, pageSize)}
                 currentPage={currentPage}
                 totalAlbums={totalAlbums}
                 pageSize={pageSize}
@@ -225,111 +176,10 @@ function Jukebox() {
     }
   }
 
-  const searchResults = () => {
-    if (search && !isScreenSmall) {
-      return (
-        <div className="search-result">
-          {`Search Results: ${search}`}
-        </div>
-      );
-    }
-
-    return <React.Fragment />;
-  };
-
-  const nowPlayingText = () => {
-    if (isScreenSmall) {
-      return <React.Fragment />;
-    }
-
-    return <div className="now-playing">{`Now Playing: ${nowPlaying}`}</div>;
-  };
-
-  const brand = () => {
-    if (isScreenSmall) {
-      return <React.Fragment />;
-    }
-
-    return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor }}>{settings.preferences.name}</Navbar.Brand>;
-  };
-
-  const searchButton = () => {
-    if (isScreenSmall) {
-      return <React.Fragment />;
-    }
-
-    if (search) {
-      return (
-        <React.Fragment>
-          <Button
-            style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }}
-            className="button"
-            variant="outline-light"
-            onClick={() => {
-              setSearch('');
-              setTempSearch('');
-            }}
-          >
-            Clear
-          </Button>
-          <Button style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
-        </React.Fragment>
-      );
-    }
-
-    return <Button style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
-  };
-
-  const footerContent = () => {
-    const props = {
-      className: 'button',
-      variant: 'outline-light',
-    };
-
-    if (isSmallSearchEnabled) {
-      return (
-        <Nav className="ml-auto">
-          <Button
-            {...props}
-            onClick={() => {
-              document.activeElement.blur();
-              setIsSmallSearchEnabled(false);
-            }}
-          >
-            <XSquare className="volume-icon" />
-          </Button>
-          <input type="text" onChange={event => debouncedSearch(event.target.value)} />
-        </Nav>
-      );
-    }
-
-    return (
-      <Nav className="ml-auto">
-        <ControlButtons
-          settings={settings}
-          isScreenSmall={isScreenSmall}
-          setIsSmallSearchEnabled={setIsSmallSearchEnabled}
-        />
-      </Nav>
-    );
-  };
-
   if (settings) {
     return (
       <React.Fragment>
-        <Navbar fixed="top" collapseOnSelect variant="dark" style={{ background: settings.styles.headerColor }}>
-          {brand()}
-          <Nav className="mr-auto">
-            <NavigationButtons
-              settings={settings}
-              isScreenSmall={isScreenSmall}
-              setMode={setMode}
-              setCurrentAlbum={setCurrentAlbum}
-            />
-          </Nav>
-          {searchResults()}
-          {searchButton()}
-        </Navbar>
+        <JukeboxHeader settings={settings} search={search} setSearch={setSearch} mode={mode} setMode={setMode} currentAlbum={currentAlbum} setCurrentAlbum={setCurrentAlbum} />
         <Container
           fluid
           style={{
@@ -339,14 +189,11 @@ function Jukebox() {
             marginLeft: '0px',
             height: getHeight() - 60,
           }}
-          
+
         >
           {body}
         </Container>
-        <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
-          {nowPlayingText()}
-          {footerContent()}
-        </Navbar>
+        <JukeboxFooter search={search} setSearch={setSearch} settings={settings} nowPlaying={nowPlaying} />
         <SearchModal
           isOpen={isSearchModalOpen}
           handleClose={handleSearch}
