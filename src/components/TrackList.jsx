@@ -2,13 +2,14 @@ import { CollectionPlay, Play } from 'react-bootstrap-icons';
 import { PropTypes } from 'prop-types';
 import React, { useState } from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Container, Row, Col,
+  Card, ListGroup, ListGroupItem, Button, Container, Row, Col,
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 import { Track, Settings } from './shapes';
+import { buttonProps } from '../lib/styleHelper';
 
 import './TrackList.css';
 
@@ -39,13 +40,6 @@ function TrackList({
   };
 
   const renderTracks = [];
-
-  const buttonProps = {
-    style: styles.buttonStyle,
-    variant: 'outline-light',
-    className: 'float-right',
-    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
-  };
 
   const handleDownload = (track) => {
     LibrianClient.downloadTrack(track).then((response) => {
@@ -114,20 +108,20 @@ function TrackList({
         let playButton;
         let enqueueButton;
         if (isScreenSmall) {
-          playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}><Play /></Button>;
+          playButton = <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}><Play /></Button>;
           enqueueButton = (
             <Button
-              {...buttonProps}
+              {...buttonProps(settings)}
               onClick={() => QueueClient.enqueue(track)}
             >
               <CollectionPlay />
             </Button>
           );
         } else {
-          playButton = <Button className="play-now" {...buttonProps} onClick={() => playNow(track)}>Play</Button>;
+          playButton = <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}>Play</Button>;
           enqueueButton = (
             <Button
-              {...buttonProps}
+              {...buttonProps(settings)}
               onClick={() => QueueClient.enqueue(track)}
             >
               Enqueue
@@ -142,21 +136,40 @@ function TrackList({
         if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <ListGroupItem style={{ ...styles.trackRow, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
-                <Container style={styles.trackRow}>
+              // <ListGroupItem style={{ ...styles.trackRow, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
+              //   <Container style={styles.trackRow}>
+              //     <Row>
+              //       <Col lg={2} xl={2}>
+              //         {album(track)}
+              //       </Col>
+              //       <Col lg={10} xl={10}>
+              //         <div style={{ paddingTop: '10px' }}>{track.name}</div>
+              //         {playButton}
+              //         {enqueueButton}
+              //       </Col>
+              //     </Row>
+              //   </Container>
+              //   {link(track)}
+              // </ListGroupItem>
+              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '500px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
+                <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
                   <Row>
-                    <Col lg={2} xl={2}>
+                    {track.name}
+                  </Row>
+                  <Row>
+                    <Col lg={4}>
                       {album(track)}
                     </Col>
-                    <Col lg={10} xl={10}>
-                      <div style={{ paddingTop: '10px' }}>{track.name}</div>
+                    <Col lg={8}>
                       {playButton}
                       {enqueueButton}
                     </Col>
                   </Row>
+                  <Row>
+                    {link(track)}
+                  </Row>
                 </Container>
-                {link(track)}
-              </ListGroupItem>
+              </Card>
             ),
           );
         } else {
@@ -175,7 +188,7 @@ function TrackList({
       }
     });
 
-    return <ListGroup style={{ marginTop: '15px' }}>{renderTracks}</ListGroup>;
+    return <Container id="yuup" style={{ marginTop: '15px', marginLeft: '0px' }}><Row>{renderTracks}</Row></Container>;
   }
 
   return <React.Fragment />;

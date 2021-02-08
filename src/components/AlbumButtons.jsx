@@ -8,6 +8,8 @@ import {
 
 import QueueClient from '../lib/queue-client';
 import { Settings, Tracks } from './shapes';
+import { controlButtonProps } from '../lib/styleHelper';
+import './AlbumButtons.css';
 
 const propTypes = {
   setAddToPlaylist: PropTypes.func.isRequired,
@@ -29,32 +31,21 @@ function AlbumButtons({
     QueueClient.next();
   };
 
-  const props = {
-    block: true,
-    variant: 'outline-light',
-    style: {
-      background: settings.styles.buttonBackgroundColor,
-      color: settings.styles.fontColor,
-    },
-  };
+  const albumButton = (onClick, name) => (
+    <Col lg={6} style={{ padding: '0px' }}>
+      <Button {...controlButtonProps(settings)} onClick={onClick}>{name}</Button>
+    </Col>
+  );
 
   return (
     <React.Fragment>
       <Row>
-        <Col lg={6} style={{ padding: '0px' }}>
-          <Button {...props} onClick={clearCurrentAlbum}>Back to Albums</Button>
-        </Col>
-        <Col lg={6} style={{ padding: '0px' }}>
-          <Button {...props} onClick={playAlbum}>Play Album</Button>
-        </Col>
+        {albumButton(clearCurrentAlbum, 'Back to Albums')}
+        {albumButton(playAlbum, 'Play Album')}
       </Row>
       <Row>
-        <Col lg={6} style={{ padding: '0px' }}>
-          <Button {...props} onClick={enqueueAlbum}>Enqueue Album</Button>
-        </Col>
-        <Col lg={6} style={{ padding: '0px' }}>
-          <Button {...props} onClick={() => setAddToPlaylist(true)}>Add to Playlist</Button>
-        </Col>
+        {albumButton(enqueueAlbum, 'Enqueue Album')}
+        {albumButton(() => setAddToPlaylist(true), 'Add to Playlist')}
       </Row>
     </React.Fragment>
   );

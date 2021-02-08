@@ -23,7 +23,7 @@ function SearchModal({
   search,
   settings,
 }) {
-  const [searchText, setSearchText] = useState(search || 'Enter Search');
+  const [searchText, setSearchText] = useState('Enter Search');
 
   const inputButton = (value, padding) => {
     const inputButtonStyle = {

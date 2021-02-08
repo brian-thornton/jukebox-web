@@ -2,7 +2,7 @@ import { CollectionPlay, Play } from 'react-bootstrap-icons';
 import { PropTypes } from 'prop-types';
 import React, { useState } from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Container, Row, Col, Card,
+  Button, Container, Row, Col, Card,
 } from 'react-bootstrap';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';

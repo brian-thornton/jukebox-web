@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
-import styles from '../styles';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
-import SpotifySettings from '../SpotifySettings';
+import SpotifySettings from './SpotifySettings';
 import ThemeList from './ThemeList';
 import ContentWithControls from '../ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
 import { Settings as SettingsShape } from '../shapes';
+import { controlButtonProps } from '../../lib/styleHelper';
 
 const propTypes = {
   settings: SettingsShape.isRequired,
@@ -26,20 +26,15 @@ function Settings({ settings }) {
     setIsPinOpen(true);
   }
 
-  const buttonProps = {
-    style: styles.settingsButtonStyle,
-    variant: 'outline-light',
-  };
-
   const leftControls = () => {
     if (isAuthorized) {
       return (
         <React.Fragment>
-          <Button {...buttonProps} onClick={() => setMode('LIBRARY')}>Library</Button>
-          <Button {...buttonProps} onClick={() => setMode('SETTINGS')}>Features</Button>
-          <Button {...buttonProps} onClick={() => setMode('PREFERENCES')}>Preferences</Button>
-          <Button {...buttonProps} onClick={() => setMode('STYLE')}>Style</Button>
-          <Button {...buttonProps} onClick={() => setMode('SPOTIFY')}>Spotify</Button>
+          <Button {...controlButtonProps(settings)} onClick={() => setMode('LIBRARY')}>Library</Button>
+          <Button {...controlButtonProps(settings)} onClick={() => setMode('SETTINGS')}>Features</Button>
+          <Button {...controlButtonProps(settings)} onClick={() => setMode('PREFERENCES')}>Preferences</Button>
+          <Button {...controlButtonProps(settings)} onClick={() => setMode('STYLE')}>Style</Button>
+          <Button {...controlButtonProps(settings)} onClick={() => setMode('SPOTIFY')}>Spotify</Button>
         </React.Fragment>
       );
     }

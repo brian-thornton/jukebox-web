@@ -13,6 +13,7 @@ import QueueClient from '../lib/queue-client';
 import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 import { Settings } from './shapes';
+import { controlButtonProps } from '../lib/styleHelper';
 
 const propTypes = {
   settings: Settings.isRequired,
@@ -23,6 +24,7 @@ function Queue({ settings }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
+  const [isIntervalSet, setIsIntervalSet] = useState(false);
   const renderTracks = [];
 
   const loadQueue = () => {
@@ -32,6 +34,13 @@ function Queue({ settings }) {
       setIsLoaded(true);
     });
   };
+
+  if (!isIntervalSet) {
+    setIsIntervalSet(true);
+    setInterval(() => {
+      loadQueue();
+    }, 3000);
+  }
 
   const clear = () => QueueClient.clearQueue().then(loadQueue());
   const content = () => (<ListGroup>{renderTracks}</ListGroup>);
@@ -79,16 +88,11 @@ function Queue({ settings }) {
     );
   });
 
-  const settingsProps = {
-    style: { ...styles.settingsButtonStyle, background: settings.styles.buttonBackgroundColor },
-    variant: 'outline-light',
-  };
-
   const controls = () => (
     <React.Fragment>
-      <Button {...settingsProps} onClick={clear}>Clear Queue</Button>
-      <Button {...settingsProps} onClick={() => shuffle()}>Shuffle Queue</Button>
-      <Button {...settingsProps} onClick={() => setAddToPlaylist(true)}>Save to Playlist</Button>
+      <Button {...controlButtonProps(settings)} onClick={clear}>Clear Queue</Button>
+      <Button {...controlButtonProps(settings)} onClick={() => shuffle()}>Shuffle Queue</Button>
+      <Button {...controlButtonProps(settings)} onClick={() => setAddToPlaylist(true)}>Save to Playlist</Button>
     </React.Fragment>
   );
 

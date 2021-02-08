@@ -12,6 +12,18 @@ const buttonProps = (settings) => {
   }
 };
 
+const controlButtonProps = (settings) => {
+  return {
+    block: true,
+    variant: 'outline-light',
+    style: {
+      background: settings.styles.buttonBackgroundColor,
+      color: settings.styles.fontColor,
+    },
+  }
+};
+
 export {
-  buttonProps
+  buttonProps,
+  controlButtonProps
 }

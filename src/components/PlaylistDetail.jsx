@@ -11,6 +11,7 @@ import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from './styles';
 import { buttonProps } from '../lib/styleHelper';
 import { Settings } from './shapes';
+import { controlButtonProps } from '../lib/styleHelper';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -40,6 +41,15 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     QueueClient.play();
   };
 
+  const runPlaylist = () => {
+    QueueClient.enqueueTracksTop(tracks);
+    QueueClient.play();
+  }
+
+  const enqueuePlaylist = () => {
+    QueueClient.enqueueTracks(tracks);
+  }
+
   const shuffle = () => {
     PlaylistClient.delete(name).then(() => {
       const newOrder = tracks.sort(() => Math.random() - 0.5);
@@ -67,12 +77,6 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     loadTracks(name);
   };
 
-  const leftButtonProps = {
-    style: { ...leftButtonStyle, background: settings.styles.buttonBackgroundColor },
-    variant: 'outline-light',
-    className: 'float-right',
-  };
-
   const renderTracks = [];
 
   if (!isEmpty && !tracks.length) {
@@ -83,7 +87,7 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     tracks.forEach((track) => {
       renderTracks.push(
         (
-          <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor }}>
+          <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor  }}>
             {track.name}
             <Button {...buttonProps(settings)} onClick={() => playNow(track)}>Play</Button>
             <Button {...buttonProps(settings)} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
@@ -103,10 +107,12 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
 
   const controls = () => (
     <React.Fragment>
-      <Button {...leftButtonProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
-      <Button {...leftButtonProps} onClick={shuffle}>Shuffle Playlist</Button>
-      <Button {...leftButtonProps} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
-      <Button {...leftButtonProps} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
+      <Button {...controlButtonProps(settings)} onClick={handleBackToPlaylists}>Back to Playlists</Button>
+      <Button {...controlButtonProps(settings)} onClick={runPlaylist}>Run Playlist</Button>
+      <Button {...controlButtonProps(settings)} onClick={enqueuePlaylist}>Enqueue Playlist</Button>
+      <Button {...controlButtonProps(settings)} onClick={shuffle}>Shuffle Playlist</Button>
+      <Button {...controlButtonProps(settings)} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
+      <Button {...controlButtonProps(settings)} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
     </React.Fragment>
   );
 
@@ -123,6 +129,7 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         handleClose={() => setIsSaveAsOpen(false)}
         handleSave={handleSave}
         existingPlaylistName={name}
+        settings={settings}
       />
       <PlaylistDeleteModal
         isOpen={showDeleteModal}

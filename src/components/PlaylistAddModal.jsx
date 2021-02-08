@@ -19,15 +19,16 @@ function PlaylistAddModal({
   handleClose,
   handleSave,
   existingPlaylistName,
+  settings
 }) {
   const title = existingPlaylistName ? `Save Playlist '${existingPlaylistName}' as...` : 'Add Playlist';
 
   return (
     <Modal show={isOpen} onHide={handleClose}>
-      <Modal.Header closeButton>
+      <Modal.Header closeButton style={{ background: settings.styles.headerColor }}>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{ background: settings.styles.popupBackgroundColor }}>
         <InputGroup className="mb-3">
           <FormControl
             id="name"
@@ -37,13 +38,13 @@ function PlaylistAddModal({
           />
         </InputGroup>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer style={{ background: settings.styles.headerColor }}>
         <Button variant="secondary" onClick={handleClose}>Close</Button>
         <Button variant="primary" onClick={() => handleSave(document.getElementById('name').value)}>
           Save
         </Button>
       </Modal.Footer>
-    </Modal>
+    </Modal >
   );
 }
 

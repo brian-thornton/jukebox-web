@@ -40,6 +40,7 @@ function Jukebox() {
   const [isStatusLoading, setIsStatusLoading] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isIntervalSet, setIsIntervalSet] = useState(false);
   let pages = [];
 
   const debouncedSearch = useCallback(
@@ -53,17 +54,20 @@ function Jukebox() {
       }
     }, 500), []);
 
-  setInterval(() => {
-    StatusClient.getStatus().then((data) => {
-      if (data.nowPlaying && data.nowPlaying.name) {
-        setNowPlaying(data.nowPlaying.name);
-        setTotalAlbums(data.totalAlbums);
-      } else {
-        setNowPlaying('');
-        setTotalAlbums(data.totalAlbums);
-      }
-    });
-  }, 3000);
+  if (!isIntervalSet) {
+    setIsIntervalSet(true);
+    setInterval(() => {
+      StatusClient.getStatus().then((data) => {
+        if (data.nowPlaying && data.nowPlaying.name) {
+          setNowPlaying(data.nowPlaying.name);
+          setTotalAlbums(data.totalAlbums);
+        } else {
+          setNowPlaying('');
+          setTotalAlbums(data.totalAlbums);
+        }
+      });
+    }, 3000);
+  }
 
   if (!settings) {
     SettingsClient.getSettings().then((data) => {
@@ -194,12 +198,12 @@ function Jukebox() {
           {body}
         </Container>
         <JukeboxFooter search={search} setSearch={setSearch} settings={settings} nowPlaying={nowPlaying} />
-        <SearchModal
+        {/* <SearchModal
           isOpen={isSearchModalOpen}
           handleClose={handleSearch}
           search={search}
           settings={settings}
-        />
+        /> */}
       </React.Fragment>
     );
   }

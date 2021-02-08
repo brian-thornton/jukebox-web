@@ -8,6 +8,7 @@ import CoverArtSearchModal from './CoverArtSearchModal';
 import LibrianClient from '../lib/librarian-client';
 import defaultCover from '../default_album.jpg';
 import { Album, Settings } from './shapes';
+import { controlButtonProps } from '../lib/styleHelper';
 
 const albumArt = require('album-art');
 
@@ -19,6 +20,8 @@ const propTypes = {
 function AlbumAdminButtons({ album, settings }) {
   const [coverArt, setCoverArt] = useState('');
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
+  const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: coverArt });
+  const removeCoverArt = () => LibrianClient.removeCoverArt(album);
 
   const getCoverArt = () => {
     const nameArray = album.name.split('-');
@@ -34,37 +37,23 @@ function AlbumAdminButtons({ album, settings }) {
 
   getCoverArt();
 
-  const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: coverArt });
-  const removeCoverArt = () => LibrianClient.removeCoverArt(album);
+  const albumButton = (onClick, name) => (
+    <Col lg={6} style={{ padding: '0px' }}>
+      <Button {...controlButtonProps(settings)} onClick={onClick}>{name}</Button>
+    </Col>
+  );
 
   const adminButtons = () => {
-    const props = {
-      block: true,
-      variant: 'outline-light',
-      style: {
-        background: settings.styles.buttonBackgroundColor,
-        color: settings.styles.fontColor,
-      },
-    };
-
     if (settings.features.admin) {
       return (
         <React.Fragment>
           <Row>
-            <Col lg={6} style={{ padding: '0px' }}>
-              <Button {...props} onClick={removeCoverArt}>Remove Cover</Button>
-            </Col>
-            <Col lg={6} style={{ padding: '0px' }}>
-              <Button {...props} onClick={getCoverArt}>Refresh Cover</Button>
-            </Col>
+            {albumButton(removeCoverArt, 'Remove Cover')}
+            {albumButton(getCoverArt, 'Refresh Cover')}
           </Row>
           <Row>
-            <Col lg={6} style={{ padding: '0px' }}>
-              <Button {...props} onClick={() => setIsCustomSearchOpen(true)}>Custom Search</Button>
-            </Col>
-            <Col lg={6} style={{ padding: '0px' }}>
-              <Button {...props} onClick={saveCoverArtToLibrary}>Save Cover Art</Button>
-            </Col>
+            {albumButton(() => setIsCustomSearchOpen(true), 'Custom Search')}
+            {albumButton(saveCoverArtToLibrary, 'Save Cover Art')}
           </Row>
         </React.Fragment>
       );
@@ -75,7 +64,7 @@ function AlbumAdminButtons({ album, settings }) {
 
   return (
     <React.Fragment>
-      { adminButtons()}
+      {adminButtons()}
       <CoverArtSearchModal
         settings={settings}
         album={album}

@@ -11,6 +11,8 @@ import ContentWithControls from './ContentWithControls';
 import { Settings, Tracks } from './shapes';
 import { buttonProps } from '../lib/styleHelper';
 
+import { controlButtonProps } from '../lib/styleHelper';
+
 const propTypes = {
   currentPlaylist: PropTypes.string,
   mode: PropTypes.string,
@@ -65,7 +67,7 @@ function Playlists({
 
   const buttons = (playlistName) => {
     const playlistActions = [];
-    if (mode === 'addToPlaylist' && !added) {
+    if (mode === 'addToPlaylist' && !added && settings) {
       playlistActions.push((
         <Button
           {...buttonProps(settings)}
@@ -87,7 +89,7 @@ function Playlists({
       (
         <ListGroupItem
           onClick={() => selectPlaylist(playlist.name)}
-          style={{ ...styles.cardStyle, color: settings.styles.fontColor }}
+          style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor  }}
           key={playlist.name}
         >
           { playlist.name}
@@ -97,14 +99,8 @@ function Playlists({
     );
   });
 
-  const buttonProps = {
-    style: { ...styles.settingsButtonStyle, background: settings.styles.buttonBackgroundColor },
-    variant: 'outline-light',
-    className: 'float-right',
-  };
-
   const controls = () => (
-    <Button {...buttonProps} onClick={handleShow}>Add</Button>
+    <Button {...controlButtonProps(settings)} onClick={handleShow}>Add</Button>
   );
 
   const content = () => <ListGroup>{renderPlaylists}</ListGroup>;
@@ -113,7 +109,7 @@ function Playlists({
     return (
       <React.Fragment>
         <ContentWithControls content={content()} controls={controls()} alertText={alertText} />
-        <PlaylistAddModal isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
+        <PlaylistAddModal settings={settings} isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
       </React.Fragment>
     );
   }

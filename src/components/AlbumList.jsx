@@ -70,7 +70,7 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
       setAlbums([]);
     }
 
-    if (!isLoading) {
+    if (search || (!isLoading && !page.start === 0)) {
       setPage({
         start: 0,
         limit: pageSize
