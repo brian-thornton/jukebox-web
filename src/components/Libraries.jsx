@@ -61,7 +61,7 @@ function Libraries({ settings, setCurrentAlbum }) {
       renderLibraries.push(
         <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentLibrary(library)}>
           <Card.Img style={styles.albumImage} top src={defaultCover} />
-          <Card.Body>
+          <Card.Body style={{ padding: '0px' }}>
             <Card.Title style={styles.albumTitle}>{library.name}</Card.Title>
           </Card.Body>
         </Card>,
@@ -69,7 +69,7 @@ function Libraries({ settings, setCurrentAlbum }) {
     });
 
     return (
-      <Container fluid style={{ marginLeft: '50px' }}>
+      <Container fluid style={{ marginTop: '60px', paddingBottom: '60px', marginLeft: '50px' }}>
         <Row>{renderLibraries}</Row>
       </Container>
     );

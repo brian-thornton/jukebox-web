@@ -66,6 +66,10 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
   };
 
   useEffect(() => {
+    loadAlbums();
+  }, [search])
+
+  useEffect(() => {
     if (!search) {
       setAlbums([]);
     }

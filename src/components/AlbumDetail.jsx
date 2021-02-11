@@ -127,6 +127,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
 
   if (!areTracksLoaded) {
     loadTracks();
+    window.scrollTo(0,0);
   }
 
   return largeAlbum();

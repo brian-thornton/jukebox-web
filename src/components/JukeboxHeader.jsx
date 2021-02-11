@@ -12,9 +12,8 @@ import { getWidth, pageRows } from '../lib/pageHelper';
 
 import './Jukebox.css';
 
-function JukeboxHeader({settings, search, setSearch, mode, setMode, currentAlbum, setCurrentAlbum }) {
+function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMode, currentAlbum, setCurrentAlbum, resetPage }) {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [tempSearch, setTempSearch] = useState('');
   const isScreenSmall = window.innerWidth < 700;
 
   const handleSearch = (searchText) => {
@@ -55,6 +54,8 @@ function JukeboxHeader({settings, search, setSearch, mode, setMode, currentAlbum
             className="button"
             variant="outline-light"
             onClick={() => {
+              console.log('why')
+              resetPage();
               setSearch('');
               setTempSearch('');
             }}

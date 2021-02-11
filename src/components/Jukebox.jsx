@@ -18,10 +18,10 @@ import Settings from './settings/Settings';
 import SpotifyClient from '../lib/spotify-client';
 import SettingsClient from '../lib/settings-client';
 import StatusClient from '../lib/status-client';
-import SearchModal from './SearchModal';
 import Libraries from './Libraries';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
+import WithKeyboardInput from './WithKeyboardInput';
 import { getHeight, getWidth, calculatePages, pageRows } from '../lib/pageHelper';
 
 import './Jukebox.css';
@@ -31,26 +31,23 @@ function Jukebox() {
   const [search, setSearch] = useState('');
   const [settings, setSettings] = useState();
   const [currentAlbum, setCurrentAlbum] = useState();
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [tempSearch, setTempSearch] = useState('');
   const isScreenSmall = window.innerWidth < 700;
   const [nowPlaying, setNowPlaying] = useState('');
   const [pageSize, setPageSize] = useState((Math.floor(getWidth() / 250) * pageRows()));
   const [page, setPage] = useState({ start: 0, limit: pageSize - 1 });
-  const [isStatusLoading, setIsStatusLoading] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
+  const resetPage = () => setPage({ start: 0, limit: pageSize - 1 });
   let pages = [];
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
-      if (tempSearch.length > 3) {
-        if (search) {
-          setSearch(`${search}${tempSearch}`);
-        } else {
-          setSearch(tempSearch);
-        }
+      if (tempSearch.length > 2) {
+        setSearch(tempSearch);
+        setTempSearch('');
+        window.scrollTo(0, 0);
       }
     }, 500), []);
 
@@ -79,12 +76,25 @@ function Jukebox() {
     });
   }
 
-  const handleSearch = (searchText) => {
-    setIsSearchModalOpen(false);
-    setSearch(searchText);
-  };
-
   let body = <React.Fragment />;
+
+  const albumList = (
+    <AlbumList
+      pages={calculatePages(totalAlbums, pageSize)}
+      currentPage={currentPage}
+      totalAlbums={totalAlbums}
+      pageSize={pageSize}
+      page={page}
+      initialPage={page}
+      setPage={setPage}
+      search={search}
+      setCurrentAlbum={setCurrentAlbum}
+      settings={settings}
+    />
+  );
+
+  const trackList = <Tracks search={search} settings={settings} setCurrentAlbum={setCurrentAlbum} />;
+
   if (settings) {
     if (currentAlbum) {
       body = (
@@ -98,39 +108,7 @@ function Jukebox() {
     } else {
       switch (mode) {
         case 'AlbumList':
-          body = (
-            <React.Fragment>
-              <KeyboardEventHandler
-                handleKeys={['all']}
-                onKeyEvent={(key) => {
-                  let newSearch = cloneDeep(tempSearch);
-                  if (key === 'space') {
-                    newSearch = `${tempSearch} `;
-                    setTempSearch(`${tempSearch} `);
-                  } else if (key === 'backspace') {
-                    newSearch = `${tempSearch.substring(0, tempSearch.length - 1)}`;
-                    setTempSearch(`${tempSearch.substring(0, tempSearch.length - 1)}`);
-                  } else {
-                    newSearch = `${tempSearch}${key}`;
-                    setTempSearch(`${tempSearch}${key}`);
-                  }
-
-                  debouncedSearch(newSearch);
-                }}
-              />
-              <AlbumList
-                pages={calculatePages(totalAlbums, pageSize)}
-                currentPage={currentPage}
-                totalAlbums={totalAlbums}
-                pageSize={pageSize}
-                page={page}
-                setPage={setPage}
-                search={search}
-                setCurrentAlbum={setCurrentAlbum}
-                settings={settings}
-              />
-            </React.Fragment>
-          );
+          body = <WithKeyboardInput component={albumList} tempSearch={tempSearch} setTempSearch={setTempSearch} debouncedSearch={debouncedSearch} />;
           break;
         case 'NewReleases':
           body = <NewReleases />;
@@ -151,7 +129,7 @@ function Jukebox() {
           body = <Categories />;
           break;
         case 'Tracks':
-          body = <Tracks search={search} settings={settings} setCurrentAlbum={setCurrentAlbum} />;
+          body = <WithKeyboardInput component={trackList} tempSearch={tempSearch} setTempSearch={setTempSearch} debouncedSearch={debouncedSearch} />;
           break;
         case 'Playlists':
           body = <Playlists settings={settings} />;
@@ -163,19 +141,7 @@ function Jukebox() {
           body = <Settings settings={settings} />;
           break;
         default:
-          body = (
-            <AlbumList
-              pages={calculatePages(totalAlbums)}
-              currentPage={currentPage}
-              totalAlbums={totalAlbums}
-              pageSize={pageSize}
-              initialPage={page}
-              setPage={setPage}
-              search={search}
-              setCurrentAlbum={setCurrentAlbum}
-              settings={settings}
-            />
-          );
+          body = albumList;
       }
     }
   }
@@ -183,7 +149,7 @@ function Jukebox() {
   if (settings) {
     return (
       <React.Fragment>
-        <JukeboxHeader settings={settings} search={search} setSearch={setSearch} mode={mode} setMode={setMode} currentAlbum={currentAlbum} setCurrentAlbum={setCurrentAlbum} />
+        <JukeboxHeader resetPage={resetPage} settings={settings} search={search} setSearch={setSearch} setTempSearch={setTempSearch} mode={mode} setMode={setMode} currentAlbum={currentAlbum} setCurrentAlbum={setCurrentAlbum} />
         <Container
           fluid
           style={{
@@ -193,17 +159,10 @@ function Jukebox() {
             marginLeft: '0px',
             height: getHeight() - 60,
           }}
-
         >
           {body}
         </Container>
         <JukeboxFooter search={search} setSearch={setSearch} settings={settings} nowPlaying={nowPlaying} />
-        {/* <SearchModal
-          isOpen={isSearchModalOpen}
-          handleClose={handleSearch}
-          search={search}
-          settings={settings}
-        /> */}
       </React.Fragment>
     );
   }
