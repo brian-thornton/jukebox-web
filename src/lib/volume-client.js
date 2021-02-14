@@ -1,4 +1,4 @@
-class VolumeClient {
+export default class VolumeClient {
   static async up() {
     const response = await fetch('/volume/up');
     return response;
@@ -10,4 +10,3 @@ class VolumeClient {
   }
 }
 
-module.exports = VolumeClient;

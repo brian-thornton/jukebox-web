@@ -14,6 +14,7 @@ import styles from './styles';
 import ContentWithControls from './ContentWithControls';
 import { Settings } from './shapes';
 import { controlButtonProps } from '../lib/styleHelper';
+import PlayNowButton from './PlayNowButton';
 
 const propTypes = {
   settings: Settings.isRequired,
@@ -60,11 +61,6 @@ function Queue({ settings }) {
     loadQueue();
   }
 
-  const playNow = (track) => {
-    QueueClient.enqueueTop(track);
-    QueueClient.play();
-  };
-
   const remove = (track) => {
     QueueClient.removeTracksFromQueue([track]);
     loadQueue();
@@ -81,7 +77,7 @@ function Queue({ settings }) {
       (
         <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor}}>
           {track.name}
-          <Button {...buttonProps} onClick={() => playNow(track)}>Play</Button>
+          <PlayNowButton track={track} settings={settings} />
           <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
         </ListGroupItem>
       ),

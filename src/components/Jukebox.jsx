@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from 'react';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
 import {
   Container
 } from 'react-bootstrap';
-import { cloneDeep, debounce } from 'lodash';
+import { debounce } from 'lodash';
 
 import AlbumList from './AlbumList';
 import NewReleases from './NewReleases';

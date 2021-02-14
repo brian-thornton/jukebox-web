@@ -1,4 +1,4 @@
-class StatusClient {
+export default class StatusClient {
   static postProps = {
     method: 'post',
     mode: 'cors',
@@ -26,4 +26,3 @@ class StatusClient {
   }
 }
 
-module.exports = StatusClient;

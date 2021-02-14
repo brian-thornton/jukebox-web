@@ -1,6 +1,6 @@
 const rp = require('request-promise');
 
-class SpotifyClient {
+export default class SpotifyClient {
   static getAccessToken() {
     const urlParams = new URLSearchParams(window.location.search);
     window.authorizationToken = urlParams.get('code');
@@ -79,4 +79,3 @@ class SpotifyClient {
   }
 }
 
-module.exports = SpotifyClient;

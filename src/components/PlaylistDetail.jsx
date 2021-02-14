@@ -12,6 +12,8 @@ import styles from './styles';
 import { buttonProps } from '../lib/styleHelper';
 import { Settings } from './shapes';
 import { controlButtonProps } from '../lib/styleHelper';
+import PlayNowButton from './PlayNowButton';
+import EnqueueButton from './EnqueueButton';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -22,7 +24,6 @@ const propTypes = {
 function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
-  const leftButtonStyle = { margin: '5px', width: '150px' };
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
 
@@ -34,11 +35,6 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         setTracks(playlist.tracks);
       }
     });
-  };
-
-  const playNow = (track) => {
-    QueueClient.enqueueTop(track.path);
-    QueueClient.play();
   };
 
   const runPlaylist = () => {
@@ -89,8 +85,8 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         (
           <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor  }}>
             {track.name}
-            <Button {...buttonProps(settings)} onClick={() => playNow(track)}>Play</Button>
-            <Button {...buttonProps(settings)} onClick={() => QueueClient.enqueue(track)}>Enqueue</Button>
+            <PlayNowButton track={track} settings={settings} />
+            <EnqueueButton track={track} settings={settings} />
             <Button {...buttonProps(settings)} onClick={() => deleteTrack(name, track)}>Delete</Button>
           </ListGroupItem>
         ),

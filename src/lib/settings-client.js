@@ -1,4 +1,4 @@
-class SettingsClient {
+export default class SettingsClient {
   static postProps = {
     method: 'post',
     mode: 'cors',
@@ -25,5 +25,3 @@ class SettingsClient {
     return response;
   }
 }
-
-module.exports = SettingsClient;
