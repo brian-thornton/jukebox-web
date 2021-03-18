@@ -91,7 +91,7 @@ function ThemeList({ settings, resetControls, setControls }) {
 
         if (!skin.isEditable) {
           console.log(`${skin.name}: ${skin.isEditable}`);
-          controlButtonProps.disabled = true;
+          // controlButtonProps.disabled = true;
         }
 
         rows.push(

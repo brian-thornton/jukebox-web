@@ -72,7 +72,8 @@ const enabledStyle = {
 
 const totalTracksStyle = {
   color: 'white',
-  float: 'right',
+  float: 'left',
+  paddingTop: '10px',
 };
 
 const totalTracksCount = {

@@ -6,8 +6,6 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import StyleClient from '../../lib/style-client';
-import { Colors } from '../shapes';
 
 import {
   buttonProps,
@@ -20,34 +18,21 @@ import {
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
-  colors: Colors.isRequired,
-  goBackToThemeList: PropTypes.func.isRequired,
+  handleSave: PropTypes.func.isRequired,
 };
 
-function SkinSaveAsModal({
-  goBackToThemeList,
-  isOpen,
-  handleHide,
-  colors,
-  settings,
-}) {
-  const handleSave = () => {
-    StyleClient.createSkin({ isEditable: true, name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
-    handleHide();
-    goBackToThemeList();
-  };
-
+function NewSkinModal({ isOpen, handleHide, handleSave, settings }) {
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header closeButton style={modalHeaderStyle(settings)}>
-        <Modal.Title style={modalTitleStyle(settings)}>Save a Copy of Skin As...</Modal.Title>
+        <Modal.Title style={modalTitleStyle(settings)}>Add Library</Modal.Title>
       </Modal.Header>
       <Modal.Body style={modalBodyStyle(settings)}>
         <InputGroup className="mb-3">
           <FormControl
-            id="name"
-            placeholder="Skin Name"
-            aria-label="name"
+            id="path"
+            placeholder="Path"
+            aria-label="Path"
             aria-describedby="basic-addon1"
           />
         </InputGroup>
@@ -60,6 +45,6 @@ function SkinSaveAsModal({
   );
 }
 
-SkinSaveAsModal.propTypes = propTypes;
+NewSkinModal.propTypes = propTypes;
 
-export default SkinSaveAsModal;
+export default NewSkinMo;

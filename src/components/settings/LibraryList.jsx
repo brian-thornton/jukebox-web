@@ -18,7 +18,7 @@ import styles from '../styles';
 
 const albumArt = require('album-art');
 
-function LibraryList() {
+function LibraryList({settings}) {
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
@@ -60,7 +60,11 @@ function LibraryList() {
   const handleCloseDiscover = (path) => {
     if (path) {
       LibrarianClient.discover(path).then((libs) => {
-        libs.forEach(lib => LibrarianClient.add({ path: lib }));
+        libs.forEach(lib => {
+          if (!libraries.find((l) => l.path === lib)) {
+            LibrarianClient.add({ path: lib });
+          }
+        });
         loadLibraries();
       });
     }
@@ -153,24 +157,13 @@ function LibraryList() {
 
   return (
     <>
-      <Container>
+      <Container style={{ marginTop: '0px' }}>
         <Row>
           <Col lg={12} xl={12}>
             <div style={styles.totalTracksStyle}>
               Total Library Tracks:
               <div style={styles.totalTracksCount}>{totalTracks}</div>
             </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} xl={12}>
-            <ListGroup>
-              {renderLibraries}
-            </ListGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} xl={12}>
             <Button
               variant="outline-light"
               className="float-right"
@@ -179,6 +172,7 @@ function LibraryList() {
               Add
             </Button>
             <Button
+              style={{ marginRight: '8px' }}
               variant="outline-light"
               className="float-right"
               onClick={handleDiscover}
@@ -187,10 +181,16 @@ function LibraryList() {
             </Button>
           </Col>
         </Row>
+        <Row style={{ marginTop: '5px' }}>
+          <Col lg={12} xl={12}>
+            <ListGroup>
+              {renderLibraries}
+            </ListGroup>
+          </Col>
+        </Row>
       </Container>
-
-      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
-      <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
+      <LibraryAddModal settings={settings} isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
+      <LibraryDiscoverModal settings={settings} isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
     </>
   );
 }

@@ -10,6 +10,13 @@ import { Settings } from '../shapes';
 
 import './PinModal.css';
 
+import {
+  buttonProps,
+  modalBodyStyle,
+  modalHeaderStyle,
+  modalTitleStyle
+} from '../../lib/styleHelper';
+
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   settings: Settings.isRequired,
@@ -29,7 +36,7 @@ function PinModal({ isOpen, settings, handleClose }) {
     <Button
       key={number}
       className="number-button"
-      style={{ background: settings.styles.buttonBackgroundColor }}
+      style={{ color: settings.styles.fontColor, background: settings.styles.buttonBackgroundColor }}
       variant="outline-light"
       onClick={() => setPin(`${pin}${number}`)}
     >
@@ -41,17 +48,17 @@ function PinModal({ isOpen, settings, handleClose }) {
 
   return (
     <Modal size="sm" show={isOpen} onHide={() => handleClose(pin === settings.pin)}>
-      <Modal.Header style={{ background: settings.styles.headerColor }} closeButton className="header">
-        <Modal.Title>Enter Pin</Modal.Title>
+      <Modal.Header style={modalHeaderStyle(settings)} closeButton className="header">
+        <Modal.Title style={modalTitleStyle(settings)}>Enter Pin</Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{ background: settings.styles.popupBackgroundColor }} className="body">
+      <Modal.Body style={modalBodyStyle(settings)} className="body">
         <Container>
           <Row>{row([1, 2, 3])}</Row>
           <Row>{row([4, 5, 6])}</Row>
           <Row>{row([7, 8, 9])}</Row>
           <Row>
             {numberButton(0)}
-            <Button variant="outline-light" style={{ background: settings.styles.buttonBackgroundColor }} className="clear-button" onClick={() => setPin('')}>Clear</Button>
+            <Button {...buttonProps(settings)} className="clear-button" onClick={() => setPin('')}>Clear</Button>
           </Row>
         </Container>
       </Modal.Body>

@@ -2,7 +2,7 @@ import styles from '../components/styles';
 
 const buttonProps = (settings) => {
   return {
-    style: { 
+    style: {
       ...styles.buttonStyle,
       background: settings.styles.buttonBackgroundColor,
       color: settings.styles.fontColor,
@@ -23,7 +23,35 @@ const controlButtonProps = (settings) => {
   }
 };
 
+const modalBodyStyle = (settings) => {
+  return {
+    background: settings.styles.popupBackgroundColor,
+  };
+};
+
+const modalHeaderStyle = (settings) => {
+  return {
+    background: settings.styles.headerColor,
+  };
+};
+
+const modalFooterStyle = (settings) => {
+  return {
+    background: settings.styles.headerColor,
+  };
+};
+
+const modalTitleStyle = (settings) => {
+  return {
+    color: settings.styles.fontColor,
+  }
+};
+
 export {
   buttonProps,
-  controlButtonProps
+  controlButtonProps,
+  modalBodyStyle,
+  modalFooterStyle,
+  modalHeaderStyle,
+  modalTitleStyle,
 }

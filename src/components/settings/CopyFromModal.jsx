@@ -7,6 +7,14 @@ import {
 import { PropTypes } from 'prop-types';
 import { Colors } from '../shapes';
 
+import {
+  buttonProps,
+  modalBodyStyle,
+  modalFooterStyle,
+  modalHeaderStyle,
+  modalTitleStyle
+} from '../../lib/styleHelper';
+
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
@@ -19,15 +27,16 @@ function CopyFromModal({
   handleHide,
   colors,
   handleCopyColor,
+  settings,
 }) {
   const [copiedColor, setCopiedColor] = useState();
 
   return (
     <Modal show={isOpen} onHide={handleHide}>
-      <Modal.Header closeButton>
-        <Modal.Title>Copy Color From</Modal.Title>
+      <Modal.Header style={modalHeaderStyle(settings)} closeButton>
+        <Modal.Title style={modalTitleStyle(settings)}>Copy Color From</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={modalBodyStyle(settings)}>
         <Form.Group>
           <Form.Control as="select" size="lg" onChange={event => setCopiedColor(event.target.value)}>
             <option value={colors.headerColor}>Header Color</option>
@@ -40,10 +49,9 @@ function CopyFromModal({
           </Form.Control>
         </Form.Group>
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleHide}>Close</Button>
-        <Button
-          variant="primary"
+      <Modal.Footer style={modalFooterStyle(settings)}>
+        <Button {...buttonProps(settings)} onClick={handleHide}>Close</Button>
+        <Button {...buttonProps(settings)}
           onClick={() => {
             handleCopyColor(copiedColor);
             handleHide();

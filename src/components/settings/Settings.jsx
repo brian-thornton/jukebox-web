@@ -45,7 +45,7 @@ function Settings({ settings }) {
   const content = () => {
     if (isAuthorized) {
       if (mode === 'LIBRARY') {
-        return <LibraryList />;
+        return <LibraryList settings={settings} />;
       } if (mode === 'SETTINGS') {
         return <SettingsEditor />;
       } if (mode === 'SPOTIFY') {

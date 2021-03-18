@@ -19,7 +19,6 @@ const propTypes = {
 function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPage, totalAlbums, pages }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
   const isScreenSmall = window.innerWidth < 700;
   const pageSize = page.limit - page.start;
@@ -45,14 +44,12 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
         }
         window.scrollTo(0, 0);
         setIsLoading(false);
-        setIsLoaded(true);
       });
     } else {
       LibrianClient.getAlbums(loadPage ? loadPage.start : page.start, loadPage ? loadPage.limit : page.limit).then((data) => {
         if (page.start === 0) {
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
-            setIsLoaded(true);
           }
           setAlbums(data);
         } else {
@@ -104,11 +101,7 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
   }, [page])
 
   const albumsMargin = () => {
-    if (isScreenSmall) {
-      return {};
-    }
-
-    return { marginLeft: '0px', marginTop: '90px', height: '100%' };
+    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' };
   };
 
   useEffect(() => {

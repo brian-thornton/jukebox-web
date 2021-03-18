@@ -8,7 +8,6 @@ export default class StyleClient {
   }
 
   static async createSkin(skin) {
-    console.log(skin);
     const response = await fetch('/styles/skins', postParams(skin));
     return response;
   }

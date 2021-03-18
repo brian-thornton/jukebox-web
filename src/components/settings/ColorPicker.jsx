@@ -10,6 +10,15 @@ import { PropTypes } from 'prop-types';
 
 import './PinModal.css';
 
+import {
+  buttonProps,
+  modalBodyStyle,
+  modalFooterStyle,
+  modalHeaderStyle,
+  modalTitleStyle
+} from '../../lib/styleHelper';
+
+
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
@@ -22,6 +31,7 @@ function ColorPicker({
   setIsOpen,
   setColor,
   allowGradient,
+  settings,
 }) {
   const [colorType, setColorType] = useState('solid');
   const [gradientA, setGradientA] = useState();
@@ -32,7 +42,7 @@ function ColorPicker({
   const colorPickers = () => {
     if (allowGradient && colorType === 'gradient') {
       return (
-        <Container>
+        <Container style={{marginTop: '0px', marginBottom: '0px'}}>
           <Row>
             {picker(gradientA, colorData => setGradientA(colorData))}
             {picker(gradientB, colorData => setGradientB(colorData))}
@@ -58,12 +68,12 @@ function ColorPicker({
   const radioButtons = () => {
     if (allowGradient) {
       return (
-        <Container>
+        <Container style={{marginTop: '0px', marginBottom: '0px'}}>
           <Row>
-            <input style={{ color: '#FFFFFF' }} type="radio" name="colorType" onChange={() => setColorType('solid')} />
+            <input style={{ color: '#FFFFFF', marginTop: '5px' }} type="radio" name="colorType" onChange={() => setColorType('solid')} />
             <div style={{ color: '#FFFFFF' }}>Solid</div>
-            <input style={{ color: '#FFFFFF', marginLeft: '10px' }} type="radio" name="colorType" onChange={() => setColorType('gradient')} />
-            Gradient
+            <input style={{ color: '#FFFFFF', marginTop: '5px', marginLeft: '10px' }} type="radio" name="colorType" onChange={() => setColorType('gradient')} />
+            <div style={{ color: '#FFFFFF' }}>Gradient</div>
           </Row>
         </Container>
       );
@@ -73,14 +83,14 @@ function ColorPicker({
   };
 
   return (
-    <Modal size="md" show={isOpen} onHide={() => setIsOpen(false)}>
-      <Modal.Header closeButton className="header">
-        <Modal.Title>Select Color</Modal.Title>
+    <Modal show={isOpen} onHide={() => setIsOpen(false)}>
+      <Modal.Header closeButton style={modalHeaderStyle(settings)}>
+        <Modal.Title style={modalTitleStyle(settings)}>Select Color</Modal.Title>
       </Modal.Header>
-      <Modal.Body className="body">
+      <Modal.Body style={modalBodyStyle(settings)}>
         {radioButtons()}
         {colorPickers()}
-        <Button onClick={formatColor}>OK</Button>
+        <Button {...buttonProps(settings)} onClick={formatColor}>OK</Button>
       </Modal.Body>
     </Modal>
   );

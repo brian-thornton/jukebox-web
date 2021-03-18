@@ -8,7 +8,6 @@ import {
 import '../App.css';
 import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
-import { getWidth, pageRows } from '../lib/pageHelper';
 
 import './Jukebox.css';
 
@@ -41,6 +40,12 @@ function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMod
     return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor }}>{settings.preferences.name}</Navbar.Brand>;
   };
 
+  const buttonStyle = {
+    background: settings.styles.buttonBackgroundColor,
+    fontWeight: settings.styles.buttonFontWeight,
+    color: settings.styles.buttonFontColor
+  };
+
   const searchButton = () => {
     if (isScreenSmall) {
       return <React.Fragment />;
@@ -50,11 +55,10 @@ function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMod
       return (
         <React.Fragment>
           <Button
-            style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }}
+            style={buttonStyle}
             className="button"
             variant="outline-light"
             onClick={() => {
-              console.log('why')
               resetPage();
               setSearch('');
               setTempSearch('');
@@ -62,12 +66,12 @@ function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMod
           >
             Clear
           </Button>
-          <Button style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
+          <Button style={buttonStyle} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
         </React.Fragment>
       );
     }
 
-    return <Button style={{ background: settings.styles.buttonBackgroundColor, fontWeight: settings.styles.buttonFontWeight, color: settings.styles.buttonFontColor }} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+    return <Button style={buttonStyle} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
   };
 
 

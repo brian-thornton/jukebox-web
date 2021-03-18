@@ -25,9 +25,12 @@ function StyleEditor({
     headerColor: skin.headerColor,
     footerColor: skin.footerColor,
     fontColor: skin.fontColor,
+    fontWeight: skin.fontWeight,
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    buttonFontColor: skin.buttonFontColor,
+    buttonFontWeight: skin.buttonFontWeight,
     trackBackgroundColor: skin.trackBackgroundColor,
   });
 
@@ -38,7 +41,7 @@ function StyleEditor({
   };
 
   const controlButtonProps = {
-    style: { ...styles.settingsButtonStyle, background: settings.styles.buttonBackgroundColor },
+    style: { ...styles.settingsButtonStyle, color: settings.styles.fontColor, background: settings.styles.buttonBackgroundColor },
     variant: 'outline-light',
     className: 'float-right',
   };
@@ -141,18 +144,21 @@ function StyleEditor({
         color={colors[colorMode]}
         setColor={handleSetColor}
         allowGradient={allowGradient}
+        settings={settings}
       />
       <SkinSaveAsModal
         goBackToThemeList={goBackToThemeList}
         handleHide={() => setIsSaveAsModalOpen(false)}
         isOpen={isSaveAsModalOpen}
         colors={colors}
+        settings={settings}
       />
       <CopyFromModal
         isOpen={isCopyFromOpen}
         colors={colors}
         handleHide={() => setIsCopyFromOpen(false)}
         handleCopyColor={handleColorCopy}
+        settings={settings}
       />
     </React.Fragment>
   );

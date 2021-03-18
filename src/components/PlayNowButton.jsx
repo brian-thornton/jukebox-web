@@ -21,11 +21,8 @@ function PlayNowButton({ track, settings, isScreenSmall }) {
   };
 
   if (settings) {
-    if (isScreenSmall) {
-      return <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}><Play /></Button>;
-    } else {
-      return <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}>Play</Button>;
-    }
+    const playContent = isScreenSmall ? <Play /> : 'Play';
+    return <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}>{playContent}</Button>;
   }
 
   return <React.Fragment />;

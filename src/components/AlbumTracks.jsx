@@ -5,7 +5,6 @@ import {
 } from 'react-bootstrap';
 import styles from './styles';
 import { Track, Settings } from './shapes';
-import { buttonProps } from '../lib/styleHelper';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
