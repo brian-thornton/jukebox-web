@@ -97,7 +97,15 @@ function Jukebox() {
     />
   );
 
-  const trackList = <Tracks pages={calculatePages(totalTracks, trackPageSize)} page={trackPage} setTrackPage={setTrackPage} search={search} settings={settings} setCurrentAlbum={setCurrentAlbum} />;
+  const trackList = (
+    <Tracks pages={calculatePages(totalTracks, trackPageSize)}
+      page={trackPage}
+      setTrackPage={setTrackPage}
+      search={search}
+      settings={settings}
+      setCurrentAlbum={setCurrentAlbum}
+    />
+  );
 
   if (settings) {
     if (currentAlbum) {

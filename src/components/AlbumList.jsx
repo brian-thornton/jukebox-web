@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  Button,
   Container,
   Col,
   Row,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
+import PagingButtons from './PagingButtons';
 import { Settings } from './shapes';
 import { getRandomInt } from '../lib/pageHelper';
 
@@ -17,7 +17,7 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPage, totalAlbums, pages }) {
+function AlbumList({ search, setCurrentAlbum, settings, page, setPage, totalAlbums, pages }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
@@ -60,7 +60,6 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
             setAlertText('No albums found. Set up your library in settings.');
           }
           setAlbums(data);
-          console.log(data);
         } else {
           setAlbums(data);
         }
@@ -93,46 +92,22 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
   const findPage = () => pages.findIndex(p => p.start === page.start && p.limit === page.limit);
   const loadMore = () => setPage(pages[findPage() + 1]);
   const loadPrevious = () => setPage(pages[findPage() - 1]);
-
-  const loadRandom = () => {
-    setPage(pages[getRandomInt(pages.length)]);
-  }
+  const loadRandom = () => setPage(pages[getRandomInt(pages.length)]);
 
   useEffect(() => {
     setIsLoading(true);
     loadAlbums();
   }, [page])
 
-    const albumsMargin = () => {
-      return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' };
-    };
+  const albumsMargin = () => {
+    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' };
+  };
 
   useEffect(() => {
     if (totalAlbums) {
       setPageDisabled(false);
     }
   }, [totalAlbums])
-
-  const rightControls = () => {
-    if (!search) {
-      const pageButtonProps = {
-        background: settings.styles.buttonBackgroundColor,
-        height: '75px',
-        color: settings.styles.fontColor
-      }
-
-      return (
-        <React.Fragment>
-          <Button style={{ ...pageButtonProps, marginTop: '20px'}} disabled={pageDisabled} block variant="outline-light" onClick={loadMore}>Next</Button>;
-          <Button style={{ ...pageButtonProps, marginTop: '-10px'}} disabled={pageDisabled} block variant="outline-light" onClick={loadPrevious}>Previous</Button>;
-          <Button style={{ ...pageButtonProps, marginTop: '-10px'}} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}>Random</Button>;
-          <div style={{ color: '#FFFFFF' }}>{pages.length ? `${pages.findIndex(p => p.start === page.start && p.limit === page.limit)} of ${pages.length}` : 'Loading...'}</div>
-        </React.Fragment>
-      )
-    }
-
-    return <React.Fragment />;
-  }
 
   if (albums.length) {
     const renderAlbums = [];
@@ -153,7 +128,16 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
             <Row>{renderAlbums}</Row>
           </Col>
           <Col lg={1} xl={1}>
-            {rightControls()}
+            <PagingButtons
+              settings={settings}
+              search={search}
+              pageDisabled={pageDisabled}
+              loadMore={loadMore}
+              loadPrevious={loadPrevious}
+              loadRandom={loadRandom}
+              pages={pages}
+              page={page}
+            />
           </Col>
         </Row>
       </Container>

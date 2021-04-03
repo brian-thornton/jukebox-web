@@ -5,12 +5,12 @@ import {
   Container,
   Row,
   Col,
-  Button,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
 import { Settings } from './shapes';
 import { getRandomInt } from '../lib/pageHelper';
+import PagingButtons from './PagingButtons';
 
 const propTypes = {
   search: PropTypes.string,
@@ -71,28 +71,7 @@ function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }
     return <React.Fragment />;
   };
 
-  const loadRandom = () => {
-    setTrackPage(pages[getRandomInt(pages.length)]);
-  }
-
-  const rightControls = () => {
-    if (!search) {
-      const pageButtonProps = {
-        background: settings.styles.buttonBackgroundColor,
-        height: '75px',
-        color: settings.styles.fontColor
-      }
-
-      return (
-        <React.Fragment>
-          <Button style={{ ...pageButtonProps, marginTop: '20px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadMore}>Next</Button>;
-          <Button style={{ ...pageButtonProps, marginTop: '-10px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadPrevious}>Previous</Button>;
-          <Button style={{ ...pageButtonProps, marginTop: '-10px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}>Random</Button>;
-          <div style={{ color: '#FFFFFF' }}>{pages.length ? `${pages.findIndex(p => p.start === page.start && p.limit === page.limit)} of ${pages.length}` : 'Loading...'}</div>
-        </React.Fragment>
-      )
-    }
-  };
+  const loadRandom = () => setTrackPage(pages[getRandomInt(pages.length)]);
 
   const tracksMargin = () => {
     return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '50px', marginRight: '0px', height: '100%' };
@@ -104,7 +83,7 @@ function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }
         <Container id="tracks" fluid style={tracksMargin()}>Î
           <Row style={{ marginRight: '0px', padding: '0px' }}>
             <Col lg={11} xl={11}>
-              <TrackList style={{width: '100%', marginRight: '0px'}}
+              <TrackList style={{ width: '100%', marginRight: '0px' }}
                 tracks={tracks}
                 settings={settings}
                 showAlbumCovers
@@ -112,7 +91,16 @@ function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }
               />
             </Col>
             <Col lg={1} xl={1}>
-              {rightControls()}
+              <PagingButtons
+                settings={settings}
+                search={search}
+                pageDisabled={pageDisabled}
+                loadMore={loadMore}
+                loadPrevious={loadPrevious}
+                loadRandom={loadRandom}
+                pages={pages}
+                page={page}
+              />
             </Col>
           </Row>
         </Container>
