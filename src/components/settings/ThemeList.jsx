@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
+
+import SkinSaveAsModal from './SkinSaveAsModal';
 import styles from '../styles';
 import SettingsClient from '../../lib/settings-client';
 import StyleClient from '../../lib/style-client';
@@ -21,6 +23,8 @@ function ThemeList({ settings, resetControls, setControls }) {
   const [skinsLoaded, setSkinsLoaded] = useState(false);
   const [skinsLoading, setSkinsLoading] = useState(false);
   const [editSkin, setEditSkin] = useState();
+  const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
+  const [copyFromColors, setCopyFromColors] = useState();
 
   if (!skinsLoaded && !skinsLoading) {
     setSkinsLoading(true);
@@ -73,6 +77,23 @@ function ThemeList({ settings, resetControls, setControls }) {
     });
   };
 
+  const makeCopy = (skin) => {
+    setCopyFromColors({
+      headerColor: skin.headerColor,
+      footerColor: skin.footerColor,
+      fontColor: skin.fontColor,
+      fontWeight: skin.fontWeight,
+      backgroundColor: skin.backgroundColor,
+      popupBackgroundColor: skin.popupBackgroundColor,
+      buttonBackgroundColor: skin.buttonBackgroundColor,
+      buttonFontColor: skin.buttonFontColor,
+      buttonFontWeight: skin.buttonFontWeight,
+      trackBackgroundColor: skin.trackBackgroundColor,
+    });
+
+    setIsSaveAsOpen(true);
+  };
+
   const skinRows = () => {
     if (skins && skins.length) {
       const rows = [];
@@ -91,12 +112,13 @@ function ThemeList({ settings, resetControls, setControls }) {
 
         if (!skin.isEditable) {
           console.log(`${skin.name}: ${skin.isEditable}`);
-          // controlButtonProps.disabled = true;
+          controlButtonProps.disabled = true;
         }
 
         rows.push(
           <ListGroupItem style={styles.cardStyle}>
             {skin.name}
+            <Button {...buttonProps} onClick={() => makeCopy(skin)}>Make a Copy</Button>
             <Button {...controlButtonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
             <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
             <Button {...controlButtonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
@@ -123,9 +145,18 @@ function ThemeList({ settings, resetControls, setControls }) {
 
   if (skins && skins.length) {
     return (
+      <>
       <ListGroup>
         {skinRows()}
       </ListGroup>
+      <SkinSaveAsModal
+        goBackToThemeList={goBackToThemeList}
+        handleHide={() => setIsSaveAsOpen(false)}
+        isOpen={isSaveAsOpen}
+        colors={copyFromColors}
+        settings={settings}
+      />
+      </>
     );
   }
 

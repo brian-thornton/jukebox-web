@@ -9,6 +9,7 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import Album from './Album';
 import { Settings } from './shapes';
+import { getRandomInt } from '../lib/pageHelper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -46,12 +47,20 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
         setIsLoading(false);
       });
     } else {
-      LibrianClient.getAlbums(loadPage ? loadPage.start : page.start, loadPage ? loadPage.limit : page.limit).then((data) => {
+      const start = loadPage ? loadPage.start : page.start;
+      let limit = loadPage ? loadPage.limit : page.limit;
+
+      if (start === 0) {
+        limit += 1;
+      }
+
+      LibrianClient.getAlbums(start, limit).then((data) => {
         if (page.start === 0) {
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
           }
           setAlbums(data);
+          console.log(data);
         } else {
           setAlbums(data);
         }
@@ -85,14 +94,8 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
   const loadMore = () => setPage(pages[findPage() + 1]);
   const loadPrevious = () => setPage(pages[findPage() - 1]);
 
-  const getRandomInt = () => {
-    const min = Math.ceil(0);
-    const max = Math.floor(pages.length);
-    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-  }
-
   const loadRandom = () => {
-    setPage(pages[getRandomInt()]);
+    setPage(pages[getRandomInt(pages.length)]);
   }
 
   useEffect(() => {
@@ -100,9 +103,9 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, currentPa
     loadAlbums();
   }, [page])
 
-  const albumsMargin = () => {
-    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' };
-  };
+    const albumsMargin = () => {
+      return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' };
+    };
 
   useEffect(() => {
     if (totalAlbums) {

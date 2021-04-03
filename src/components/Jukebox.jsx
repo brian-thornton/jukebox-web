@@ -21,7 +21,7 @@ import Libraries from './Libraries';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
 import WithKeyboardInput from './WithKeyboardInput';
-import { getHeight, getWidth, calculatePages, pageRows } from '../lib/pageHelper';
+import { getHeight, getWidth, calculatePages, pageRows, trackPageRows } from '../lib/pageHelper';
 
 import './Jukebox.css';
 
@@ -34,8 +34,11 @@ function Jukebox() {
   const isScreenSmall = window.innerWidth < 700;
   const [nowPlaying, setNowPlaying] = useState('');
   const [pageSize, setPageSize] = useState((Math.floor(getWidth() / 250) * pageRows()));
+  const [trackPageSize, setTrackPageSize] = useState((Math.floor(getWidth() / 500) * trackPageRows()));
   const [page, setPage] = useState({ start: 0, limit: pageSize - 1 });
+  const [trackPage, setTrackPage] = useState({ start: 0, limit: trackPageSize - 1 });
   const [totalAlbums, setTotalAlbums] = useState();
+  const [totalTracks, setTotalTracks] = useState();
   const [currentPage, setCurrentPage] = useState(1);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const resetPage = () => setPage({ start: 0, limit: pageSize - 1 });
@@ -57,9 +60,11 @@ function Jukebox() {
         if (data.nowPlaying && data.nowPlaying.name) {
           setNowPlaying(data.nowPlaying.name);
           setTotalAlbums(data.totalAlbums);
+          setTotalTracks(data.totalTracks);
         } else {
           setNowPlaying('');
           setTotalAlbums(data.totalAlbums);
+          setTotalTracks(data.totalTracks);
         }
       });
     }, 3000);
@@ -92,7 +97,7 @@ function Jukebox() {
     />
   );
 
-  const trackList = <Tracks search={search} settings={settings} setCurrentAlbum={setCurrentAlbum} />;
+  const trackList = <Tracks pages={calculatePages(totalTracks, trackPageSize)} page={trackPage} setTrackPage={setTrackPage} search={search} settings={settings} setCurrentAlbum={setCurrentAlbum} />;
 
   if (settings) {
     if (currentAlbum) {

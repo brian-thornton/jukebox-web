@@ -42,7 +42,7 @@ function ColorPicker({
   const colorPickers = () => {
     if (allowGradient && colorType === 'gradient') {
       return (
-        <Container style={{marginTop: '0px', marginBottom: '0px'}}>
+        <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
           <Row>
             {picker(gradientA, colorData => setGradientA(colorData))}
             {picker(gradientB, colorData => setGradientB(colorData))}
@@ -56,10 +56,14 @@ function ColorPicker({
 
   const formatColor = () => {
     if (colorType === 'solid') {
-      setColor(solidColor.hex);
+      if (solidColor && solidColor.hex) {
+        setColor(solidColor.hex);
+      }
     } else {
-      const gradientString = `linear-gradient(180deg, rgba(${gradientA.rgb.r},${gradientA.rgb.g},${gradientA.rgb.b},${gradientA.rgb.a}) 0%, rgba(${gradientB.rgb.r},${gradientB.rgb.g},${gradientB.rgb.b},${gradientB.rgb.a}) 100%`;
-      setColor(gradientString);
+      if (gradientA && gradientA.rgb && gradientB && gradientB.rgb) {
+        const gradientString = `linear-gradient(180deg, rgba(${gradientA.rgb.r},${gradientA.rgb.g},${gradientA.rgb.b},${gradientA.rgb.a}) 0%, rgba(${gradientB.rgb.r},${gradientB.rgb.g},${gradientB.rgb.b},${gradientB.rgb.a}) 100%`;
+        setColor(gradientString);
+      }
     }
 
     setIsOpen(false);
@@ -68,7 +72,7 @@ function ColorPicker({
   const radioButtons = () => {
     if (allowGradient) {
       return (
-        <Container style={{marginTop: '0px', marginBottom: '0px'}}>
+        <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
           <Row>
             <input style={{ color: '#FFFFFF', marginTop: '5px' }} type="radio" name="colorType" onChange={() => setColorType('solid')} />
             <div style={{ color: '#FFFFFF' }}>Solid</div>

@@ -10,6 +10,7 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
 import { Settings } from './shapes';
+import { getRandomInt } from '../lib/pageHelper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -17,14 +18,17 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function Tracks({ search, settings, setCurrentAlbum }) {
-  const [start, setStart] = useState(0);
-  const [limit, setLimit] = useState(50);
+function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }) {
   const [tracks, setTracks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [pageDisabled, setPageDisabled] = useState(true);
+  const isScreenSmall = window.innerWidth < 700;
+  const findPage = () => pages.findIndex(p => p.start === page.start && p.limit === page.limit);
+  const loadMore = () => setTrackPage(pages[findPage() + 1]);
+  const loadPrevious = () => setTrackPage(pages[findPage() - 1]);
 
-  const loadTracks = () => {
+  const loadTracks = (loadPage) => {
     setIsLoading(true);
     if (search) {
       LibrianClient.searchTracks(search).then((data) => {
@@ -33,24 +37,31 @@ function Tracks({ search, settings, setCurrentAlbum }) {
         setIsLoaded(true);
       });
     } else {
+      const start = loadPage ? loadPage.start : page.start;
+      let limit = loadPage ? loadPage.limit : page.limit;
+
+      if (start === 0) {
+        limit += 1;
+      }
+
       LibrianClient.getTracks(start, limit).then((data) => {
-        setTracks(tracks.concat(data));
+        setTracks(data);
         setIsLoading(false);
+        setPageDisabled(false);
       });
     }
   };
 
   useEffect(() => loadTracks(), [search]);
 
-  const loadMore = () => {
-    setStart(limit);
-    setLimit(limit + 50);
-    loadTracks();
-  };
-
   if ((search && !isLoaded && !isLoading) || (!tracks.length && !isLoading)) {
     loadTracks();
   }
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadTracks();
+  }, [page])
 
   const alert = () => {
     const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
@@ -60,18 +71,51 @@ function Tracks({ search, settings, setCurrentAlbum }) {
     return <React.Fragment />;
   };
 
+  const loadRandom = () => {
+    setTrackPage(pages[getRandomInt(pages.length)]);
+  }
+
+  const rightControls = () => {
+    if (!search) {
+      const pageButtonProps = {
+        background: settings.styles.buttonBackgroundColor,
+        height: '75px',
+        color: settings.styles.fontColor
+      }
+
+      return (
+        <React.Fragment>
+          <Button style={{ ...pageButtonProps, marginTop: '20px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadMore}>Next</Button>;
+          <Button style={{ ...pageButtonProps, marginTop: '-10px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadPrevious}>Previous</Button>;
+          <Button style={{ ...pageButtonProps, marginTop: '-10px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}>Random</Button>;
+          <div style={{ color: '#FFFFFF' }}>{pages.length ? `${pages.findIndex(p => p.start === page.start && p.limit === page.limit)} of ${pages.length}` : 'Loading...'}</div>
+        </React.Fragment>
+      )
+    }
+  };
+
+  const tracksMargin = () => {
+    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '50px', marginRight: '0px', height: '100%' };
+  };
+
   const trackList = () => {
     if (tracks.length) {
       return (
-        <React.Fragment>
-          <TrackList
-            tracks={tracks}
-            settings={settings}
-            showAlbumCovers
-            setCurrentAlbum={setCurrentAlbum}
-          />
-          <Button block variant="outline-info" onClick={loadMore}>Load More</Button>
-        </React.Fragment>
+        <Container id="tracks" fluid style={tracksMargin()}>Î
+          <Row style={{ marginRight: '0px', padding: '0px' }}>
+            <Col lg={11} xl={11}>
+              <TrackList style={{width: '100%', marginRight: '0px'}}
+                tracks={tracks}
+                settings={settings}
+                showAlbumCovers
+                setCurrentAlbum={setCurrentAlbum}
+              />
+            </Col>
+            <Col lg={1} xl={1}>
+              {rightControls()}
+            </Col>
+          </Row>
+        </Container>
       );
     }
 
@@ -79,14 +123,10 @@ function Tracks({ search, settings, setCurrentAlbum }) {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col lg={12} xl={12}>
-          {alert()}
-          {trackList()}
-        </Col>
-      </Row>
-    </Container>
+    <>
+      {alert()}
+      {trackList()}
+    </>
   );
 }
 

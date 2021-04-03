@@ -85,8 +85,8 @@ function TrackList({
         if (showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '500px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
-                <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
+              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '450px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
+                <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px' }}>
                   <Row>
                     {track.name}
                   </Row>
@@ -122,7 +122,7 @@ function TrackList({
       }
     });
 
-    return <Container style={{ marginTop: '15px', marginLeft: '0px' }}><Row>{renderTracks}</Row></Container>;
+    return <Container fluid style={{ marginTop: '15px', marginLeft: '0px' }}><Row>{renderTracks}</Row></Container>;
   }
 
   return <React.Fragment />;
