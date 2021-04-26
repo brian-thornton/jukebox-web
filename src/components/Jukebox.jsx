@@ -21,7 +21,7 @@ import Libraries from './Libraries';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
 import WithKeyboardInput from './WithKeyboardInput';
-import { getHeight, getWidth, calculatePages, pageRows, trackPageRows } from '../lib/pageHelper';
+import { getHeight, getWidth, calculatePages, pageRows } from '../lib/pageHelper';
 
 import './Jukebox.css';
 
@@ -31,18 +31,26 @@ function Jukebox() {
   const [settings, setSettings] = useState();
   const [currentAlbum, setCurrentAlbum] = useState();
   const [tempSearch, setTempSearch] = useState('');
-  const isScreenSmall = window.innerWidth < 700;
   const [nowPlaying, setNowPlaying] = useState('');
-  const [pageSize, setPageSize] = useState((Math.floor(getWidth() / 250) * pageRows()));
-  const [trackPageSize, setTrackPageSize] = useState((Math.floor(getWidth() / 500) * trackPageRows()));
-  const [page, setPage] = useState({ start: 0, limit: pageSize - 1 });
-  const [trackPage, setTrackPage] = useState({ start: 0, limit: trackPageSize - 1 });
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+
+  // Album paging
+  const albumPageSize = Math.floor(getWidth() / 250) * pageRows(initialHeight, 350);
+  const [albumPage, setAlbumPage] = useState({ start: 0, limit: albumPageSize - 1 });
   const [totalAlbums, setTotalAlbums] = useState();
+
+  // Track paging
+  const trackPageSize = Math.floor(getWidth() / 500) * pageRows(initialHeight, 200);
+  const [trackPage, setTrackPage] = useState({ start: 0, limit: trackPageSize - 1 });
   const [totalTracks, setTotalTracks] = useState();
-  const [currentPage, setCurrentPage] = useState(1);
+
+  // Playlist paging
+  const playlistPageSize = Math.floor(getWidth() / 500) * pageRows(initialHeight, 200);
+  const [playlistPage, setPlaylistPage] = useState({ start: 0, limit: playlistPageSize - 1 });
+  const [totalPlaylists, setTotalPlaylists] = useState();
+
   const [isIntervalSet, setIsIntervalSet] = useState(false);
-  const resetPage = () => setPage({ start: 0, limit: pageSize - 1 });
-  let pages = [];
+  const resetPage = () => setAlbumPage({ start: 0, limit: albumPageSize - 1 });
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
@@ -61,10 +69,12 @@ function Jukebox() {
           setNowPlaying(data.nowPlaying.name);
           setTotalAlbums(data.totalAlbums);
           setTotalTracks(data.totalTracks);
+          setTotalPlaylists(data.totalPlaylists);
         } else {
           setNowPlaying('');
           setTotalAlbums(data.totalAlbums);
           setTotalTracks(data.totalTracks);
+          setTotalPlaylists(data.totalPlaylists);
         }
       });
     }, 3000);
@@ -84,13 +94,12 @@ function Jukebox() {
 
   const albumList = (
     <AlbumList
-      pages={calculatePages(totalAlbums, pageSize)}
-      currentPage={currentPage}
+      pages={calculatePages(totalAlbums, albumPageSize)}
       totalAlbums={totalAlbums}
-      pageSize={pageSize}
-      page={page}
-      initialPage={page}
-      setPage={setPage}
+      pageSize={albumPageSize}
+      page={albumPage}
+      initialPage={albumPage}
+      setPage={setAlbumPage}
       search={search}
       setCurrentAlbum={setCurrentAlbum}
       settings={settings}
@@ -104,6 +113,18 @@ function Jukebox() {
       search={search}
       settings={settings}
       setCurrentAlbum={setCurrentAlbum}
+    />
+  );
+
+  const playlists = (
+    <Playlists
+      pages={calculatePages(totalPlaylists, playlistPageSize)}
+      totalPlaylists={totalPlaylists}
+      pageSize={playlistPageSize}
+      page={playlistPage}
+      initialPage={playlistPage}
+      setPage={setPlaylistPage}
+      settings={settings}
     />
   );
 
@@ -144,7 +165,7 @@ function Jukebox() {
           body = <WithKeyboardInput component={trackList} tempSearch={tempSearch} setTempSearch={setTempSearch} debouncedSearch={debouncedSearch} />;
           break;
         case 'Playlists':
-          body = <Playlists settings={settings} />;
+          body = playlists;
           break;
         case 'Queue':
           body = <Queue settings={settings} />;
@@ -161,7 +182,17 @@ function Jukebox() {
   if (settings) {
     return (
       <React.Fragment>
-        <JukeboxHeader resetPage={resetPage} settings={settings} search={search} setSearch={setSearch} setTempSearch={setTempSearch} mode={mode} setMode={setMode} currentAlbum={currentAlbum} setCurrentAlbum={setCurrentAlbum} />
+        <JukeboxHeader
+          resetPage={resetPage}
+          settings={settings}
+          search={search}
+          setSearch={setSearch}
+          setTempSearch={setTempSearch}
+          mode={mode}
+          setMode={setMode}
+          currentAlbum={currentAlbum}
+          setCurrentAlbum={setCurrentAlbum}
+        />
         <Container
           fluid
           style={{

@@ -6,7 +6,7 @@ const getWidth = () => {
     document.documentElement.offsetWidth,
     document.documentElement.clientWidth
   );
-}
+};
 
 const getHeight = () => {
   return Math.max(
@@ -16,36 +16,36 @@ const getHeight = () => {
     document.documentElement.offsetHeight,
     document.documentElement.clientHeight
   );
-}
+};
 
-const pageRows = () => {
-  return Math.floor(getHeight() / 300);
-}
+const pageRows = (initialHeight, contentHeight) => {
+  return Math.floor(initialHeight / contentHeight);
+};
 
-const trackPageRows = () => {
-  return Math.floor(getHeight() / 200);
-}
+const findPage = (pages, page) => {
+  return pages.findIndex(p => p.start === page.start && p.limit === page.limit)
+};
 
-const calculatePages = (totalAlbums, pageSize) => {
+const calculatePages = (totalItems, pageSize) => {
   const calcPages = [];
 
   let counter = 1;
-  let albumCounter = 0;
+  let itemCounter = 0;
   let pageStart = 0;
-  while (albumCounter <= totalAlbums) {
+  while (itemCounter <= totalItems) {
     if (counter === pageSize) {
-      calcPages.push({ start: pageStart, limit: albumCounter });
+      calcPages.push({ start: pageStart, limit: itemCounter });
       counter = 0;
-      pageStart = albumCounter + 1;
+      pageStart = itemCounter + 1;
     } else {
-
-
       counter += 1;
     }
-    albumCounter += 1;
+    itemCounter += 1;
   }
+
+  calcPages.push({ start: pageStart, limit: itemCounter })
   return calcPages;
-}
+};
 
 const calculateTrackPages = (totalTracks, pageSize) => {
   const calcPages = [];
@@ -66,20 +66,20 @@ const calculateTrackPages = (totalTracks, pageSize) => {
     trackCounter += 1;
   }
   return calcPages;
-}
+};
 
 const getRandomInt = (pageCount) => {
   const min = Math.ceil(0);
   const max = Math.floor(pageCount);
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-}
+};
 
 export {
   getHeight,
   getWidth,
   calculatePages,
   pageRows,
-  trackPageRows,
   calculateTrackPages,
   getRandomInt,
-}
+  findPage,
+};

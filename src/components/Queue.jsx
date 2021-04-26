@@ -15,17 +15,20 @@ import ContentWithControls from './ContentWithControls';
 import { Settings } from './shapes';
 import { controlButtonProps } from '../lib/styleHelper';
 import PlayNowButton from './PlayNowButton';
+import PagingButtons from './PagingButtons';
+import { findPage } from '../lib/pageHelper';
 
 const propTypes = {
   settings: Settings.isRequired,
 };
 
-function Queue({ settings }) {
+function Queue({ settings, setPage, pages, page }) {
   const [tracks, setTracks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
+  const isScreenSmall = window.innerWidth < 700;
   const renderTracks = [];
 
   const loadQueue = () => {
@@ -44,7 +47,36 @@ function Queue({ settings }) {
   }
 
   const clear = () => QueueClient.clearQueue().then(loadQueue());
-  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
+  
+  const queueMargin = () => {
+    return isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
+  };
+
+  const loadMore = () => setPage(pages[findPage(pages, page) + 1]);
+  const loadPrevious = () => setPage(pages[findPage(pages, page) - 1]);
+
+  
+  const content = () => {
+    return (
+      <Container id="albums" fluid style={queueMargin()}>
+        <Row>
+          <Col lg={11} xl={11}>
+            <ListGroup>{renderTracks}</ListGroup>
+          </Col>
+          <Col lg={1} xl={1}>
+            <PagingButtons
+              settings={settings}
+              pageDisabled={false}
+              loadMore={loadMore}
+              loadPrevious={loadPrevious}
+              pages={[]}
+              page={{}}
+            />
+          </Col>
+        </Row>
+      </Container>
+    )
+  };
   const message = 'There are no tracks in the queue.';
   const alert = (<Alert variant="primary">{message}</Alert>);
 
@@ -75,7 +107,7 @@ function Queue({ settings }) {
   tracks.forEach((track) => {
     renderTracks.push(
       (
-        <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor}}>
+        <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
           {track.name}
           <PlayNowButton track={track} settings={settings} />
           <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>

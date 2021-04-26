@@ -1,8 +1,8 @@
 import { postParams } from './service-helper';
 
 export default class PlaylistClient {
-  static async getPlaylists() {
-    const response = await fetch('/playlists/getAll');
+  static async getPlaylists(start, limit) {
+    const response = await fetch(`/playlists/getAll?start=${start}&limit=${limit}`);
     const json = await response.json();
     return json;
   }

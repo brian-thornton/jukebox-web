@@ -12,7 +12,7 @@ const propTypes = {
 
 function ContentWithControls({ controls, content, alertText }) {
   return (
-    <Container>
+    <Container fluid>
       <Row>
         <Col lg={12} xl={12}>
           <Alert variant="primary">{alertText}</Alert>
