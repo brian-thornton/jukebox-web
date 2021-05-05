@@ -1,8 +1,8 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Button } from 'react-bootstrap';
-import { Settings } from './shapes';
-import { findPage } from '../lib/pageHelper';
+import { Settings } from '../shapes';
+import { findPage } from '../../lib/pageHelper';
 
 const propTypes = {
   settings: Settings.isRequired,

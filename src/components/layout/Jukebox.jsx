@@ -1,27 +1,24 @@
 import React, { useState, useCallback } from 'react';
-import {
-  Container
-} from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { debounce } from 'lodash';
 
-import AlbumList from './AlbumList';
-import NewReleases from './NewReleases';
-import SpotifyAlbums from './SpotifyAlbums';
-import Categories from './Categories';
-import Playlists from './Playlists';
-import AlbumDetail from './AlbumDetail';
-import '../App.css';
-import Queue from './Queue';
-import Tracks from './Tracks';
-import Settings from './settings/Settings';
-import SpotifyClient from '../lib/spotify-client';
-import SettingsClient from '../lib/settings-client';
-import StatusClient from '../lib/status-client';
-import Libraries from './Libraries';
+import AlbumList from '../albums/AlbumList';
+import NewReleases from '../external/NewReleases';
+import SpotifyAlbums from '../external/SpotifyAlbums';
+import Categories from '../external/Categories';
+import Playlists from '../playlists/Playlists';
+import AlbumDetail from '../albums/AlbumDetail';
+import Queue from '../Queue';
+import Tracks from '../Tracks';
+import Settings from '../settings/Settings';
+import SpotifyClient from '../../lib/spotify-client';
+import SettingsClient from '../../lib/settings-client';
+import StatusClient from '../../lib/status-client';
+import Libraries from '../Libraries';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
 import WithKeyboardInput from './WithKeyboardInput';
-import { getHeight, getWidth, calculatePages, pageRows } from '../lib/pageHelper';
+import { getHeight, getWidth, calculatePages, pageRows } from '../../lib/pageHelper';
 
 import './Jukebox.css';
 
@@ -44,11 +41,6 @@ function Jukebox() {
   const [trackPage, setTrackPage] = useState({ start: 0, limit: trackPageSize - 1 });
   const [totalTracks, setTotalTracks] = useState();
 
-  // Playlist paging
-  const playlistPageSize = Math.floor(getWidth() / 500) * pageRows(initialHeight, 200);
-  const [playlistPage, setPlaylistPage] = useState({ start: 0, limit: playlistPageSize - 1 });
-  const [totalPlaylists, setTotalPlaylists] = useState();
-
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const resetPage = () => setAlbumPage({ start: 0, limit: albumPageSize - 1 });
 
@@ -69,12 +61,10 @@ function Jukebox() {
           setNowPlaying(data.nowPlaying.name);
           setTotalAlbums(data.totalAlbums);
           setTotalTracks(data.totalTracks);
-          setTotalPlaylists(data.totalPlaylists);
         } else {
           setNowPlaying('');
           setTotalAlbums(data.totalAlbums);
           setTotalTracks(data.totalTracks);
-          setTotalPlaylists(data.totalPlaylists);
         }
       });
     }, 3000);
@@ -116,18 +106,6 @@ function Jukebox() {
     />
   );
 
-  const playlists = (
-    <Playlists
-      pages={calculatePages(totalPlaylists, playlistPageSize)}
-      totalPlaylists={totalPlaylists}
-      pageSize={playlistPageSize}
-      page={playlistPage}
-      initialPage={playlistPage}
-      setPage={setPlaylistPage}
-      settings={settings}
-    />
-  );
-
   if (settings) {
     if (currentAlbum) {
       body = (
@@ -165,7 +143,7 @@ function Jukebox() {
           body = <WithKeyboardInput component={trackList} tempSearch={tempSearch} setTempSearch={setTempSearch} debouncedSearch={debouncedSearch} />;
           break;
         case 'Playlists':
-          body = playlists;
+          body = <Playlists settings={settings} />;
           break;
         case 'Queue':
           body = <Queue settings={settings} />;

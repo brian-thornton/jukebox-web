@@ -5,10 +5,10 @@ import {
   Button,
 } from 'react-bootstrap';
 import CoverArtSearchModal from './CoverArtSearchModal';
-import LibrianClient from '../lib/librarian-client';
-import defaultCover from '../default_album.jpg';
-import { Album, Settings } from './shapes';
-import { controlButtonProps } from '../lib/styleHelper';
+import LibrianClient from '../../lib/librarian-client';
+import defaultCover from './default_album.jpg';
+import { Album, Settings } from '../shapes';
+import { controlButtonProps } from '../../lib/styleHelper';
 
 const albumArt = require('album-art');
 

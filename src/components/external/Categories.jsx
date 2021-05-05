@@ -4,8 +4,8 @@ import {
   Row,
   Card,
 } from 'react-bootstrap';
-import SpotifyClient from '../lib/spotify-client';
-import styles from './styles';
+import SpotifyClient from '../../lib/spotify-client';
+import styles from '../styles';
 
 function Categories() {
   const [categories, setCategories] = useState();

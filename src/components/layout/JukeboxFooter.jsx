@@ -7,7 +7,7 @@ import {
 import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 
-import '../App.css';
+//import '../App.css';
 import ControlButtons from './ControlButtons';
 
 import './Jukebox.css';

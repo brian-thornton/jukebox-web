@@ -3,19 +3,18 @@ import { PropTypes } from 'prop-types';
 import {
   ListGroup, ListGroupItem, Button, Row, Col, Container,
 } from 'react-bootstrap';
-import PlaylistClient from '../lib/playlist-client';
-import StatusClient from '../lib/status-client';
+import PlaylistClient from '../../lib/playlist-client';
+import StatusClient from '../../lib/status-client';
 import PlaylistDetail from './PlaylistDetail';
 import PlaylistAddModal from './PlaylistAddModal';
-import styles from './styles';
-import ContentWithControls from './ContentWithControls';
-import { Settings, Tracks } from './shapes';
-import { buttonProps } from '../lib/styleHelper';
-import PagingButtons from './PagingButtons';
-import { findPage } from '../lib/pageHelper';
+import styles from '../styles';
+import ContentWithControls from '../common/ContentWithControls';
+import { Settings, Tracks } from '../shapes';
+import { buttonProps } from '../../lib/styleHelper';
+import PagingButtons from '../common/PagingButtons';
+import { getHeight, initializePaging, previousPage, nextPage } from '../../lib/pageHelper';
 
-import { controlButtonProps } from '../lib/styleHelper';
-import { BlockPicker } from 'react-color';
+import { controlButtonProps } from '../../lib/styleHelper';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -28,14 +27,11 @@ function Playlists({
   tracks,
   mode,
   currentPlaylist,
-  settings,
-  pages,
-  totalPlaylists,
-  pageSize,
-  initialPage,
-  setPage,
-  page,
+  settings
 }) {
+  const [paging, setPaging] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -47,17 +43,27 @@ function Playlists({
   const isScreenSmall = window.innerWidth < 700;
 
   const loadPlaylists = (loadPage) => {
-    const start = loadPage ? loadPage.start : page.start;
-    let limit = loadPage ? loadPage.limit : page.limit;
+    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
+    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
 
     if (start === 0) {
       limit += 1;
     }
 
     PlaylistClient.getPlaylists(start, limit).then((data) => {
-      setPlaylists(data);
+      setPlaylists(data.playlists);
+      if (!paging) {
+        setPaging(initializePaging(data.totalPlaylists, 200, initialHeight));
+      }
     });
   };
+
+
+  useEffect(() => {
+    if (paging) {
+      loadPlaylists(paging.currentPage);
+    }
+  }, [paging]);
 
   const handleBackToPlaylists = () => {
     setName('');
@@ -127,37 +133,34 @@ function Playlists({
     <Button {...controlButtonProps(settings)} onClick={handleShow}>Add</Button>
   );
 
-  useEffect(() => {
-    loadPlaylists();
-  }, [page])
-
-  const loadMore = () => setPage(pages[findPage(pages, page) + 1]);
-  const loadPrevious = () => setPage(pages[findPage(pages, page) - 1]);
-
   const playlistsMargin = () => {
     return isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
   };
 
   const content = () => {
-    return (
-      <Container id="albums" fluid style={playlistsMargin()}>
-        <Row>
-          <Col lg={11} xl={11}>
-            <Row>{renderPlaylists}</Row>
-          </Col>
-          <Col lg={1} xl={1}>
-            <PagingButtons
-              settings={settings}
-              pageDisabled={false}
-              loadMore={loadMore}
-              loadPrevious={loadPrevious}
-              pages={pages}
-              page={page}
-            />
-          </Col>
-        </Row>
-      </Container>
-    );
+    if (paging) {
+      return (
+        <Container id="albums" fluid style={playlistsMargin()}>
+          <Row>
+            <Col lg={11} xl={11}>
+              <Row>{renderPlaylists}</Row>
+            </Col>
+            <Col lg={1} xl={1}>
+              <PagingButtons
+                settings={settings}
+                pageDisabled={false}
+                loadMore={() => setPaging(nextPage(paging))}
+                loadPrevious={() => setPaging(previousPage(paging))}
+                pages={paging.pages}
+                page={paging.currentPage}
+              />
+            </Col>
+          </Row>
+        </Container>
+      );
+    }
+
+    return null;
   };
 
   if (!currentPlaylist.name && !name) {

@@ -9,9 +9,9 @@ import {
   Row,
 } from 'react-bootstrap';
 import LibrianClient from '../lib/librarian-client';
-import Album from './Album';
+import Album from './albums/Album';
 import { Settings } from './shapes';
-import defaultCover from '../default_album.jpg';
+import defaultCover from './albums/default_album.jpg';
 
 import styles from './styles';
 

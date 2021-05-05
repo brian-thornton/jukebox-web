@@ -5,7 +5,7 @@ import {
   Button,
 } from 'react-bootstrap';
 
-import '../App.css';
+//import '../App.css';
 import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
 

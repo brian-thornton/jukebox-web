@@ -7,10 +7,10 @@ import {
   VolumeDown,
   XOctagonFill,
 } from 'react-bootstrap-icons';
-import VolumeClient from '../lib/volume-client';
+import VolumeClient from '../../lib/volume-client';
 
-import Button from './Button';
-import QueueClient from '../lib/queue-client';
+import Button from '../Button';
+import QueueClient from '../../lib/queue-client';
 
 function ControlButtons({
   isScreenSmall,

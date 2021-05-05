@@ -4,8 +4,8 @@ import {
   Container,
   Row,
 } from 'react-bootstrap';
-import Album from './Album';
-import SpotifyClient from '../lib/spotify-client';
+import Album from '../albums/Album';
+import SpotifyClient from '../../lib/spotify-client';
 
 function NewReleases() {
   const maxAvailableNewReleases = 50;

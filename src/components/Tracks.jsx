@@ -9,8 +9,8 @@ import {
 import LibrianClient from '../lib/librarian-client';
 import TrackList from './TrackList';
 import { Settings } from './shapes';
-import { getRandomInt } from '../lib/pageHelper';
-import PagingButtons from './PagingButtons';
+import { getRandomInt, getHeight, nextPage, previousPage, initializePaging, randomPage } from '../lib/pageHelper';
+import PagingButtons from './common/PagingButtons';
 
 const propTypes = {
   search: PropTypes.string,
@@ -18,15 +18,15 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }) {
+function Tracks({ search, settings, setCurrentAlbum }) {
+  const [paging, setPaging] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+
   const [tracks, setTracks] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [pageDisabled, setPageDisabled] = useState(true);
   const isScreenSmall = window.innerWidth < 700;
-  const findPage = () => pages.findIndex(p => p.start === page.start && p.limit === page.limit);
-  const loadMore = () => setTrackPage(pages[findPage() + 1]);
-  const loadPrevious = () => setTrackPage(pages[findPage() - 1]);
 
   const loadTracks = (loadPage) => {
     setIsLoading(true);
@@ -37,31 +37,26 @@ function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }
         setIsLoaded(true);
       });
     } else {
-      const start = loadPage ? loadPage.start : page.start;
-      let limit = loadPage ? loadPage.limit : page.limit;
+      const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
+      let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
 
       if (start === 0) {
         limit += 1;
       }
 
       LibrianClient.getTracks(start, limit).then((data) => {
-        setTracks(data);
+        setTracks(data.tracks);
         setIsLoading(false);
         setPageDisabled(false);
+
+        if (!paging) {
+          setPaging(initializePaging(data.totalTracks, 200, initialHeight));
+        }
       });
     }
   };
 
   useEffect(() => loadTracks(), [search]);
-
-  if ((search && !isLoaded && !isLoading) || (!tracks.length && !isLoading)) {
-    loadTracks();
-  }
-
-  useEffect(() => {
-    setIsLoading(true);
-    loadTracks();
-  }, [page])
 
   const alert = () => {
     const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
@@ -71,14 +66,18 @@ function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }
     return <React.Fragment />;
   };
 
-  const loadRandom = () => setTrackPage(pages[getRandomInt(pages.length)]);
-
   const tracksMargin = () => {
     return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '50px', marginRight: '0px', height: '100%' };
   };
 
+  useEffect(() => {
+    if (paging) {
+      loadTracks(paging.currentPage);
+    }
+  }, [paging]);
+
   const trackList = () => {
-    if (tracks.length) {
+    if (paging && tracks.length) {
       return (
         <Container id="tracks" fluid style={tracksMargin()}>Î
           <Row style={{ marginRight: '0px', padding: '0px' }}>
@@ -95,11 +94,11 @@ function Tracks({ search, pages, page, setTrackPage, settings, setCurrentAlbum }
                 settings={settings}
                 search={search}
                 pageDisabled={pageDisabled}
-                loadMore={loadMore}
-                loadPrevious={loadPrevious}
-                loadRandom={loadRandom}
-                pages={pages}
-                page={page}
+                loadMore={() => setPaging(nextPage(paging))}
+                loadPrevious={() => setPaging(previousPage(paging))}
+                loadRandom={() => setPaging(randomPage(paging))}
+                pages={paging.pages}
+                page={paging.currentPage}
               />
             </Col>
           </Row>

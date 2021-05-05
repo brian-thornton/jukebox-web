@@ -6,9 +6,9 @@ import {
   Button,
 } from 'react-bootstrap';
 
-import QueueClient from '../lib/queue-client';
-import { Settings, Tracks } from './shapes';
-import { controlButtonProps } from '../lib/styleHelper';
+import QueueClient from '../../lib/queue-client';
+import { Settings, Tracks } from '../shapes';
+import { controlButtonProps } from '../../lib/styleHelper';
 import './AlbumButtons.css';
 
 const propTypes = {

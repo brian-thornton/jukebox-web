@@ -74,7 +74,48 @@ const getRandomInt = (pageCount) => {
   return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 };
 
+const pageSize = (pageHeight, itemHeight) => {
+  return Math.floor(getWidth() / 500) * pageRows(pageHeight, itemHeight);
+};
+
+const initializePaging = (totalItems, itemHeight, pageHeight) => {
+  const itemPageSize = pageSize(pageHeight, itemHeight);
+  const currentPage = { start: 0, limit: itemPageSize - 1 };
+  const pages = calculatePages(totalItems, itemPageSize);
+
+  return {
+    pageSize: itemPageSize,
+    currentPage,
+    pages
+  };
+}
+
+const nextPage = (paging) => {
+  return {
+    ...paging,
+    currentPage: paging.pages[findPage(paging.pages, paging.currentPage) + 1]
+  };
+};
+
+const previousPage = (paging) => {
+  return {
+    ...paging,
+    currentPage: paging.pages[findPage(paging.pages, paging.currentPage) - 1]
+  };
+};
+
+const randomPage = (paging) => {
+  return {
+    ...paging,
+    currentPage: paging.pages[getRandomInt(paging.pages.length)],
+  }
+};
+
 export {
+  randomPage,
+  initializePaging,
+  nextPage,
+  previousPage,
   getHeight,
   getWidth,
   calculatePages,
@@ -82,4 +123,5 @@ export {
   calculateTrackPages,
   getRandomInt,
   findPage,
+  pageSize,
 };

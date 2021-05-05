@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import LibrianClient from '../lib/librarian-client';
-import defaultCover from '../default_album.jpg';
-import styles from './styles';
-import { Album as albumShape, Settings } from './shapes';
+import LibrianClient from '../../lib/librarian-client';
+import defaultCover from './default_album.jpg';
+import styles from '../styles';
+import { Album as albumShape, Settings } from '../shapes';
 
 import './Album.css';
 

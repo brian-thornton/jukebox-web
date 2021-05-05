@@ -7,11 +7,11 @@ import {
   Col,
 } from 'react-bootstrap';
 
-import LibrianClient from '../lib/librarian-client';
-import AlbumTracks from './AlbumTracks';
-import Playlists from './Playlists';
-import styles from './styles';
-import { Album, Settings } from './shapes';
+import LibrianClient from '../../lib/librarian-client';
+import AlbumTracks from '../AlbumTracks';
+import Playlists from '../playlists/Playlists';
+import styles from '../styles';
+import { Album, Settings } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';

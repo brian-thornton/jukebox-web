@@ -1,8 +1,8 @@
 import { postParams } from './service-helper';
 
 export default class QueueClient {
-  static async getQueue() {
-    const response = await fetch('/queue/getQueue');
+  static async getQueue(start, limit) {
+    const response = await fetch(`/queue/getQueue?start=${start}&limit=${limit}`);
     const json = await response.json();
     return json;
   }

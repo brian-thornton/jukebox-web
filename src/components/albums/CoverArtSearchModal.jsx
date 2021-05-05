@@ -7,9 +7,9 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Album, Settings } from './shapes';
-import LibrianClient from '../lib/librarian-client';
-import styles from './styles';
+import { Album, Settings } from '../shapes';
+import LibrianClient from '../../lib/librarian-client';
+import styles from '../styles';
 
 const albumArt = require('album-art');
 

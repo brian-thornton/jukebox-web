@@ -5,11 +5,11 @@ import {
   Col,
   Row,
 } from 'react-bootstrap';
-import LibrianClient from '../lib/librarian-client';
+import LibrianClient from '../../lib/librarian-client';
 import Album from './Album';
-import PagingButtons from './PagingButtons';
-import { Settings } from './shapes';
-import { getRandomInt } from '../lib/pageHelper';
+import PagingButtons from '../common/PagingButtons';
+import { Settings } from '../shapes';
+import { getRandomInt } from '../../lib/pageHelper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -59,9 +59,9 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, totalAlbu
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
           }
-          setAlbums(data);
+          setAlbums(data.albums);
         } else {
-          setAlbums(data);
+          setAlbums(data.albums);
         }
 
         window.scrollTo(0, 0);

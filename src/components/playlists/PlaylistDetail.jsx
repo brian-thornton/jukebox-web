@@ -3,17 +3,17 @@ import { PropTypes } from 'prop-types';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
-import QueueClient from '../lib/queue-client';
-import PlaylistClient from '../lib/playlist-client';
-import ContentWithControls from './ContentWithControls';
+import QueueClient from '../../lib/queue-client';
+import PlaylistClient from '../../lib/playlist-client';
+import ContentWithControls from '../common/ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
-import styles from './styles';
-import { buttonProps } from '../lib/styleHelper';
-import { Settings } from './shapes';
-import { controlButtonProps } from '../lib/styleHelper';
-import PlayNowButton from './PlayNowButton';
-import EnqueueButton from './EnqueueButton';
+import styles from '../styles';
+import { buttonProps } from '../../lib/styleHelper';
+import { Settings } from '../shapes';
+import { controlButtonProps } from '../../lib/styleHelper';
+import PlayNowButton from '../PlayNowButton';
+import EnqueueButton from '../EnqueueButton';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,

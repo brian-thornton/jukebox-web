@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Row,
@@ -8,21 +8,21 @@ import {
   ListGroup,
   ListGroupItem,
 } from 'react-bootstrap';
-import Playlists from './Playlists';
+import Playlists from './playlists/Playlists';
 import QueueClient from '../lib/queue-client';
 import styles from './styles';
-import ContentWithControls from './ContentWithControls';
+import ContentWithControls from './common/ContentWithControls';
 import { Settings } from './shapes';
 import { controlButtonProps } from '../lib/styleHelper';
 import PlayNowButton from './PlayNowButton';
-import PagingButtons from './PagingButtons';
-import { findPage } from '../lib/pageHelper';
+import PagingButtons from './common/PagingButtons';
+import { getHeight, initializePaging, nextPage, previousPage } from '../lib/pageHelper';
 
 const propTypes = {
   settings: Settings.isRequired,
 };
 
-function Queue({ settings, setPage, pages, page }) {
+function Queue({ settings }) {
   const [tracks, setTracks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,54 +31,79 @@ function Queue({ settings, setPage, pages, page }) {
   const isScreenSmall = window.innerWidth < 700;
   const renderTracks = [];
 
-  const loadQueue = () => {
-    QueueClient.getQueue().then((data) => {
-      setTracks(data);
+  const [paging, setPaging] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const clear = () => QueueClient.clearQueue().then(loadQueue());
+  const message = 'There are no tracks in the queue.';
+  const alert = (<Alert variant="primary">{message}</Alert>);
+
+  const loadQueue = (loadPage) => {
+    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
+    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+
+    if (start === 0) {
+      limit += 1;
+    }
+
+    QueueClient.getQueue(start, limit).then((data) => {
+      setTracks(data.tracks);
       setIsLoading(false);
       setIsLoaded(true);
+
+      if (!paging) {
+        setPaging(initializePaging(data.totalTracks, 250, initialHeight));
+      }
     });
   };
 
-  if (!isIntervalSet) {
-    setIsIntervalSet(true);
-    setInterval(() => {
-      loadQueue();
-    }, 3000);
-  }
+  // const refreshQueue = () => {
+  //   loadQueue(queuePage);
+  //   setTimeout(() => {
+  //     refreshQueue();
+  //   }, 3000)
+  // };
 
-  const clear = () => QueueClient.clearQueue().then(loadQueue());
-  
+  // if (!isIntervalSet) {
+  //   setIsIntervalSet(true);
+  //   setTimeout(() => {
+  //     refreshQueue();
+  //   }, 3000);
+  // }
+
+  useEffect(() => {
+    if (paging) {
+      loadQueue(paging.currentPage);
+    }
+  }, [paging]);
+
   const queueMargin = () => {
     return isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
   };
 
-  const loadMore = () => setPage(pages[findPage(pages, page) + 1]);
-  const loadPrevious = () => setPage(pages[findPage(pages, page) - 1]);
-
-  
   const content = () => {
-    return (
-      <Container id="albums" fluid style={queueMargin()}>
-        <Row>
-          <Col lg={11} xl={11}>
-            <ListGroup>{renderTracks}</ListGroup>
-          </Col>
-          <Col lg={1} xl={1}>
-            <PagingButtons
-              settings={settings}
-              pageDisabled={false}
-              loadMore={loadMore}
-              loadPrevious={loadPrevious}
-              pages={[]}
-              page={{}}
-            />
-          </Col>
-        </Row>
-      </Container>
-    )
+    if (paging) {
+      return (
+        <Container id="albums" fluid style={queueMargin()}>
+          <Row>
+            <Col lg={11} xl={11}>
+              <ListGroup>{renderTracks}</ListGroup>
+            </Col>
+            <Col lg={1} xl={1}>
+              <PagingButtons
+                settings={settings}
+                pageDisabled={false}
+                loadMore={() => setPaging(nextPage(paging))}
+                loadPrevious={() => setPaging(previousPage(paging))}
+                pages={paging.pages}
+                page={paging.currentPage}
+              />
+            </Col>
+          </Row>
+        </Container>
+      )
+    }
+    return null;
   };
-  const message = 'There are no tracks in the queue.';
-  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const shuffle = () => {
     QueueClient.clearQueue().then(() => {

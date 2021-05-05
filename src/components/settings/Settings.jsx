@@ -4,7 +4,7 @@ import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
 import SpotifySettings from './SpotifySettings';
 import ThemeList from './ThemeList';
-import ContentWithControls from '../ContentWithControls';
+import ContentWithControls from '../common/ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
 import { Settings as SettingsShape } from '../shapes';

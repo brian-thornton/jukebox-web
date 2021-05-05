@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import styles from './styles';
 import LibrianClient from '../lib/librarian-client';
-import Album from './Album';
+import Album from './albums/Album';
 import { Track, Settings } from './shapes';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 
-import LibrianClient from '../lib/librarian-client';
-import defaultCover from '../default_album.jpg';
-import { Album } from './shapes';
+import LibrianClient from '../../lib/librarian-client';
+import defaultCover from './default_album.jpg';
+import { Album } from '../shapes';
 
 const albumArt = require('album-art');
 
