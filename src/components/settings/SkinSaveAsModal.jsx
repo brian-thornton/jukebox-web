@@ -6,15 +6,15 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import StyleClient from '../../lib/style-client';
-import { Colors } from '../shapes';
+import { createSkin } from '../../lib/style-client';
+import { Colors, Settings } from '../shapes';
 
 import {
   buttonProps,
   modalBodyStyle,
   modalFooterStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
 
 const propTypes = {
@@ -22,6 +22,7 @@ const propTypes = {
   handleHide: PropTypes.func.isRequired,
   colors: Colors.isRequired,
   goBackToThemeList: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
 };
 
 function SkinSaveAsModal({
@@ -32,7 +33,7 @@ function SkinSaveAsModal({
   settings,
 }) {
   const handleSave = () => {
-    StyleClient.createSkin({ isEditable: true, name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
+    createSkin({ isEditable: true, name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
     handleHide();
     goBackToThemeList();
   };

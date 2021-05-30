@@ -9,14 +9,24 @@ import {
   ListGroupItem,
 } from 'react-bootstrap';
 import Playlists from './playlists/Playlists';
-import QueueClient from '../lib/queue-client';
+import {
+  clearQueue,
+  getQueue,
+  enqueueTracks,
+  removeTracksFromQueue,
+} from '../lib/queue-client';
 import styles from './styles';
 import ContentWithControls from './common/ContentWithControls';
 import { Settings } from './shapes';
 import { controlButtonProps } from '../lib/styleHelper';
 import PlayNowButton from './PlayNowButton';
 import PagingButtons from './common/PagingButtons';
-import { getHeight, initializePaging, nextPage, previousPage } from '../lib/pageHelper';
+import {
+  getHeight,
+  initializePaging,
+  nextPage,
+  previousPage,
+} from '../lib/pageHelper';
 
 const propTypes = {
   settings: Settings.isRequired,
@@ -33,7 +43,7 @@ function Queue({ settings }) {
 
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
-  const clear = () => QueueClient.clearQueue().then(loadQueue());
+  const clear = () => clearQueue().then(loadQueue());
   const message = 'There are no tracks in the queue.';
   const alert = (<Alert variant="primary">{message}</Alert>);
 
@@ -45,13 +55,13 @@ function Queue({ settings }) {
       limit += 1;
     }
 
-    QueueClient.getQueue(start, limit).then((data) => {
+    getQueue(start, limit).then((data) => {
       setTracks(data.tracks);
       setIsLoading(false);
       setIsLoaded(true);
 
       if (!paging) {
-        setPaging(initializePaging(data.totalTracks, 250, initialHeight));
+        setPaging(initializePaging(data.totalTracks, 90, initialHeight));
       }
     });
   };
@@ -100,14 +110,14 @@ function Queue({ settings }) {
             </Col>
           </Row>
         </Container>
-      )
+      );
     }
     return null;
   };
 
   const shuffle = () => {
-    QueueClient.clearQueue().then(() => {
-      QueueClient.enqueueTracks(tracks.sort(() => Math.random() - 0.5)).then(() => {
+    clearQueue().then(() => {
+      enqueueTracks(tracks.sort(() => Math.random() - 0.5)).then(() => {
         loadQueue();
       });
     });
@@ -119,7 +129,7 @@ function Queue({ settings }) {
   }
 
   const remove = (track) => {
-    QueueClient.removeTracksFromQueue([track]);
+    removeTracksFromQueue([track]);
     loadQueue();
   };
 

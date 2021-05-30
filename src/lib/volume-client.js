@@ -1,12 +1,6 @@
-export default class VolumeClient {
-  static async up() {
-    const response = await fetch('/volume/up');
-    return response;
-  }
+import { getData } from './service-helper';
 
-  static async down() {
-    const response = await fetch('/volume/down');
-    return response;
-  }
-}
+const path = '/volume';
+export const up = async () => getData(`${path}/up`);
+export const down = async () => getData(`${path}/down`);
 

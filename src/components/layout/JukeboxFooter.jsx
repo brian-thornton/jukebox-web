@@ -7,12 +7,21 @@ import {
 import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 
-//import '../App.css';
 import ControlButtons from './ControlButtons';
+import { Settings } from '../shapes';
 
 import './Jukebox.css';
 
-function JukeboxFooter({ search, setSearch, settings, nowPlaying }) {
+const propTypes = {
+  settings: Settings.isRequired,
+};
+
+function JukeboxFooter({
+  search,
+  setSearch,
+  settings,
+  nowPlaying,
+}) {
   const isScreenSmall = window.innerWidth < 700;
   const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
 
@@ -25,7 +34,8 @@ function JukeboxFooter({ search, setSearch, settings, nowPlaying }) {
           setSearch(tempSearch);
         }
       }
-    }, 500), []);
+    }, 500), [],
+  );
 
   const nowPlayingText = () => {
     if (isScreenSmall) {
@@ -80,5 +90,7 @@ function JukeboxFooter({ search, setSearch, settings, nowPlaying }) {
 
   return <React.Fragment />;
 }
+
+JukeboxFooter.propTypes = propTypes;
 
 export default JukeboxFooter;

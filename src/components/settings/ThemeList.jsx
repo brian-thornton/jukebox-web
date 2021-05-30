@@ -6,8 +6,8 @@ import {
 
 import SkinSaveAsModal from './SkinSaveAsModal';
 import styles from '../styles';
-import SettingsClient from '../../lib/settings-client';
-import StyleClient from '../../lib/style-client';
+import { updateSettings } from '../../lib/settings-client';
+import { getSkins, deleteSkin } from '../../lib/style-client';
 import StyleEditor from './StyleEditor';
 import { Settings } from '../shapes';
 
@@ -31,7 +31,7 @@ function ThemeList({ settings, resetControls, setControls }) {
   }
 
   const loadSkins = () => {
-    StyleClient.getSkins().then((data) => {
+    getSkins().then((data) => {
       setSkinsLoading(false);
       setSkinsLoaded(true);
       setSkins(data);
@@ -58,7 +58,7 @@ function ThemeList({ settings, resetControls, setControls }) {
       deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
       deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
 
-      SettingsClient.updateSettings(deepClone).then(() => {
+      updateSettings(deepClone).then(() => {
         window.location.reload();
       });
     }
@@ -71,8 +71,8 @@ function ThemeList({ settings, resetControls, setControls }) {
     loadSkins();
   };
 
-  const deleteSkin = (skin) => {
-    StyleClient.deleteSkin(skin.name).then(() => {
+  const removeSkin = (skin) => {
+    deleteSkin(skin.name).then(() => {
       loadSkins();
     });
   };
@@ -107,11 +107,10 @@ function ThemeList({ settings, resetControls, setControls }) {
 
       skins.forEach((skin) => {
         const controlButtonProps = {
-          ...buttonProps
+          ...buttonProps,
         };
 
         if (!skin.isEditable) {
-          console.log(`${skin.name}: ${skin.isEditable}`);
           controlButtonProps.disabled = true;
         }
 
@@ -121,7 +120,7 @@ function ThemeList({ settings, resetControls, setControls }) {
             <Button {...buttonProps} onClick={() => makeCopy(skin)}>Make a Copy</Button>
             <Button {...controlButtonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
             <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
-            <Button {...controlButtonProps} onClick={() => deleteSkin(skin)}>Delete</Button>
+            <Button {...controlButtonProps} onClick={() => removeSkin(skin)}>Delete</Button>
           </ListGroupItem>,
         );
       });
@@ -146,16 +145,16 @@ function ThemeList({ settings, resetControls, setControls }) {
   if (skins && skins.length) {
     return (
       <>
-      <ListGroup>
-        {skinRows()}
-      </ListGroup>
-      <SkinSaveAsModal
-        goBackToThemeList={goBackToThemeList}
-        handleHide={() => setIsSaveAsOpen(false)}
-        isOpen={isSaveAsOpen}
-        colors={copyFromColors}
-        settings={settings}
-      />
+        <ListGroup>
+          {skinRows()}
+        </ListGroup>
+        <SkinSaveAsModal
+          goBackToThemeList={goBackToThemeList}
+          handleHide={() => setIsSaveAsOpen(false)}
+          isOpen={isSaveAsOpen}
+          colors={copyFromColors}
+          settings={settings}
+        />
       </>
     );
   }

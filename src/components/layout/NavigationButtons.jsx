@@ -15,7 +15,7 @@ function NavigationButtons({
           onClick={() => {
             setMode(navKey);
             setCurrentAlbum('');
-            window.scrollTo(0,0);
+            window.scrollTo(0, 0);
           }}
         >
           {navName}

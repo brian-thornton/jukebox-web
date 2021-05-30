@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { Album, Settings } from '../shapes';
-import LibrianClient from '../../lib/librarian-client';
+import { saveCoverArt } from '../../lib/librarian-client';
 import styles from '../styles';
 
 const albumArt = require('album-art');
@@ -29,7 +29,7 @@ function CoverArtSearchModal({
   const [results, setResults] = useState();
   const title = 'Custom Cover Art Search';
   const [query, setQuery] = useState(album.name);
-  const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: results });
+  const saveCoverArtToLibrary = () => saveCoverArt({ album, url: results });
 
   const handleResult = (data) => {
     if (data.toString().includes('http')) {

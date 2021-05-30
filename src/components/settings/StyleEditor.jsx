@@ -3,7 +3,7 @@ import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
 import styles from '../styles';
-import StyleClient from '../../lib/style-client';
+import { deleteSkin, createSkin } from '../../lib/style-client';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import ColorPicker from './ColorPicker';
 import CopyFromModal from './CopyFromModal';
@@ -41,7 +41,11 @@ function StyleEditor({
   };
 
   const controlButtonProps = {
-    style: { ...styles.settingsButtonStyle, color: settings.styles.fontColor, background: settings.styles.buttonBackgroundColor },
+    style: {
+      ...styles.settingsButtonStyle,
+      color: settings.styles.fontColor,
+      background: settings.styles.buttonBackgroundColor,
+    },
     variant: 'outline-light',
     className: 'float-right',
   };
@@ -120,8 +124,8 @@ function StyleEditor({
   };
 
   useEffect(() => {
-    StyleClient.deleteSkin(skin.name).then(() => {
-      StyleClient.createSkin({ name: skin.name, skin: { name: skin.name, ...colors } }).then(() => {
+    deleteSkin(skin.name).then(() => {
+      createSkin({ name: skin.name, skin: { name: skin.name, ...colors } }).then(() => {
       });
     });
   }, [colors]);

@@ -12,16 +12,23 @@ import {
   modalBodyStyle,
   modalFooterStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
+import { Settings } from '../shapes';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
 };
 
-function LibraryAddModal({ isOpen, handleHide, handleSave, settings }) {
+function LibraryAddModal({
+  isOpen,
+  handleHide,
+  handleSave,
+  settings,
+}) {
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header closeButton style={modalHeaderStyle(settings)}>

@@ -5,7 +5,7 @@ import {
   Button,
 } from 'react-bootstrap';
 import CoverArtSearchModal from './CoverArtSearchModal';
-import LibrianClient from '../../lib/librarian-client';
+import { saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import { Album, Settings } from '../shapes';
 import { controlButtonProps } from '../../lib/styleHelper';
@@ -20,8 +20,7 @@ const propTypes = {
 function AlbumAdminButtons({ album, settings }) {
   const [coverArt, setCoverArt] = useState('');
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
-  const saveCoverArtToLibrary = () => LibrianClient.saveCoverArt({ album, url: coverArt });
-  const removeCoverArt = () => LibrianClient.removeCoverArt(album);
+  const saveCoverArtToLibrary = () => saveCoverArt({ album, url: coverArt });
 
   const getCoverArt = () => {
     const nameArray = album.name.split('-');
@@ -48,7 +47,7 @@ function AlbumAdminButtons({ album, settings }) {
       return (
         <React.Fragment>
           <Row>
-            {albumButton(removeCoverArt, 'Remove Cover')}
+            {albumButton(() => removeCoverArt(album), 'Remove Cover')}
             {albumButton(getCoverArt, 'Refresh Cover')}
           </Row>
           <Row>

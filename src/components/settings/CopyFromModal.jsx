@@ -5,14 +5,14 @@ import {
   Form,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Colors } from '../shapes';
+import { Colors, Settings } from '../shapes';
 
 import {
   buttonProps,
   modalBodyStyle,
   modalFooterStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
 
 const propTypes = {
@@ -20,6 +20,7 @@ const propTypes = {
   handleHide: PropTypes.func.isRequired,
   colors: Colors.isRequired,
   handleCopyColor: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
 };
 
 function CopyFromModal({
@@ -51,7 +52,8 @@ function CopyFromModal({
       </Modal.Body>
       <Modal.Footer style={modalFooterStyle(settings)}>
         <Button {...buttonProps(settings)} onClick={handleHide}>Close</Button>
-        <Button {...buttonProps(settings)}
+        <Button
+          {...buttonProps(settings)}
           onClick={() => {
             handleCopyColor(copiedColor);
             handleHide();

@@ -1,25 +1,36 @@
+import { getStatus, updateStatus } from './status-client';
+
 const getWidth = () => {
-  return Math.max(
+  const isScreenSmall = window.innerWidth < 700;
+  const isLarge = window.innerWidth > 1200;
+
+  let width = Math.max(
     document.body.scrollWidth,
     document.documentElement.scrollWidth,
     document.body.offsetWidth,
     document.documentElement.offsetWidth,
     document.documentElement.clientWidth
   );
+
+  if (isLarge) {
+    width = width - 200;
+  }
+
+  return width;
 };
 
 const getHeight = () => {
-  return Math.max(
-    document.body.scrollHeight,
-    document.documentElement.scrollHeight,
-    document.body.offsetHeight,
-    document.documentElement.offsetHeight,
-    document.documentElement.clientHeight
-  );
+  console.log(window.innerHeight)
+  return window.innerHeight;
 };
 
 const pageRows = (initialHeight, contentHeight) => {
-  return Math.floor(initialHeight / contentHeight);
+  console.log('wat');
+  console.log((getHeight() - 150));
+  console.log(contentHeight);
+  const rows = Math.floor((initialHeight - 100)/ contentHeight);
+  console.log(rows);
+  return rows;
 };
 
 const findPage = (pages, page) => {
@@ -75,19 +86,47 @@ const getRandomInt = (pageCount) => {
 };
 
 const pageSize = (pageHeight, itemHeight) => {
-  return Math.floor(getWidth() / 500) * pageRows(pageHeight, itemHeight);
+  console.log('yo');
+  console.log(itemHeight)
+  // return Math.floor(getWidth() / 500) * pageRows(pageHeight, itemHeight);
+  console.log(getHeight())
+  return Math.floor(getHeight() / itemHeight);
 };
+
+const rowSize = (itemWidth) => {
+  const isMedium = window.innerWidth >= 700 && window.innerWidth < 1200
+  return Math.floor((getWidth() - 100) / itemWidth);
+}
+
+const initHorizontalPaging = (totalItems, itemHeight, pageHeight, itemWidth) => {
+  console.log('debug1');
+  const itemPageSize = pageRows(pageHeight, itemHeight) * rowSize(itemWidth);
+  const currentPage = { start: 0, limit: itemPageSize - 1 };
+  const pages = calculatePages(totalItems, itemPageSize);
+
+  const paging = {
+    pageSize: itemPageSize,
+    currentPage,
+    pages
+  };
+
+  console.log(paging);
+
+  return paging;
+}
 
 const initializePaging = (totalItems, itemHeight, pageHeight) => {
   const itemPageSize = pageSize(pageHeight, itemHeight);
   const currentPage = { start: 0, limit: itemPageSize - 1 };
   const pages = calculatePages(totalItems, itemPageSize);
 
-  return {
+  const paging = {
     pageSize: itemPageSize,
     currentPage,
     pages
   };
+
+  return paging;
 }
 
 const nextPage = (paging) => {
@@ -111,9 +150,39 @@ const randomPage = (paging) => {
   }
 };
 
+const setKnownPage = (paging, page) => {
+  return {
+    ...paging,
+    currentPage: paging.pages[findPage(paging.pages, page)],
+  }
+};
+
+const saveCurrentPage = async (page, type) => {
+  const status = await getStatus();
+  updateStatus({
+    ...status,
+    currentPages: {
+      ...status.currentPages,
+      [type]: page
+    }
+  })
+};
+
+const clearCurrentPage = async (type) => {
+  const status = await getStatus();
+  await updateStatus({
+    ...status,
+    currentPages: {
+      ...status.currentPages,
+      [type]: null
+    }
+  })
+};
+
 export {
   randomPage,
   initializePaging,
+  initHorizontalPaging,
   nextPage,
   previousPage,
   getHeight,
@@ -124,4 +193,7 @@ export {
   getRandomInt,
   findPage,
   pageSize,
+  saveCurrentPage,
+  setKnownPage,
+  clearCurrentPage,
 };

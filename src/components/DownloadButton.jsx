@@ -1,7 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 
-import LibrianClient from '../lib/librarian-client';
+import { downloadTrack } from '../lib/librarian-client';
 import { Track, Settings } from './shapes';
 import './DownloadButton.css';
 
@@ -13,7 +13,7 @@ const propTypes = {
 
 function DownloadButton({ track, settings, isScreenSmall }) {
   const handleDownload = (track) => {
-    LibrianClient.downloadTrack(track).then((response) => {
+    downloadTrack(track).then((response) => {
       response.blob().then((blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -29,7 +29,7 @@ function DownloadButton({ track, settings, isScreenSmall }) {
   }
 
   return <React.Fragment />;
-};
+}
 
 DownloadButton.propTypes = propTypes;
 

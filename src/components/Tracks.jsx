@@ -6,10 +6,10 @@ import {
   Row,
   Col,
 } from 'react-bootstrap';
-import LibrianClient from '../lib/librarian-client';
+import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
 import { Settings } from './shapes';
-import { getRandomInt, getHeight, nextPage, previousPage, initializePaging, randomPage } from '../lib/pageHelper';
+import { getHeight, nextPage, previousPage, initializePaging, initHorizontalPaging, randomPage } from '../lib/pageHelper';
 import PagingButtons from './common/PagingButtons';
 
 const propTypes = {
@@ -31,7 +31,7 @@ function Tracks({ search, settings, setCurrentAlbum }) {
   const loadTracks = (loadPage) => {
     setIsLoading(true);
     if (search) {
-      LibrianClient.searchTracks(search).then((data) => {
+      searchTracks(search).then((data) => {
         setTracks(data);
         setIsLoading(false);
         setIsLoaded(true);
@@ -44,13 +44,14 @@ function Tracks({ search, settings, setCurrentAlbum }) {
         limit += 1;
       }
 
-      LibrianClient.getTracks(start, limit).then((data) => {
+      getTracks(start, limit).then((data) => {
         setTracks(data.tracks);
         setIsLoading(false);
         setPageDisabled(false);
 
         if (!paging) {
-          setPaging(initializePaging(data.totalTracks, 200, initialHeight));
+          //setPaging(initializePaging(data.totalTracks, 200, initialHeight));
+          setPaging(initHorizontalPaging(data.totalTracks, 175, initialHeight, 300));
         }
       });
     }
@@ -79,7 +80,7 @@ function Tracks({ search, settings, setCurrentAlbum }) {
   const trackList = () => {
     if (paging && tracks.length) {
       return (
-        <Container id="tracks" fluid style={tracksMargin()}>Î
+        <Container id="tracks" fluid style={tracksMargin()}>
           <Row style={{ marginRight: '0px', padding: '0px' }}>
             <Col lg={11} xl={11}>
               <TrackList style={{ width: '100%', marginRight: '0px' }}

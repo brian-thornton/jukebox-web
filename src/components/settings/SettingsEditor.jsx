@@ -3,13 +3,13 @@ import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
 import styles from '../styles';
-import SettingsClient from '../../lib/settings-client';
+import { getSettings, updateSettings } from '../../lib/settings-client';
 
 function SettingsEditor() {
   const [settings, setSettings] = useState();
 
   if (!settings) {
-    SettingsClient.getSettings().then(data => setSettings(data));
+    getSettings().then(data => setSettings(data));
   }
 
   const buttonProps = {
@@ -21,7 +21,7 @@ function SettingsEditor() {
   const updateFeature = (name, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.features[name] = value;
-    SettingsClient.updateSettings(deepClone).then(() => {
+    updateSettings(deepClone).then(() => {
       window.location.reload();
     });
   };

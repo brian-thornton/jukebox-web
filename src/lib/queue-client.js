@@ -1,57 +1,32 @@
-import { postParams } from './service-helper';
+import { getData, page, post } from './service-helper';
 
-export default class QueueClient {
-  static async getQueue(start, limit) {
-    const response = await fetch(`/queue/getQueue?start=${start}&limit=${limit}`);
-    const json = await response.json();
-    return json;
-  }
+const path = '/queue';
+export const clearQueue = () => post(`${path}/clearQueue`, {});
+export const enqueueTracks = (tracks) => post(`${path}/enqueueTracks`, tracks);
+export const enqueueTop = (track) => enqueueTracksTop([track]);
+export const enqueue = (track) => enqueueTracks([track]);
+export const play = () => getData(`${path}/play`);
+export const next = () => getData(`${path}/next`);
 
-  static async play() {
-    const response = await fetch('/queue/play');
-    return response;
-  }
+export const getQueue = (start, limit) => {
+  return getData(`${path}/getQueue?${page(start, limit)}`);
+};
 
-  static async stop() {
-    let response;
-    if (window.accessToken) {
-      response = await fetch(`/queue/stop?token=${window.accessToken}`);
-    } else {
-      response = await fetch('/queue/stop');
-    }
-    return response;
+export const stop = async () => {
+  let response;
+  if (window.accessToken) {
+    response = await fetch(`${path}/stop?token=${window.accessToken}`);
+  } else {
+    response = await fetch(`${path}/stop`);
   }
-
-  static async next() {
-    const response = await fetch('/queue/next');
-    return response;
-  }
-
-  static async enqueue(track) {
-    return QueueClient.enqueueTracks([track]);
-  }
-
-  static async enqueueTracks(tracks) {
-    const response = await fetch('/queue/enqueueTracks', postParams(tracks));
-    return response;
-  }
-
-  static async enqueueTracksTop(tracks) {
-    const response = await fetch('/queue/enqueueTracksTop', postParams(tracks));
-    return response;
-  }
-
-  static async removeTracksFromQueue(tracks) {
-    const response = await fetch('/queue/removeFromQueue', postParams(tracks));
-    return response;
-  }
-
-  static async clearQueue() {
-    const response = await fetch('/queue/clearQueue', postParams({}));
-    return response;
-  }
-
-  static async enqueueTop(track) {
-    return this.enqueueTracksTop([track]);
-  }
+  return response;
 }
+
+export const enqueueTracksTop = (tracks) => {
+  return post(`${path}/enqueueTracksTop`, tracks);
+};
+
+export const removeTracksFromQueue = (tracks) => {
+  return post(`${path}/removeFromQueue`, tracks);
+};
+

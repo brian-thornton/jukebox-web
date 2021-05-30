@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { CollectionPlay } from 'react-bootstrap-icons';
 
 import { Button } from 'react-bootstrap';
-import QueueClient from '../lib/queue-client';
+import { enqueue } from '../lib/queue-client';
 import { buttonProps } from '../lib/styleHelper';
 import { Track, Settings } from './shapes';
 import './EnqueueButton.css';
@@ -20,7 +20,7 @@ function EnqueueButton({ track, settings, isScreenSmall }) {
       return (
         <Button
           {...buttonProps(settings)}
-          onClick={() => QueueClient.enqueue(track)}
+          onClick={() => enqueue(track)}
         >
           <CollectionPlay />
         </Button>
@@ -29,14 +29,14 @@ function EnqueueButton({ track, settings, isScreenSmall }) {
       return (
         <Button
           {...buttonProps(settings)}
-          onClick={() => QueueClient.enqueue(track)}
+          onClick={() => enqueue(track)}
         >
           Enqueue
         </Button>
       );
     }
   }
-};
+}
 
 EnqueueButton.propTypes = propTypes;
 

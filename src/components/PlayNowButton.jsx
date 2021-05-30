@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Play } from 'react-bootstrap-icons';
 
 import { Button } from 'react-bootstrap';
-import QueueClient from '../lib/queue-client';
+import { enqueueTop, next } from '../lib/queue-client';
 import { buttonProps } from '../lib/styleHelper';
 import { Track, Settings } from './shapes';
 import './PlayNowButton.css';
@@ -16,8 +16,8 @@ const propTypes = {
 
 function PlayNowButton({ track, settings, isScreenSmall }) {
   const playNow = (track) => {
-    QueueClient.enqueueTop(track);
-    QueueClient.next();
+    enqueueTop(track);
+    next();
   };
 
   if (settings) {

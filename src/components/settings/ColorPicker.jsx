@@ -13,17 +13,18 @@ import './PinModal.css';
 import {
   buttonProps,
   modalBodyStyle,
-  modalFooterStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
 
+import { Settings } from '../shapes';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   setColor: PropTypes.func.isRequired,
   allowGradient: PropTypes.bool,
+  settings: Settings.isRequired,
 };
 
 function ColorPicker({
@@ -59,11 +60,9 @@ function ColorPicker({
       if (solidColor && solidColor.hex) {
         setColor(solidColor.hex);
       }
-    } else {
-      if (gradientA && gradientA.rgb && gradientB && gradientB.rgb) {
-        const gradientString = `linear-gradient(180deg, rgba(${gradientA.rgb.r},${gradientA.rgb.g},${gradientA.rgb.b},${gradientA.rgb.a}) 0%, rgba(${gradientB.rgb.r},${gradientB.rgb.g},${gradientB.rgb.b},${gradientB.rgb.a}) 100%`;
-        setColor(gradientString);
-      }
+    } else if (gradientA && gradientA.rgb && gradientB && gradientB.rgb) {
+      const gradientString = `linear-gradient(180deg, rgba(${gradientA.rgb.r},${gradientA.rgb.g},${gradientA.rgb.b},${gradientA.rgb.a}) 0%, rgba(${gradientB.rgb.r},${gradientB.rgb.g},${gradientB.rgb.b},${gradientB.rgb.a}) 100%`;
+      setColor(gradientString);
     }
 
     setIsOpen(false);

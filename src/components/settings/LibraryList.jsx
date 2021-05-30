@@ -9,16 +9,28 @@ import {
   Trash,
   X,
 } from 'react-bootstrap-icons';
-import StatusClient from '../../lib/status-client';
+import { getStatus, updateStatus } from '../../lib/status-client';
 
-import LibrarianClient from '../../lib/librarian-client';
+import {
+  add,
+  getLibraries,
+  discover,
+  deleteLibrary,
+  scan,
+  saveCoverArt,
+} from '../../lib/librarian-client';
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import styles from '../styles';
+import { Settings } from '../shapes';
 
 const albumArt = require('album-art');
 
-function LibraryList({settings}) {
+const propTypes = {
+  settings: Settings.isRequired,
+};
+
+function LibraryList({ settings }) {
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
@@ -28,16 +40,28 @@ function LibraryList({settings}) {
 
   const handleClose = (path) => {
     if (path) {
-      LibrarianClient.add({
+      add({
         path,
       });
     }
     setShow(false);
   };
 
+  const updateTotals = (data) => {
+    let totalTracks = 0;
+    let totalAlbums = 0;
+    data.forEach((lib) => {
+      totalTracks += lib.totalTracks;
+      totalAlbums += lib.albums.length;
+    });
+    getStatus().then((response) => {
+      updateStatus({ ...response, totalTracks, totalAlbums });
+    });
+  };
+
   const loadLibraries = () => {
     setIsLoading(true);
-    LibrarianClient.getLibraries().then((data) => {
+    getLibraries().then((data) => {
       setLibraries(data);
       setIsLoading(false);
       setIsLoaded(true);
@@ -45,24 +69,12 @@ function LibraryList({settings}) {
     });
   };
 
-  const updateTotals = (data) => {
-    let totalTracks = 0;
-    let totalAlbums = 0;
-    data.forEach(lib => {
-      totalTracks += lib.totalTracks;
-      totalAlbums += lib.albums.length;
-    });
-    StatusClient.getStatus().then((data) => {
-      StatusClient.updateStatus({ ...data, totalTracks: totalTracks, totalAlbums: totalAlbums });
-    });
-  }
-
   const handleCloseDiscover = (path) => {
     if (path) {
-      LibrarianClient.discover(path).then((libs) => {
-        libs.forEach(lib => {
-          if (!libraries.find((l) => l.path === lib)) {
-            LibrarianClient.add({ path: lib });
+      discover(path).then((libs) => {
+        libs.forEach((lib) => {
+          if (!libraries.find(l => l.path === lib)) {
+            add({ path: lib });
           }
         });
         loadLibraries();
@@ -74,9 +86,9 @@ function LibraryList({settings}) {
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
 
-  const deleteLibrary = (name) => {
-    LibrarianClient.delete(name).then(() => {
-      LibrarianClient.getLibraries().then((data) => {
+  const removeLibrary = (name) => {
+    deleteLibrary(name).then(() => {
+      getLibraries().then((data) => {
         setLibraries(data);
       });
     });
@@ -84,7 +96,7 @@ function LibraryList({settings}) {
 
   const onScan = (library) => {
     setIsScanning(true);
-    LibrarianClient.scan(library).then(() => {
+    scan(library).then(() => {
       setIsScanning(false);
       loadLibraries();
     });
@@ -98,7 +110,7 @@ function LibraryList({settings}) {
         setTimeout(() => {
           albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
             if (data.toString().includes('http')) {
-              LibrarianClient.saveCoverArt({ album, url: data });
+              saveCoverArt({ album, url: data });
             }
           });
         }, 2000 * count);
@@ -145,7 +157,7 @@ function LibraryList({settings}) {
           >
             <Search />
           </Button>
-          <Button {...buttonProps} onClick={() => deleteLibrary(library.name)}><Trash /></Button>
+          <Button {...buttonProps} onClick={() => removeLibrary(library.name)}><Trash /></Button>
           <Button {...buttonProps} variant="outline-light" className="float-right" disabled={isScanning} onClick={() => downloadCoverArt(library)}>
             <CloudDownload />
           </Button>
@@ -194,4 +206,7 @@ function LibraryList({settings}) {
     </>
   );
 }
+
+LibraryList.propTypes = propTypes;
+
 export default LibraryList;

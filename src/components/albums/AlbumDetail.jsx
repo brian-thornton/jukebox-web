@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Card,
@@ -7,7 +7,7 @@ import {
   Col,
 } from 'react-bootstrap';
 
-import LibrianClient from '../../lib/librarian-client';
+import { getAlbumTracks } from '../../lib/librarian-client';
 import AlbumTracks from '../AlbumTracks';
 import Playlists from '../playlists/Playlists';
 import styles from '../styles';
@@ -15,6 +15,7 @@ import { Album, Settings } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
+import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
 
 const propTypes = {
   album: Album.isRequired,
@@ -27,10 +28,13 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
+  const [paging, setPaging] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
 
   const loadTracks = () => {
     if (!areTracksLoading) {
-      LibrianClient.getAlbumTracks(album.path).then((data) => {
+      getAlbumTracks(album.path).then((data) => {
+        setPaging(initializePaging(data.length, 100, initialHeight));
         setTracks(data);
         setAreTracksLoaded(true);
         setAreTracksLoading(false);
@@ -46,7 +50,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
   );
 
   const largeAlbum = () => {
-    if (!addToPlaylist) {
+    if (paging && !addToPlaylist) {
       return (
         <React.Fragment>
           <Row style={{ marginTop: '70px' }}>
@@ -60,7 +64,14 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
               </Card>
             </Col>
             <Col lg={9} xl={9}>
-              <AlbumTracks tracks={tracks} settings={settings} showDownloadLink />
+              <AlbumTracks
+                tracks={tracks.slice(paging.currentPage.start, paging.currentPage.limit)}
+                nextPage={() => setPaging(nextPage(paging))}
+                previousPage={() => setPaging(previousPage(paging))}
+                paging={paging}
+                settings={settings}
+                showDownloadLink
+              />
             </Col>
           </Row>
         </React.Fragment>

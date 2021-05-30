@@ -1,10 +1,10 @@
 import { PropTypes } from 'prop-types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card, ListGroupItem, Container, Row, Col,
 } from 'react-bootstrap';
 import styles from './styles';
-import LibrianClient from '../lib/librarian-client';
+import { getTrackAlbums } from '../lib/librarian-client';
 import Album from './albums/Album';
 import { Track, Settings } from './shapes';
 import DownloadButton from './DownloadButton';
@@ -42,20 +42,22 @@ function TrackList({
     return null;
   };
 
-  const getTrackAlbums = (tracks) => {
+  const getAlbums = async (tracks) => {
     setTrackAlbumsLoading(true);
-    LibrianClient.getTrackAlbums(tracks).then((data) => {
-      setTrackAlbums(data);
-      setTrackAlbumsLoaded(true);
-      setTrackAlbumsLoading(false);
-    });
-
+    const data = await getTrackAlbums(tracks);
+    setTrackAlbums(data);
+    setTrackAlbumsLoaded(true);
+    setTrackAlbumsLoading(false);
     return <React.Fragment />;
   };
 
   if (!trackAlbumsLoaded && !trackAlbumsLoading) {
-    getTrackAlbums(tracks);
+    getAlbums(tracks);
   }
+
+  useEffect(() => {
+    getAlbums(tracks);
+  }, [tracks])
 
   const album = (track) => {
     const ta = getAlbum(track);
@@ -82,13 +84,15 @@ function TrackList({
           track.accessToken = window.accessToken;
         }
 
-        if (showAlbumCovers && !isScreenSmall) {
+        if (trackAlbumsLoaded && showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
-              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '450px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
+              <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '400px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
                 <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px' }}>
                   <Row>
-                    {track.name}
+                    <div style={{ width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {track.name}
+                    </div>
                   </Row>
                   <Row>
                     <Col lg={4}>

@@ -19,6 +19,7 @@ const controlButtonProps = (settings) => {
     style: {
       background: settings.styles.buttonBackgroundColor,
       color: settings.styles.fontColor,
+      minHeight: '65px',
     },
   }
 };

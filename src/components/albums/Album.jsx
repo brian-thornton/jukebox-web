@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import LibrianClient from '../../lib/librarian-client';
+import { getCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import styles from '../styles';
 import { Album as albumShape, Settings } from '../shapes';
@@ -24,7 +24,7 @@ function Album({
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
-      LibrianClient.getCoverArt(album.path).then((image) => {
+      getCoverArt(album.path).then((image) => {
         let src;
 
         if (cover) {

@@ -5,13 +5,24 @@ import {
   Button,
 } from 'react-bootstrap';
 
-//import '../App.css';
 import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
+import { Settings } from '../shapes';
 
 import './Jukebox.css';
 
-function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMode, currentAlbum, setCurrentAlbum, resetPage }) {
+const propTypes = {
+  settings: Settings.isRequired,
+};
+
+function JukeboxHeader({
+  settings,
+  search,
+  setSearch,
+  setTempSearch,
+  setMode,
+  setCurrentAlbum,
+}) {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
 
@@ -43,7 +54,7 @@ function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMod
   const buttonStyle = {
     background: settings.styles.buttonBackgroundColor,
     fontWeight: settings.styles.buttonFontWeight,
-    color: settings.styles.buttonFontColor
+    color: settings.styles.buttonFontColor,
   };
 
   const searchButton = () => {
@@ -59,7 +70,6 @@ function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMod
             className="button"
             variant="outline-light"
             onClick={() => {
-              resetPage();
               setSearch('');
               setTempSearch('');
             }}
@@ -103,5 +113,7 @@ function JukeboxHeader({settings, search, setSearch, setTempSearch, mode, setMod
 
   return <React.Fragment />;
 }
+
+JukeboxHeader.propTypes = propTypes;
 
 export default JukeboxHeader;

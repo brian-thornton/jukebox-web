@@ -14,7 +14,7 @@ import {
   buttonProps,
   modalBodyStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
 
 const propTypes = {
@@ -36,7 +36,10 @@ function PinModal({ isOpen, settings, handleClose }) {
     <Button
       key={number}
       className="number-button"
-      style={{ color: settings.styles.fontColor, background: settings.styles.buttonBackgroundColor }}
+      style={{
+        color: settings.styles.fontColor,
+        background: settings.styles.buttonBackgroundColor,
+      }}
       variant="outline-light"
       onClick={() => setPin(`${pin}${number}`)}
     >

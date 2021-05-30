@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Container,
   Col,
   Row,
 } from 'react-bootstrap';
-import LibrianClient from '../../lib/librarian-client';
+import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Album from './Album';
 import PagingButtons from '../common/PagingButtons';
 import { Settings } from '../shapes';
-import { getRandomInt } from '../../lib/pageHelper';
+import { getHeight, nextPage, previousPage, initHorizontalPaging, randomPage, clearCurrentPage, saveCurrentPage, setKnownPage } from '../../lib/pageHelper';
+import { getStatus } from '../../lib/status-client';
+import { useWindowSize } from '../../lib/hooks';
 
 const propTypes = {
   search: PropTypes.string,
@@ -17,27 +19,34 @@ const propTypes = {
   settings: Settings.isRequired,
 };
 
-function AlbumList({ search, setCurrentAlbum, settings, page, setPage, totalAlbums, pages }) {
+function AlbumList({ search, setCurrentAlbum, settings }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
   const isScreenSmall = window.innerWidth < 700;
-  const pageSize = page.limit - page.start;
-  const [pageDisabled, setPageDisabled] = useState(true);
-  let totalPages;
+  const [paging, setPaging] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const size = useWindowSize();
+  const ref = useRef(null);
+  const [width, setWidth] = useState(0);
+  const [lastSize, setLastSize] = useState();
 
-  if (totalAlbums) {
-    totalPages = Math.ceil(totalAlbums / pageSize);
-  }
+  useEffect(() => {
+    if (lastSize && lastSize.width !== size.width && lastSize.height !== size.height) {
+      setIsLoading(true);
+      clearCurrentPage('albums');
+    }
+
+    setLastSize(size);
+  }, [size])
 
   const loadAlbums = (loadPage) => {
     setIsLoading(true);
     setAlbums([]);
 
     if (search) {
-      setAlbums([]);
       setAlertText('Searching...');
-      LibrianClient.searchAlbums(search).then((data) => {
+      searchAlbums(search).then((data) => {
         if (!data.length) {
           setAlertText('No results found.');
         } else {
@@ -47,21 +56,38 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, totalAlbu
         setIsLoading(false);
       });
     } else {
-      const start = loadPage ? loadPage.start : page.start;
-      let limit = loadPage ? loadPage.limit : page.limit;
+      const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
+      let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
 
       if (start === 0) {
         limit += 1;
       }
 
-      LibrianClient.getAlbums(start, limit).then((data) => {
-        if (page.start === 0) {
+      getAlbums(start, limit).then((data) => {
+        if (paging && paging.currentPage.start === 0) {
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
           }
           setAlbums(data.albums);
         } else {
           setAlbums(data.albums);
+        }
+
+        if (!paging) {
+          getStatus().then((status) => {
+            if (status.currentPages && status.currentPages.albums) {
+              const p = initHorizontalPaging(data.totalAlbums, 275, initialHeight, 225);
+
+              try {
+                const updated = setKnownPage(p, status.currentPages.albums);
+                setPaging(updated);
+              } catch {
+                setPaging(initHorizontalPaging(data.totalAlbums, 275, initialHeight, 225));
+              }
+            } else {
+              setPaging(initHorizontalPaging(data.totalAlbums, 275, initialHeight, 225));
+            }
+          })
         }
 
         window.scrollTo(0, 0);
@@ -71,45 +97,32 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, totalAlbu
   };
 
   useEffect(() => {
-    loadAlbums();
-  }, [search])
-
-  useEffect(() => {
-    if (!search) {
-      setAlbums([]);
-    }
-
-    if (search || (!isLoading && !page.start === 0)) {
-      setPage({
-        start: 0,
-        limit: pageSize
-      });
-
+    if (search || (!isLoading)) {
       loadAlbums();
     }
   }, [search]);
 
-  const findPage = () => pages.findIndex(p => p.start === page.start && p.limit === page.limit);
-  const loadMore = () => setPage(pages[findPage() + 1]);
-  const loadPrevious = () => setPage(pages[findPage() - 1]);
-  const loadRandom = () => setPage(pages[getRandomInt(pages.length)]);
-
   useEffect(() => {
-    setIsLoading(true);
-    loadAlbums();
-  }, [page])
-
-  const albumsMargin = () => {
-    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' };
-  };
-
-  useEffect(() => {
-    if (totalAlbums) {
-      setPageDisabled(false);
+    if (paging) {
+      if (paging.currentPage) {
+        loadAlbums(paging.currentPage);
+        saveCurrentPage(paging.currentPage, 'albums');
+      } else {
+        loadAlbums(paging.currentPage);
+      }
+      saveCurrentPage(paging.currentPage, 'albums');
     }
-  }, [totalAlbums])
+  }, [paging]);
 
-  if (albums.length) {
+  const albumsMargin = () => (
+    isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' }
+  );
+
+  useEffect(() => {
+    setWidth(ref.current ? ref.current.offsetWidth : 0)
+  }, [ref.current])
+
+  if (albums && albums.length) {
     const renderAlbums = [];
     albums.forEach((album) => {
       renderAlbums.push(
@@ -121,27 +134,40 @@ function AlbumList({ search, setCurrentAlbum, settings, page, setPage, totalAlbu
       );
     });
 
-    return (
-      <Container id="albums" fluid style={albumsMargin()}>
-        <Row>
-          <Col lg={11} xl={11}>
-            <Row>{renderAlbums}</Row>
-          </Col>
-          <Col lg={1} xl={1}>
-            <PagingButtons
-              settings={settings}
-              search={search}
-              pageDisabled={pageDisabled}
-              loadMore={loadMore}
-              loadPrevious={loadPrevious}
-              loadRandom={loadRandom}
-              pages={pages}
-              page={page}
-            />
-          </Col>
-        </Row>
-      </Container>
-    );
+    if (paging) {
+      return (
+        <Container id="albums" fluid style={albumsMargin()}>
+          <Row>
+            <Col ref={ref} lg={11} xl={11}>
+              <Row>{renderAlbums}</Row>
+            </Col>
+            <Col lg={1} xl={1}>
+              <PagingButtons
+                settings={settings}
+                search={search}
+                loadMore={() => setPaging(nextPage(paging))}
+                loadPrevious={() => setPaging(previousPage(paging))}
+                loadRandom={() => setPaging(randomPage(paging))}
+                pages={paging.pages}
+                page={paging.currentPage}
+              />
+            </Col>
+          </Row>
+        </Container>
+      );
+    } else if (search && albums) {
+      return (
+        <Container id="albums" fluid style={albumsMargin()}>
+          <Row>
+            <Col lg={11} xl={11}>
+              <Row>{renderAlbums}</Row>
+            </Col>
+          </Row>
+        </Container>
+      );
+    }
+
+    return null;
   }
 
   return <React.Fragment />;

@@ -2,7 +2,12 @@ import React from 'react';
 import { cloneDeep } from 'lodash';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 
-function WithKeyboardInput({ component, tempSearch, setTempSearch, debouncedSearch }) {
+function WithKeyboardInput({
+  component,
+  tempSearch,
+  setTempSearch,
+  debouncedSearch,
+}) {
   return (
     <React.Fragment>
       <KeyboardEventHandler

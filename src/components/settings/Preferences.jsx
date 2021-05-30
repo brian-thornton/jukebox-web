@@ -3,7 +3,7 @@ import {
   ListGroup, ListGroupItem, Button, InputGroup, FormControl,
 } from 'react-bootstrap';
 import styles from '../styles';
-import SettingsClient from '../../lib/settings-client';
+import { getSettings, updateSettings } from '../../lib/settings-client';
 
 function Preferences() {
   const [settings, setSettings] = useState();
@@ -16,7 +16,7 @@ function Preferences() {
   };
 
   if (!settings) {
-    SettingsClient.getSettings().then((data) => {
+    getSettings().then((data) => {
       setSettings(data);
       setName(data.preferences.name);
     });
@@ -25,7 +25,7 @@ function Preferences() {
   const handleSave = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.preferences.name = name;
-    SettingsClient.updateSettings(deepClone).then(() => {
+    updateSettings(deepClone).then(() => {
       window.location.reload();
     });
   };
@@ -33,7 +33,7 @@ function Preferences() {
   const updatePreference = (name, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.preferences[name] = value;
-    SettingsClient.updateSettings(deepClone).then(() => {
+    updateSettings(deepClone).then(() => {
       window.location.reload();
     });
   };

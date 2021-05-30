@@ -7,21 +7,28 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
+import { Settings } from '../shapes';
 import {
   buttonProps,
   modalBodyStyle,
   modalFooterStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
 };
 
-function NewSkinModal({ isOpen, handleHide, handleSave, settings }) {
+function NewSkinModal({
+  isOpen,
+  handleHide,
+  handleSave,
+  settings,
+}) {
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header closeButton style={modalHeaderStyle(settings)}>
@@ -47,4 +54,4 @@ function NewSkinModal({ isOpen, handleHide, handleSave, settings }) {
 
 NewSkinModal.propTypes = propTypes;
 
-export default NewSkinMo;
+export default NewSkinModal;

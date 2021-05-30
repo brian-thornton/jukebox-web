@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
 
-import LibrianClient from '../../lib/librarian-client';
+import { getCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import { Album } from '../shapes';
 
@@ -16,7 +16,7 @@ function AlbumCover({ album }) {
   const [isCoverArtLoaded, setIsCoverArtLoaded] = useState(false);
   const [isCoverArtLoading, setIsCoverArtLoading] = useState(false);
 
-  const getCoverArt = () => {
+  const getAlbumCoverArt = () => {
     const nameArray = album.name.split('-');
 
     albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
@@ -31,14 +31,14 @@ function AlbumCover({ album }) {
   const loadCoverArt = () => {
     if (!isCoverArtLoading) {
       setIsCoverArtLoading(true);
-      LibrianClient.getCoverArt(album.path).then((image) => {
+      getCoverArt(album.path).then((image) => {
         let src;
         if (album.id) {
           src = album.images[1].url;
         } else if (image.type === 'image/jpeg') {
           src = URL.createObjectURL(image);
         } else {
-          getCoverArt();
+          getAlbumCoverArt();
         }
         setIsCoverArtLoading(false);
         setIsCoverArtLoaded(true);

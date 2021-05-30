@@ -8,7 +8,7 @@ import {
   Col,
   Row,
 } from 'react-bootstrap';
-import LibrianClient from '../lib/librarian-client';
+import { getLibraries } from '../lib/librarian-client';
 import Album from './albums/Album';
 import { Settings } from './shapes';
 import defaultCover from './albums/default_album.jpg';
@@ -29,7 +29,7 @@ function Libraries({ settings, setCurrentAlbum }) {
 
   const loadLibraries = () => {
     setIsLoading(true);
-    LibrianClient.getLibraries().then((data) => {
+    getLibraries().then((data) => {
       if (!data.length) {
         setAlertText('No libraries found.  Set up your libraries in Settings.');
       }

@@ -3,18 +3,16 @@ import { PropTypes } from 'prop-types';
 import {
   ListGroup, ListGroupItem, Button, Row, Col, Container,
 } from 'react-bootstrap';
-import PlaylistClient from '../../lib/playlist-client';
-import StatusClient from '../../lib/status-client';
+import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
+import { getStatus, updateStatus } from '../../lib/status-client';
 import PlaylistDetail from './PlaylistDetail';
 import PlaylistAddModal from './PlaylistAddModal';
 import styles from '../styles';
 import ContentWithControls from '../common/ContentWithControls';
 import { Settings, Tracks } from '../shapes';
-import { buttonProps } from '../../lib/styleHelper';
+import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PagingButtons from '../common/PagingButtons';
 import { getHeight, initializePaging, previousPage, nextPage } from '../../lib/pageHelper';
-
-import { controlButtonProps } from '../../lib/styleHelper';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -27,11 +25,10 @@ function Playlists({
   tracks,
   mode,
   currentPlaylist,
-  settings
+  settings,
 }) {
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
-
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -50,14 +47,13 @@ function Playlists({
       limit += 1;
     }
 
-    PlaylistClient.getPlaylists(start, limit).then((data) => {
+    getPlaylists(start, limit).then((data) => {
       setPlaylists(data.playlists);
       if (!paging) {
-        setPaging(initializePaging(data.totalPlaylists, 200, initialHeight));
+        setPaging(initializePaging(data.totalPlaylists, 60, initialHeight));
       }
     });
   };
-
 
   useEffect(() => {
     if (paging) {
@@ -76,13 +72,13 @@ function Playlists({
 
   const handleClose = (data) => {
     if ((typeof data) === 'string') {
-      PlaylistClient.add({
+      add({
         name: data,
         tracks: [],
       }).then(() => {
-        PlaylistClient.getPlaylists().then((data) => {
-          StatusClient.getStatus().then((status) => {
-            StatusClient.updateStatus({ ...status, totalPlaylists: data.length });
+        getPlaylists().then((data) => {
+          getStatus().then((status) => {
+            updateStatus({ ...status, totalPlaylists: data.length });
           });
         });
       });
@@ -91,8 +87,8 @@ function Playlists({
     loadPlaylists();
   };
 
-  const addTracksToPlaylist = (playlistName) => {
-    PlaylistClient.addTracksToPlaylist(playlistName, tracks);
+  const addToPlaylist = (playlistName) => {
+    addTracksToPlaylist(playlistName, tracks);
   };
 
   const buttons = (playlistName) => {
@@ -102,7 +98,7 @@ function Playlists({
         <Button
           {...buttonProps(settings)}
           onClick={() => {
-            addTracksToPlaylist(playlistName);
+            addToPlaylist(playlistName);
             setAdded(true);
           }}
         >

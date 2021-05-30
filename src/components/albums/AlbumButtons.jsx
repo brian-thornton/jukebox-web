@@ -6,7 +6,7 @@ import {
   Button,
 } from 'react-bootstrap';
 
-import QueueClient from '../../lib/queue-client';
+import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
 import { Settings, Tracks } from '../shapes';
 import { controlButtonProps } from '../../lib/styleHelper';
 import './AlbumButtons.css';
@@ -24,11 +24,9 @@ function AlbumButtons({
   tracks,
   setAddToPlaylist,
 }) {
-  const enqueueAlbum = () => QueueClient.enqueueTracks(tracks);
-
   const playAlbum = () => {
-    QueueClient.enqueueTracksTop(tracks);
-    QueueClient.next();
+    enqueueTracksTop(tracks);
+    next();
   };
 
   const albumButton = (onClick, name) => (
@@ -44,7 +42,7 @@ function AlbumButtons({
         {albumButton(playAlbum, 'Play Album')}
       </Row>
       <Row>
-        {albumButton(enqueueAlbum, 'Enqueue Album')}
+        {albumButton(() => enqueueTracks(tracks), 'Enqueue Album')}
         {albumButton(() => setAddToPlaylist(true), 'Add to Playlist')}
       </Row>
     </React.Fragment>

@@ -3,17 +3,22 @@ import { PropTypes } from 'prop-types';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
-import QueueClient from '../../lib/queue-client';
-import PlaylistClient from '../../lib/playlist-client';
+import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
+import {
+  getPlaylist,
+  deletePlaylist,
+  add,
+  removeTracksFromPlaylist,
+} from '../../lib/playlist-client';
 import ContentWithControls from '../common/ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from '../styles';
-import { buttonProps } from '../../lib/styleHelper';
 import { Settings } from '../shapes';
-import { controlButtonProps } from '../../lib/styleHelper';
+import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PlayNowButton from '../PlayNowButton';
 import EnqueueButton from '../EnqueueButton';
+import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -26,31 +31,37 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
+  const controlProps = controlButtonProps(settings);
+  const [paging, setPaging] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const { fontColor, trackBackgroundColor } = settings.styles;
+  const renderTracks = [];
 
   const loadTracks = (name) => {
-    PlaylistClient.getPlaylist(name).then((playlist) => {
+    getPlaylist(name).then((playlist) => {
       if (!playlist.tracks.length) {
         setIsEmpty(true);
       } else {
         setTracks(playlist.tracks);
+        setPaging(initializePaging(playlist.tracks.length, 100, initialHeight));
       }
     });
   };
 
   const runPlaylist = () => {
-    QueueClient.enqueueTracksTop(tracks);
-    QueueClient.play();
-  }
+    enqueueTracksTop(tracks);
+    play();
+  };
 
   const enqueuePlaylist = () => {
-    QueueClient.enqueueTracks(tracks);
-  }
+    enqueueTracks(tracks);
+  };
 
   const shuffle = () => {
-    PlaylistClient.delete(name).then(() => {
+    deletePlaylist(name).then(() => {
       const newOrder = tracks.sort(() => Math.random() - 0.5);
 
-      PlaylistClient.add({
+      add({
         name,
         tracks: newOrder,
       }).then(() => loadTracks(name));
@@ -59,9 +70,9 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
 
   const handleSave = (data) => {
     if ((typeof data) === 'string') {
-      PlaylistClient.add({
+      add({
         name: data,
-        tracks: tracks,
+        tracks,
       });
     }
     setIsSaveAsOpen(false);
@@ -69,11 +80,9 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
   };
 
   const deleteTrack = (name, track) => {
-    PlaylistClient.removeTracksFromPlaylist(name, [track]);
+    removeTracksFromPlaylist(name, [track]);
     loadTracks(name);
   };
-
-  const renderTracks = [];
 
   if (!isEmpty && !tracks.length) {
     loadTracks(name);
@@ -83,11 +92,22 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     tracks.forEach((track) => {
       renderTracks.push(
         (
-          <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor  }}>
+          <ListGroupItem
+            style={{
+              ...styles.cardStyle,
+              color: fontColor,
+              background: trackBackgroundColor,
+            }}
+          >
             {track.name}
             <PlayNowButton track={track} settings={settings} />
             <EnqueueButton track={track} settings={settings} />
-            <Button {...buttonProps(settings)} onClick={() => deleteTrack(name, track)}>Delete</Button>
+            <Button
+              {...buttonProps(settings)}
+              onClick={() => deleteTrack(name, track)}
+            >
+              Delete
+            </Button>
           </ListGroupItem>
         ),
       );
@@ -96,23 +116,28 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
 
   const handleDelete = () => {
     setShowDeleteModal(true);
-    PlaylistClient.delete(name).then(() => {
+    deletePlaylist(name).then(() => {
       handleBackToPlaylists();
     });
   };
 
   const controls = () => (
     <React.Fragment>
-      <Button {...controlButtonProps(settings)} onClick={handleBackToPlaylists}>Back to Playlists</Button>
-      <Button {...controlButtonProps(settings)} onClick={runPlaylist}>Run Playlist</Button>
-      <Button {...controlButtonProps(settings)} onClick={enqueuePlaylist}>Enqueue Playlist</Button>
-      <Button {...controlButtonProps(settings)} onClick={shuffle}>Shuffle Playlist</Button>
-      <Button {...controlButtonProps(settings)} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
-      <Button {...controlButtonProps(settings)} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
+      <Button {...controlProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
+      <Button {...controlProps} onClick={runPlaylist}>Run Playlist</Button>
+      <Button {...controlProps} onClick={enqueuePlaylist}>Enqueue Playlist</Button>
+      <Button {...controlProps} onClick={shuffle}>Shuffle Playlist</Button>
+      <Button {...controlProps} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
+      <Button {...controlProps} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
     </React.Fragment>
   );
 
-  const content = () => (<ListGroup>{renderTracks}</ListGroup>);
+  const content = () => (
+    <ListGroup>
+      {renderTracks}
+    </ListGroup>
+  );
+
   return (
     <React.Fragment>
       <ContentWithControls

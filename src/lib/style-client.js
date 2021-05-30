@@ -1,19 +1,7 @@
-import { postParams } from './service-helper';
+import { getData, post } from './service-helper';
 
-export default class StyleClient {
-  static async getSkins() {
-    const response = await fetch(`/styles/skins`);
-    const json = await response.json();
-    return json;
-  }
+const path = '/styles';
+export const getSkins = async () => getData(`${path}/skins`);
+export const createSkin = async (skin) => post(`${path}/skins`, skin);
+export const deleteSkin = async (name) => post(`${path}/delete`, { name });
 
-  static async createSkin(skin) {
-    const response = await fetch('/styles/skins', postParams(skin));
-    return response;
-  }
-
-  static async deleteSkin(name) {
-    const response = await fetch('/styles/delete', postParams({ name }));
-    return response;
-  }
-}

@@ -73,4 +73,10 @@ export const Style = PropTypes.shape({
   backgroundColor: PropTypes.string,
   popupBackgroundColor: PropTypes.string,
   buttonBackgroundColor: PropTypes.string,
-})
+});
+
+export const Page = PropTypes.shape({
+  start: PropTypes.number,
+  limit: PropTypes.number,
+});
+

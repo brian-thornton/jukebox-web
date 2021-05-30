@@ -7,21 +7,28 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
+import { Settings } from '../shapes';
 import {
   buttonProps,
   modalBodyStyle,
   modalFooterStyle,
   modalHeaderStyle,
-  modalTitleStyle
+  modalTitleStyle,
 } from '../../lib/styleHelper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleSave: PropTypes.func.isRequired,
   handleHide: PropTypes.func.isRequired,
+  settings: Settings.isRequired,
 };
 
-function LibraryDiscoverModal({ isOpen, handleHide, handleSave, settings }) {
+function LibraryDiscoverModal({
+  isOpen,
+  handleHide,
+  handleSave,
+  settings,
+}) {
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header style={modalHeaderStyle(settings)} closeButton>

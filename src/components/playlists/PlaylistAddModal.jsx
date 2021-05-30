@@ -7,11 +7,14 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
+import { Settings } from '../shapes';
+
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   existingPlaylistName: PropTypes.string,
+  settings: Settings.isRequired,
 };
 
 function PlaylistAddModal({
@@ -19,7 +22,7 @@ function PlaylistAddModal({
   handleClose,
   handleSave,
   existingPlaylistName,
-  settings
+  settings,
 }) {
   const title = existingPlaylistName ? `Save Playlist '${existingPlaylistName}' as...` : 'Add Playlist';
 
@@ -44,7 +47,7 @@ function PlaylistAddModal({
           Save
         </Button>
       </Modal.Footer>
-    </Modal >
+    </Modal>
   );
 }
 
