@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Card,
@@ -7,9 +7,10 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Album, Settings } from '../shapes';
+import { Album } from '../shapes';
 import { saveCoverArt } from '../../lib/librarian-client';
 import styles from '../styles';
+import { SettingsContext } from '../layout/Jukebox';
 
 const albumArt = require('album-art');
 
@@ -17,15 +18,14 @@ const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   album: Album.isRequired,
-  settings: Settings.isRequired,
 };
 
 function CoverArtSearchModal({
   isOpen,
   handleClose,
   album,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const [results, setResults] = useState();
   const title = 'Custom Cover Art Search';
   const [query, setQuery] = useState(album.name);

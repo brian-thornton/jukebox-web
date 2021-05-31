@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button, Col, Row, Container,
 } from 'react-bootstrap';
@@ -22,15 +22,12 @@ import {
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import styles from '../styles';
-import { Settings } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 const albumArt = require('album-art');
 
-const propTypes = {
-  settings: Settings.isRequired,
-};
-
-function LibraryList({ settings }) {
+function LibraryList() {
+  const settings = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
@@ -201,12 +198,10 @@ function LibraryList({ settings }) {
           </Col>
         </Row>
       </Container>
-      <LibraryAddModal settings={settings} isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
-      <LibraryDiscoverModal settings={settings} isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
+      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
+      <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
     </>
   );
 }
-
-LibraryList.propTypes = propTypes;
 
 export default LibraryList;

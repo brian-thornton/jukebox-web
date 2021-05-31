@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
@@ -7,14 +7,11 @@ import ThemeList from './ThemeList';
 import ContentWithControls from '../common/ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
-import { Settings as SettingsShape } from '../shapes';
 import { controlButtonProps } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/Jukebox';
 
-const propTypes = {
-  settings: SettingsShape.isRequired,
-};
-
-function Settings({ settings }) {
+function Settings() {
+  const settings = useContext(SettingsContext);
   const [mode, setMode] = useState('LIBRARY');
   const [isPinOpen, setIsPinOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -45,7 +42,7 @@ function Settings({ settings }) {
   const content = () => {
     if (isAuthorized) {
       if (mode === 'LIBRARY') {
-        return <LibraryList settings={settings} />;
+        return <LibraryList />;
       } if (mode === 'SETTINGS') {
         return <SettingsEditor />;
       } if (mode === 'SPOTIFY') {
@@ -55,7 +52,6 @@ function Settings({ settings }) {
       } if (mode === 'STYLE') {
         return (
           <ThemeList
-            settings={settings}
             resetControls={() => setControls(leftControls())}
             setControls={setControls}
           />
@@ -89,11 +85,9 @@ function Settings({ settings }) {
   return (
     <React.Fragment>
       <Alert variant="primary">{notAuthorizedText}</Alert>
-      <PinModal isOpen={isPinOpen} settings={settings} handleClose={handleClose} />
+      <PinModal isOpen={isPinOpen} handleClose={handleClose} />
     </React.Fragment>
   );
 }
-
-Settings.propTypes = propTypes;
 
 export default Settings;

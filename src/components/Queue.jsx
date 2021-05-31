@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Container,
   Row,
@@ -17,7 +17,6 @@ import {
 } from '../lib/queue-client';
 import styles from './styles';
 import ContentWithControls from './common/ContentWithControls';
-import { Settings } from './shapes';
 import { controlButtonProps } from '../lib/styleHelper';
 import PlayNowButton from './PlayNowButton';
 import PagingButtons from './common/PagingButtons';
@@ -27,12 +26,10 @@ import {
   nextPage,
   previousPage,
 } from '../lib/pageHelper';
+import { SettingsContext } from './layout/Jukebox';
 
-const propTypes = {
-  settings: Settings.isRequired,
-};
-
-function Queue({ settings }) {
+function Queue() {
+  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +97,6 @@ function Queue({ settings }) {
             </Col>
             <Col lg={1} xl={1}>
               <PagingButtons
-                settings={settings}
                 pageDisabled={false}
                 loadMore={() => setPaging(nextPage(paging))}
                 loadPrevious={() => setPaging(previousPage(paging))}
@@ -144,7 +140,7 @@ function Queue({ settings }) {
       (
         <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
           {track.name}
-          <PlayNowButton track={track} settings={settings} />
+          <PlayNowButton track={track} />
           <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
         </ListGroupItem>
       ),
@@ -163,7 +159,7 @@ function Queue({ settings }) {
     if (!addToPlaylist) {
       return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
     }
-    return (<Playlists mode="addToPlaylist" tracks={tracks} settings={settings} />);
+    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
   }
   return (
     <Container>
@@ -175,7 +171,5 @@ function Queue({ settings }) {
     </Container>
   );
 }
-
-Queue.propTypes = propTypes;
 
 export default Queue;

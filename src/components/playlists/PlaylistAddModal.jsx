@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Modal,
@@ -7,14 +7,13 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
-import { Settings } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
   existingPlaylistName: PropTypes.string,
-  settings: Settings.isRequired,
 };
 
 function PlaylistAddModal({
@@ -22,8 +21,8 @@ function PlaylistAddModal({
   handleClose,
   handleSave,
   existingPlaylistName,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const title = existingPlaylistName ? `Save Playlist '${existingPlaylistName}' as...` : 'Add Playlist';
 
   return (

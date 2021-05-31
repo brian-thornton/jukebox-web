@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Modal,
@@ -16,15 +16,13 @@ import {
   modalHeaderStyle,
   modalTitleStyle,
 } from '../../lib/styleHelper';
-
-import { Settings } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   setColor: PropTypes.func.isRequired,
   allowGradient: PropTypes.bool,
-  settings: Settings.isRequired,
 };
 
 function ColorPicker({
@@ -32,8 +30,8 @@ function ColorPicker({
   setIsOpen,
   setColor,
   allowGradient,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const [colorType, setColorType] = useState('solid');
   const [gradientA, setGradientA] = useState();
   const [gradientB, setGradientB] = useState();

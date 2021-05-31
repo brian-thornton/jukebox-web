@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
@@ -9,15 +9,15 @@ import styles from '../styles';
 import { updateSettings } from '../../lib/settings-client';
 import { getSkins, deleteSkin } from '../../lib/style-client';
 import StyleEditor from './StyleEditor';
-import { Settings } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
-  settings: Settings.isRequired,
   resetControls: PropTypes.func.isRequired,
   setControls: PropTypes.func.isRequired,
 };
 
-function ThemeList({ settings, resetControls, setControls }) {
+function ThemeList({ resetControls, setControls }) {
+  const settings = useContext(SettingsContext);
   const [skins, setSkins] = useState();
   const [selectedSkin, setSelectedSkin] = useState();
   const [skinsLoaded, setSkinsLoaded] = useState(false);
@@ -135,7 +135,6 @@ function ThemeList({ settings, resetControls, setControls }) {
     return (
       <StyleEditor
         skin={editSkin}
-        settings={settings}
         goBackToThemeList={goBackToThemeList}
         setControls={setControls}
       />
@@ -153,7 +152,6 @@ function ThemeList({ settings, resetControls, setControls }) {
           handleHide={() => setIsSaveAsOpen(false)}
           isOpen={isSaveAsOpen}
           colors={copyFromColors}
-          settings={settings}
         />
       </>
     );

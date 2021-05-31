@@ -1,21 +1,21 @@
 import { PropTypes } from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Card, ListGroupItem, Container, Row, Col,
 } from 'react-bootstrap';
 import styles from './styles';
 import { getTrackAlbums } from '../lib/librarian-client';
 import Album from './albums/Album';
-import { Track, Settings } from './shapes';
+import { Track } from './shapes';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
+import { SettingsContext } from './layout/Jukebox';
 
 import './TrackList.css';
 
 const propTypes = {
   tracks: PropTypes.arrayOf(Track),
-  settings: Settings.isRequired,
   showAlbumCovers: PropTypes.bool,
   setCurrentAlbum: PropTypes.func.isRequired,
   showDownloadLink: PropTypes.bool,
@@ -23,10 +23,10 @@ const propTypes = {
 
 function TrackList({
   tracks,
-  settings,
   showAlbumCovers,
   setCurrentAlbum,
 }) {
+  const settings = useContext(SettingsContext);
   const [trackAlbum, setTrackAlbum] = useState();
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
@@ -66,7 +66,6 @@ function TrackList({
         return (
           <Album
             album={ta}
-            settings={settings}
             coverArtOnly
             setCurrentAlbum={setCurrentAlbum}
           />
@@ -99,12 +98,12 @@ function TrackList({
                       {album(track)}
                     </Col>
                     <Col lg={8}>
-                      <PlayNowButton settings={settings} track={track} isScreenSmall={isScreenSmall} />
-                      <EnqueueButton settings={settings} track={track} isScreenSmall={isScreenSmall} />
+                      <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
+                      <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
                     </Col>
                   </Row>
                   <Row>
-                    <DownloadButton track={track} settings={settings} isScreenSmall={isScreenSmall} />
+                    <DownloadButton track={track} isScreenSmall={isScreenSmall} />
                   </Row>
                 </Container>
               </Card>
@@ -116,9 +115,9 @@ function TrackList({
               <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
                 {track.name}
                 <br />
-                <PlayNowButton settings={settings} track={track} isScreenSmall={isScreenSmall} />
-                <EnqueueButton settings={settings} track={track} isScreenSmall={isScreenSmall} />
-                <DownloadButton track={track} settings={settings} isScreenSmall={isScreenSmall} />
+                <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
+                <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
+                <DownloadButton track={track} isScreenSmall={isScreenSmall} />
               </ListGroupItem>
             ),
           );

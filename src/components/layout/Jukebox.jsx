@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, createContext } from 'react';
 import { Container } from 'react-bootstrap';
 import { debounce } from 'lodash';
 
@@ -21,6 +21,8 @@ import WithKeyboardInput from './WithKeyboardInput';
 import { getHeight } from '../../lib/pageHelper';
 
 import './Jukebox.css';
+
+export const SettingsContext = createContext({});
 
 function Jukebox() {
   const [mode, setMode] = useState('AlbumList');
@@ -70,14 +72,12 @@ function Jukebox() {
     <AlbumList
       search={search}
       setCurrentAlbum={setCurrentAlbum}
-      settings={settings}
     />
   );
 
   const trackList = (
     <Tracks
       search={search}
-      settings={settings}
       setCurrentAlbum={setCurrentAlbum}
     />
   );
@@ -89,7 +89,6 @@ function Jukebox() {
           search={search}
           album={currentAlbum}
           clearCurrentAlbum={() => setCurrentAlbum(null)}
-          settings={settings}
         />
       );
     } else {
@@ -111,7 +110,6 @@ function Jukebox() {
           body = (
             <Libraries
               search={search}
-              settings={settings}
               setCurrentAlbum={setCurrentAlbum}
             />
           );
@@ -133,13 +131,13 @@ function Jukebox() {
           );
           break;
         case 'Playlists':
-          body = <Playlists settings={settings} />;
+          body = <Playlists />;
           break;
         case 'Queue':
-          body = <Queue settings={settings} />;
+          body = <Queue />;
           break;
         case 'Settings':
-          body = <Settings settings={settings} />;
+          body = <Settings />;
           break;
         default:
           body = albumList;
@@ -149,9 +147,8 @@ function Jukebox() {
 
   if (settings) {
     return (
-      <React.Fragment>
+      <SettingsContext.Provider value={settings}>
         <JukeboxHeader
-          settings={settings}
           search={search}
           setSearch={setSearch}
           setTempSearch={setTempSearch}
@@ -175,10 +172,9 @@ function Jukebox() {
         <JukeboxFooter
           search={search}
           setSearch={setSearch}
-          settings={settings}
           nowPlaying={nowPlaying}
         />
-      </React.Fragment>
+      </SettingsContext.Provider>
     );
   }
 

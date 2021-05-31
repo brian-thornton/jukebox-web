@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Button,
   Modal,
@@ -6,9 +6,9 @@ import {
   Row,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Settings } from '../shapes';
 
 import './PinModal.css';
+import { SettingsContext } from '../layout/Jukebox';
 
 import {
   buttonProps,
@@ -19,11 +19,11 @@ import {
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
-  settings: Settings.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 
-function PinModal({ isOpen, settings, handleClose }) {
+function PinModal({ isOpen, handleClose }) {
+  const settings = useContext(SettingsContext);
   const [pin, setPin] = useState('');
 
   useEffect(() => {

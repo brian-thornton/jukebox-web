@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Container,
@@ -8,18 +8,18 @@ import {
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Album from './Album';
 import PagingButtons from '../common/PagingButtons';
-import { Settings } from '../shapes';
 import { getHeight, nextPage, previousPage, initHorizontalPaging, randomPage, clearCurrentPage, saveCurrentPage, setKnownPage } from '../../lib/pageHelper';
 import { getStatus } from '../../lib/status-client';
 import { useWindowSize } from '../../lib/hooks';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   search: PropTypes.string,
   setCurrentAlbum: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
-function AlbumList({ search, setCurrentAlbum, settings }) {
+function AlbumList({ search, setCurrentAlbum }) {
+  const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
@@ -129,7 +129,6 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
         <Album
           album={album}
           setCurrentAlbum={setCurrentAlbum}
-          settings={settings}
         />,
       );
     });
@@ -143,7 +142,6 @@ function AlbumList({ search, setCurrentAlbum, settings }) {
             </Col>
             <Col lg={1} xl={1}>
               <PagingButtons
-                settings={settings}
                 search={search}
                 loadMore={() => setPaging(nextPage(paging))}
                 loadPrevious={() => setPaging(previousPage(paging))}

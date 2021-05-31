@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext} from 'react';
 import {
   Button,
   Modal,
@@ -6,14 +6,13 @@ import {
   Row,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Settings } from '../shapes';
+import { SettingsContext } from './Jukebox';
 
 import './SearchModal.css';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
   search: PropTypes.string.isRequired,
 };
 
@@ -21,8 +20,8 @@ function SearchModal({
   isOpen,
   handleClose,
   search,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const [searchText, setSearchText] = useState('Enter Search');
 
   const inputButton = (value, padding) => {

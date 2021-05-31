@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Row,
@@ -7,23 +7,24 @@ import {
 } from 'react-bootstrap';
 
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
-import { Settings, Tracks } from '../shapes';
+import { Tracks } from '../shapes';
 import { controlButtonProps } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/Jukebox';
+
 import './AlbumButtons.css';
 
 const propTypes = {
   setAddToPlaylist: PropTypes.func.isRequired,
   clearCurrentAlbum: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
   tracks: Tracks.isRequired,
 };
 
 function AlbumButtons({
   clearCurrentAlbum,
-  settings,
   tracks,
   setAddToPlaylist,
 }) {
+  const settings = useContext(SettingsContext);
   const playAlbum = () => {
     enqueueTracksTop(tracks);
     next();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Modal,
@@ -7,7 +7,6 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
-import { Settings } from '../shapes';
 import {
   buttonProps,
   modalBodyStyle,
@@ -15,20 +14,20 @@ import {
   modalHeaderStyle,
   modalTitleStyle,
 } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
 function NewSkinModal({
   isOpen,
   handleHide,
   handleSave,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header closeButton style={modalHeaderStyle(settings)}>

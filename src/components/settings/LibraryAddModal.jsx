@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Modal,
@@ -14,21 +14,20 @@ import {
   modalHeaderStyle,
   modalTitleStyle,
 } from '../../lib/styleHelper';
-import { Settings } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
 function LibraryAddModal({
   isOpen,
   handleHide,
   handleSave,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   return (
     <Modal show={isOpen} onHide={handleHide}>
       <Modal.Header closeButton style={modalHeaderStyle(settings)}>

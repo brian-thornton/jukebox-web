@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 
+import { SettingsContext } from './Jukebox';
+
 function NavigationButtons({
-  settings,
   isScreenSmall,
   setMode,
   setCurrentAlbum,
 }) {
+  const settings = useContext(SettingsContext);
+
   const addNavLink = (navLinks, feature, navKey, navName) => {
     if (feature) {
       navLinks.push(

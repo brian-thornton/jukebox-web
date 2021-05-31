@@ -1,23 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  ListGroup, ListGroupItem, Button, Row, Col, Container,
+  Button, Row, Col, Container,
 } from 'react-bootstrap';
 import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
 import { getStatus, updateStatus } from '../../lib/status-client';
 import PlaylistDetail from './PlaylistDetail';
 import PlaylistAddModal from './PlaylistAddModal';
-import styles from '../styles';
 import ContentWithControls from '../common/ContentWithControls';
-import { Settings, Tracks } from '../shapes';
+import Item from '../common/Item';
+import { Tracks } from '../shapes';
 import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PagingButtons from '../common/PagingButtons';
-import { getHeight, initializePaging, previousPage, nextPage } from '../../lib/pageHelper';
+import {
+  getHeight,
+  initializePaging,
+  previousPage,
+  nextPage
+} from '../../lib/pageHelper';
+import { SettingsContext } from '../layout/Jukebox'; 
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
   mode: PropTypes.string,
-  settings: Settings.isRequired,
   tracks: Tracks.isRequired,
 };
 
@@ -25,8 +30,8 @@ function Playlists({
   tracks,
   mode,
   currentPlaylist,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
   const [name, setName] = useState('');
@@ -113,14 +118,11 @@ function Playlists({
   playlists.forEach((playlist) => {
     renderPlaylists.push(
       (
-        <ListGroupItem
+        <Item
           onClick={() => selectPlaylist(playlist.name)}
-          style={{ ...styles.cardStyle, width: '90%', color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}
-          key={playlist.name}
-        >
-          { playlist.name}
-          { buttons(playlist.name)}
-        </ListGroupItem>
+          text={playlist.name}
+          buttons={buttons(playlist.name)}
+        />
       ),
     );
   });
@@ -143,7 +145,6 @@ function Playlists({
             </Col>
             <Col lg={1} xl={1}>
               <PagingButtons
-                settings={settings}
                 pageDisabled={false}
                 loadMore={() => setPaging(nextPage(paging))}
                 loadPrevious={() => setPaging(previousPage(paging))}
@@ -163,12 +164,12 @@ function Playlists({
     return (
       <React.Fragment>
         <ContentWithControls content={content()} controls={controls()} alertText={alertText} />
-        <PlaylistAddModal settings={settings} isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
+        <PlaylistAddModal isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
       </React.Fragment>
     );
   }
   return (
-    <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} settings={settings} />
+    <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} />
   );
 }
 

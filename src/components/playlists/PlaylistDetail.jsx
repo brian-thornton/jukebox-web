@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  ListGroup, ListGroupItem, Button,
+  ListGroup, Button,
 } from 'react-bootstrap';
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
 import {
@@ -14,19 +14,20 @@ import ContentWithControls from '../common/ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
 import styles from '../styles';
-import { Settings } from '../shapes';
 import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PlayNowButton from '../PlayNowButton';
 import EnqueueButton from '../EnqueueButton';
+import Item from '../common/Item';
 import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
+import {SettingsContext} from '../layout/Jukebox';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  settings: Settings.isRequired,
 };
 
-function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
+function PlaylistDetail({ name, handleBackToPlaylists }) {
+  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -88,27 +89,27 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
     loadTracks(name);
   }
 
+  const buttons = (track) => (
+    <>
+      <PlayNowButton track={track} />
+      <EnqueueButton track={track} />
+      <Button
+        {...buttonProps(settings)}
+        onClick={() => deleteTrack(name, track)}
+      >
+        Delete
+    </Button>
+    </>
+  );
+
   if (tracks) {
     tracks.forEach((track) => {
       renderTracks.push(
         (
-          <ListGroupItem
-            style={{
-              ...styles.cardStyle,
-              color: fontColor,
-              background: trackBackgroundColor,
-            }}
-          >
-            {track.name}
-            <PlayNowButton track={track} settings={settings} />
-            <EnqueueButton track={track} settings={settings} />
-            <Button
-              {...buttonProps(settings)}
-              onClick={() => deleteTrack(name, track)}
-            >
-              Delete
-            </Button>
-          </ListGroupItem>
+          <Item
+            text={track.name}
+            buttons={buttons(track)}
+          />
         ),
       );
     });
@@ -150,7 +151,6 @@ function PlaylistDetail({ name, handleBackToPlaylists, settings }) {
         handleClose={() => setIsSaveAsOpen(false)}
         handleSave={handleSave}
         existingPlaylistName={name}
-        settings={settings}
       />
       <PlaylistDeleteModal
         isOpen={showDeleteModal}

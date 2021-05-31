@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Row,
   Col,
@@ -7,17 +7,18 @@ import {
 import CoverArtSearchModal from './CoverArtSearchModal';
 import { saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
-import { Album, Settings } from '../shapes';
+import { Album } from '../shapes';
 import { controlButtonProps } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/Jukebox';
 
 const albumArt = require('album-art');
 
 const propTypes = {
   album: Album.isRequired,
-  settings: Settings.isRequired,
 };
 
-function AlbumAdminButtons({ album, settings }) {
+function AlbumAdminButtons({ album }) {
+  const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState('');
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
   const saveCoverArtToLibrary = () => saveCoverArt({ album, url: coverArt });
@@ -62,15 +63,14 @@ function AlbumAdminButtons({ album, settings }) {
   };
 
   return (
-    <React.Fragment>
+    <>
       {adminButtons()}
       <CoverArtSearchModal
-        settings={settings}
         album={album}
         isOpen={isCustomSearchOpen}
         handleClose={() => setIsCustomSearchOpen(false)}
       />
-    </React.Fragment>
+    </>
   );
 }
 

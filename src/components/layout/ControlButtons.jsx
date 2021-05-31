@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   ChevronDoubleRight,
   Play,
@@ -11,12 +11,13 @@ import { up, down } from '../../lib/volume-client';
 
 import Button from '../Button';
 import { next, stop } from '../../lib/queue-client';
+import { SettingsContext } from './Jukebox';
 
 function ControlButtons({
   isScreenSmall,
-  settings,
   setIsSmallSearchEnabled,
 }) {
+  const settings = useContext(SettingsContext);
   const { buttonBackgroundColor, buttonFontWeight, buttonFontColor } = settings.styles;
 
   const addControlButton = (buttons, feature, name, handler) => {

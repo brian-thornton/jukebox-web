@@ -10,17 +10,15 @@ import {
 } from 'react-bootstrap';
 import { getLibraries } from '../lib/librarian-client';
 import Album from './albums/Album';
-import { Settings } from './shapes';
 import defaultCover from './albums/default_album.jpg';
 
 import styles from './styles';
 
 const propTypes = {
-  settings: Settings.isRequired,
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function Libraries({ settings, setCurrentAlbum }) {
+function Libraries({ setCurrentAlbum }) {
   const [libraries, setLibraries] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -82,7 +80,6 @@ function Libraries({ settings, setCurrentAlbum }) {
         <Album
           album={album}
           setCurrentAlbum={setCurrentAlbum}
-          settings={settings}
         />,
       );
     });

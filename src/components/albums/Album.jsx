@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { getCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import styles from '../styles';
-import { Album as albumShape, Settings } from '../shapes';
+import { Album as albumShape } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 import './Album.css';
 
@@ -12,13 +13,13 @@ const propTypes = {
   album: albumShape.isRequired,
   cover: PropTypes.string,
   setCurrentAlbum: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
   coverArtOnly: PropTypes.bool,
 };
 
 function Album({
-  album, cover, setCurrentAlbum, settings, coverArtOnly,
+  album, cover, setCurrentAlbum, coverArtOnly,
 }) {
+  const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState(defaultCover);
   const [isLoaded, setIsLoaded] = useState(false);
 

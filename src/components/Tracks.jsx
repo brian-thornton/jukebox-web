@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   Alert,
   Container,
@@ -8,17 +8,17 @@ import {
 } from 'react-bootstrap';
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
-import { Settings } from './shapes';
 import { getHeight, nextPage, previousPage, initializePaging, initHorizontalPaging, randomPage } from '../lib/pageHelper';
 import PagingButtons from './common/PagingButtons';
+import { SettingsContext } from './layout/Jukebox';
 
 const propTypes = {
   search: PropTypes.string,
   setCurrentAlbum: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
-function Tracks({ search, settings, setCurrentAlbum }) {
+function Tracks({ search, setCurrentAlbum }) {
+  const settings = useContext(SettingsContext);
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
 
@@ -85,14 +85,12 @@ function Tracks({ search, settings, setCurrentAlbum }) {
             <Col lg={11} xl={11}>
               <TrackList style={{ width: '100%', marginRight: '0px' }}
                 tracks={tracks}
-                settings={settings}
                 showAlbumCovers
                 setCurrentAlbum={setCurrentAlbum}
               />
             </Col>
             <Col lg={1} xl={1}>
               <PagingButtons
-                settings={settings}
                 search={search}
                 pageDisabled={pageDisabled}
                 loadMore={() => setPaging(nextPage(paging))}

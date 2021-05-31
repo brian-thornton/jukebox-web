@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Card,
@@ -7,23 +7,29 @@ import {
   Col,
 } from 'react-bootstrap';
 
-import { getAlbumTracks } from '../../lib/librarian-client';
-import AlbumTracks from '../AlbumTracks';
-import Playlists from '../playlists/Playlists';
-import styles from '../styles';
-import { Album, Settings } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
+import { Album } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
-import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
+import AlbumTracks from '../AlbumTracks';
+import { getAlbumTracks } from '../../lib/librarian-client';
+import Playlists from '../playlists/Playlists';
+import styles from '../styles';
+import {
+  getHeight,
+  initializePaging,
+  nextPage,
+  previousPage,
+} from '../../lib/pageHelper';
 
 const propTypes = {
   album: Album.isRequired,
   clearCurrentAlbum: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
-function AlbumDetail({ album, clearCurrentAlbum, settings }) {
+function AlbumDetail({ album, clearCurrentAlbum }) {
+  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
@@ -44,8 +50,13 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
 
   const albumButtons = (
     <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
-      <AlbumButtons album={album} clearCurrentAlbum={clearCurrentAlbum} settings={settings} tracks={tracks} setAddToPlaylist={setAddToPlaylist} />
-      <AlbumAdminButtons album={album} settings={settings} />
+      <AlbumButtons
+        album={album}
+        clearCurrentAlbum={clearCurrentAlbum}
+        tracks={tracks}
+        setAddToPlaylist={setAddToPlaylist}
+      />
+      <AlbumAdminButtons album={album} />
     </Container>
   );
 
@@ -69,7 +80,6 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
                 nextPage={() => setPaging(nextPage(paging))}
                 previousPage={() => setPaging(previousPage(paging))}
                 paging={paging}
-                settings={settings}
                 showDownloadLink
               />
             </Col>
@@ -78,7 +88,7 @@ function AlbumDetail({ album, clearCurrentAlbum, settings }) {
       );
     }
 
-    return (<Playlists mode="addToPlaylist" tracks={tracks} settings={settings} />);
+    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
   };
 
 

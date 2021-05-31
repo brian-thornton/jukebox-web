@@ -1,16 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import { Button as ReactButton } from 'react-bootstrap';
-import { Style } from './shapes';
+import { SettingsContext } from './layout/Jukebox';
 
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   content: PropTypes.string,
-  style: Style.isRequired,
 };
 
-function Button({ onClick, content, style }) {
-  return <ReactButton style={style} className="button" variant="outline-light" onClick={onClick}>{content}</ReactButton>;
+function Button({ onClick, content }) {
+  const settings = useContext(SettingsContext);
+
+  if (settings) {
+    const buttonStyle = {
+      background: settings.styles.buttonBackgroundColor,
+      fontWeight: settings.styles.buttonFontWeight,
+      color: settings.styles.buttonFontColor,
+    };
+
+    return <ReactButton style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{content}</ReactButton>;
+  }
+
+  return null;
 }
 
 Button.propTypes = propTypes;

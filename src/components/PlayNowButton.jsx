@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import { Play } from 'react-bootstrap-icons';
 
 import { Button } from 'react-bootstrap';
 import { enqueueTop, next } from '../lib/queue-client';
 import { buttonProps } from '../lib/styleHelper';
-import { Track, Settings } from './shapes';
+import { Track } from './shapes';
 import './PlayNowButton.css';
+import { SettingsContext } from './layout/Jukebox';
 
 const propTypes = {
-  settings: Settings.isRequired,
   isScreenSmall: PropTypes.bool,
   track: Track.isRequired,
 };
 
-function PlayNowButton({ track, settings, isScreenSmall }) {
+function PlayNowButton({ track, isScreenSmall }) {
+  const settings = useContext(SettingsContext);
+
   const playNow = (track) => {
     enqueueTop(track);
     next();

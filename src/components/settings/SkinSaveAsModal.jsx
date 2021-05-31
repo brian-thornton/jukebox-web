@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Button,
   Modal,
@@ -7,7 +7,8 @@ import {
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { createSkin } from '../../lib/style-client';
-import { Colors, Settings } from '../shapes';
+import { Colors } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 import {
   buttonProps,
@@ -22,7 +23,6 @@ const propTypes = {
   handleHide: PropTypes.func.isRequired,
   colors: Colors.isRequired,
   goBackToThemeList: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
 function SkinSaveAsModal({
@@ -30,8 +30,8 @@ function SkinSaveAsModal({
   isOpen,
   handleHide,
   colors,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const handleSave = () => {
     createSkin({ isEditable: true, name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
     handleHide();

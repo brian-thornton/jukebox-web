@@ -1,17 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 
 import { downloadTrack } from '../lib/librarian-client';
-import { Track, Settings } from './shapes';
+import { Track } from './shapes';
 import './DownloadButton.css';
+import { SettingsContext } from './layout/Jukebox';
 
 const propTypes = {
-  settings: Settings.isRequired,
   isScreenSmall: PropTypes.bool,
   track: Track.isRequired,
 };
 
-function DownloadButton({ track, settings, isScreenSmall }) {
+function DownloadButton({ track, isScreenSmall }) {
+  const settings = useContext(SettingsContext);
   const handleDownload = (track) => {
     downloadTrack(track).then((response) => {
       response.blob().then((blob) => {

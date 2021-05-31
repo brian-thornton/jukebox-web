@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import { PropTypes } from 'prop-types';
+import React, { useState, useContext } from 'react';
 import {
   Navbar,
   Nav,
-  Button,
 } from 'react-bootstrap';
 
+import Button from '../Button';
 import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
-import { Settings } from '../shapes';
 
 import './Jukebox.css';
+import { SettingsContext } from './Jukebox';
 
 const propTypes = {
-  settings: Settings.isRequired,
+  search: PropTypes.string,
+  setCurrentAlbum: PropTypes.string.isRequired,
+  setMode: PropTypes.func.isRequired,
+  setSearch: PropTypes.func.isRequired,
+  setTempSearch: PropTypes.func.isRequired,
 };
 
 function JukeboxHeader({
-  settings,
   search,
   setSearch,
   setTempSearch,
   setMode,
   setCurrentAlbum,
 }) {
+  const settings = useContext(SettingsContext);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
 
@@ -51,68 +56,68 @@ function JukeboxHeader({
     return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor }}>{settings.preferences.name}</Navbar.Brand>;
   };
 
-  const buttonStyle = {
-    background: settings.styles.buttonBackgroundColor,
-    fontWeight: settings.styles.buttonFontWeight,
-    color: settings.styles.buttonFontColor,
-  };
 
-  const searchButton = () => {
+  const searchButtons = () => {
     if (isScreenSmall) {
       return <React.Fragment />;
     }
 
+    const searchButton = (
+      <Button
+        onClick={() => setIsSearchModalOpen(true)}
+        content="Search"
+      />
+    );
+
     if (search) {
       return (
-        <React.Fragment>
+        <>
           <Button
-            style={buttonStyle}
-            className="button"
-            variant="outline-light"
             onClick={() => {
               setSearch('');
               setTempSearch('');
             }}
-          >
-            Clear
-          </Button>
-          <Button style={buttonStyle} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>
-        </React.Fragment>
+            content="Clear"
+          />
+          {searchButtons}
+        </>
       );
     }
 
-    return <Button style={buttonStyle} className="button" variant="outline-light" onClick={() => setIsSearchModalOpen(true)}>Search</Button>;
+    return searchButton;
   };
 
 
   if (settings) {
     return (
-      <React.Fragment>
+      <>
         <Navbar fixed="top" collapseOnSelect variant="dark" style={{ background: settings.styles.headerColor }}>
           {brand()}
           <Nav className="mr-auto">
             <NavigationButtons
-              settings={settings}
               isScreenSmall={isScreenSmall}
               setMode={setMode}
               setCurrentAlbum={setCurrentAlbum}
             />
           </Nav>
           {searchResults()}
-          {searchButton()}
+          {searchButtons()}
         </Navbar>
         <SearchModal
           isOpen={isSearchModalOpen}
           handleClose={handleSearch}
           search={search}
-          settings={settings}
         />
-      </React.Fragment>
+      </>
     );
   }
 
   return <React.Fragment />;
 }
+
+JukeboxHeader.defaultProps = {
+  search: '',
+};
 
 JukeboxHeader.propTypes = propTypes;
 

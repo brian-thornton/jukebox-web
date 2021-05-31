@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import {
   Navbar,
   Nav,
@@ -8,20 +8,16 @@ import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 
 import ControlButtons from './ControlButtons';
-import { Settings } from '../shapes';
+import { SettingsContext } from './Jukebox';
 
 import './Jukebox.css';
-
-const propTypes = {
-  settings: Settings.isRequired,
-};
 
 function JukeboxFooter({
   search,
   setSearch,
-  settings,
   nowPlaying,
 }) {
+  const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
   const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
 
@@ -71,7 +67,6 @@ function JukeboxFooter({
     return (
       <Nav className="ml-auto">
         <ControlButtons
-          settings={settings}
           isScreenSmall={isScreenSmall}
           setIsSmallSearchEnabled={setIsSmallSearchEnabled}
         />
@@ -90,7 +85,5 @@ function JukeboxFooter({
 
   return <React.Fragment />;
 }
-
-JukeboxFooter.propTypes = propTypes;
 
 export default JukeboxFooter;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
@@ -7,13 +7,14 @@ import { deleteSkin, createSkin } from '../../lib/style-client';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import ColorPicker from './ColorPicker';
 import CopyFromModal from './CopyFromModal';
+import { SettingsContext } from '../layout/Jukebox';
 
 function StyleEditor({
   skin,
-  settings,
   goBackToThemeList,
   setControls,
 }) {
+  const settings = useContext(SettingsContext);
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [colorMode, setColorMode] = useState();
   const [allowGradient, setAllowGradient] = useState();
@@ -148,21 +149,18 @@ function StyleEditor({
         color={colors[colorMode]}
         setColor={handleSetColor}
         allowGradient={allowGradient}
-        settings={settings}
       />
       <SkinSaveAsModal
         goBackToThemeList={goBackToThemeList}
         handleHide={() => setIsSaveAsModalOpen(false)}
         isOpen={isSaveAsModalOpen}
         colors={colors}
-        settings={settings}
       />
       <CopyFromModal
         isOpen={isCopyFromOpen}
         colors={colors}
         handleHide={() => setIsCopyFromOpen(false)}
         handleCopyColor={handleColorCopy}
-        settings={settings}
       />
     </React.Fragment>
   );

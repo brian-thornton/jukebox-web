@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Button,
   Modal,
   Form,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Colors, Settings } from '../shapes';
+import { Colors } from '../shapes';
+import { SettingsContext } from '../layout/Jukebox';
 
 import {
   buttonProps,
@@ -20,7 +21,6 @@ const propTypes = {
   handleHide: PropTypes.func.isRequired,
   colors: Colors.isRequired,
   handleCopyColor: PropTypes.func.isRequired,
-  settings: Settings.isRequired,
 };
 
 function CopyFromModal({
@@ -28,8 +28,8 @@ function CopyFromModal({
   handleHide,
   colors,
   handleCopyColor,
-  settings,
 }) {
+  const settings = useContext(SettingsContext);
   const [copiedColor, setCopiedColor] = useState();
 
   return (

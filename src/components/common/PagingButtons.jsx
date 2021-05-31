@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import { Button } from 'react-bootstrap';
 import {
@@ -7,20 +7,19 @@ import {
   Disc,
 } from 'react-bootstrap-icons';
 
-import { Settings, Page } from '../shapes';
+import { Page } from '../shapes';
 import { findPage } from '../../lib/pageHelper';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   loadPrevious: PropTypes.func.isRequired,
   loadMore: PropTypes.func.isRequired,
   page: Page.isRequired,
   pages: PropTypes.arrayOf(Page).isRequired,
-  settings: Settings.isRequired,
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
 function PagingButtons({
-  settings,
   search,
   pageDisabled,
   loadMore,
@@ -29,6 +28,7 @@ function PagingButtons({
   pages,
   page,
 }) {
+  const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
   const isMedium = window.innerWidth >= 700 && window.innerWidth < 1200
 
@@ -45,9 +45,8 @@ function PagingButtons({
     try {
       nextDisabled = findPage(pages, page) === (pages.length - 1);
       previousDisabled = findPage(pages, page) === 0;
-    } catch
-    {
-
+    } catch {
+      console.log('page error');
     }
 
     const pageOf = () => {
