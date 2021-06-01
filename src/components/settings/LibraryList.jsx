@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import {
   ListGroup, ListGroupItem, Button, Col, Row, Container,
 } from 'react-bootstrap';
@@ -22,12 +22,10 @@ import {
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import styles from '../styles';
-import { SettingsContext } from '../layout/Jukebox';
 
 const albumArt = require('album-art');
 
 function LibraryList() {
-  const settings = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);

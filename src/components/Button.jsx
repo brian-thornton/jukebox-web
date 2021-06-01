@@ -11,17 +11,13 @@ const propTypes = {
 function Button({ onClick, content }) {
   const settings = useContext(SettingsContext);
 
-  if (settings) {
-    const buttonStyle = {
-      background: settings.styles.buttonBackgroundColor,
-      fontWeight: settings.styles.buttonFontWeight,
-      color: settings.styles.buttonFontColor,
-    };
+  const buttonStyle = {
+    background: settings.styles.buttonBackgroundColor,
+    fontWeight: settings.styles.buttonFontWeight,
+    color: settings.styles.buttonFontColor,
+  };
 
-    return <ReactButton style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{content}</ReactButton>;
-  }
-
-  return null;
+  return <ReactButton style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{content}</ReactButton>;
 }
 
 Button.propTypes = propTypes;

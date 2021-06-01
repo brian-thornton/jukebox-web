@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Container,
@@ -10,7 +10,6 @@ import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
 import { getHeight, nextPage, previousPage, initializePaging, initHorizontalPaging, randomPage } from '../lib/pageHelper';
 import PagingButtons from './common/PagingButtons';
-import { SettingsContext } from './layout/Jukebox';
 
 const propTypes = {
   search: PropTypes.string,
@@ -18,7 +17,6 @@ const propTypes = {
 };
 
 function Tracks({ search, setCurrentAlbum }) {
-  const settings = useContext(SettingsContext);
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
 

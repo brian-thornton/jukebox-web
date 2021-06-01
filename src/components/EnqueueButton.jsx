@@ -16,28 +16,13 @@ const propTypes = {
 
 function EnqueueButton({ track, isScreenSmall }) {
   const settings = useContext(SettingsContext);
+  const content = isScreenSmall ? <CollectionPlay /> : 'Enqueue';
 
-  if (settings) {
-    if (isScreenSmall) {
-      return (
-        <Button
-          {...buttonProps(settings)}
-          onClick={() => enqueue(track)}
-        >
-          <CollectionPlay />
-        </Button>
-      );
-    } else {
-      return (
-        <Button
-          {...buttonProps(settings)}
-          onClick={() => enqueue(track)}
-        >
-          Enqueue
-        </Button>
-      );
-    }
-  }
+  return (
+    <Button {...buttonProps(settings)} onClick={() => enqueue(track)}>
+      {content}
+    </Button>
+  );
 }
 
 EnqueueButton.propTypes = propTypes;

@@ -25,7 +25,7 @@ function DownloadButton({ track, isScreenSmall }) {
     });
   };
 
-  if (settings && settings.features.admin && settings.features.downloadTrack && !isScreenSmall) {
+  if (settings.features.admin && settings.features.downloadTrack && !isScreenSmall) {
     return <div className="download"><a onClick={() => handleDownload(track)}>Download</a></div>;
   }
 

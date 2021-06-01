@@ -42,7 +42,7 @@ function Album({
   };
 
   const albumName = () => {
-    if (settings && settings.preferences.showAlbumName) {
+    if (settings.preferences.showAlbumName) {
       return (
         <Card.Title style={{ ...styles.albumTitle, color: settings.styles.fontColor }}>
           {album.name}

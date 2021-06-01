@@ -74,16 +74,12 @@ function JukeboxFooter({
     );
   };
 
-  if (settings) {
-    return (
-      <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
-        {nowPlayingText()}
-        {footerContent()}
-      </Navbar>
-    );
-  }
-
-  return <React.Fragment />;
+  return (
+    <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
+      {nowPlayingText()}
+      {footerContent()}
+    </Navbar>
+  );
 }
 
 export default JukeboxFooter;

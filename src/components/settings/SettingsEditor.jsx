@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
 import styles from '../styles';
-import { getSettings, updateSettings } from '../../lib/settings-client';
+import { updateSettings } from '../../lib/settings-client';
+import { SettingsContext } from '../layout/Jukebox';
 
 function SettingsEditor() {
-  const [settings, setSettings] = useState();
-
-  if (!settings) {
-    getSettings().then(data => setSettings(data));
-  }
+  const settings = useContext(SettingsContext);
 
   const buttonProps = {
     style: styles.buttonStyle,
@@ -45,35 +42,27 @@ function SettingsEditor() {
     );
   };
 
-  const features = () => {
-    if (!settings) {
-      return (<React.Fragment />);
-    }
-
-    return (
-      <ListGroup>
-        {settingRow('admin', settings.features.admin)}
-        {settingRow('useSpotify', settings.spotify.useSpotify)}
-        {settingRow('albums', settings.features.albums)}
-        {settingRow('libraries', settings.features.libraries)}
-        {settingRow('tracks', settings.features.tracks)}
-        {settingRow('playlists', settings.features.playlists)}
-        {settingRow('queue', settings.features.queue)}
-        {settingRow('settings', settings.features.settings)}
-        {settingRow('volume', settings.features.volume)}
-        {settingRow('next', settings.features.next)}
-        {settingRow('stop', settings.features.stop)}
-        {settingRow('play', settings.features.play)}
-        {settingRow('playNow', settings.features.playNow)}
-        {settingRow('enqueue', settings.features.enqueue)}
-        {settingRow('playAlbum', settings.features.playAlbum)}
-        {settingRow('addToPlaylist', settings.features.addToPlaylist)}
-        {settingRow('downloadTrack', settings.features.downloadTrack)}
-        {settingRow('deletePlaylist', settings.features.deletePlaylist)}
-      </ListGroup>
-    );
-  };
-
-  return features();
+  return (
+    <ListGroup>
+      {settingRow('admin', settings.features.admin)}
+      {settingRow('useSpotify', settings.spotify.useSpotify)}
+      {settingRow('albums', settings.features.albums)}
+      {settingRow('libraries', settings.features.libraries)}
+      {settingRow('tracks', settings.features.tracks)}
+      {settingRow('playlists', settings.features.playlists)}
+      {settingRow('queue', settings.features.queue)}
+      {settingRow('settings', settings.features.settings)}
+      {settingRow('volume', settings.features.volume)}
+      {settingRow('next', settings.features.next)}
+      {settingRow('stop', settings.features.stop)}
+      {settingRow('play', settings.features.play)}
+      {settingRow('playNow', settings.features.playNow)}
+      {settingRow('enqueue', settings.features.enqueue)}
+      {settingRow('playAlbum', settings.features.playAlbum)}
+      {settingRow('addToPlaylist', settings.features.addToPlaylist)}
+      {settingRow('downloadTrack', settings.features.downloadTrack)}
+      {settingRow('deletePlaylist', settings.features.deletePlaylist)}
+    </ListGroup>
+  );
 }
 export default SettingsEditor;

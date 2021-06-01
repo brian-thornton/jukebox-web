@@ -1,26 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button, InputGroup, FormControl,
 } from 'react-bootstrap';
 import styles from '../styles';
-import { getSettings, updateSettings } from '../../lib/settings-client';
+import { SettingsContext } from '../layout/Jukebox';
+import { updateSettings } from '../../lib/settings-client';
 
 function Preferences() {
-  const [settings, setSettings] = useState();
-  const [name, setName] = useState('');
+  const settings = useContext(SettingsContext);
+  const [name, setName] = useState(settings.preferences.name);
 
   const buttonProps = {
     style: styles.buttonStyle,
     variant: 'outline-light',
     className: 'float-right',
   };
-
-  if (!settings) {
-    getSettings().then((data) => {
-      setSettings(data);
-      setName(data.preferences.name);
-    });
-  }
 
   const handleSave = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
@@ -58,10 +52,6 @@ function Preferences() {
   };
 
   const preferences = () => {
-    if (!settings) {
-      return (<React.Fragment />);
-    }
-
     return (
       <React.Fragment>
         <Button onClick={handleSave}>Save</Button>

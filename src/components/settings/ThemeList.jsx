@@ -45,7 +45,7 @@ function ThemeList({ resetControls, setControls }) {
   }, [skinsLoading]);
 
   useEffect(() => {
-    if (settings && selectedSkin) {
+    if (selectedSkin) {
       const deepClone = JSON.parse(JSON.stringify(settings));
       deepClone.styles.headerColor = selectedSkin.headerColor;
       deepClone.styles.footerColor = selectedSkin.footerColor;

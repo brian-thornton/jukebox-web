@@ -88,31 +88,27 @@ function JukeboxHeader({
   };
 
 
-  if (settings) {
-    return (
-      <>
-        <Navbar fixed="top" collapseOnSelect variant="dark" style={{ background: settings.styles.headerColor }}>
-          {brand()}
-          <Nav className="mr-auto">
-            <NavigationButtons
-              isScreenSmall={isScreenSmall}
-              setMode={setMode}
-              setCurrentAlbum={setCurrentAlbum}
-            />
-          </Nav>
-          {searchResults()}
-          {searchButtons()}
-        </Navbar>
-        <SearchModal
-          isOpen={isSearchModalOpen}
-          handleClose={handleSearch}
-          search={search}
-        />
-      </>
-    );
-  }
-
-  return <React.Fragment />;
+  return (
+    <>
+      <Navbar fixed="top" collapseOnSelect variant="dark" style={{ background: settings.styles.headerColor }}>
+        {brand()}
+        <Nav className="mr-auto">
+          <NavigationButtons
+            isScreenSmall={isScreenSmall}
+            setMode={setMode}
+            setCurrentAlbum={setCurrentAlbum}
+          />
+        </Nav>
+        {searchResults()}
+        {searchButtons()}
+      </Navbar>
+      <SearchModal
+        isOpen={isSearchModalOpen}
+        handleClose={handleSearch}
+        search={search}
+      />
+    </>
+  );
 }
 
 JukeboxHeader.defaultProps = {

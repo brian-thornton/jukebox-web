@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Card,
@@ -7,7 +7,6 @@ import {
   Col,
 } from 'react-bootstrap';
 
-import { SettingsContext } from '../layout/Jukebox';
 import { Album } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
@@ -29,7 +28,6 @@ const propTypes = {
 };
 
 function AlbumDetail({ album, clearCurrentAlbum }) {
-  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);

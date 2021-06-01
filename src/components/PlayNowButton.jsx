@@ -16,18 +16,14 @@ const propTypes = {
 
 function PlayNowButton({ track, isScreenSmall }) {
   const settings = useContext(SettingsContext);
+  const playContent = isScreenSmall ? <Play /> : 'Play';
 
   const playNow = (track) => {
     enqueueTop(track);
     next();
   };
 
-  if (settings) {
-    const playContent = isScreenSmall ? <Play /> : 'Play';
-    return <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}>{playContent}</Button>;
-  }
-
-  return <React.Fragment />;
+  return <Button className="play-now" {...buttonProps(settings)} onClick={() => playNow(track)}>{playContent}</Button>;
 };
 
 PlayNowButton.propTypes = propTypes;
