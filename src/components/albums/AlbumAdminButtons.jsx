@@ -27,11 +27,8 @@ function AlbumAdminButtons({ album }) {
     const nameArray = album.name.split('-');
 
     albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
-      if (data.toString().includes('http')) {
-        setCoverArt(data);
-      } else {
-        setCoverArt(defaultCover);
-      }
+      const cover = data.toString().includes('http') ? data : defaultCover;
+      setCoverArt(cover);
     });
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Container,
@@ -7,8 +7,8 @@ import {
 } from 'react-bootstrap';
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Album from './Album';
-import PagingButtons from '../common/PagingButtons';
-import { getHeight, nextPage, previousPage, initHorizontalPaging, randomPage, clearCurrentPage, saveCurrentPage, setKnownPage } from '../../lib/pageHelper';
+import PagedContainer from '../common/PagedContainer';
+import { getHeight, initHorizontalPaging, clearCurrentPage, saveCurrentPage, setKnownPage } from '../../lib/pageHelper';
 import { getStatus } from '../../lib/status-client';
 import { useWindowSize } from '../../lib/hooks';
 
@@ -25,9 +25,8 @@ function AlbumList({ search, setCurrentAlbum }) {
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
   const size = useWindowSize();
-  const ref = useRef(null);
-  const [width, setWidth] = useState(0);
   const [lastSize, setLastSize] = useState();
+  const content = [];
 
   useEffect(() => {
     if (lastSize && lastSize.width !== size.width && lastSize.height !== size.height) {
@@ -116,14 +115,9 @@ function AlbumList({ search, setCurrentAlbum }) {
     isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' }
   );
 
-  useEffect(() => {
-    setWidth(ref.current ? ref.current.offsetWidth : 0)
-  }, [ref.current])
-
   if (albums && albums.length) {
-    const renderAlbums = [];
     albums.forEach((album) => {
-      renderAlbums.push(
+      content.push(
         <Album
           album={album}
           setCurrentAlbum={setCurrentAlbum}
@@ -133,30 +127,20 @@ function AlbumList({ search, setCurrentAlbum }) {
 
     if (paging) {
       return (
-        <Container id="albums" fluid style={albumsMargin()}>
-          <Row>
-            <Col ref={ref} lg={11} xl={11}>
-              <Row>{renderAlbums}</Row>
-            </Col>
-            <Col lg={1} xl={1}>
-              <PagingButtons
-                search={search}
-                loadMore={() => setPaging(nextPage(paging))}
-                loadPrevious={() => setPaging(previousPage(paging))}
-                loadRandom={() => setPaging(randomPage(paging))}
-                pages={paging.pages}
-                page={paging.currentPage}
-              />
-            </Col>
-          </Row>
-        </Container>
+        <PagedContainer 
+          search={search}
+          setPaging={setPaging}
+          paging={paging}
+          content={content}
+          isHorizontal
+        />
       );
     } else if (search && albums) {
       return (
         <Container id="albums" fluid style={albumsMargin()}>
           <Row>
             <Col lg={11} xl={11}>
-              <Row>{renderAlbums}</Row>
+              <Row>{content}</Row>
             </Col>
           </Row>
         </Container>

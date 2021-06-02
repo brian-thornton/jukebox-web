@@ -42,26 +42,19 @@ function SettingsEditor() {
     );
   };
 
+  const content = () => {
+    const rows = [];
+
+    Object.keys(settings.features).forEach(key => {
+      rows.push(settingRow(key, settings.features[key]));
+    });
+
+    return rows;
+  };
+
   return (
     <ListGroup>
-      {settingRow('admin', settings.features.admin)}
-      {settingRow('useSpotify', settings.spotify.useSpotify)}
-      {settingRow('albums', settings.features.albums)}
-      {settingRow('libraries', settings.features.libraries)}
-      {settingRow('tracks', settings.features.tracks)}
-      {settingRow('playlists', settings.features.playlists)}
-      {settingRow('queue', settings.features.queue)}
-      {settingRow('settings', settings.features.settings)}
-      {settingRow('volume', settings.features.volume)}
-      {settingRow('next', settings.features.next)}
-      {settingRow('stop', settings.features.stop)}
-      {settingRow('play', settings.features.play)}
-      {settingRow('playNow', settings.features.playNow)}
-      {settingRow('enqueue', settings.features.enqueue)}
-      {settingRow('playAlbum', settings.features.playAlbum)}
-      {settingRow('addToPlaylist', settings.features.addToPlaylist)}
-      {settingRow('downloadTrack', settings.features.downloadTrack)}
-      {settingRow('deletePlaylist', settings.features.deletePlaylist)}
+      {content()}
     </ListGroup>
   );
 }

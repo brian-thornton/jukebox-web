@@ -8,7 +8,7 @@ import { Track } from './shapes';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
-import PagingButtons from './common/PagingButtons';
+import PagedContainer from './common/PagedContainer';
 import { SettingsContext } from './layout/Jukebox';
 
 import './TrackList.css';
@@ -20,7 +20,7 @@ const propTypes = {
 function TrackList({ tracks, nextPage, previousPage, paging }) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
-  const renderTracks = [];
+  const content = [];
 
   tracks.forEach((track) => {
     if (track.path.split('.').pop().toLowerCase() === 'mp3') {
@@ -36,7 +36,7 @@ function TrackList({ tracks, nextPage, previousPage, paging }) {
         background: settings.styles.trackBackgroundColor,
       };
 
-      renderTracks.push(
+      content.push(
         (
           <Card style={trackCardStyle}>
             <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
@@ -67,21 +67,12 @@ function TrackList({ tracks, nextPage, previousPage, paging }) {
   });
 
   return (
-    <Container style={{ marginTop: '15px', marginLeft: '0px' }}>
-      <Row>
-        <Col md={10} lg={10} xl={10}>
-          <Row>{renderTracks}</Row>
-        </Col>
-        <Col md={2} lg={2} xl={2}>
-          <PagingButtons
-            loadMore={() => nextPage(paging)}
-            loadPrevious={() => previousPage(paging)}
-            pages={paging.pages}
-            page={paging.currentPage}
-          />
-        </Col>
-      </Row>
-    </Container>
+    <PagedContainer
+      paging={paging}
+      content={content}
+      clientNextPage={nextPage}
+      clientPreviousPage={previousPage}
+    />
   );
 }
 

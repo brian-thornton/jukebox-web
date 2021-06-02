@@ -52,10 +52,10 @@ function StyleEditor({
   };
 
   const controls = () => (
-    <React.Fragment>
+    <>
       <Button {...controlButtonProps} onClick={goBackToThemeList}>Back to Settings</Button>
       <Button {...controlButtonProps} onClick={() => setIsSaveAsModalOpen(true)}>Save As</Button>
-    </React.Fragment>
+    </>
   );
 
   useEffect(() => {

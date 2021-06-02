@@ -13,7 +13,6 @@ import {
 import ContentWithControls from '../common/ContentWithControls';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlaylistDeleteModal from './PlaylistDeleteModal';
-import styles from '../styles';
 import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PlayNowButton from '../PlayNowButton';
 import EnqueueButton from '../EnqueueButton';

@@ -32,6 +32,9 @@ function LibraryList() {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleDiscover = () => setShowDiscover(true);
+    const renderLibraries = [];
 
   const handleClose = (path) => {
     if (path) {
@@ -78,9 +81,6 @@ function LibraryList() {
     setShowDiscover(false);
   };
 
-  const handleShow = () => setShow(true);
-  const handleDiscover = () => setShowDiscover(true);
-
   const removeLibrary = (name) => {
     deleteLibrary(name).then(() => {
       getLibraries().then((data) => {
@@ -117,8 +117,6 @@ function LibraryList() {
   if (!isLoaded && !isLoading && !libraries.length) {
     loadLibraries();
   }
-
-  const renderLibraries = [];
 
   const buttonProps = {
     style: styles.buttonStyle,

@@ -5,8 +5,6 @@ import {
   Col,
   Alert,
   Button,
-  ListGroup,
-  ListGroupItem,
 } from 'react-bootstrap';
 import Playlists from './playlists/Playlists';
 import {
@@ -19,13 +17,9 @@ import styles from './styles';
 import ContentWithControls from './common/ContentWithControls';
 import { controlButtonProps } from '../lib/styleHelper';
 import PlayNowButton from './PlayNowButton';
-import PagingButtons from './common/PagingButtons';
-import {
-  getHeight,
-  initializePaging,
-  nextPage,
-  previousPage,
-} from '../lib/pageHelper';
+import Item from './common/Item';
+import PagedContainer from './common/PagedContainer';
+import { getHeight, initializePaging } from '../lib/pageHelper';
 import { SettingsContext } from './layout/Jukebox';
 
 function Queue() {
@@ -35,7 +29,6 @@ function Queue() {
   const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
-  const isScreenSmall = window.innerWidth < 700;
   const renderTracks = [];
 
   const [paging, setPaging] = useState();
@@ -83,29 +76,14 @@ function Queue() {
     }
   }, [paging]);
 
-  const queueMargin = () => {
-    return isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
-  };
-
   const content = () => {
     if (paging) {
       return (
-        <Container id="albums" fluid style={queueMargin()}>
-          <Row>
-            <Col lg={11} xl={11}>
-              <ListGroup>{renderTracks}</ListGroup>
-            </Col>
-            <Col lg={1} xl={1}>
-              <PagingButtons
-                pageDisabled={false}
-                loadMore={() => setPaging(nextPage(paging))}
-                loadPrevious={() => setPaging(previousPage(paging))}
-                pages={paging.pages}
-                page={paging.currentPage}
-              />
-            </Col>
-          </Row>
-        </Container>
+        <PagedContainer
+          setPaging={setPaging}
+          paging={paging}
+          content={renderTracks}
+        />
       );
     }
     return null;
@@ -138,11 +116,15 @@ function Queue() {
   tracks.forEach((track) => {
     renderTracks.push(
       (
-        <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
-          {track.name}
-          <PlayNowButton track={track} />
-          <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
-        </ListGroupItem>
+        <Item
+          text={track.name}
+          buttons={(
+            <>
+              <PlayNowButton track={track} />
+              <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
+            </>
+          )}
+        />
       ),
     );
   });

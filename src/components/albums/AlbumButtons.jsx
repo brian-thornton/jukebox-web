@@ -37,7 +37,7 @@ function AlbumButtons({
   );
 
   return (
-    <React.Fragment>
+    <>
       <Row>
         {albumButton(clearCurrentAlbum, 'Back to Albums')}
         {albumButton(playAlbum, 'Play Album')}
@@ -46,7 +46,7 @@ function AlbumButtons({
         {albumButton(() => enqueueTracks(tracks), 'Enqueue Album')}
         {albumButton(() => setAddToPlaylist(true), 'Add to Playlist')}
       </Row>
-    </React.Fragment>
+    </>
   );
 }
 

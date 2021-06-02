@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 function Album({
-  album, cover, setCurrentAlbum, coverArtOnly,
+  album, setCurrentAlbum, coverArtOnly,
 }) {
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState(defaultCover);
@@ -26,15 +26,7 @@ function Album({
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
       getCoverArt(album.path).then((image) => {
-        let src;
-
-        if (cover) {
-          src = cover;
-        } else if (image.type === 'image/jpeg') {
-          src = URL.createObjectURL(image);
-        } else {
-          src = defaultCover;
-        }
+        const src = image.type === 'image/jpeg' ? URL.createObjectURL(image) : defaultCover;
         setCoverArt(src);
       });
     }
