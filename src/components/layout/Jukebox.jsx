@@ -14,7 +14,6 @@ import Settings from '../settings/Settings';
 import SpotifyClient from '../../lib/spotify-client';
 import { getSettings } from '../../lib/settings-client';
 import { getStatus } from '../../lib/status-client';
-import Libraries from '../Libraries';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
 import WithKeyboardInput from './WithKeyboardInput';
@@ -105,14 +104,6 @@ function Jukebox() {
           break;
         case 'NewReleases':
           body = <NewReleases />;
-          break;
-        case 'Libraries':
-          body = (
-            <Libraries
-              search={search}
-              setCurrentAlbum={setCurrentAlbum}
-            />
-          );
           break;
         case 'SpotifyAlbums':
           body = <SpotifyAlbums search={search} />;

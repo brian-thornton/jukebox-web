@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import { getCoverArt } from '../../lib/librarian-client';
@@ -7,11 +7,8 @@ import styles from '../styles';
 import { Album as albumShape } from '../shapes';
 import { SettingsContext } from '../layout/Jukebox';
 
-import './Album.css';
-
 const propTypes = {
   album: albumShape.isRequired,
-  cover: PropTypes.string,
   setCurrentAlbum: PropTypes.func.isRequired,
   coverArtOnly: PropTypes.bool,
 };
@@ -21,7 +18,6 @@ function Album({
 }) {
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState(defaultCover);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
@@ -30,8 +26,9 @@ function Album({
         setCoverArt(src);
       });
     }
-    setIsLoaded(true);
   };
+
+  useEffect(() => loadCoverArt(), []);
 
   const albumName = () => {
     if (settings.preferences.showAlbumName) {
@@ -45,34 +42,25 @@ function Album({
     return <React.Fragment />;
   };
 
-  const largeAlbum = () => {
-    if (!settings.preferences.showAlbumsWithoutCoverArt && coverArt === defaultCover) {
-      return <React.Fragment />;
-    }
-
-    if (coverArtOnly) {
-      return (
-        <Card className="h-55 w-85 album-card-small" onClick={() => setCurrentAlbum(album)}>
-          <Card.Img style={styles.albumImageSmall} top src={coverArt} />
-        </Card>
-      );
-    }
-
-    return (
-      <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
-        <Card.Img style={styles.albumImage} top src={coverArt} />
+  const body = () => {
+    let body;
+    if (!coverArtOnly) {
+      body = (
         <Card.Body style={{ padding: '0px' }}>
           {albumName()}
         </Card.Body>
-      </Card>
-    );
-  };
+      );
+    }
 
-  if (!isLoaded) {
-    loadCoverArt();
+    return body;
   }
 
-  return largeAlbum();
+  return (
+    <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
+      <Card.Img style={styles.albumImage} top src={coverArt} />
+      {body()}
+    </Card>
+  );
 }
 
 Album.propTypes = propTypes;

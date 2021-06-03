@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ListGroup, ListGroupItem, Button, Col, Row, Container,
 } from 'react-bootstrap';
@@ -29,8 +29,6 @@ function LibraryList() {
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
@@ -58,11 +56,8 @@ function LibraryList() {
   };
 
   const loadLibraries = () => {
-    setIsLoading(true);
     getLibraries().then((data) => {
       setLibraries(data);
-      setIsLoading(false);
-      setIsLoaded(true);
       updateTotals(data);
     });
   };
@@ -114,9 +109,7 @@ function LibraryList() {
     });
   };
 
-  if (!isLoaded && !isLoading && !libraries.length) {
-    loadLibraries();
-  }
+  useEffect(() => loadLibraries(), []);
 
   const buttonProps = {
     style: styles.buttonStyle,

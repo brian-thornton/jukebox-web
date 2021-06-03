@@ -61,7 +61,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const largeAlbum = () => {
     if (paging && !addToPlaylist) {
       return (
-        <React.Fragment>
+        <>
           <Row style={{ marginTop: '70px' }}>
             <Col lg={3} xl={3}>
               <Card style={styles.albumCardLarge} className="h-55 w-85">
@@ -82,11 +82,11 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
               />
             </Col>
           </Row>
-        </React.Fragment>
+        </>
       );
     }
 
-    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+    return <Playlists mode="addToPlaylist" tracks={tracks} />;
   };
 
 

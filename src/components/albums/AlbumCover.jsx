@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card } from 'react-bootstrap';
 
 import { getCoverArt } from '../../lib/librarian-client';
@@ -13,8 +13,6 @@ const propTypes = {
 
 function AlbumCover({ album }) {
   const [coverArt, setCoverArt] = useState('');
-  const [isCoverArtLoaded, setIsCoverArtLoaded] = useState(false);
-  const [isCoverArtLoading, setIsCoverArtLoading] = useState(false);
 
   const getAlbumCoverArt = () => {
     const nameArray = album.name.split('-');
@@ -29,28 +27,20 @@ function AlbumCover({ album }) {
   };
 
   const loadCoverArt = () => {
-    if (!isCoverArtLoading) {
-      setIsCoverArtLoading(true);
-      getCoverArt(album.path).then((image) => {
-        let src;
-        if (album.id) {
-          src = album.images[1].url;
-        } else if (image.type === 'image/jpeg') {
-          src = URL.createObjectURL(image);
-        } else {
-          getAlbumCoverArt();
-        }
-        setIsCoverArtLoading(false);
-        setIsCoverArtLoaded(true);
-        setCoverArt(src);
-      });
-    }
+    getCoverArt(album.path).then((image) => {
+      let src;
+      if (album.id) {
+        src = album.images[1].url;
+      } else if (image.type === 'image/jpeg') {
+        src = URL.createObjectURL(image);
+      } else {
+        getAlbumCoverArt();
+      }
+      setCoverArt(src);
+    });
   };
 
-
-  if (!isCoverArtLoaded) {
-    loadCoverArt();
-  }
+  useEffect(() => loadCoverArt(), []);
 
   return (
     <Card.Img top src={coverArt} />

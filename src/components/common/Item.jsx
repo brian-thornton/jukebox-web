@@ -22,7 +22,6 @@ function Item({ buttons, onClick, text }) {
     borderColor: '#708090',
   };
 
-
   return (
     <ListGroupItem
       onClick={onClick}

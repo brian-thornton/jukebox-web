@@ -29,8 +29,6 @@ function PagingButtons({
   page,
 }) {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
-  const isMedium = window.innerWidth >= 700 && window.innerWidth < 1200
 
   if (!search) {
     const pageButtonProps = {
@@ -69,17 +67,13 @@ function PagingButtons({
       return null;
     }
 
-    const next = isMedium ? <ChevronRight /> : 'Next';
-    const previous = isMedium ? <ChevronLeft /> : 'Previous';
-    const random = isMedium ? <Disc /> : 'Random';
-
     return (
-      <React.Fragment>
+      <>
         <Button style={{ ...pageButtonProps, marginTop: '20px' }} disabled={pageDisabled || nextDisabled} block variant="outline-light" onClick={loadMore}><ChevronRight /></Button>
         <Button style={{ ...pageButtonProps, marginTop: '10px' }} disabled={pageDisabled || previousDisabled} block variant="outline-light" onClick={loadPrevious}><ChevronLeft /></Button>
         {loadRandom && <Button style={{ ...pageButtonProps, marginTop: '10px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}><Disc /></Button>}
         {pageOf()}
-      </React.Fragment>
+      </>
     );
   }
 

@@ -4,7 +4,7 @@ import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
 import styles from './styles';
-import Album from './albums/Album';
+import TrackAlbum from './TrackAlbum';
 import { Track as TrackShape } from './shapes';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
@@ -30,9 +30,8 @@ function Track({ track, trackAlbums, trackAlbumsLoaded, showAlbumCovers, setCurr
     if (showAlbumCovers && ta) {
       if (settings && settings.features) {
         return (
-          <Album
+          <TrackAlbum
             album={ta}
-            coverArtOnly
             setCurrentAlbum={setCurrentAlbum}
           />
         );

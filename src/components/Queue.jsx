@@ -25,8 +25,6 @@ import { SettingsContext } from './layout/Jukebox';
 function Queue() {
   const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const renderTracks = [];
@@ -47,14 +45,14 @@ function Queue() {
 
     getQueue(start, limit).then((data) => {
       setTracks(data.tracks);
-      setIsLoading(false);
-      setIsLoaded(true);
 
       if (!paging) {
         setPaging(initializePaging(data.totalTracks, 90, initialHeight));
       }
     });
   };
+
+  useEffect(() => loadQueue(), []);
 
   // const refreshQueue = () => {
   //   loadQueue(queuePage);
@@ -96,11 +94,6 @@ function Queue() {
       });
     });
   };
-
-  if (!isLoading && !isLoaded && !tracks.length) {
-    setIsLoading(true);
-    loadQueue();
-  }
 
   const remove = (track) => {
     removeTracksFromQueue([track]);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import {
   Container,
   Col,
@@ -9,12 +9,6 @@ import { nextPage, previousPage, randomPage } from '../../lib/pageHelper';
 
 function PagedContainer({ content, paging, setPaging, search, isHorizontal, clientNextPage, clientPreviousPage }) {
   const isScreenSmall = window.innerWidth < 700;
-  const [width, setWidth] = useState(0);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    setWidth(ref.current ? ref.current.offsetWidth : 0)
-  }, [ref.current])
 
   const margin = () => {
     const marginTop = isHorizontal ? '90px' : '0px';
@@ -49,7 +43,7 @@ function PagedContainer({ content, paging, setPaging, search, isHorizontal, clie
   return (
     <Container fluid style={margin()}>
       <Row>
-        <Col ref={ref} lg={11} xl={11}>
+        <Col lg={11} xl={11}>
           <Row>{content}</Row>
         </Col>
         <Col lg={1} xl={1}>

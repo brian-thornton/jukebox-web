@@ -32,7 +32,6 @@ function NavigationButtons({
   };
 
   navLinks = addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
-  navLinks = addNavLink(navLinks, features.libraries, 'Libraries', 'Libraries');
 
   if (settings.spotify.useSpotify) {
     navLinks = addNavLink(navLinks, spotifyFeatures.albums, 'SpotifyAlbums', 'Spotify Albums');
