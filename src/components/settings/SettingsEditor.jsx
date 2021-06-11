@@ -5,15 +5,10 @@ import {
 import styles from '../styles';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/Jukebox';
+import { buttonProps } from '../../lib/styleHelper';
 
 function SettingsEditor() {
   const settings = useContext(SettingsContext);
-
-  const buttonProps = {
-    style: styles.buttonStyle,
-    variant: 'outline-light',
-    className: 'float-right',
-  };
 
   const updateFeature = (name, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
@@ -31,7 +26,7 @@ function SettingsEditor() {
       <ListGroupItem style={styles.cardStyle}>
         {name}
         <Button
-          {...buttonProps}
+          {...buttonProps(settings)}
           onClick={() => updateFeature(name, !value)}
           enabled={value}
           style={style}

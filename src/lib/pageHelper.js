@@ -20,16 +20,11 @@ const getWidth = () => {
 };
 
 const getHeight = () => {
-  console.log(window.innerHeight)
   return window.innerHeight;
 };
 
 const pageRows = (initialHeight, contentHeight) => {
-  console.log('wat');
-  console.log((getHeight() - 150));
-  console.log(contentHeight);
   const rows = Math.floor((initialHeight - 100)/ contentHeight);
-  console.log(rows);
   return rows;
 };
 
@@ -86,10 +81,6 @@ const getRandomInt = (pageCount) => {
 };
 
 const pageSize = (pageHeight, itemHeight) => {
-  console.log('yo');
-  console.log(itemHeight)
-  // return Math.floor(getWidth() / 500) * pageRows(pageHeight, itemHeight);
-  console.log(getHeight())
   return Math.floor(getHeight() / itemHeight);
 };
 
@@ -99,7 +90,6 @@ const rowSize = (itemWidth) => {
 }
 
 const initHorizontalPaging = (totalItems, itemHeight, pageHeight, itemWidth) => {
-  console.log('debug1');
   const itemPageSize = pageRows(pageHeight, itemHeight) * rowSize(itemWidth);
   const currentPage = { start: 0, limit: itemPageSize - 1 };
   const pages = calculatePages(totalItems, itemPageSize);
@@ -109,8 +99,6 @@ const initHorizontalPaging = (totalItems, itemHeight, pageHeight, itemWidth) => 
     currentPage,
     pages
   };
-
-  console.log(paging);
 
   return paging;
 }

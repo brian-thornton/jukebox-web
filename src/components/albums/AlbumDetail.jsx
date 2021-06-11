@@ -17,7 +17,7 @@ import Playlists from '../playlists/Playlists';
 import styles from '../styles';
 import {
   getHeight,
-  initializePaging,
+  initHorizontalPaging,
   nextPage,
   previousPage,
 } from '../../lib/pageHelper';
@@ -38,7 +38,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const loadTracks = () => {
     if (!areTracksLoading) {
       getAlbumTracks(album.path).then((data) => {
-        setPaging(initializePaging(data.length, 100, initialHeight));
+        setPaging(initHorizontalPaging(data.length, 100, initialHeight, 650));
         setTracks(data);
         setAreTracksLoaded(true);
         setAreTracksLoading(false);
@@ -59,7 +59,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   );
 
   const largeAlbum = () => {
-    if (paging && !addToPlaylist) {
+    if (paging && !addToPlaylist && album) {
       return (
         <>
           <Row style={{ marginTop: '70px' }}>

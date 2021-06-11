@@ -16,28 +16,32 @@ function PagedContainer({ content, paging, setPaging, search, isHorizontal, clie
   };
 
   const pagingButtons = () => {
-    if (setPaging) {
+    if (paging.pages && paging.pages.length > 1) {
+      if (setPaging) {
+        return (
+          <PagingButtons
+            search={search}
+            loadMore={() => setPaging(nextPage(paging))}
+            loadPrevious={() => setPaging(previousPage(paging))}
+            loadRandom={() => setPaging(randomPage(paging))}
+            pages={paging.pages}
+            page={paging.currentPage}
+          />
+        );
+      }
+
       return (
         <PagingButtons
           search={search}
-          loadMore={() => setPaging(nextPage(paging))}
-          loadPrevious={() => setPaging(previousPage(paging))}
-          loadRandom={() => setPaging(randomPage(paging))}
+          loadMore={() => clientNextPage(paging)}
+          loadPrevious={() => clientPreviousPage(paging)}
           pages={paging.pages}
           page={paging.currentPage}
         />
       );
     }
 
-    return (
-      <PagingButtons
-        search={search}
-        loadMore={() => clientNextPage(paging)}
-        loadPrevious={() => clientPreviousPage(paging)}
-        pages={paging.pages}
-        page={paging.currentPage}
-      />
-    );
+    return null;
   }
 
   return (

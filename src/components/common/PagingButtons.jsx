@@ -48,19 +48,19 @@ function PagingButtons({
     }
 
     const pageOf = () => {
-      let page;
+      let result;
 
       try {
         if (pages.length) {
-          page = pages.findIndex(p => p.start === page.start && p.limit === page.limit)
+          result = pages.findIndex(p => p.start === page.start && p.limit === page.limit)
         }
       } catch {
-
+        
       }
 
-      if (page) {
+      if (result >= 0) {
         return (
-          <div style={{ color: '#FFFFFF' }}>{pages.length ? `${page} of ${pages.length}` : 'Loading...'}</div>
+          <div style={{ color: '#FFFFFF' }}>{pages.length ? `${result + 1} of ${pages.length}` : 'Loading...'}</div>
         )
       }
 

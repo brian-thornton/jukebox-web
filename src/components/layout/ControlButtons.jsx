@@ -7,8 +7,8 @@ import {
   VolumeDown,
   XOctagonFill,
 } from 'react-bootstrap-icons';
-import { up, down } from '../../lib/volume-client';
 
+import { up, down } from '../../lib/volume-client';
 import Button from '../Button';
 import { next, stop } from '../../lib/queue-client';
 import { SettingsContext } from './Jukebox';

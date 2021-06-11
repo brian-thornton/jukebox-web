@@ -1,6 +1,8 @@
 import { getBlob, getData, page, post, postParams } from './service-helper';
-
+import defaultCover from './default_album.jpg';
+const albumArt = require('album-art');
 const path = '/librarian';
+
 export const getLibraries = () => getData(`${path}/libraries`);
 export const getCoverArt = (url) => getBlob(`${path}/coverArt?path=${url}`);
 export const getAlbumTracks = (url) => getData(`${path}/albumTracks?path=${url}`);
@@ -35,6 +37,25 @@ export const deleteLibrary = async (name) => {
     method: 'delete',
   });
   return response;
+}
+
+export const coverArtUrl = async (album) => {
+  const nameArray = album.name.split('-');
+  const artist = nameArray[0];
+  const albumName = nameArray[1];
+  const existingCover = await getCoverArt(album.path);
+
+  if (existingCover && existingCover.type === 'image/jpeg') {
+    return URL.createObjectURL(existingCover);
+  } else {
+    const data = await albumArt(artist, { album: albumName });
+
+    if (data.toString().includes('http')) {
+      return data;
+    } 
+  }
+
+  return defaultCover;
 }
 
 export const scan = async (library) => {

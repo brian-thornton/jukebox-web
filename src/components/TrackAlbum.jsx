@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
 import { Album as albumShape } from './shapes';
-import defaultCover from './albums/default_album.jpg';
-import { getCoverArt } from '../lib/librarian-client';
+import { coverArtUrl } from '../lib/librarian-client';
 import styles from './styles';
-import { SettingsContext } from './layout/Jukebox';
 import './TrackAlbum.css';
 
 const propTypes = {
@@ -15,25 +13,23 @@ const propTypes = {
 };
 
 function TrackAlbum({ album, setCurrentAlbum }) {
-  const settings = useContext(SettingsContext);
-  const [coverArt, setCoverArt] = useState(defaultCover);
+  const [coverArt, setCoverArt] = useState();
 
   const loadCoverArt = () => {
-    if (album.coverArtExists || settings.features.admin) {
-      getCoverArt(album.path).then((image) => {
-        const src = image.type === 'image/jpeg' ? URL.createObjectURL(image) : defaultCover;
-        setCoverArt(src);
-      });
-    }
+    coverArtUrl(album).then(data => setCoverArt(data));
   };
 
   useEffect(() => loadCoverArt(), []);
 
-  return (
-    <Card style={styles.albumCardStyleSmall} className="album-card-small" onClick={() => setCurrentAlbum(album)}>
-      <Card.Img top src={coverArt} />
-    </Card>
-  );
+  if (coverArt) {
+    return (
+      <Card style={styles.albumCardStyleSmall} className="album-card-small" onClick={() => setCurrentAlbum(album)}>
+        <Card.Img top src={coverArt} />
+      </Card>
+    );
+  }
+
+  return <React.Fragment />;
 }
 
 TrackAlbum.propTypes = propTypes;

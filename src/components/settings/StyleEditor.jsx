@@ -8,6 +8,7 @@ import SkinSaveAsModal from './SkinSaveAsModal';
 import ColorPicker from './ColorPicker';
 import CopyFromModal from './CopyFromModal';
 import { SettingsContext } from '../layout/Jukebox';
+import { buttonProps } from '../../lib/styleHelper';
 
 function StyleEditor({
   skin,
@@ -34,12 +35,6 @@ function StyleEditor({
     buttonFontWeight: skin.buttonFontWeight,
     trackBackgroundColor: skin.trackBackgroundColor,
   });
-
-  const buttonProps = {
-    style: { ...styles.settings, background: settings.styles.buttonBackgroundColor },
-    variant: 'outline-light',
-    className: 'float-right',
-  };
 
   const controlButtonProps = {
     style: {
@@ -89,7 +84,7 @@ function StyleEditor({
         &nbsp;
       </Button>
       <Button
-        {...buttonProps}
+        {...buttonProps(settings)}
         onClick={() => {
           setCopyTo(name);
           setIsCopyFromOpen(true);

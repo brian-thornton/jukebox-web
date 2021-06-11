@@ -1,17 +1,14 @@
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   Row,
   Col,
   Button,
 } from 'react-bootstrap';
 import CoverArtSearchModal from './CoverArtSearchModal';
-import { saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
-import defaultCover from './default_album.jpg';
+import { coverArtUrl, saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import { Album } from '../shapes';
 import { controlButtonProps } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/Jukebox';
-
-const albumArt = require('album-art');
 
 const propTypes = {
   album: Album.isRequired,
@@ -23,16 +20,7 @@ function AlbumAdminButtons({ album }) {
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
   const saveCoverArtToLibrary = () => saveCoverArt({ album, url: coverArt });
 
-  const getCoverArt = () => {
-    const nameArray = album.name.split('-');
-
-    albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
-      const cover = data.toString().includes('http') ? data : defaultCover;
-      setCoverArt(cover);
-    });
-  };
-
-  getCoverArt();
+  useEffect(() => setCoverArt(coverArtUrl(album)), []);
 
   const albumButton = (onClick, name) => (
     <Col lg={6} style={{ padding: '0px' }}>
@@ -46,7 +34,7 @@ function AlbumAdminButtons({ album }) {
         <>
           <Row>
             {albumButton(() => removeCoverArt(album), 'Remove Cover')}
-            {albumButton(getCoverArt, 'Refresh Cover')}
+            {albumButton(() => setCoverArt(coverArtUrl(album)), 'Refresh Cover')}
           </Row>
           <Row>
             {albumButton(() => setIsCustomSearchOpen(true), 'Custom Search')}

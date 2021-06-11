@@ -21,6 +21,7 @@ import Item from './common/Item';
 import PagedContainer from './common/PagedContainer';
 import { getHeight, initializePaging } from '../lib/pageHelper';
 import { SettingsContext } from './layout/Jukebox';
+import { buttonProps } from '../lib/styleHelper';
 
 function Queue() {
   const settings = useContext(SettingsContext);
@@ -100,12 +101,6 @@ function Queue() {
     loadQueue();
   };
 
-  const buttonProps = {
-    style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
-    variant: 'outline-light',
-    className: 'float-right',
-  };
-
   tracks.forEach((track) => {
     renderTracks.push(
       (
@@ -114,7 +109,7 @@ function Queue() {
           buttons={(
             <>
               <PlayNowButton track={track} />
-              <Button {...buttonProps} onClick={() => remove(track)}>Delete</Button>
+              <Button {...buttonProps(settings)} onClick={() => remove(track)}>Delete</Button>
             </>
           )}
         />

@@ -13,19 +13,12 @@ const propTypes = {
 
 function Tracks({ search, setCurrentAlbum }) {
   const [paging, setPaging] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
   const [tracks, setTracks] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [pageDisabled, setPageDisabled] = useState(true);
 
   const loadTracks = (loadPage) => {
-    setIsLoading(true);
     if (search) {
       searchTracks(search).then((data) => {
         setTracks(data);
-        setIsLoading(false);
-        setIsLoaded(true);
       });
     } else {
       const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
@@ -37,11 +30,9 @@ function Tracks({ search, setCurrentAlbum }) {
 
       getTracks(start, limit).then((data) => {
         setTracks(data.tracks);
-        setIsLoading(false);
-        setPageDisabled(false);
 
         if (!paging) {
-          setPaging(initHorizontalPaging(data.totalTracks, 175, initialHeight, 300));
+          setPaging(initHorizontalPaging(data.totalTracks, 175, getHeight(), 300));
         }
       });
     }
