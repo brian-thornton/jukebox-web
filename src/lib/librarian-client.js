@@ -24,8 +24,8 @@ export const searchAlbums = (search, start, limit) => {
   return getData(`${path}/search?search=${search}&type=albums&${page(start, limit)}`);
 };
 
-export const searchTracks = (search) => {
-  return getData(`${path}/search?search=${search}&type=tracks`);
+export const searchTracks = (search, start, limit) => {
+  return getData(`${path}/search?search=${search}&type=tracks&${page(start, limit)}`);
 };
 
 export const getTracks = (start, limit) => {

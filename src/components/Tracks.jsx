@@ -16,14 +16,17 @@ function Tracks({ search, setCurrentAlbum }) {
   const [tracks, setTracks] = useState([]);
 
   const loadTracks = (loadPage) => {
-    if (search) {
-      searchTracks(search).then((data) => {
-        setTracks(data);
-      });
-    } else {
-      const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
-      let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
+    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
 
+    if (search) {
+      searchTracks(search, start, limit).then((data) => {
+        setTracks(data.tracks);
+        if (!paging) {
+          setPaging(initHorizontalPaging(data.totalTracks, 175, getHeight(), 300));
+        }
+      });
+    } else {  
       if (start === 0) {
         limit += 1;
       }
