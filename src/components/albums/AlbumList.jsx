@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  Container,
-  Col,
-  Row,
-} from 'react-bootstrap';
+
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Album from './Album';
 import PagedContainer from '../common/PagedContainer';
-import { getHeight, initHorizontalPaging, clearCurrentPage, saveCurrentPage, setKnownPage } from '../../lib/pageHelper';
+import {
+  clearCurrentPage,
+  getHeight,
+  initHorizontalPaging,
+  saveCurrentPage,
+  setKnownPage,
+} from '../../lib/pageHelper';
 import { getStatus } from '../../lib/status-client';
 import { useWindowSize } from '../../lib/hooks';
 
@@ -21,12 +23,13 @@ function AlbumList({ search, setCurrentAlbum }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
-  const isScreenSmall = window.innerWidth < 700;
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
   const size = useWindowSize();
   const [lastSize, setLastSize] = useState();
   const content = [];
+  const [searchPageSet, setSearchPageSet] = useState(false);
+  const [totalAlbums, setTotalAlbums] = useState();
 
   useEffect(() => {
     if (lastSize && lastSize.width !== size.width && lastSize.height !== size.height) {
@@ -37,83 +40,108 @@ function AlbumList({ search, setCurrentAlbum }) {
     setLastSize(size);
   }, [size])
 
-  const loadAlbums = (loadPage) => {
-    setIsLoading(true);
-    setAlbums([]);
-
-    if (search) {
-      setAlertText('Searching...');
-      searchAlbums(search).then((data) => {
-        if (!data.length) {
-          setAlertText('No results found.');
-        } else {
-          setAlbums(data);
-        }
-        window.scrollTo(0, 0);
-        setIsLoading(false);
-      });
-    } else {
-      const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
-      let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
-
-      if (start === 0) {
-        limit += 1;
+  const applyPageIfExists = (pageData, useStorePage, status) => {
+    if (useStorePage) {
+      try {
+        const updated = setKnownPage(pageData, status.currentPages.albums);
+        setPaging(updated);
+      } catch {
+        setPaging(pageData);
       }
+    } else {
+      setPaging(pageData);
+    }
+  }
 
-      getAlbums(start, limit).then((data) => {
-        if (paging && paging.currentPage.start === 0) {
+  const initPaging = (totalAlbums) => {
+    const pageData = initHorizontalPaging(totalAlbums, 275, initialHeight, 225);
+    getStatus().then((status) => {
+      if (!paging) {
+        applyPageIfExists(pageData, status.currentPages.albums, status)
+      } else if (!search && paging && status.currentPages && status.currentPages.albums) {
+        applyPageIfExists(pageData, !status.currentPages.albums, status)
+      } else {
+        setPaging(pageData);
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (!paging && albums.length) {
+      initPaging(totalAlbums);
+    }
+  }, [albums])
+
+  const findAlbums = async (start, limit) => {
+    await clearCurrentPage('albums');
+    setAlertText('Searching...');
+    searchAlbums(search, start, limit).then((data) => {
+      if (!data.albums.length) {
+        setAlertText('No results found.');
+      } else {
+        setAlbums(data.albums);
+        if (!searchPageSet) {
+          setTotalAlbums(data.albums.length);
+          setSearchPageSet(true);
+          initPaging(data.totalAlbums);
+        }
+      }
+      window.scrollTo(0, 0);
+      setIsLoading(false);
+    }).catch(err => console.log(err));
+  };
+
+  const loadAlbums = (loadPage) => {
+    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
+    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+
+    if (!isLoading) {
+      setIsLoading(true);
+      setAlbums([]);
+      if (search) {
+        const searchStart = searchPageSet ? start : 0;
+        const searchEnd = searchPageSet ? limit : paging ? paging.pageSize : 5;
+        findAlbums(searchStart, searchEnd);
+      } else {
+        if (start === 0) {
+          limit += 1;
+        }
+
+        getAlbums(start, limit).then((data) => {
           if (!data.length) {
             setAlertText('No albums found. Set up your library in settings.');
           }
+
+          setTotalAlbums(data.totalAlbums);
           setAlbums(data.albums);
-        } else {
-          setAlbums(data.albums);
-        }
-
-        if (!paging) {
-          getStatus().then((status) => {
-            if (status.currentPages && status.currentPages.albums) {
-              const p = initHorizontalPaging(data.totalAlbums, 275, initialHeight, 225);
-
-              try {
-                const updated = setKnownPage(p, status.currentPages.albums);
-                setPaging(updated);
-              } catch {
-                setPaging(initHorizontalPaging(data.totalAlbums, 275, initialHeight, 225));
-              }
-            } else {
-              setPaging(initHorizontalPaging(data.totalAlbums, 275, initialHeight, 225));
-            }
-          })
-        }
-
-        window.scrollTo(0, 0);
-        setIsLoading(false);
-      });
+          window.scrollTo(0, 0);
+          setIsLoading(false);
+        });
+      }
     }
-  };
+  }
 
   useEffect(() => {
-    if (search || (!isLoading)) {
-      loadAlbums();
+    if (!search) {
+      setSearchPageSet(null);
+
+      if (albums.length) {
+        window.location.reload();
+      }
     }
+
+    loadAlbums();
   }, [search]);
 
   useEffect(() => {
-    if (paging) {
-      if (paging.currentPage) {
-        loadAlbums(paging.currentPage);
-        saveCurrentPage(paging.currentPage, 'albums');
-      } else {
+    if (!isLoading && paging && paging.currentPage !== 0) {
+      if (paging.currentPage || !search) {
+        setIsLoading(true);
         loadAlbums(paging.currentPage);
       }
       saveCurrentPage(paging.currentPage, 'albums');
     }
   }, [paging]);
-
-  const albumsMargin = () => (
-    isScreenSmall ? {} : { marginLeft: '0px', marginTop: '90px', height: '100%' }
-  );
 
   if (albums && albums.length) {
     albums.forEach((album) => {
@@ -127,27 +155,14 @@ function AlbumList({ search, setCurrentAlbum }) {
 
     if (paging) {
       return (
-        <PagedContainer 
-          search={search}
+        <PagedContainer
           setPaging={setPaging}
           paging={paging}
           content={content}
           isHorizontal
         />
       );
-    } else if (search && albums) {
-      return (
-        <Container id="albums" fluid style={albumsMargin()}>
-          <Row>
-            <Col lg={11} xl={11}>
-              <Row>{content}</Row>
-            </Col>
-          </Row>
-        </Container>
-      );
     }
-
-    return null;
   }
 
   return <React.Fragment />;

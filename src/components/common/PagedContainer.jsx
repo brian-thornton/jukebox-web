@@ -7,7 +7,7 @@ import {
 import PagingButtons from './PagingButtons';
 import { nextPage, previousPage, randomPage } from '../../lib/pageHelper';
 
-function PagedContainer({ content, paging, setPaging, search, isHorizontal, clientNextPage, clientPreviousPage }) {
+function PagedContainer({ content, paging, setPaging, isHorizontal, clientNextPage, clientPreviousPage }) {
   const isScreenSmall = window.innerWidth < 700;
 
   const margin = () => {
@@ -20,7 +20,6 @@ function PagedContainer({ content, paging, setPaging, search, isHorizontal, clie
       if (setPaging) {
         return (
           <PagingButtons
-            search={search}
             loadMore={() => setPaging(nextPage(paging))}
             loadPrevious={() => setPaging(previousPage(paging))}
             loadRandom={() => setPaging(randomPage(paging))}
@@ -32,7 +31,6 @@ function PagedContainer({ content, paging, setPaging, search, isHorizontal, clie
 
       return (
         <PagingButtons
-          search={search}
           loadMore={() => clientNextPage(paging)}
           loadPrevious={() => clientPreviousPage(paging)}
           pages={paging.pages}
