@@ -77,7 +77,7 @@ const totalTracksStyle = {
 };
 
 const totalTracksCount = {
-  float: 'right',
+  float: 'left',
   marginLeft: '5px',
 };
 

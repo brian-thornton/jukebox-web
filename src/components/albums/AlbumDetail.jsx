@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import {
   Card,
@@ -14,6 +14,7 @@ import AlbumCover from './AlbumCover';
 import AlbumTracks from '../AlbumTracks';
 import { getAlbumTracks } from '../../lib/librarian-client';
 import Playlists from '../playlists/Playlists';
+import { SettingsContext } from '../layout/Jukebox';
 import styles from '../styles';
 import {
   getHeight,
@@ -34,6 +35,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
+  const settings = useContext(SettingsContext);
 
   const loadTracks = () => {
     if (!areTracksLoading) {
@@ -67,7 +69,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
               <Card style={styles.albumCardLarge} className="h-55 w-85">
                 <AlbumCover album={album} />
                 <Card.Body>
-                  <Card.Title style={{ maxHeight: '25px', fontSize: '15px' }}>{album.name}</Card.Title>
+                  <Card.Title style={{ maxHeight: '25px', fontSize: '15px', fontFamily: settings.styles.listFont }}>{album.name}</Card.Title>
                 </Card.Body>
                 {albumButtons}
               </Card>

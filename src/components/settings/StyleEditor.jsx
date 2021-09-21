@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
-  ListGroup, ListGroupItem, Button,
+  Dropdown, ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
+
+import Item from '../common/Item';
 import styles from '../styles';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import ColorPicker from './ColorPicker';
 import CopyFromModal from './CopyFromModal';
 import { SettingsContext } from '../layout/Jukebox';
-import { buttonProps } from '../../lib/styleHelper';
+import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 
 function StyleEditor({
   skin,
@@ -25,31 +27,25 @@ function StyleEditor({
   const [copyTo, setCopyTo] = useState();
   const [colors, setColors] = useState({
     headerColor: skin.headerColor,
+    headerFont: skin.headerFont,
     footerColor: skin.footerColor,
+    footerFont: skin.footerFont,
     fontColor: skin.fontColor,
     fontWeight: skin.fontWeight,
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    buttonFont: skin.buttonFont,
     buttonFontColor: skin.buttonFontColor,
     buttonFontWeight: skin.buttonFontWeight,
     trackBackgroundColor: skin.trackBackgroundColor,
+    listFont: skin.listFont,
   });
-
-  const controlButtonProps = {
-    style: {
-      ...styles.settingsButtonStyle,
-      color: settings.styles.fontColor,
-      background: settings.styles.buttonBackgroundColor,
-    },
-    variant: 'outline-light',
-    className: 'float-right',
-  };
 
   const controls = () => (
     <>
-      <Button {...controlButtonProps} onClick={goBackToThemeList}>Back to Settings</Button>
-      <Button {...controlButtonProps} onClick={() => setIsSaveAsModalOpen(true)}>Save As</Button>
+      <Button {...controlButtonProps(settings)} onClick={goBackToThemeList}>Back to Settings</Button>
+      <Button {...controlButtonProps(settings)} onClick={() => setIsSaveAsModalOpen(true)}>Save As</Button>
     </>
   );
 
@@ -64,36 +60,110 @@ function StyleEditor({
     setIsContextSet(true);
   }
 
-  const styleRow = name => (
-    <ListGroupItem style={styles.cardStyle}>
-      {name}
-      <Button
-        style={{ float: 'right', width: '100px', background: colors[name] }}
-        onClick={() => {
-          setColorMode(name);
+  const styleRow = (name, display) => (
+    <Item
+      text={display}
+      buttons={(
+        <>
+          <Button
+            style={{ float: 'right', width: '100px', background: colors[name] }}
+            onClick={() => {
+              setColorMode(name);
 
-          const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor', 'trackBackgroundColor'];
+              const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor', 'trackBackgroundColor'];
 
-          if (gradientTypes.includes(name)) {
-            setAllowGradient(true);
-          } else {
-            setAllowGradient(false);
-          }
-        }}
-      >
-        &nbsp;
-      </Button>
-      <Button
-        {...buttonProps(settings)}
-        onClick={() => {
-          setCopyTo(name);
-          setIsCopyFromOpen(true);
-        }}
-      >
-        Copy From
-      </Button>
-    </ListGroupItem>
+              if (gradientTypes.includes(name)) {
+                setAllowGradient(true);
+              } else {
+                setAllowGradient(false);
+              }
+            }}
+          >
+            &nbsp;
+          </Button>
+          <Button
+            {...buttonProps(settings)}
+            onClick={() => {
+              setCopyTo(name);
+              setIsCopyFromOpen(true);
+            }}
+          >
+            Copy From
+          </Button>
+        </>
+      )}
+    />
   );
+
+  const fontRow = (name, display) => {
+    const availableFonts = [
+      'Azeret Mono',
+      'Audiowide',
+      'Black Ops One',
+      'Macondo',
+      'Roboto Condensed',
+      'Oswald',
+      'Titillium Web',
+      'Bebas Neue',
+      'Anton',
+      'Josefin Sans',
+      'Lobster',
+      'Prompt',
+      'Cairo',
+      'Teko',
+      'Architects Daughter',
+      'Indie Flower',
+      'Balsamiq Sans',
+      'Staatliches',
+      'Patrick Hand',
+      'Permanent Marker',
+      'Alfa Slab One',
+      'Play',
+      'Amatic SC',
+      'Cookie',
+      'Fredoka One',
+      'Righteous',
+      'Bangers',
+      'Cinzel',
+      'Courgette',
+      'Luckiest Guy',
+      'Jost',
+      'Russo One',
+      'Orbitron',
+      'Press Start 2P',
+      'Monoton',
+      'Ultra',
+      'Rock Salt',
+      'Carter One',
+      'Unica One',
+      'Julius Sans One'
+    ];
+    const options = availableFonts.map((font) => (
+      <Dropdown.Item
+        onClick={() => setColors({ ...colors, [name]: font })}
+        eventKey={font}
+        style={{ fontFamily: font }}
+      >
+        {font}
+      </Dropdown.Item>
+    ));
+
+    return (
+      <Item
+        text={display}
+        buttons={(
+          <Dropdown style={{ float: 'right' }}>
+            <Dropdown.Toggle variant="success" id="dropdown-basic" style={{ fontFamily: colors[name] }}>
+              {colors[name]}
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              {options}
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
+      />
+    )
+  };
 
   const handleColorCopy = (color) => {
     const updated = {
@@ -121,22 +191,26 @@ function StyleEditor({
 
   useEffect(() => {
     deleteSkin(skin.name).then(() => {
-      createSkin({ name: skin.name, skin: { name: skin.name, ...colors } }).then(() => {
+      createSkin({ name: skin.name, skin: { isEditable: skin.isEditable, name: skin.name, ...colors } }).then(() => {
       });
     });
   }, [colors]);
 
   const content = () => (
-    <React.Fragment>
+    <>
       <ListGroup>
-        {styleRow('headerColor')}
-        {styleRow('footerColor')}
-        {styleRow('fontColor')}
-        {styleRow('backgroundColor')}
-        {styleRow('popupBackgroundColor')}
-        {styleRow('buttonBackgroundColor')}
-        {styleRow('buttonTextColor')}
-        {styleRow('trackBackgroundColor')}
+        {fontRow('listFont', 'List Font')}
+        {styleRow('headerColor', 'Header Background Color')}
+        {fontRow('headerFont', 'Header Font')}
+        {styleRow('footerColor', 'Footer Background Color')}
+        {fontRow('footerFont', 'Footer Font')}
+        {styleRow('fontColor', 'Font Color')}
+        {styleRow('backgroundColor', 'Background Color')}
+        {styleRow('popupBackgroundColor', 'Dialog Background Color')}
+        {styleRow('buttonBackgroundColor', 'Button Background Color')}
+        {styleRow('buttonTextColor', 'Button Text Color')}
+        {fontRow('buttonFont', 'Button Font')}
+        {styleRow('trackBackgroundColor', 'Track Background Color')}
       </ListGroup>
       <ColorPicker
         isOpen={isColorModalOpen}
@@ -157,7 +231,7 @@ function StyleEditor({
         handleHide={() => setIsCopyFromOpen(false)}
         handleCopyColor={handleColorCopy}
       />
-    </React.Fragment>
+    </>
   );
 
   return content();

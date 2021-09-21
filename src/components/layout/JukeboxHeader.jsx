@@ -53,9 +53,8 @@ function JukeboxHeader({
       return <React.Fragment />;
     }
 
-    return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor }}>{settings.preferences.name}</Navbar.Brand>;
+    return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}>{settings.preferences.name}</Navbar.Brand>;
   };
-
 
   const searchButtons = () => {
     if (isScreenSmall) {

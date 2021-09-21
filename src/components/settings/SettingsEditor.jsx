@@ -2,10 +2,11 @@ import React, { useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
-import styles from '../styles';
+
+import Item from '../common/Item';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/Jukebox';
-import { buttonProps } from '../../lib/styleHelper';
+import { buttonProps, card, disabledButton, enabledButton } from '../../lib/styleHelper';
 
 function SettingsEditor() {
   const settings = useContext(SettingsContext);
@@ -20,37 +21,30 @@ function SettingsEditor() {
 
   const settingRow = (name, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
-    const style = value ? styles.enabledStyle : styles.disabledStyle;
+    const style = value ? enabledButton(settings) : disabledButton(settings);
 
     return (
-      <ListGroupItem style={styles.cardStyle}>
-        {name}
-        <Button
-          {...buttonProps(settings)}
-          onClick={() => updateFeature(name, !value)}
-          enabled={value}
-          style={style}
-        >
-          {buttonText}
-        </Button>
-      </ListGroupItem>
-    );
+      <Item
+        buttons={
+          <Button
+            {...buttonProps(settings)}
+            onClick={() => updateFeature(name, !value)}
+            enabled={value}
+            style={style}
+          >
+            {buttonText}
+          </Button>
+        }
+        text={name}
+      />
+    )
   };
 
   const content = () => {
-    const rows = [];
-
-    Object.keys(settings.features).forEach(key => {
-      rows.push(settingRow(key, settings.features[key]));
-    });
-
-    return rows;
+    const { features } = settings;
+    return Object.keys(features).map((key) => settingRow(key, features[key]));
   };
 
-  return (
-    <ListGroup>
-      {content()}
-    </ListGroup>
-  );
+  return <ListGroup>{content()}</ListGroup>;
 }
 export default SettingsEditor;

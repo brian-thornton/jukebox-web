@@ -8,6 +8,7 @@ import {
 import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../layout/Jukebox';
+import { modalFooterStyle, modalHeaderStyle } from '../../lib/styleHelper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -27,7 +28,7 @@ function PlaylistAddModal({
 
   return (
     <Modal show={isOpen} onHide={handleClose}>
-      <Modal.Header closeButton style={{ background: settings.styles.headerColor }}>
+      <Modal.Header closeButton style={modalHeaderStyle(settings)}>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ background: settings.styles.popupBackgroundColor }}>
@@ -40,9 +41,19 @@ function PlaylistAddModal({
           />
         </InputGroup>
       </Modal.Body>
-      <Modal.Footer style={{ background: settings.styles.headerColor }}>
-        <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="primary" onClick={() => handleSave(document.getElementById('name').value)}>
+      <Modal.Footer style={modalHeaderStyle(settings)}>
+        <Button
+          variant="secondary"
+          onClick={handleClose}
+          style={{ fontFamily: settings.styles.buttonFont }}
+        >
+          Close
+        </Button>
+        <Button
+          variant="primary"
+          onClick={() => handleSave(document.getElementById('name').value)}
+          style={{ fontFamily: settings.styles.buttonFont }}
+        >
           Save
         </Button>
       </Modal.Footer>

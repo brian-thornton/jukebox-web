@@ -45,7 +45,7 @@ function Track({ track, trackAlbums, trackAlbumsLoaded, showAlbumCovers, setCurr
     <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '400px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
       <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px' }}>
         <Row>
-          <div style={{ width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <div style={{ width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontFamily: settings.styles.listFont }}>
             {track.name}
           </div>
         </Row>

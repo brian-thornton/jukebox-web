@@ -7,7 +7,9 @@ import {
   FormControl,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+
 import { Album } from '../shapes';
+import { buttonProps } from '../../lib/styleHelper';
 import { saveCoverArt } from '../../lib/librarian-client';
 import styles from '../styles';
 import { SettingsContext } from '../layout/Jukebox';
@@ -53,7 +55,7 @@ function CoverArtSearchModal({
 
   return (
     <Modal show={isOpen} onHide={handleClose}>
-      <Modal.Header style={{ background: settings.styles.headerColor }} closeButton>
+      <Modal.Header style={{ background: settings.styles.headerColor, fontFamily: settings.styles.headerFont }} closeButton>
         <Modal.Title>{title}</Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ background: settings.styles.popupBackgroundColor }}>
@@ -67,14 +69,14 @@ function CoverArtSearchModal({
             onChange={e => setQuery(e.target.value)}
           />
         </InputGroup>
-        <Button variant="primary" onClick={handleSearch}>Search</Button>
+        <Button variant="primary" onClick={handleSearch} {...buttonProps(settings)}>Search</Button>
         <Card className="h-55 w-85 album-card-small">
           <Card.Img style={{ ...styles.albumCardLarge, width: '150px' }} top src={results} />
         </Card>
       </Modal.Body>
       <Modal.Footer style={{ background: settings.styles.footerColor }}>
-        <Button variant="secondary" onClick={handleClose}>Close</Button>
-        <Button variant="primary" onClick={handleSave}>Save</Button>
+        <Button {...buttonProps(settings)} variant="secondary" onClick={handleClose}>Close</Button>
+        <Button {...buttonProps(settings)} variant="primary" onClick={handleSave}>Save</Button>
       </Modal.Footer>
     </Modal>
   );

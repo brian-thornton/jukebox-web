@@ -4,6 +4,8 @@ import {
   ListGroup, ListGroupItem, Button,
 } from 'react-bootstrap';
 
+import { card } from '../../lib/styleHelper';
+import Item from '../common/Item';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import styles from '../styles';
 import { updateSettings } from '../../lib/settings-client';
@@ -48,15 +50,19 @@ function ThemeList({ resetControls, setControls }) {
     if (selectedSkin) {
       const deepClone = JSON.parse(JSON.stringify(settings));
       deepClone.styles.headerColor = selectedSkin.headerColor;
+      deepClone.styles.headerFont = selectedSkin.headerFont;
       deepClone.styles.footerColor = selectedSkin.footerColor;
+      deepClone.styles.footerFont = selectedSkin.footerFont;
       deepClone.styles.fontColor = selectedSkin.fontColor;
       deepClone.styles.fontWeight = selectedSkin.fontWeight;
       deepClone.styles.backgroundColor = selectedSkin.backgroundColor;
       deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
       deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
+      deepClone.styles.buttonFont = selectedSkin.buttonFont;
       deepClone.styles.buttonFontColor = selectedSkin.buttonFontColor;
       deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
       deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
+      deepClone.styles.listFont = selectedSkin.listFont;
 
       updateSettings(deepClone).then(() => {
         window.location.reload();
@@ -89,6 +95,7 @@ function ThemeList({ resetControls, setControls }) {
       buttonFontColor: skin.buttonFontColor,
       buttonFontWeight: skin.buttonFontWeight,
       trackBackgroundColor: skin.trackBackgroundColor,
+      listFont: skin.listFont,
     });
 
     setIsSaveAsOpen(true);
@@ -99,7 +106,7 @@ function ThemeList({ resetControls, setControls }) {
       const rows = [];
 
       const buttonProps = {
-        style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor },
+        style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor, fontFamily: settings.styles.buttonFont },
         variant: 'outline-light',
         className: 'float-right',
       };
@@ -115,13 +122,17 @@ function ThemeList({ resetControls, setControls }) {
         }
 
         rows.push(
-          <ListGroupItem style={styles.cardStyle}>
-            {skin.name}
-            <Button {...buttonProps} onClick={() => makeCopy(skin)}>Make a Copy</Button>
-            <Button {...controlButtonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
-            <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
-            <Button {...controlButtonProps} onClick={() => removeSkin(skin)}>Delete</Button>
-          </ListGroupItem>,
+          <Item
+            text={skin.name}
+            buttons={(
+              <>
+                <Button {...buttonProps} onClick={() => makeCopy(skin)}>Make a Copy</Button>
+                <Button {...controlButtonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
+                <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
+                <Button {...controlButtonProps} onClick={() => removeSkin(skin)}>Delete</Button>
+              </>
+            )}
+          />,
         );
       });
 

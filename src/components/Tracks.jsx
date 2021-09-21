@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
-import { getHeight, initHorizontalPaging } from '../lib/pageHelper';
+import { clearCurrentPage, getHeight, initHorizontalPaging, setKnownPage, saveCurrentPage } from '../lib/pageHelper';
 import PagedContainer from './common/PagedContainer';
+import { getStatus } from '../lib/status-client';
 
 const propTypes = {
   search: PropTypes.string,
@@ -14,29 +15,71 @@ const propTypes = {
 function Tracks({ search, setCurrentAlbum }) {
   const [paging, setPaging] = useState();
   const [tracks, setTracks] = useState([]);
+  const [searchPageSet, setSearchPageSet] = useState(false);
+  const [totalTracks, setTotalTracks] = useState();
+  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const [isLoading, setIsLoading] = useState(false);
+
+  const applyPageIfExists = (pageData, useStorePage, status) => {
+    if (useStorePage) {
+      try {
+        const updated = setKnownPage(pageData, status.currentPages.tracks);
+        setPaging(updated);
+      } catch {
+        setPaging(pageData);
+      }
+    } else {
+      setPaging(pageData);
+    }
+  }
+
+  const findTracks = async (start, limit) => {
+    await clearCurrentPage('tracks');
+    searchTracks(search, start, limit).then((data) => {
+      setTotalTracks(data.totalTracks);
+      setTracks(data.tracks);
+      setIsLoading(false);
+      if (!searchPageSet) {
+        setPaging(initHorizontalPaging(totalTracks, 175, getHeight(), 300));
+        setSearchPageSet(true);
+      }
+    });
+  };
+
+  const initPaging = (totalTracks) => {
+    const pageData = initHorizontalPaging(totalTracks, 275, initialHeight, 225);
+    getStatus().then((status) => {
+      if (!paging) {
+        applyPageIfExists(pageData, status.currentPages.tracks, status)
+      } else if (!search && paging && status.currentPages && status.currentPages.tracks) {
+        applyPageIfExists(pageData, !status.currentPages.tracks, status)
+      } else {
+        setPaging(pageData);
+      }
+    })
+  }
+
+  useEffect(() => {
+    if (!paging && tracks.length) {
+      initPaging(totalTracks);
+    }
+  }, [tracks])
 
   const loadTracks = (loadPage) => {
-    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
-    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+    const start = loadPage ? loadPage.start : (paging && paging.currentPage) ? paging.currentPage.start : 0;
+    let limit = loadPage ? loadPage.limit : (paging && paging.currentPage) ? paging.currentPage.limit : 5;
 
     if (search) {
-      searchTracks(search, start, limit).then((data) => {
-        setTracks(data.tracks);
-        if (!paging) {
-          setPaging(initHorizontalPaging(data.totalTracks, 175, getHeight(), 300));
-        }
-      });
-    } else {  
+      findTracks(start, limit);
+    } else {
       if (start === 0) {
         limit += 1;
       }
 
       getTracks(start, limit).then((data) => {
+        setTotalTracks(data.totalTracks);
         setTracks(data.tracks);
-
-        if (!paging) {
-          setPaging(initHorizontalPaging(data.totalTracks, 175, getHeight(), 300));
-        }
+        setIsLoading(false);
       });
     }
   };
@@ -52,8 +95,12 @@ function Tracks({ search, setCurrentAlbum }) {
   };
 
   useEffect(() => {
-    if (paging) {
-      loadTracks(paging.currentPage);
+    if (!isLoading && paging && paging.currentPage !== 0) {
+      if (paging.currentPage || !search) {
+        setIsLoading(true);
+        loadTracks(paging.currentPage);
+      }
+      saveCurrentPage(paging.currentPage, 'tracks');
     }
   }, [paging]);
 

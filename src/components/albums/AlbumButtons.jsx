@@ -1,15 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  Row,
-  Col,
-  Button,
-} from 'react-bootstrap';
+import { Row, Col, } from 'react-bootstrap';
 
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
 import { Tracks } from '../shapes';
-import { controlButtonProps } from '../../lib/styleHelper';
-import { SettingsContext } from '../layout/Jukebox';
+import ControlButton from '../common/ControlButton';
 
 import './AlbumButtons.css';
 
@@ -24,7 +19,6 @@ function AlbumButtons({
   tracks,
   setAddToPlaylist,
 }) {
-  const settings = useContext(SettingsContext);
   const playAlbum = () => {
     enqueueTracksTop(tracks);
     next();
@@ -32,7 +26,7 @@ function AlbumButtons({
 
   const albumButton = (onClick, name) => (
     <Col lg={6} style={{ padding: '0px' }}>
-      <Button {...controlButtonProps(settings)} onClick={onClick}>{name}</Button>
+      <ControlButton text={name} onClick={onClick} />
     </Col>
   );
 

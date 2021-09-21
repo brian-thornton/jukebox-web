@@ -1,11 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+
+import { Album as albumShape } from '../shapes';
 import { coverArtUrl } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
-import styles from '../styles';
-import { Album as albumShape } from '../shapes';
 import { SettingsContext } from '../layout/Jukebox';
+import styles from '../styles';
 
 const propTypes = {
   album: albumShape.isRequired,
@@ -43,7 +44,7 @@ function Album({
     let body;
     if (!coverArtOnly) {
       body = (
-        <Card.Body style={{ padding: '0px' }}>
+        <Card.Body style={{ padding: '0px', fontFamily: settings.styles.listFont }}>
           {albumName()}
         </Card.Body>
       );

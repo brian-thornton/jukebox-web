@@ -24,7 +24,7 @@ const getHeight = () => {
 };
 
 const pageRows = (initialHeight, contentHeight) => {
-  const rows = Math.floor((initialHeight - 100)/ contentHeight);
+  const rows = Math.floor((initialHeight - 100) / contentHeight);
   return rows;
 };
 
@@ -167,10 +167,45 @@ const clearCurrentPage = async (type) => {
   })
 };
 
+const applyPageIfExists = (pageData, useStorePage, status, type) => {
+  let paging;
+  if (useStorePage) {
+    try {
+      const updated = setKnownPage(pageData, status.currentPages[type]);
+      paging = updated;
+    } catch {
+      paging = pageData;
+    }
+  } else {
+    paging = pageData;
+  }
+
+  return paging;
+}
+
+
+const initPaging = async (totalItems, search, type) => {
+  const pageData = initHorizontalPaging(totalItems, 275, getHeight(), 225);
+  let paging;
+
+  const status = await getStatus();
+  if (!paging) {
+    paging = applyPageIfExists(pageData, status.currentPages[type], status, type);
+  } else if (!search && paging && status.currentPages && status.currentPages[type]) {
+    paging = applyPageIfExists(pageData, !status.currentPages[type], status, type);
+  } else {
+    paging = pageData;
+  }
+
+  return paging;
+}
+
 export {
+  applyPageIfExists,
   randomPage,
   initializePaging,
   initHorizontalPaging,
+  initPaging,
   nextPage,
   previousPage,
   getHeight,

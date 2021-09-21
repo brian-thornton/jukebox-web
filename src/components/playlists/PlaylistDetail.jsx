@@ -10,15 +10,18 @@ import {
   add,
   removeTracksFromPlaylist,
 } from '../../lib/playlist-client';
+
+import ControlButton from '../common/ControlButton';
 import ContentWithControls from '../common/ContentWithControls';
+import NoResults from '../common/NoResults';
 import PlaylistAddModal from './PlaylistAddModal';
-import PlaylistDeleteModal from './PlaylistDeleteModal';
+import ConfirmationModal from '../common/ConfirmationModal';
 import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PlayNowButton from '../PlayNowButton';
 import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
-import {SettingsContext} from '../layout/Jukebox';
+import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -31,11 +34,9 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
-  const controlProps = controlButtonProps(settings);
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
-  const { fontColor, trackBackgroundColor } = settings.styles;
-  const renderTracks = [];
+  let renderTracks = [];
 
   const loadTracks = (name) => {
     getPlaylist(name).then((playlist) => {
@@ -97,21 +98,12 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         onClick={() => deleteTrack(name, track)}
       >
         Delete
-    </Button>
+      </Button>
     </>
   );
 
   if (tracks) {
-    tracks.forEach((track) => {
-      renderTracks.push(
-        (
-          <Item
-            text={track.name}
-            buttons={buttons(track)}
-          />
-        ),
-      );
-    });
+    renderTracks = tracks.map((track) => <Item text={track.name} buttons={buttons(track)} />);
   }
 
   const handleDelete = () => {
@@ -122,26 +114,31 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   };
 
   const controls = () => (
-    <React.Fragment>
-      <Button {...controlProps} onClick={handleBackToPlaylists}>Back to Playlists</Button>
-      <Button {...controlProps} onClick={runPlaylist}>Run Playlist</Button>
-      <Button {...controlProps} onClick={enqueuePlaylist}>Enqueue Playlist</Button>
-      <Button {...controlProps} onClick={shuffle}>Shuffle Playlist</Button>
-      <Button {...controlProps} onClick={() => setIsSaveAsOpen(true)}>Save As...</Button>
-      <Button {...controlProps} onClick={() => setShowDeleteModal(true)}>Delete Playlist</Button>
-    </React.Fragment>
+    <>
+      <ControlButton onClick={handleBackToPlaylists} text="Back to Playlists" />
+      <ControlButton onClick={runPlaylist} disabled={isEmpty} text="Run Playlist" />
+      <ControlButton onClick={enqueuePlaylist} disabled={isEmpty} text="Enqueue Playlist" />
+      <ControlButton onClick={shuffle} disabled={isEmpty} text="Shuffle Playlist" />
+      <ControlButton onClick={() => setIsSaveAsOpen(true)} disabled={isEmpty} text="Save As..." />
+      <ControlButton onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />
+    </>
   );
 
-  const content = () => (
-    <ListGroup>
-      {renderTracks}
-    </ListGroup>
-  );
+  const content = () => {
+    if (isEmpty) {
+      return <NoResults title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
+    }
+
+    return (
+      <ListGroup>
+        {renderTracks}
+      </ListGroup>
+    );
+  };
 
   return (
-    <React.Fragment>
+    <>
       <ContentWithControls
-        alertText={`Playlist: ${name}`}
         controls={controls()}
         content={content()}
       />
@@ -151,12 +148,15 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         handleSave={handleSave}
         existingPlaylistName={name}
       />
-      <PlaylistDeleteModal
+      <ConfirmationModal
         isOpen={showDeleteModal}
-        handleClose={() => setShowDeleteModal(false)}
-        handleDelete={handleDelete}
+        onCancel={() => setShowDeleteModal(false)}
+        onConfirm={handleDelete}
+        title="Delete Playlist?"
+        body="Are you sure that you want to delete the playlist?"
+        confirmText="Yes"
       />
-    </React.Fragment>
+    </>
   );
 }
 

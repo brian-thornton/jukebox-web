@@ -6,12 +6,10 @@ import Album from './Album';
 import PagedContainer from '../common/PagedContainer';
 import {
   clearCurrentPage,
-  getHeight,
-  initHorizontalPaging,
+  initPaging,
   saveCurrentPage,
-  setKnownPage,
 } from '../../lib/pageHelper';
-import { getStatus } from '../../lib/status-client';
+
 import { useWindowSize } from '../../lib/hooks';
 
 const propTypes = {
@@ -23,13 +21,13 @@ function AlbumList({ search, setCurrentAlbum }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [alertText, setAlertText] = useState('Loading albums...');
-  const [paging, setPaging] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const [paging, setPaging] = useState();;
   const size = useWindowSize();
   const [lastSize, setLastSize] = useState();
-  const content = [];
+  let content = [];
   const [searchPageSet, setSearchPageSet] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
+  const [lastSearch, setLastSearch] = useState('');
 
   useEffect(() => {
     if (lastSize && lastSize.width !== size.width && lastSize.height !== size.height) {
@@ -40,35 +38,14 @@ function AlbumList({ search, setCurrentAlbum }) {
     setLastSize(size);
   }, [size])
 
-  const applyPageIfExists = (pageData, useStorePage, status) => {
-    if (useStorePage) {
-      try {
-        const updated = setKnownPage(pageData, status.currentPages.albums);
-        setPaging(updated);
-      } catch {
-        setPaging(pageData);
-      }
-    } else {
-      setPaging(pageData);
-    }
-  }
-
-  const initPaging = (totalAlbums) => {
-    const pageData = initHorizontalPaging(totalAlbums, 275, initialHeight, 225);
-    getStatus().then((status) => {
-      if (!paging) {
-        applyPageIfExists(pageData, status.currentPages.albums, status)
-      } else if (!search && paging && status.currentPages && status.currentPages.albums) {
-        applyPageIfExists(pageData, !status.currentPages.albums, status)
-      } else {
-        setPaging(pageData);
-      }
-    })
-  }
+  const establishPaging = async (totalItems) => {
+    const pageData = await initPaging(totalItems, search, 'albums')
+    setPaging(pageData);
+  };
 
   useEffect(() => {
-    if (!paging && albums.length) {
-      initPaging(totalAlbums);
+    if (!paging && albums.length && totalAlbums) {
+      establishPaging(totalAlbums);
     }
   }, [albums])
 
@@ -79,11 +56,12 @@ function AlbumList({ search, setCurrentAlbum }) {
       if (!data.albums.length) {
         setAlertText('No results found.');
       } else {
+        setTotalAlbums(data.albums.length);
         setAlbums(data.albums);
-        if (!searchPageSet) {
-          setTotalAlbums(data.albums.length);
+        if (search !== lastSearch) {
+          setLastSearch(search);
           setSearchPageSet(true);
-          initPaging(data.totalAlbums);
+          establishPaging(data.albums.length);
         }
       }
       window.scrollTo(0, 0);
@@ -92,8 +70,8 @@ function AlbumList({ search, setCurrentAlbum }) {
   };
 
   const loadAlbums = (loadPage) => {
-    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
-    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+    const start = loadPage ? loadPage.start : (paging && paging.currentPage) ? paging.currentPage.start : 0;
+    let limit = loadPage ? loadPage.limit : (paging && paging.currentPage) ? paging.currentPage.limit : 5;
 
     if (!isLoading) {
       setIsLoading(true);
@@ -144,14 +122,7 @@ function AlbumList({ search, setCurrentAlbum }) {
   }, [paging]);
 
   if (albums && albums.length) {
-    albums.forEach((album) => {
-      content.push(
-        <Album
-          album={album}
-          setCurrentAlbum={setCurrentAlbum}
-        />,
-      );
-    });
+    content = albums.map((album) => <Album album={album} setCurrentAlbum={setCurrentAlbum} />);
 
     if (paging) {
       return (

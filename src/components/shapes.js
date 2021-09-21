@@ -16,16 +16,6 @@ export const Track = PropTypes.shape({
 export const Tracks = PropTypes.arrayOf(Track);
 
 export const Settings = PropTypes.shape({
-  spotify: {
-    useSpotify: PropTypes.bool,
-    clientId: PropTypes.string,
-    clientSecret: PropTypes.string,
-    spotifyFeatures: {
-      albums: PropTypes.bool,
-      newReleases: PropTypes.bool,
-      categories: PropTypes.bool,
-    },
-  },
   features: {
     albums: PropTypes.bool,
     tracks: PropTypes.bool,

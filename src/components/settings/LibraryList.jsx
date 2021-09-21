@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
-  ListGroup, ListGroupItem, Button, Col, Row, Container,
+  Spinner, ListGroup, ListGroupItem, Button, Col, Row, Container,
 } from 'react-bootstrap';
 import {
   Check,
@@ -10,6 +10,7 @@ import {
   X,
 } from 'react-bootstrap-icons';
 import { getStatus, updateStatus } from '../../lib/status-client';
+import { SettingsContext } from '../layout/Jukebox';
 
 import {
   add,
@@ -19,20 +20,23 @@ import {
   scan,
   saveCoverArt,
 } from '../../lib/librarian-client';
+import Item from '../common/Item';
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
+import NoResults from '../common/NoResults';
 import styles from '../styles';
 
 const albumArt = require('album-art');
 
 function LibraryList() {
+  const settings = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
-    const renderLibraries = [];
+  const renderLibraries = [];
 
   const handleClose = (path) => {
     if (path) {
@@ -41,6 +45,7 @@ function LibraryList() {
       });
     }
     setShow(false);
+    loadLibraries();
   };
 
   const updateTotals = (data) => {
@@ -131,62 +136,70 @@ function LibraryList() {
 
     renderLibraries.push(
       (
-        <ListGroupItem style={styles.cardStyle} key={library.path}>
-          {`${library.path} - Tracks: ${library.totalTracks || 0}`}
-          <Button
-            {...buttonProps}
-            onClick={() => onScan({
-              name: library.name,
-              path: library.path,
-              enabled: library.enabled,
-            })}
-          >
-            <Search />
-          </Button>
-          <Button {...buttonProps} onClick={() => removeLibrary(library.name)}><Trash /></Button>
-          <Button {...buttonProps} variant="outline-light" className="float-right" disabled={isScanning} onClick={() => downloadCoverArt(library)}>
-            <CloudDownload />
-          </Button>
-          <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>{enabled}</Button>
-        </ListGroupItem>
+        <Item
+          text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
+          buttons={(
+            <>
+              <Button
+                {...buttonProps}
+                onClick={() => onScan({
+                  name: library.name,
+                  path: library.path,
+                  enabled: library.enabled,
+                })}
+              >
+                <Search />
+              </Button>
+              <Button {...buttonProps} onClick={() => removeLibrary(library.name)}><Trash /></Button>
+              <Button {...buttonProps} variant="outline-light" className="float-right" disabled={isScanning} onClick={() => downloadCoverArt(library)}>
+                <CloudDownload />
+              </Button>
+              <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>{enabled}</Button>
+            </>
+          )}
+        />
       ),
     );
   });
 
+  const addButton = (
+    <Button
+      variant="outline-light"
+      className="float-right"
+      onClick={handleShow}
+    >
+      Add
+    </Button>
+  );
+
+  const noResultsAddButton = (
+    <Button
+      variant="outline-light"
+      onClick={handleShow}
+    >
+      Add
+    </Button>
+  );
+
   return (
     <>
-      <Container style={{ marginTop: '0px' }}>
-        <Row>
-          <Col lg={12} xl={12}>
-            <div style={styles.totalTracksStyle}>
-              Total Library Tracks:
-              <div style={styles.totalTracksCount}>{totalTracks}</div>
-            </div>
-            <Button
-              variant="outline-light"
-              className="float-right"
-              onClick={handleShow}
-            >
-              Add
-            </Button>
-            <Button
-              style={{ marginRight: '8px' }}
-              variant="outline-light"
-              className="float-right"
-              onClick={handleDiscover}
-            >
-              Discover
-            </Button>
-          </Col>
-        </Row>
-        <Row style={{ marginTop: '5px' }}>
-          <Col lg={12} xl={12}>
-            <ListGroup>
+      <div>
+        {!isScanning && renderLibraries.length > 0 && (
+          <>
+            <div style={{ color: settings.styles.fontColor }}>{`Total Library Tracks: ${totalTracks}`}</div>
+            <ListGroup style={{ width: '100%' }}>
               {renderLibraries}
             </ListGroup>
-          </Col>
-        </Row>
-      </Container>
+          </>
+        )}
+      </div>
+      {renderLibraries.length === 0 && (
+        <NoResults
+          title="No Libraries"
+          text="No Libraries have been added. Click Add to add your first library."
+          controls={noResultsAddButton}
+        />
+      )}
       <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
       <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
     </>

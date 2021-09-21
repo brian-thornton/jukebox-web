@@ -54,7 +54,9 @@ function ColorPicker({
   };
 
   const formatColor = () => {
-    if (colorType === 'solid') {
+    if (colorType === 'transparent') {
+      setColor('transparent');
+    } else if (colorType === 'solid') {
       if (solidColor && solidColor.hex) {
         setColor(solidColor.hex);
       }
@@ -71,9 +73,11 @@ function ColorPicker({
       return (
         <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
           <Row>
+          <input style={{ color: '#FFFFFF', marginTop: '5px' }} type="radio" name="colorType" onChange={() => setColorType('transparent')} />
+            <div style={{ color: '#FFFFFF', marginRight: '10px' }}>Transparent</div>
             <input style={{ color: '#FFFFFF', marginTop: '5px' }} type="radio" name="colorType" onChange={() => setColorType('solid')} />
-            <div style={{ color: '#FFFFFF' }}>Solid</div>
-            <input style={{ color: '#FFFFFF', marginTop: '5px', marginLeft: '10px' }} type="radio" name="colorType" onChange={() => setColorType('gradient')} />
+            <div style={{ color: '#FFFFFF', marginRight: '10px' }}>Solid</div>
+            <input style={{ color: '#FFFFFF', marginTop: '5px' }} type="radio" name="colorType" onChange={() => setColorType('gradient')} />
             <div style={{ color: '#FFFFFF' }}>Gradient</div>
           </Row>
         </Container>

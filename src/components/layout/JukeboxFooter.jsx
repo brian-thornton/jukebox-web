@@ -38,7 +38,7 @@ function JukeboxFooter({
       return <React.Fragment />;
     }
 
-    return <div className="now-playing">{`Now Playing: ${nowPlaying}`}</div>;
+    return <div className="now-playing" style={{fontFamily: settings.styles.footerFont}}>{`Now Playing: ${nowPlaying}`}</div>;
   };
 
   const footerContent = () => {

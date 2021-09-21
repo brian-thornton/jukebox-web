@@ -2,10 +2,12 @@ import React, { useState, useContext } from 'react';
 import {
   ListGroup, ListGroupItem, Button, InputGroup, FormControl,
 } from 'react-bootstrap';
+import Item from '../common/Item';
 import styles from '../styles';
 import { SettingsContext } from '../layout/Jukebox';
 import { updateSettings } from '../../lib/settings-client';
-import { buttonProps } from '../../lib/styleHelper';
+import { buttonProps, disabledButton, enabledButton } from '../../lib/styleHelper';
+
 
 function Preferences() {
   const settings = useContext(SettingsContext);
@@ -29,26 +31,28 @@ function Preferences() {
 
   const preferencesRow = (name, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
-    const style = value ? styles.enabledStyle : styles.disabledStyle;
+    const style = value ? enabledButton(settings) : disabledButton(settings);
 
     return (
-      <ListGroupItem style={styles.cardStyle}>
-        {name}
-        <Button
-          {...buttonProps(settings)}
-          onClick={() => updatePreference(name, !value)}
-          enabled={value}
-          style={style}
-        >
-          {buttonText}
-        </Button>
-      </ListGroupItem>
-    );
+      <Item
+        buttons={(
+          <Button
+            {...buttonProps(settings)}
+            onClick={() => updatePreference(name, !value)}
+            enabled={value}
+            style={style}
+          >
+            {buttonText}
+          </Button>
+        )}
+        text={name}
+      />
+    )
   };
 
   const preferences = () => {
     return (
-      <React.Fragment>
+      <>
         <Button onClick={handleSave}>Save</Button>
         <ListGroup>
           <ListGroupItem style={styles.cardStyle}>
@@ -66,7 +70,7 @@ function Preferences() {
           {preferencesRow('showAlbumName', settings.preferences.showAlbumName)}
           {preferencesRow('showAlbumsWithoutCoverArt', settings.preferences.showAlbumsWithoutCoverArt)}
         </ListGroup>
-      </React.Fragment>
+      </>
     );
   };
 

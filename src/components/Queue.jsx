@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  Alert,
-  Button,
-} from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+
+import ControlButton from './common/ControlButton';
 import Playlists from './playlists/Playlists';
 import {
   clearQueue,
@@ -13,11 +9,11 @@ import {
   enqueueTracks,
   removeTracksFromQueue,
 } from '../lib/queue-client';
-import styles from './styles';
+
 import ContentWithControls from './common/ContentWithControls';
-import { controlButtonProps } from '../lib/styleHelper';
 import PlayNowButton from './PlayNowButton';
 import Item from './common/Item';
+import NoResults from './common/NoResults';
 import PagedContainer from './common/PagedContainer';
 import { getHeight, initializePaging } from '../lib/pageHelper';
 import { SettingsContext } from './layout/Jukebox';
@@ -28,13 +24,12 @@ function Queue() {
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
-  const renderTracks = [];
+  const [isEmpty, setIsEmpty] = useState(false);
+  let renderTracks = [];
 
   const [paging, setPaging] = useState();
   const [initialHeight, setInitialHeight] = useState(getHeight());
   const clear = () => clearQueue().then(loadQueue());
-  const message = 'There are no tracks in the queue.';
-  const alert = (<Alert variant="primary">{message}</Alert>);
 
   const loadQueue = (loadPage) => {
     const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
@@ -46,7 +41,9 @@ function Queue() {
 
     getQueue(start, limit).then((data) => {
       setTracks(data.tracks);
-
+      if (data.tracks.length === 0) {
+        setIsEmpty(true);
+      }
       if (!paging) {
         setPaging(initializePaging(data.totalTracks, 90, initialHeight));
       }
@@ -76,6 +73,10 @@ function Queue() {
   }, [paging]);
 
   const content = () => {
+    if (isEmpty) {
+      return <NoResults title="Queue Empty" text="The queue is empty. Enqueue tracks from the albums, tracks or playlist sections and your tracks will play next!" />;
+    }
+
     if (paging) {
       return (
         <PagedContainer
@@ -101,45 +102,30 @@ function Queue() {
     loadQueue();
   };
 
-  tracks.forEach((track) => {
-    renderTracks.push(
-      (
-        <Item
-          text={track.name}
-          buttons={(
-            <>
-              <PlayNowButton track={track} />
-              <Button {...buttonProps(settings)} onClick={() => remove(track)}>Delete</Button>
-            </>
-          )}
-        />
-      ),
-    );
-  });
+  renderTracks = tracks.map((track) => (
+    <Item
+      text={track.name}
+      buttons={(
+        <>
+          <PlayNowButton track={track} />
+          <Button {...buttonProps(settings)} onClick={() => remove(track)}>Delete</Button>
+        </>
+      )}
+    />
+  ));
 
   const controls = () => (
-    <React.Fragment>
-      <Button {...controlButtonProps(settings)} onClick={clear}>Clear Queue</Button>
-      <Button {...controlButtonProps(settings)} onClick={() => shuffle()}>Shuffle Queue</Button>
-      <Button {...controlButtonProps(settings)} onClick={() => setAddToPlaylist(true)}>Save to Playlist</Button>
-    </React.Fragment>
+    <>
+      <ControlButton onClick={clear} disabled={isEmpty} text="Clear Queue" />
+      <ControlButton onClick={() => shuffle()} disabled={isEmpty} text="Shuffle Queue" />
+      <ControlButton onClick={() => setAddToPlaylist(true)} disabled={isEmpty} text="Save to Playlist" />
+    </>
   );
 
-  if (renderTracks.length) {
-    if (!addToPlaylist) {
-      return <ContentWithControls alertText="These queued tracks are up next!" controls={controls()} content={content()} />;
-    }
-    return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+  if (!addToPlaylist) {
+    return <ContentWithControls controls={controls()} content={content()} />;
   }
-  return (
-    <Container>
-      <Row>
-        <Col lg={12} xl={12}>
-          {alert}
-        </Col>
-      </Row>
-    </Container>
-  );
+  return (<Playlists mode="addToPlaylist" tracks={tracks} />);
 }
 
 export default Queue;

@@ -33,7 +33,7 @@ function SkinSaveAsModal({
 }) {
   const settings = useContext(SettingsContext);
   const handleSave = () => {
-    createSkin({ isEditable: true, name: document.getElementById('name').value, skin: { ...colors, name: document.getElementById('name').value } });
+    createSkin({ name: document.getElementById('name').value, skin: { ...colors, isEditable: true, name: document.getElementById('name').value } });
     handleHide();
     goBackToThemeList();
   };

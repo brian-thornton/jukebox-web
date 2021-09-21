@@ -20,7 +20,8 @@
     "react-scripts": "^3.4.4",
     "redux": "^4.1.0",
     "request-promise": "^4.2.6",
-    "stream-to-blob": "^2.0.1"
+    "stream-to-blob": "^2.0.1",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "concurrently \"react-scripts start\" & node ../jukebox-service/index.js",

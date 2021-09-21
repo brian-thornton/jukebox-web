@@ -39,6 +39,7 @@ function PinModal({ isOpen, handleClose }) {
       style={{
         color: settings.styles.fontColor,
         background: settings.styles.buttonBackgroundColor,
+        fontFamily: settings.styles.buttonFont,
       }}
       variant="outline-light"
       onClick={() => setPin(`${pin}${number}`)}

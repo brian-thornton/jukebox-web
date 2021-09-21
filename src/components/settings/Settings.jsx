@@ -2,7 +2,6 @@ import React, { useState, useContext } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
-import SpotifySettings from './SpotifySettings';
 import ThemeList from './ThemeList';
 import ContentWithControls from '../common/ContentWithControls';
 import PinModal from './PinModal';
@@ -31,7 +30,6 @@ function Settings() {
           <Button {...controlButtonProps(settings)} onClick={() => setMode('SETTINGS')}>Features</Button>
           <Button {...controlButtonProps(settings)} onClick={() => setMode('PREFERENCES')}>Preferences</Button>
           <Button {...controlButtonProps(settings)} onClick={() => setMode('STYLE')}>Style</Button>
-          <Button {...controlButtonProps(settings)} onClick={() => setMode('SPOTIFY')}>Spotify</Button>
         </React.Fragment>
       );
     }
@@ -45,8 +43,6 @@ function Settings() {
         return <LibraryList />;
       } if (mode === 'SETTINGS') {
         return <SettingsEditor />;
-      } if (mode === 'SPOTIFY') {
-        return <SpotifySettings />;
       } if (mode === 'PREFERENCES') {
         return <Preferences />;
       } if (mode === 'STYLE') {
@@ -73,21 +69,14 @@ function Settings() {
   }
 
   if (isAuthorized) {
-    const alertText = 'Configure settings below to control your jukebox.';
     if (!hideControls) {
-      return <ContentWithControls controls={controls} content={content()} alertText={alertText} />;
+      return <ContentWithControls controls={controls} content={content()}/>;
     }
 
     return content();
   }
 
-  const notAuthorizedText = 'Please enter pin number to access settings.';
-  return (
-    <React.Fragment>
-      <Alert variant="primary">{notAuthorizedText}</Alert>
-      <PinModal isOpen={isPinOpen} handleClose={handleClose} />
-    </React.Fragment>
-  );
+  return <PinModal isOpen={isPinOpen} handleClose={handleClose} />;
 }
 
 export default Settings;

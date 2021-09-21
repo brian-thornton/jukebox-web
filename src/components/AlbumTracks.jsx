@@ -20,51 +20,41 @@ const propTypes = {
 function TrackList({ tracks, nextPage, previousPage, paging }) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
-  const content = [];
+  let content = [];
 
-  tracks.forEach((track) => {
-    if (track.path.split('.').pop().toLowerCase() === 'mp3') {
-      if (track.id) {
-        track.accessToken = window.accessToken;
-      }
+  const trackCardStyle = {
+    ...styles.cardStyle,
+    color: settings.styles.fontColor,
+    width: '500px',
+    margin: '10px',
+    background: settings.styles.trackBackgroundColor,
+  };
 
-      const trackCardStyle = {
-        ...styles.cardStyle,
-        color: settings.styles.fontColor,
-        width: '500px',
-        margin: '10px',
-        background: settings.styles.trackBackgroundColor,
-      };
-
-      content.push(
-        (
-          <Card style={trackCardStyle}>
-            <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
-              <Row>
-                {track.name}
-              </Row>
-              <Row>
-                <Col lg={4} />
-                <Col lg={8}>
-                  <PlayNowButton
-                    track={track}
-                    isScreenSmall={isScreenSmall}
-                  />
-                  <EnqueueButton
-                    track={track}
-                    isScreenSmall={isScreenSmall}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <DownloadButton track={track} isScreenSmall={isScreenSmall} />
-              </Row>
-            </Container>
-          </Card>
-        ),
-      );
-    }
-  });
+  content = tracks.map((track) => (
+    <Card style={trackCardStyle}>
+      <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
+        <Row style={{ fontFamily: settings.styles.listFont }}>
+          {track.name}
+        </Row>
+        <Row>
+          <Col lg={4} />
+          <Col lg={8}>
+            <PlayNowButton
+              track={track}
+              isScreenSmall={isScreenSmall}
+            />
+            <EnqueueButton
+              track={track}
+              isScreenSmall={isScreenSmall}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+        </Row>
+      </Container>
+    </Card>
+  ));
 
   return (
     <PagedContainer

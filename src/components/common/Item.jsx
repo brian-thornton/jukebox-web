@@ -20,6 +20,7 @@ function Item({ buttons, onClick, text }) {
     color: settings.styles.fontColor,
     background: settings.styles.trackBackgroundColor,
     borderColor: '#708090',
+    fontFamily: settings.styles.listFont,
   };
 
   return (

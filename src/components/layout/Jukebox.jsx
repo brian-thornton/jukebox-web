@@ -1,21 +1,18 @@
-import React, { useState, useCallback, createContext } from 'react';
+import React, { useState, useEffect, useCallback, createContext } from 'react';
 import { Container } from 'react-bootstrap';
 import { debounce } from 'lodash';
 
 import AlbumList from '../albums/AlbumList';
-import NewReleases from '../external/NewReleases';
-import SpotifyAlbums from '../external/SpotifyAlbums';
-import Categories from '../external/Categories';
 import Playlists from '../playlists/Playlists';
 import AlbumDetail from '../albums/AlbumDetail';
 import Queue from '../Queue';
 import Tracks from '../Tracks';
 import Settings from '../settings/Settings';
-import SpotifyClient from '../../lib/spotify-client';
 import { getSettings } from '../../lib/settings-client';
 import { getStatus } from '../../lib/status-client';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
+import WebFont from 'webfontloader';
 import WithKeyboardInput from './WithKeyboardInput';
 import { getHeight } from '../../lib/pageHelper';
 
@@ -31,6 +28,55 @@ function Jukebox() {
   const [tempSearch, setTempSearch] = useState('');
   const [nowPlaying, setNowPlaying] = useState('');
   const [isIntervalSet, setIsIntervalSet] = useState(false);
+
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: [
+          'Azeret Mono',
+          'Audiowide',
+          'Black Ops One',
+          'Macondo',
+          'Roboto Condensed',
+          'Oswald',
+          'Titillium Web',
+          'Bebas Neue',
+          'Anton',
+          'Josefin Sans',
+          'Lobster',
+          'Prompt',
+          'Cairo',
+          'Teko',
+          'Architects Daughter',
+          'Indie Flower',
+          'Balsamiq Sans',
+          'Staatliches',
+          'Patrick Hand',
+          'Permanent Marker',
+          'Alfa Slab One',
+          'Play',
+          'Amatic SC',
+          'Cookie',
+          'Fredoka One',
+          'Righteous',
+          'Bangers',
+          'Cinzel',
+          'Courgette',
+          'Luckiest Guy',
+          'Jost',
+          'Russo One',
+          'Orbitron',
+          'Press Start 2P',
+          'Monoton',
+          'Ultra',
+          'Rock Salt',
+          'Carter One',
+          'Unica One',
+          'Julius Sans One'
+        ]
+      }
+    });
+   }, []);
 
   const debouncedSearch = useCallback(
     debounce((tempSearch) => {
@@ -58,10 +104,6 @@ function Jukebox() {
   if (!settings) {
     getSettings().then((data) => {
       setSettings(data);
-
-      if (data.spotify.useSpotify) {
-        SpotifyClient.getAuthorizationToken(`http://${window.location.hostname}:3000`);
-      }
     });
   }
 
@@ -101,15 +143,6 @@ function Jukebox() {
               debouncedSearch={debouncedSearch}
             />
           );
-          break;
-        case 'NewReleases':
-          body = <NewReleases />;
-          break;
-        case 'SpotifyAlbums':
-          body = <SpotifyAlbums search={search} />;
-          break;
-        case 'Categories':
-          body = <Categories />;
           break;
         case 'Tracks':
           body = (

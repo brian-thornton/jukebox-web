@@ -15,6 +15,7 @@ function Button({ onClick, content }) {
     background: settings.styles.buttonBackgroundColor,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,
+    fontFamily: settings.styles.buttonFont,
   };
 
   return <ReactButton style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{content}</ReactButton>;
