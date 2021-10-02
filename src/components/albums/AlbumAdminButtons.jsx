@@ -2,13 +2,13 @@ import React, { useEffect, useState, useContext } from 'react';
 import {
   Row,
   Col,
-  Button,
 } from 'react-bootstrap';
+
+import ControlButton from '../common/ControlButton';
 import CoverArtSearchModal from './CoverArtSearchModal';
 import { coverArtUrl, saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import { Album } from '../shapes';
-import { controlButtonProps } from '../../lib/styleHelper';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   album: Album.isRequired,
@@ -24,7 +24,7 @@ function AlbumAdminButtons({ album }) {
 
   const albumButton = (onClick, name) => (
     <Col lg={6} style={{ padding: '0px' }}>
-      <Button {...controlButtonProps(settings)} onClick={onClick}>{name}</Button>
+      <ControlButton onClick={onClick} text={name} />
     </Col>
   );
 

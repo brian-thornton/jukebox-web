@@ -1,17 +1,14 @@
 import { PropTypes } from 'prop-types';
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  ListGroup, ListGroupItem, Button,
-} from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 
-import { card } from '../../lib/styleHelper';
+import Button from '../Button';
 import Item from '../common/Item';
 import SkinSaveAsModal from './SkinSaveAsModal';
-import styles from '../styles';
 import { updateSettings } from '../../lib/settings-client';
 import { getSkins, deleteSkin } from '../../lib/style-client';
 import StyleEditor from './StyleEditor';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   resetControls: PropTypes.func.isRequired,
@@ -103,40 +100,19 @@ function ThemeList({ resetControls, setControls }) {
 
   const skinRows = () => {
     if (skins && skins.length) {
-      const rows = [];
-
-      const buttonProps = {
-        style: { ...styles.buttonStyle, background: settings.styles.buttonBackgroundColor, fontFamily: settings.styles.buttonFont },
-        variant: 'outline-light',
-        className: 'float-right',
-      };
-
-
-      skins.forEach((skin) => {
-        const controlButtonProps = {
-          ...buttonProps,
-        };
-
-        if (!skin.isEditable) {
-          controlButtonProps.disabled = true;
-        }
-
-        rows.push(
-          <Item
-            text={skin.name}
-            buttons={(
-              <>
-                <Button {...buttonProps} onClick={() => makeCopy(skin)}>Make a Copy</Button>
-                <Button {...controlButtonProps} onClick={() => setEditSkin(skin)}>Edit</Button>
-                <Button {...buttonProps} onClick={() => setSelectedSkin(skin)}>Use Skin</Button>
-                <Button {...controlButtonProps} onClick={() => removeSkin(skin)}>Delete</Button>
-              </>
-            )}
-          />,
-        );
-      });
-
-      return rows;
+      return skins.map((skin) => (
+        <Item
+          text={skin.name}
+          buttons={(
+            <>
+              <Button onClick={() => makeCopy(skin)} content="Make a Copy" />
+              <Button onClick={() => setEditSkin(skin)} content="Edit" disabled={!skin.isEditable} />
+              <Button onClick={() => setSelectedSkin(skin)} content="Use Skin" />
+              <Button onClick={() => removeSkin(skin)} content="Delete" disabled={!skin.isEditable} />
+            </>
+          )}
+        />
+      ));
     }
 
     return <React.Fragment />;

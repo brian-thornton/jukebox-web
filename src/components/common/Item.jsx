@@ -4,7 +4,7 @@ import {
   ListGroupItem
 } from 'react-bootstrap';
 
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   alertText: PropTypes.string,

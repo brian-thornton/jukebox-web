@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  Button, Row, Col, Container,
-} from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 
+import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
 import { getStatus, updateStatus } from '../../lib/status-client';
@@ -13,15 +12,14 @@ import PlaylistAddModal from './PlaylistAddModal';
 import ContentWithControls from '../common/ContentWithControls';
 import Item from '../common/Item';
 import { Tracks } from '../shapes';
-import { buttonProps } from '../../lib/styleHelper';
 import PagingButtons from '../common/PagingButtons';
 import {
   getHeight,
   initializePaging,
   previousPage,
-  nextPage
+  nextPage,
 } from '../../lib/pageHelper';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -46,6 +44,7 @@ function Playlists({
   const selectPlaylist = playlistName => setName(playlistName);
   let renderPlaylists = [];
   const isScreenSmall = window.innerWidth < 700;
+  const playlistsMargin = isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
 
   const loadPlaylists = (loadPage) => {
     const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
@@ -110,35 +109,29 @@ function Playlists({
     if (mode === 'addToPlaylist' && !added && settings) {
       playlistActions.push((
         <Button
-          {...buttonProps(settings)}
           onClick={() => {
             addToPlaylist(playlistName);
             setAdded(true);
           }}
-        >
-          Add
-        </Button>
+          content="Add"
+        />
       ));
     }
 
     return playlistActions;
   };
 
-  renderPlaylists = playlists.map((playlist) => (
+  renderPlaylists = playlists.map(playlist => (
     <Item
       onClick={() => selectPlaylist(playlist.name)}
       text={playlist.name}
       buttons={buttons(playlist.name)}
     />
-  ))
+  ));
 
   const controls = () => (
     <ControlButton text="Add" onClick={handleShow} />
   );
-
-  const playlistsMargin = () => {
-    return isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
-  };
 
   const content = () => {
     if (isEmpty) {
@@ -147,7 +140,7 @@ function Playlists({
 
     if (paging) {
       return (
-        <Container id="albums" fluid style={playlistsMargin()}>
+        <Container id="albums" fluid style={playlistsMargin}>
           <Row>
             <Col lg={11} xl={11}>
               <Row>{renderPlaylists}</Row>
@@ -171,10 +164,10 @@ function Playlists({
 
   if (!currentPlaylist.name && !name) {
     return (
-      <React.Fragment>
+      <>
         <ContentWithControls content={content()} controls={controls()} />
         <PlaylistAddModal isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
-      </React.Fragment>
+      </>
     );
   }
   return (

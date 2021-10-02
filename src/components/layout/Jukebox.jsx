@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, createContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Container } from 'react-bootstrap';
 import { debounce } from 'lodash';
 
@@ -17,8 +17,7 @@ import WithKeyboardInput from './WithKeyboardInput';
 import { getHeight } from '../../lib/pageHelper';
 
 import './Jukebox.css';
-
-export const SettingsContext = createContext({});
+import { SettingsContext } from './SettingsProvider';
 
 function Jukebox() {
   const [mode, setMode] = useState('AlbumList');
@@ -72,9 +71,9 @@ function Jukebox() {
           'Rock Salt',
           'Carter One',
           'Unica One',
-          'Julius Sans One'
-        ]
-      }
+          'Julius Sans One',
+        ],
+      },
     });
    }, []);
 

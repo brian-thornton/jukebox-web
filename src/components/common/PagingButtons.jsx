@@ -9,7 +9,7 @@ import {
 
 import { Page } from '../shapes';
 import { findPage } from '../../lib/pageHelper';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   loadPrevious: PropTypes.func.isRequired,
@@ -41,8 +41,8 @@ function PagingButtons({
   try {
     nextDisabled = findPage(pages, page) === (pages.length - 1);
     previousDisabled = findPage(pages, page) === 0;
-  } catch {
-    console.log('page error');
+  } catch (error) {
+
   }
 
   const pageOf = () => {
@@ -50,20 +50,20 @@ function PagingButtons({
 
     try {
       if (pages.length) {
-        result = pages.findIndex(p => p.start === page.start && p.limit === page.limit)
+        result = pages.findIndex(p => p.start === page.start && p.limit === page.limit);
       }
-    } catch {
+    } catch (error) {
 
     }
 
     if (result >= 0) {
       return (
         <div style={{ color: '#FFFFFF' }}>{pages.length ? `${result + 1} of ${pages.length}` : 'Loading...'}</div>
-      )
+      );
     }
 
     return null;
-  }
+  };
 
   return (
     <>

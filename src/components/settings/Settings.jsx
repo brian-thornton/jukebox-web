@@ -1,16 +1,14 @@
-import React, { useState, useContext } from 'react';
-import { Alert, Button } from 'react-bootstrap';
+import React, { useState } from 'react';
 import LibraryList from './LibraryList';
 import SettingsEditor from './SettingsEditor';
 import ThemeList from './ThemeList';
 import ContentWithControls from '../common/ContentWithControls';
 import PinModal from './PinModal';
 import Preferences from './Preferences';
-import { controlButtonProps } from '../../lib/styleHelper';
-import { SettingsContext } from '../layout/Jukebox';
+
+import ControlButton from '../common/ControlButton';
 
 function Settings() {
-  const settings = useContext(SettingsContext);
   const [mode, setMode] = useState('LIBRARY');
   const [isPinOpen, setIsPinOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -26,10 +24,10 @@ function Settings() {
     if (isAuthorized) {
       return (
         <React.Fragment>
-          <Button {...controlButtonProps(settings)} onClick={() => setMode('LIBRARY')}>Library</Button>
-          <Button {...controlButtonProps(settings)} onClick={() => setMode('SETTINGS')}>Features</Button>
-          <Button {...controlButtonProps(settings)} onClick={() => setMode('PREFERENCES')}>Preferences</Button>
-          <Button {...controlButtonProps(settings)} onClick={() => setMode('STYLE')}>Style</Button>
+          <ControlButton onClick={() => setMode('LIBRARY')} text="Library" />
+          <ControlButton onClick={() => setMode('SETTINGS')} text="Features" />
+          <ControlButton onClick={() => setMode('PREFERENCES')} text="Preferences" />
+          <ControlButton onClick={() => setMode('STYLE')} text="Style" />
         </React.Fragment>
       );
     }
@@ -70,7 +68,7 @@ function Settings() {
 
   if (isAuthorized) {
     if (!hideControls) {
-      return <ContentWithControls controls={controls} content={content()}/>;
+      return <ContentWithControls controls={controls} content={content()} />;
     }
 
     return content();

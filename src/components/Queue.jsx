@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useState } from 'react';
+import Button from './Button';
 
 import ControlButton from './common/ControlButton';
 import Playlists from './playlists/Playlists';
@@ -16,11 +16,8 @@ import Item from './common/Item';
 import NoResults from './common/NoResults';
 import PagedContainer from './common/PagedContainer';
 import { getHeight, initializePaging } from '../lib/pageHelper';
-import { SettingsContext } from './layout/Jukebox';
-import { buttonProps } from '../lib/styleHelper';
 
 function Queue() {
-  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [isIntervalSet, setIsIntervalSet] = useState(false);
@@ -108,7 +105,7 @@ function Queue() {
       buttons={(
         <>
           <PlayNowButton track={track} />
-          <Button {...buttonProps(settings)} onClick={() => remove(track)}>Delete</Button>
+          <Button onClick={() => remove(track)} content="Delete" />
         </>
       )}
     />

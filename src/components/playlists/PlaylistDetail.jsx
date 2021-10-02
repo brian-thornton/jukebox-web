@@ -1,8 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  ListGroup, Button,
-} from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
 import {
   getPlaylist,
@@ -11,17 +9,16 @@ import {
   removeTracksFromPlaylist,
 } from '../../lib/playlist-client';
 
+import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import ContentWithControls from '../common/ContentWithControls';
+import Modal from '../common/Modal';
 import NoResults from '../common/NoResults';
 import PlaylistAddModal from './PlaylistAddModal';
-import ConfirmationModal from '../common/ConfirmationModal';
-import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
 import PlayNowButton from '../PlayNowButton';
 import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
-import { SettingsContext } from '../layout/Jukebox';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -29,7 +26,6 @@ const propTypes = {
 };
 
 function PlaylistDetail({ name, handleBackToPlaylists }) {
-  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -38,8 +34,8 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [initialHeight, setInitialHeight] = useState(getHeight());
   let renderTracks = [];
 
-  const loadTracks = (name) => {
-    getPlaylist(name).then((playlist) => {
+  const loadTracks = (playlistName) => {
+    getPlaylist(playlistName).then((playlist) => {
       if (!playlist.tracks.length) {
         setIsEmpty(true);
       } else {
@@ -80,8 +76,8 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     handleBackToPlaylists();
   };
 
-  const deleteTrack = (name, track) => {
-    removeTracksFromPlaylist(name, [track]);
+  const deleteTrack = (trackName, track) => {
+    removeTracksFromPlaylist(trackName, [track]);
     loadTracks(name);
   };
 
@@ -89,21 +85,16 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     loadTracks(name);
   }
 
-  const buttons = (track) => (
+  const buttons = track => (
     <>
       <PlayNowButton track={track} />
       <EnqueueButton track={track} />
-      <Button
-        {...buttonProps(settings)}
-        onClick={() => deleteTrack(name, track)}
-      >
-        Delete
-      </Button>
+      <Button onClick={() => deleteTrack(name, track)} content="Delete" />
     </>
   );
 
   if (tracks) {
-    renderTracks = tracks.map((track) => <Item text={track.name} buttons={buttons(track)} />);
+    renderTracks = tracks.map(track => <Item text={track.name} buttons={buttons(track)} />);
   }
 
   const handleDelete = () => {
@@ -148,7 +139,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         handleSave={handleSave}
         existingPlaylistName={name}
       />
-      <ConfirmationModal
+      <Modal
         isOpen={showDeleteModal}
         onCancel={() => setShowDeleteModal(false)}
         onConfirm={handleDelete}

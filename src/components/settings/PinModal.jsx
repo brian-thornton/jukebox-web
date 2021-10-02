@@ -1,21 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Button,
-  Modal,
-  Container,
-  Row,
-} from 'react-bootstrap';
+import { Container, Row } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
+import Button from '../Button';
+import Modal from '../common/Modal';
 import './PinModal.css';
-import { SettingsContext } from '../layout/Jukebox';
-
-import {
-  buttonProps,
-  modalBodyStyle,
-  modalHeaderStyle,
-  modalTitleStyle,
-} from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -33,40 +23,30 @@ function PinModal({ isOpen, handleClose }) {
   }, [pin]);
 
   const numberButton = number => (
-    <Button
-      key={number}
-      className="number-button"
-      style={{
-        color: settings.styles.fontColor,
-        background: settings.styles.buttonBackgroundColor,
-        fontFamily: settings.styles.buttonFont,
-      }}
-      variant="outline-light"
-      onClick={() => setPin(`${pin}${number}`)}
-    >
-      {number}
-    </Button>
+    <Button onClick={() => setPin(`${pin}${number}`)} content={number} height="75" width="75" />
   );
 
   const row = content => content.map(number => numberButton(number));
 
   return (
-    <Modal size="sm" show={isOpen} onHide={() => handleClose(pin === settings.pin)}>
-      <Modal.Header style={modalHeaderStyle(settings)} closeButton className="header">
-        <Modal.Title style={modalTitleStyle(settings)}>Enter Pin</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={modalBodyStyle(settings)} className="body">
+    <Modal
+      size="sm"
+      isFooterHidden
+      isOpen={isOpen}
+      onCancel={() => handleClose(pin === settings.pin)}
+      title="Enter Pin"
+      body={(
         <Container>
           <Row>{row([1, 2, 3])}</Row>
           <Row>{row([4, 5, 6])}</Row>
           <Row>{row([7, 8, 9])}</Row>
           <Row>
             {numberButton(0)}
-            <Button {...buttonProps(settings)} className="clear-button" onClick={() => setPin('')}>Clear</Button>
+            <Button onClick={() => setPin('')} content="Clear" />
           </Row>
         </Container>
-      </Modal.Body>
-    </Modal>
+      )}
+    />
   );
 }
 

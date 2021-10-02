@@ -1,16 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { ListGroup } from 'react-bootstrap';
 import {
-  Spinner, ListGroup, ListGroupItem, Button, Col, Row, Container,
-} from 'react-bootstrap';
-import {
-  Check,
   CloudDownload,
   Search,
   Trash,
-  X,
 } from 'react-bootstrap-icons';
 import { getStatus, updateStatus } from '../../lib/status-client';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 import {
   add,
@@ -20,11 +16,11 @@ import {
   scan,
   saveCoverArt,
 } from '../../lib/librarian-client';
+import Button from '../Button';
 import Item from '../common/Item';
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import NoResults from '../common/NoResults';
-import styles from '../styles';
 
 const albumArt = require('album-art');
 
@@ -37,16 +33,6 @@ function LibraryList() {
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
   const renderLibraries = [];
-
-  const handleClose = (path) => {
-    if (path) {
-      add({
-        path,
-      });
-    }
-    setShow(false);
-    loadLibraries();
-  };
 
   const updateTotals = (data) => {
     let totalTracks = 0;
@@ -65,6 +51,16 @@ function LibraryList() {
       setLibraries(data);
       updateTotals(data);
     });
+  };
+
+  const handleClose = (path) => {
+    if (path) {
+      add({
+        path,
+      });
+    }
+    setShow(false);
+    loadLibraries();
   };
 
   const handleCloseDiscover = (path) => {
@@ -116,20 +112,9 @@ function LibraryList() {
 
   useEffect(() => loadLibraries(), []);
 
-  const buttonProps = {
-    style: styles.buttonStyle,
-    variant: 'outline-light',
-    className: 'float-right',
-  };
-
-  if (isScanning) {
-    buttonProps.disabled = true;
-  }
-
   let totalTracks = 0;
   libraries.forEach((library) => {
-    const enabled = library.enabled ? <Check /> : <X />;
-    const style = library.enabled ? styles.enabledStyle : styles.disabledStyle;
+    const status = library.enabled ? 'Online' : 'Offline';
     if (library.totalTracks) {
       totalTracks += library.totalTracks;
     }
@@ -137,24 +122,24 @@ function LibraryList() {
     renderLibraries.push(
       (
         <Item
-          text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
+          text={`${library.path} - Tracks: ${library.totalTracks || 0} [Status: ${status}]`}
           buttons={(
             <>
               <Button
-                {...buttonProps}
+                disabled={isScanning}
                 onClick={() => onScan({
                   name: library.name,
                   path: library.path,
                   enabled: library.enabled,
                 })}
-              >
-                <Search />
-              </Button>
-              <Button {...buttonProps} onClick={() => removeLibrary(library.name)}><Trash /></Button>
-              <Button {...buttonProps} variant="outline-light" className="float-right" disabled={isScanning} onClick={() => downloadCoverArt(library)}>
-                <CloudDownload />
-              </Button>
-              <Button style={style} variant="outline-light" className="float-right" disabled={isScanning}>{enabled}</Button>
+                content={<Search />}
+              />
+              <Button disabled={isScanning} onClick={() => removeLibrary(library.name)} content={<Trash />} />
+              <Button
+                disabled={isScanning}
+                onClick={() => downloadCoverArt(library)}
+                content={<CloudDownload />}
+              />
             </>
           )}
         />
@@ -162,31 +147,22 @@ function LibraryList() {
     );
   });
 
-  const addButton = (
-    <Button
-      variant="outline-light"
-      className="float-right"
-      onClick={handleShow}
-    >
-      Add
-    </Button>
-  );
+  const addButton = <Button disabled={isScanning} onClick={handleShow} content="Add" />;
+  const noResultsAddButton = <Button onClick={handleShow} content="Add" />;
 
-  const noResultsAddButton = (
-    <Button
-      variant="outline-light"
-      onClick={handleShow}
-    >
-      Add
-    </Button>
+  const discoverButton = (
+    <Button disabled={isScanning} onClick={handleDiscover} content="Discover" />
   );
 
   return (
     <>
       <div>
-        {!isScanning && renderLibraries.length > 0 && (
+        {renderLibraries.length > 0 && (
           <>
-            <div style={{ color: settings.styles.fontColor }}>{`Total Library Tracks: ${totalTracks}`}</div>
+            <div style={{ color: settings.styles.fontColor }}>{`Total Library Tracks: ${totalTracks}`}
+              <div style={{ float: 'right' }}>{addButton}</div>
+              <div style={{ float: 'right' }}>{discoverButton}</div>
+            </div>
             <ListGroup style={{ width: '100%' }}>
               {renderLibraries}
             </ListGroup>
@@ -200,8 +176,8 @@ function LibraryList() {
           controls={noResultsAddButton}
         />
       )}
-      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('path').value)} />
-      <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('path').value)} />
+      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
+      <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('name').value)} />
     </>
   );
 }

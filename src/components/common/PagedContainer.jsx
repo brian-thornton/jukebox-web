@@ -12,7 +12,7 @@ function PagedContainer({ content, paging, setPaging, isHorizontal, clientNextPa
 
   const margin = () => {
     const marginTop = isHorizontal ? '90px' : '0px';
-    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: marginTop, height: '100%' }
+    return isScreenSmall ? {} : { marginLeft: '0px', marginTop: marginTop, height: '100%' };
   };
 
   const pagingButtons = () => {
@@ -40,7 +40,7 @@ function PagedContainer({ content, paging, setPaging, isHorizontal, clientNextPa
     }
 
     return null;
-  }
+  };
 
   return (
     <Container fluid style={margin()}>
@@ -54,6 +54,6 @@ function PagedContainer({ content, paging, setPaging, isHorizontal, clientNextPa
       </Row>
     </Container>
   );
-};
+}
 
 export default PagedContainer;

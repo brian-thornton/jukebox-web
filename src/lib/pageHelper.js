@@ -173,7 +173,7 @@ const applyPageIfExists = (pageData, useStorePage, status, type) => {
     try {
       const updated = setKnownPage(pageData, status.currentPages[type]);
       paging = updated;
-    } catch {
+    } catch (error) {
       paging = pageData;
     }
   } else {

@@ -11,7 +11,7 @@ import {
 import { up, down } from '../../lib/volume-client';
 import Button from '../Button';
 import { next, stop } from '../../lib/queue-client';
-import { SettingsContext } from './Jukebox';
+import { SettingsContext } from './SettingsProvider';
 
 function ControlButtons({
   isScreenSmall,

@@ -14,7 +14,7 @@ import AlbumCover from './AlbumCover';
 import AlbumTracks from '../AlbumTracks';
 import { getAlbumTracks } from '../../lib/librarian-client';
 import Playlists from '../playlists/Playlists';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 import styles from '../styles';
 import {
   getHeight,

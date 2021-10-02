@@ -9,7 +9,7 @@ import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import PagedContainer from './common/PagedContainer';
-import { SettingsContext } from './layout/Jukebox';
+import { SettingsContext } from './layout/SettingsProvider';
 
 import './TrackList.css';
 

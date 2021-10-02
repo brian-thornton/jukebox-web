@@ -1,20 +1,9 @@
-import React, { useState, useContext } from 'react';
-import {
-  Button,
-  Modal,
-  Form,
-} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Form } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
-import { Colors } from '../shapes';
-import { SettingsContext } from '../layout/Jukebox';
 
-import {
-  buttonProps,
-  modalBodyStyle,
-  modalFooterStyle,
-  modalHeaderStyle,
-  modalTitleStyle,
-} from '../../lib/styleHelper';
+import Modal from '../common/Modal';
+import { Colors } from '../shapes';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -29,15 +18,14 @@ function CopyFromModal({
   colors,
   handleCopyColor,
 }) {
-  const settings = useContext(SettingsContext);
   const [copiedColor, setCopiedColor] = useState();
 
   return (
-    <Modal show={isOpen} onHide={handleHide}>
-      <Modal.Header style={modalHeaderStyle(settings)} closeButton>
-        <Modal.Title style={modalTitleStyle(settings)}>Copy Color From</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={modalBodyStyle(settings)}>
+    <Modal
+      isOpen={isOpen}
+      title="Copy Color From"
+      onCancel={handleHide}
+      body={(
         <Form.Group>
           <Form.Control as="select" size="lg" onChange={event => setCopiedColor(event.target.value)}>
             <option value={colors.headerColor}>Header Color</option>
@@ -49,20 +37,12 @@ function CopyFromModal({
             <option value={colors.buttonTextColor}>Button Text Color</option>
           </Form.Control>
         </Form.Group>
-      </Modal.Body>
-      <Modal.Footer style={modalFooterStyle(settings)}>
-        <Button {...buttonProps(settings)} onClick={handleHide}>Close</Button>
-        <Button
-          {...buttonProps(settings)}
-          onClick={() => {
-            handleCopyColor(copiedColor);
-            handleHide();
-          }}
-        >
-          Save
-        </Button>
-      </Modal.Footer>
-    </Modal>
+      )}
+      onConfirm={() => {
+        handleCopyColor(copiedColor);
+        handleHide();
+      }}
+    />
   );
 }
 

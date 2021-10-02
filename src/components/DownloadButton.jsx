@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 import { downloadTrack } from '../lib/librarian-client';
 import { Track } from './shapes';
 import './DownloadButton.css';
-import { SettingsContext } from './layout/Jukebox';
+import { SettingsContext } from './layout/SettingsProvider';
 
 const propTypes = {
   isScreenSmall: PropTypes.bool,

@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   disabled: PropTypes.bool,

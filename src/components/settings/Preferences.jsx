@@ -1,15 +1,14 @@
 import React, { useState, useContext } from 'react';
-import {
-  ListGroup, ListGroupItem, Button, InputGroup, FormControl,
-} from 'react-bootstrap';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
+
+import Button from '../Button';
 import Item from '../common/Item';
 import styles from '../styles';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
-import { buttonProps, disabledButton, enabledButton } from '../../lib/styleHelper';
+import NameInput from '../common/NameInput';
 
-
-function Preferences() {
+const Preferences = () => {
   const settings = useContext(SettingsContext);
   const [name, setName] = useState(settings.preferences.name);
 
@@ -21,59 +20,44 @@ function Preferences() {
     });
   };
 
-  const updatePreference = (name, value) => {
+  const updatePreference = (preferenceName, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.preferences[name] = value;
+    deepClone.preferences[preferenceName] = value;
     updateSettings(deepClone).then(() => {
       window.location.reload();
     });
   };
 
-  const preferencesRow = (name, value) => {
+  const preferencesRow = (rowName, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
-    const style = value ? enabledButton(settings) : disabledButton(settings);
 
     return (
       <Item
         buttons={(
           <Button
-            {...buttonProps(settings)}
-            onClick={() => updatePreference(name, !value)}
-            enabled={value}
-            style={style}
-          >
-            {buttonText}
-          </Button>
+            onClick={() => updatePreference(rowName, !value)}
+            isToggle={true}
+            isToggled={value}
+            content={buttonText}
+          />
         )}
-        text={name}
+        text={rowName}
       />
-    )
-  };
-
-  const preferences = () => {
-    return (
-      <>
-        <Button onClick={handleSave}>Save</Button>
-        <ListGroup>
-          <ListGroupItem style={styles.cardStyle}>
-            Jukebox Name:
-            <InputGroup className="mb-3">
-              <FormControl
-                id="name"
-                placeholder={settings.preferences.name}
-                aria-label="name"
-                aria-describedby="basic-addon1"
-                onChange={event => setName(event.target.value)}
-              />
-            </InputGroup>
-          </ListGroupItem>
-          {preferencesRow('showAlbumName', settings.preferences.showAlbumName)}
-          {preferencesRow('showAlbumsWithoutCoverArt', settings.preferences.showAlbumsWithoutCoverArt)}
-        </ListGroup>
-      </>
     );
   };
 
-  return preferences();
+  return (
+    <>
+      <Button onClick={handleSave} content="Save" />
+      <ListGroup>
+        <ListGroupItem style={styles.cardStyle}>
+          Jukebox Name:
+          <NameInput defaultValue={settings.preferences.name} onChange={event => setName(event.target.value)} />
+        </ListGroupItem>
+        {preferencesRow('showAlbumName', settings.preferences.showAlbumName)}
+        {preferencesRow('showAlbumsWithoutCoverArt', settings.preferences.showAlbumsWithoutCoverArt)}
+      </ListGroup>
+    </>
+  );
 }
 export default Preferences;

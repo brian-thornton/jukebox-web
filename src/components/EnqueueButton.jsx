@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { PropTypes } from 'prop-types';
 import { CollectionPlay } from 'react-bootstrap-icons';
 
-import { Button } from 'react-bootstrap';
+import Button from './Button';
 import { enqueue } from '../lib/queue-client';
-import { buttonProps } from '../lib/styleHelper';
 import { Track } from './shapes';
 import './EnqueueButton.css';
-import { SettingsContext } from './layout/Jukebox';
 
 const propTypes = {
   isScreenSmall: PropTypes.bool,
@@ -15,13 +13,10 @@ const propTypes = {
 };
 
 function EnqueueButton({ track, isScreenSmall }) {
-  const settings = useContext(SettingsContext);
   const content = isScreenSmall ? <CollectionPlay /> : 'Enqueue';
 
   return (
-    <Button {...buttonProps(settings)} onClick={() => enqueue(track)}>
-      {content}
-    </Button>
+    <Button onClick={() => enqueue(track)} content={content} />
   );
 }
 

@@ -9,7 +9,7 @@ import { Track as TrackShape } from './shapes';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
-import { SettingsContext } from './layout/Jukebox';
+import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
 
 import './TrackList.css';

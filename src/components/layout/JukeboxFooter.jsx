@@ -8,7 +8,7 @@ import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 
 import ControlButtons from './ControlButtons';
-import { SettingsContext } from './Jukebox';
+import { SettingsContext } from './SettingsProvider';
 
 import './Jukebox.css';
 

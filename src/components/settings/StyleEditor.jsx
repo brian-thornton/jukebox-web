@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Dropdown, ListGroup, ListGroupItem, Button,
-} from 'react-bootstrap';
+import { Dropdown, ListGroup, Button } from 'react-bootstrap';
 
+import ControlButton from '../common/ControlButton';
 import Item from '../common/Item';
-import styles from '../styles';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import ColorPicker from './ColorPicker';
 import CopyFromModal from './CopyFromModal';
-import { SettingsContext } from '../layout/Jukebox';
-import { buttonProps, controlButtonProps } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/SettingsProvider';
+import { buttonProps } from '../../lib/styleHelper';
 
 function StyleEditor({
   skin,
@@ -44,8 +42,8 @@ function StyleEditor({
 
   const controls = () => (
     <>
-      <Button {...controlButtonProps(settings)} onClick={goBackToThemeList}>Back to Settings</Button>
-      <Button {...controlButtonProps(settings)} onClick={() => setIsSaveAsModalOpen(true)}>Save As</Button>
+      <ControlButton onClick={goBackToThemeList} text="Back to Settings" />
+      <ControlButton onClick={() => setIsSaveAsModalOpen(true)} text="Save As" />
     </>
   );
 
@@ -136,9 +134,9 @@ function StyleEditor({
       'Rock Salt',
       'Carter One',
       'Unica One',
-      'Julius Sans One'
+      'Julius Sans One',
     ];
-    const options = availableFonts.map((font) => (
+    const options = availableFonts.map(font => (
       <Dropdown.Item
         onClick={() => setColors({ ...colors, [name]: font })}
         eventKey={font}
@@ -162,7 +160,7 @@ function StyleEditor({
           </Dropdown>
         )}
       />
-    )
+    );
   };
 
   const handleColorCopy = (color) => {
@@ -175,8 +173,6 @@ function StyleEditor({
   };
 
   const handleSetColor = (color) => {
-    setIsColorModalOpen(false);
-
     const updated = {
       ...colors,
       [colorMode]: color,
@@ -191,8 +187,10 @@ function StyleEditor({
 
   useEffect(() => {
     deleteSkin(skin.name).then(() => {
-      createSkin({ name: skin.name, skin: { isEditable: skin.isEditable, name: skin.name, ...colors } }).then(() => {
-      });
+      createSkin({
+        name: skin.name,
+        skin: { isEditable: skin.isEditable, name: skin.name, ...colors },
+      }).then(() => { });
     });
   }, [colors]);
 

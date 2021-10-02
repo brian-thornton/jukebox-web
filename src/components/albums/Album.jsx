@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 import { Album as albumShape } from '../shapes';
 import { coverArtUrl } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
-import { SettingsContext } from '../layout/Jukebox';
+import { SettingsContext } from '../layout/SettingsProvider';
 import styles from '../styles';
 
 const propTypes = {

@@ -1,12 +1,10 @@
 import React, { useContext } from 'react';
-import {
-  ListGroup, ListGroupItem, Button,
-} from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 
+import Button from '../Button';
 import Item from '../common/Item';
 import { updateSettings } from '../../lib/settings-client';
-import { SettingsContext } from '../layout/Jukebox';
-import { buttonProps, card, disabledButton, enabledButton } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 function SettingsEditor() {
   const settings = useContext(SettingsContext);
@@ -21,28 +19,25 @@ function SettingsEditor() {
 
   const settingRow = (name, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
-    const style = value ? enabledButton(settings) : disabledButton(settings);
 
     return (
       <Item
-        buttons={
+        buttons={(
           <Button
-            {...buttonProps(settings)}
             onClick={() => updateFeature(name, !value)}
-            enabled={value}
-            style={style}
-          >
-            {buttonText}
-          </Button>
-        }
+            isToggle={true}
+            isToggled={value}
+            content={buttonText}
+          />
+        )}
         text={name}
       />
-    )
+    );
   };
 
   const content = () => {
     const { features } = settings;
-    return Object.keys(features).map((key) => settingRow(key, features[key]));
+    return Object.keys(features).map(key => settingRow(key, features[key]));
   };
 
   return <ListGroup>{content()}</ListGroup>;

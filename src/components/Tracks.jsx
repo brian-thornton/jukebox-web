@@ -25,7 +25,7 @@ function Tracks({ search, setCurrentAlbum }) {
       try {
         const updated = setKnownPage(pageData, status.currentPages.tracks);
         setPaging(updated);
-      } catch {
+      } catch (error) {
         setPaging(pageData);
       }
     } else {

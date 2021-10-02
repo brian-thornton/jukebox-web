@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Nav } from 'react-bootstrap';
 
-import { SettingsContext } from './Jukebox';
+import { SettingsContext } from './SettingsProvider';
 
 function NavigationButtons({
   isScreenSmall,

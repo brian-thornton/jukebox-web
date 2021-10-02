@@ -10,7 +10,7 @@ import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
 
 import './Jukebox.css';
-import { SettingsContext } from './Jukebox';
+import { SettingsContext } from './SettingsProvider';
 
 const propTypes = {
   search: PropTypes.string,
