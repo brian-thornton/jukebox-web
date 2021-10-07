@@ -12,12 +12,12 @@ function AlbumCover({ album }) {
   const [coverArt, setCoverArt] = useState('');
 
   const loadCoverArt = () => {
-    coverArtUrl(album).then((url) => setCoverArt(url))
+    coverArtUrl(album).then(url => setCoverArt(url));
   };
 
   useEffect(() => loadCoverArt(), []);
   return <Card.Img top src={coverArt} />;
-};
+}
 
 
 AlbumCover.propTypes = propTypes;

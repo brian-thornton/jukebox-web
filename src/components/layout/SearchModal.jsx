@@ -9,32 +9,28 @@ import './SearchModal.css';
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
-  search: PropTypes.string.isRequired,
 };
 
 function SearchModal({
   isOpen,
   handleClose,
-  search,
 }) {
   const [searchText, setSearchText] = useState('Enter Search');
 
-  const inputButton = (value) => {
-    return (
-      <Button
-        width="55"
-        height="55"
-        onClick={() => {
-          if (searchText === 'Enter Search') {
-            setSearchText(value);
-          } else {
-            setSearchText(`${searchText}${value}`);
-          }
-        }}
-        content={value}
-      />
-    );
-  };
+  const inputButton = value => (
+    <Button
+      width="55"
+      height="55"
+      onClick={() => {
+        if (searchText === 'Enter Search') {
+          setSearchText(value);
+        } else {
+          setSearchText(`${searchText}${value}`);
+        }
+      }}
+      content={value}
+    />
+  );
 
   const row = content => content.map(char => inputButton(char));
 
@@ -42,7 +38,7 @@ function SearchModal({
     <Modal
       size="lg"
       isOpen={isOpen}
-      isFooterHidden={true}
+      isFooterHidden
       onCancel={() => handleClose('')}
       title={searchText}
       body={(

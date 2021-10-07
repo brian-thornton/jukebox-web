@@ -19,10 +19,10 @@ function ControlButtons({
 }) {
   const settings = useContext(SettingsContext);
   const { buttonBackgroundColor, buttonFontWeight, buttonFontColor } = settings.styles;
-  let buttons = [];
+  const buttons = [];
   const { features } = settings;
 
-  const addControlButton = (buttons, feature, name, handler) => {
+  const addControlButton = (feature, name, handler) => {
     if (feature) {
       buttons.push((
         <Button
@@ -36,8 +36,6 @@ function ControlButtons({
         />
       ));
     }
-
-    return buttons;
   };
 
   if (isScreenSmall) {
@@ -56,17 +54,17 @@ function ControlButtons({
     buttons.push(<Button onClick={next} content={<ChevronDoubleRight className="volume-icon" />} />);
     buttons.push(<Button onClick={stop} content={<XOctagonFill className="volume-icon" />} />);
   } else {
-    buttons = addControlButton(buttons, features.play, 'Play', next);
-    buttons = addControlButton(buttons, features.next, 'Next', next);
-    buttons = addControlButton(buttons, features.stop, 'Stop', stop);
+    addControlButton(features.play, 'Play', next);
+    addControlButton(features.next, 'Next', next);
+    addControlButton(features.stop, 'Stop', stop);
   }
 
   if (isScreenSmall) {
     buttons.push(<Button onClick={up} content={<VolumeUp className="volume-icon" />} />);
     buttons.push(<Button onClick={down} content={<VolumeDown className="volume-icon" />} />);
   } else {
-    buttons = addControlButton(buttons, features.volume, 'Volume Up', up);
-    buttons = addControlButton(buttons, features.volume, 'Volume Down', down);
+    addControlButton(features.volume, 'Volume Up', up);
+    addControlButton(features.volume, 'Volume Down', down);
   }
 
   return buttons;

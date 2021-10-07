@@ -13,12 +13,28 @@ import {
 } from '../../lib/styleHelper';
 
 const propTypes = {
-  alertText: PropTypes.string,
-  content: PropTypes.node.isRequired,
-  controls: PropTypes.node.isRequired,
+  body: PropTypes.string,
+  cancelText: PropTypes.string,
+  confirmText: PropTypes.string,
+  isFooterHidden: PropTypes.bool,
+  isOpen: PropTypes.bool,
+  onCancel: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func,
+  size: PropTypes.string,
+  title: PropTypes.string,
 };
 
-function Modal({ confirmText, cancelText, isOpen, onCancel, onConfirm, title, body, size, isFooterHidden }) {
+function Modal({
+  body,
+  cancelText,
+  confirmText,
+  isFooterHidden,
+  isOpen,
+  onCancel,
+  onConfirm,
+  size,
+  title,
+}) {
   const settings = useContext(SettingsContext);
 
   return (
@@ -31,14 +47,24 @@ function Modal({ confirmText, cancelText, isOpen, onCancel, onConfirm, title, bo
       </ReactModal.Body>
       {!isFooterHidden && (
         <ReactModal.Footer style={modalHeaderStyle(settings)}>
-          <Button onClick={onCancel} content={cancelText || "Cancel"} />
-          <Button onClick={onConfirm} content={confirmText || "Save"} />
+          <Button onClick={onCancel} content={cancelText || 'Cancel'} />
+          <Button onClick={onConfirm} content={confirmText || 'Save'} />
         </ReactModal.Footer>
       )}
     </ReactModal>
-  )
+  );
 }
 
+Modal.defaultProps = {
+  body: '',
+  cancelText: '',
+  confirmText: '',
+  isFooterHidden: false,
+  isOpen: false,
+  onConfirm: null,
+  size: '',
+  title: '',
+};
 
 Modal.propTypes = propTypes;
 

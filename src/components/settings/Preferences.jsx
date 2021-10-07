@@ -10,7 +10,8 @@ import NameInput from '../common/NameInput';
 
 const Preferences = () => {
   const settings = useContext(SettingsContext);
-  const [name, setName] = useState(settings.preferences.name);
+  const { preferences } = settings;
+  const [name, setName] = useState(preferences.name);
 
   const handleSave = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
@@ -36,7 +37,7 @@ const Preferences = () => {
         buttons={(
           <Button
             onClick={() => updatePreference(rowName, !value)}
-            isToggle={true}
+            isToggle
             isToggled={value}
             content={buttonText}
           />
@@ -52,12 +53,16 @@ const Preferences = () => {
       <ListGroup>
         <ListGroupItem style={styles.cardStyle}>
           Jukebox Name:
-          <NameInput defaultValue={settings.preferences.name} onChange={event => setName(event.target.value)} />
+          <NameInput
+            defaultValue={preferences.name}
+            onChange={event => setName(event.target.value)}
+          />
         </ListGroupItem>
-        {preferencesRow('showAlbumName', settings.preferences.showAlbumName)}
-        {preferencesRow('showAlbumsWithoutCoverArt', settings.preferences.showAlbumsWithoutCoverArt)}
+        {preferencesRow('showAlbumName', preferences.showAlbumName)}
+        {preferencesRow('showAlbumsWithoutCoverArt', preferences.showAlbumsWithoutCoverArt)}
       </ListGroup>
     </>
   );
-}
+};
+
 export default Preferences;

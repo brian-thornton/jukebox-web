@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useState, useCallback, useContext } from 'react';
 import {
   Navbar,
@@ -11,6 +12,12 @@ import ControlButtons from './ControlButtons';
 import { SettingsContext } from './SettingsProvider';
 
 import './Jukebox.css';
+
+const propTypes = {
+  nowPlaying: PropTypes.string,
+  search: PropTypes.string,
+  setSearch: PropTypes.func,
+};
 
 function JukeboxFooter({
   search,
@@ -38,7 +45,7 @@ function JukeboxFooter({
       return <React.Fragment />;
     }
 
-    return <div className="now-playing" style={{fontFamily: settings.styles.footerFont}}>{`Now Playing: ${nowPlaying}`}</div>;
+    return <div className="now-playing" style={{ fontFamily: settings.styles.footerFont }}>{`Now Playing: ${nowPlaying}`}</div>;
   };
 
   const footerContent = () => {
@@ -81,5 +88,13 @@ function JukeboxFooter({
     </Navbar>
   );
 }
+
+JukeboxFooter.defaultProps = {
+  nowPlaying: '',
+  search: '',
+  setSearch: null,
+};
+
+JukeboxFooter.propTypes = propTypes;
 
 export default JukeboxFooter;

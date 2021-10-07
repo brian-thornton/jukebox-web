@@ -13,7 +13,6 @@ function Settings() {
   const [isPinOpen, setIsPinOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
-  const [hideControls, setHideControls] = useState(false);
   const [controls, setControls] = useState(null);
 
   if (!isAuthorized && !isPinOpen && !modalClosed) {
@@ -23,12 +22,12 @@ function Settings() {
   const leftControls = () => {
     if (isAuthorized) {
       return (
-        <React.Fragment>
+        <>
           <ControlButton onClick={() => setMode('LIBRARY')} text="Library" />
           <ControlButton onClick={() => setMode('SETTINGS')} text="Features" />
           <ControlButton onClick={() => setMode('PREFERENCES')} text="Preferences" />
           <ControlButton onClick={() => setMode('STYLE')} text="Style" />
-        </React.Fragment>
+        </>
       );
     }
 
@@ -67,11 +66,7 @@ function Settings() {
   }
 
   if (isAuthorized) {
-    if (!hideControls) {
-      return <ContentWithControls controls={controls} content={content()} />;
-    }
-
-    return content();
+    return <ContentWithControls controls={controls} content={content()} />;
   }
 
   return <PinModal isOpen={isPinOpen} handleClose={handleClose} />;

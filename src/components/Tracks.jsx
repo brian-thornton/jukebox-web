@@ -3,7 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-bootstrap';
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
-import { clearCurrentPage, getHeight, initHorizontalPaging, setKnownPage, saveCurrentPage } from '../lib/pageHelper';
+import {
+  clearCurrentPage,
+  getHeight,
+  initHorizontalPaging,
+  pageStart,
+  pageLimit,
+  saveCurrentPage,
+  setKnownPage,
+} from '../lib/pageHelper';
 import PagedContainer from './common/PagedContainer';
 import { getStatus } from '../lib/status-client';
 
@@ -17,7 +25,7 @@ function Tracks({ search, setCurrentAlbum }) {
   const [tracks, setTracks] = useState([]);
   const [searchPageSet, setSearchPageSet] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const initialHeight = getHeight();
   const [isLoading, setIsLoading] = useState(false);
 
   const applyPageIfExists = (pageData, useStorePage, status) => {
@@ -31,7 +39,7 @@ function Tracks({ search, setCurrentAlbum }) {
     } else {
       setPaging(pageData);
     }
-  }
+  };
 
   const findTracks = async (start, limit) => {
     await clearCurrentPage('tracks');
@@ -46,28 +54,28 @@ function Tracks({ search, setCurrentAlbum }) {
     });
   };
 
-  const initPaging = (totalTracks) => {
+  const initPaging = () => {
     const pageData = initHorizontalPaging(totalTracks, 275, initialHeight, 225);
     getStatus().then((status) => {
       if (!paging) {
-        applyPageIfExists(pageData, status.currentPages.tracks, status)
+        applyPageIfExists(pageData, status.currentPages.tracks, status);
       } else if (!search && paging && status.currentPages && status.currentPages.tracks) {
-        applyPageIfExists(pageData, !status.currentPages.tracks, status)
+        applyPageIfExists(pageData, !status.currentPages.tracks, status);
       } else {
         setPaging(pageData);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     if (!paging && tracks.length) {
-      initPaging(totalTracks);
+      initPaging();
     }
-  }, [tracks])
+  }, [tracks]);
 
   const loadTracks = (loadPage) => {
-    const start = loadPage ? loadPage.start : (paging && paging.currentPage) ? paging.currentPage.start : 0;
-    let limit = loadPage ? loadPage.limit : (paging && paging.currentPage) ? paging.currentPage.limit : 5;
+    const start = pageStart(loadPage, paging);
+    let limit = pageLimit(loadPage, paging);
 
     if (search) {
       findTracks(start, limit);
@@ -105,7 +113,8 @@ function Tracks({ search, setCurrentAlbum }) {
   }, [paging]);
 
   const content = (
-    <TrackList style={{ width: '100%', marginRight: '0px' }}
+    <TrackList
+      style={{ width: '100%', marginRight: '0px' }}
       tracks={tracks}
       showAlbumCovers
       setCurrentAlbum={setCurrentAlbum}

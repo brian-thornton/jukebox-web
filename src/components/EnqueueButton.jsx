@@ -20,6 +20,10 @@ function EnqueueButton({ track, isScreenSmall }) {
   );
 }
 
+EnqueueButton.defaultProps = {
+  isScreenSmall: false,
+};
+
 EnqueueButton.propTypes = propTypes;
 
 export default EnqueueButton;

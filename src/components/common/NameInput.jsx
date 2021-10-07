@@ -11,23 +11,25 @@ const propTypes = {
 };
 
 const NameInput = ({
+  defaultValue,
   onChange,
-  defaultValue
-}) => {
-  return (
-    <InputGroup className="mb-3">
-      <FormControl
-        id="name"
-        placeholder="Name"
-        aria-label="Name"
-        defaultValue={defaultValue}
-        aria-describedby="basic-addon1"
-        onChange={onChange}
-      />
-    </InputGroup>
-  );
-}
+}) => (
+  <InputGroup className="mb-3">
+    <FormControl
+      id="name"
+      placeholder="Name"
+      aria-label="Name"
+      defaultValue={defaultValue}
+      aria-describedby="basic-addon1"
+      onChange={onChange}
+    />
+  </InputGroup>
+);
 
+NameInput.defaultProps = {
+  defaultValue: '',
+  onChange: null,
+};
 
 NameInput.propTypes = propTypes;
 

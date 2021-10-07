@@ -33,6 +33,8 @@ function LibraryList() {
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
   const renderLibraries = [];
+  const addButton = <Button disabled={isScanning} onClick={handleShow} content="Add" />;
+  const noResultsAddButton = <Button onClick={handleShow} content="Add" />;
 
   const updateTotals = (data) => {
     let totalTracks = 0;
@@ -134,7 +136,11 @@ function LibraryList() {
                 })}
                 content={<Search />}
               />
-              <Button disabled={isScanning} onClick={() => removeLibrary(library.name)} content={<Trash />} />
+              <Button
+                disabled={isScanning}
+                onClick={() => removeLibrary(library.name)}
+                content={<Trash />}
+              />
               <Button
                 disabled={isScanning}
                 onClick={() => downloadCoverArt(library)}
@@ -147,9 +153,6 @@ function LibraryList() {
     );
   });
 
-  const addButton = <Button disabled={isScanning} onClick={handleShow} content="Add" />;
-  const noResultsAddButton = <Button onClick={handleShow} content="Add" />;
-
   const discoverButton = (
     <Button disabled={isScanning} onClick={handleDiscover} content="Discover" />
   );
@@ -159,7 +162,8 @@ function LibraryList() {
       <div>
         {renderLibraries.length > 0 && (
           <>
-            <div style={{ color: settings.styles.fontColor }}>{`Total Library Tracks: ${totalTracks}`}
+            <div style={{ color: settings.styles.fontColor }}>
+              {`Total Library Tracks: ${totalTracks}`}
               <div style={{ float: 'right' }}>{addButton}</div>
               <div style={{ float: 'right' }}>{discoverButton}</div>
             </div>

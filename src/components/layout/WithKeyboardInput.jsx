@@ -1,6 +1,14 @@
-import React from 'react';
 import { cloneDeep } from 'lodash';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
+import { PropTypes } from 'prop-types';
+import React from 'react';
+
+const propTypes = {
+  component: PropTypes.node.isRequired,
+  debouncedSearch: PropTypes.func.isRequired,
+  tempSearch: PropTypes.string.isRequired,
+  setTempSearch: PropTypes.func.isRequired,
+};
 
 function WithKeyboardInput({
   component,
@@ -9,7 +17,7 @@ function WithKeyboardInput({
   debouncedSearch,
 }) {
   return (
-    <React.Fragment>
+    <>
       <KeyboardEventHandler
         handleKeys={['alphanumeric', 'space', 'backspace']}
         onKeyEvent={(key) => {
@@ -29,8 +37,10 @@ function WithKeyboardInput({
         }}
       />
       {component}
-    </React.Fragment>
+    </>
   );
 }
+
+WithKeyboardInput.propTypes = propTypes;
 
 export default WithKeyboardInput;

@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { Button, Card, Container, Row, Col, Tab, Tabs } from 'react-bootstrap';
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Row,
+  Tab,
+  Tabs,
+} from 'react-bootstrap';
 import { ChromePicker } from 'react-color';
 import { PropTypes } from 'prop-types';
 
@@ -11,14 +19,12 @@ const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   setColor: PropTypes.func.isRequired,
-  allowGradient: PropTypes.bool,
 };
 
 function ColorPicker({
   isOpen,
   setIsOpen,
   setColor,
-  allowGradient,
 }) {
   const settings = useContext(SettingsContext);
   const [colorType, setColorType] = useState('solid');
@@ -26,7 +32,10 @@ function ColorPicker({
   const [gradientB, setGradientB] = useState();
   const [colorString, setColorString] = useState('transparent');
   const [solidColor, setSolidColor] = useState();
-  const picker = (color, width, handler) => <ChromePicker width={width} color={color} onChangeComplete={handler} />;
+
+  const picker = (color, width, handler) => (
+    <ChromePicker width={width} color={color} onChangeComplete={handler} />
+  );
 
   const formatColor = () => {
     if (colorType === 'transparent') {
@@ -47,6 +56,15 @@ function ColorPicker({
   useEffect(formatColor, [gradientA]);
   useEffect(formatColor, [gradientB]);
 
+  const transparentCardStyle = {
+    background: 'transparent',
+    minHeight: '200px',
+    height: '100%',
+    borderColor: 'black',
+    color: settings.styles.fontColor,
+    swidth: '18rem',
+  };
+
   return (
     <Modal
       size="lg"
@@ -58,18 +76,18 @@ function ColorPicker({
       }}
       title="Select Color"
       body={(
-        <Tabs onSelect={(e) => setColorType(e)}>
+        <Tabs onSelect={e => setColorType(e)}>
           <Tab eventKey="solid" title="Solid Color">
-            {picker(solidColor, "100%", colorData => setSolidColor(colorData))}
+            {picker(solidColor, '100%', colorData => setSolidColor(colorData))}
           </Tab>
           <Tab eventKey="gradient" title="Gradient">
             <Container>
               <Row>
                 <Col lg="4" md="4" sm="4">
-                  {picker(gradientA, "100%", colorData => setGradientA(colorData))}
+                  {picker(gradientA, '100%', colorData => setGradientA(colorData))}
                 </Col>
                 <Col lg="4" md="4" sm="4">
-                  {picker(gradientB, "100%", colorData => setGradientB(colorData))}
+                  {picker(gradientB, '100%', colorData => setGradientB(colorData))}
                 </Col>
                 <Col lg="4" md="4" sm="4">
                   <Button style={{ background: colorString }}>Example</Button>
@@ -78,8 +96,8 @@ function ColorPicker({
             </Container>
           </Tab>
           <Tab eventKey="transparent" title="Transparent">
-            <Card style={{ background: 'transparent', minHeight: '200px', height: '100%', borderColor: 'black', color: settings.styles.fontColor, swidth: '18rem' }}>
-            <Card.Title style={{ textAlign: 'center' }}>Transparent</Card.Title>
+            <Card style={transparentCardStyle}>
+              <Card.Title style={{ textAlign: 'center' }}>Transparent</Card.Title>
               <Card.Body>
                 <Card.Text style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   If this tab is selected, the color will be transparent.
@@ -94,9 +112,5 @@ function ColorPicker({
 }
 
 ColorPicker.propTypes = propTypes;
-
-ColorPicker.defaultProps = {
-  allowGradient: true,
-};
 
 export default ColorPicker;

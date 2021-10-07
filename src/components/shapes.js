@@ -70,3 +70,8 @@ export const Page = PropTypes.shape({
   limit: PropTypes.number,
 });
 
+export const Paging = PropTypes.shape({
+  pages: PropTypes.arrayOf(Page),
+  currentPage: PropTypes.number,
+});
+

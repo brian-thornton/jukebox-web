@@ -100,7 +100,7 @@ function ThemeList({ resetControls, setControls }) {
 
   const skinRows = () => {
     if (skins && skins.length) {
-      return skins.map((skin) => (
+      return skins.map(skin => (
         <Item
           text={skin.name}
           buttons={(

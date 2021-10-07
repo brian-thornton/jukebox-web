@@ -15,7 +15,12 @@ import PlayNowButton from './PlayNowButton';
 import Item from './common/Item';
 import NoResults from './common/NoResults';
 import PagedContainer from './common/PagedContainer';
-import { getHeight, initializePaging } from '../lib/pageHelper';
+import {
+  getHeight,
+  initializePaging,
+  pageStart,
+  pageLimit,
+} from '../lib/pageHelper';
 
 function Queue() {
   const [tracks, setTracks] = useState([]);
@@ -25,12 +30,11 @@ function Queue() {
   let renderTracks = [];
 
   const [paging, setPaging] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
-  const clear = () => clearQueue().then(loadQueue());
+  const initialHeight = getHeight();
 
   const loadQueue = (loadPage) => {
-    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
-    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+    const start = pageStart(loadPage, paging);
+    let limit = pageLimit(loadPage, paging);
 
     if (start === 0) {
       limit += 1;
@@ -47,6 +51,7 @@ function Queue() {
     });
   };
 
+  const clear = () => clearQueue().then(loadQueue());
   useEffect(() => loadQueue(), []);
 
   // const refreshQueue = () => {
@@ -99,7 +104,7 @@ function Queue() {
     loadQueue();
   };
 
-  renderTracks = tracks.map((track) => (
+  renderTracks = tracks.map(track => (
     <Item
       text={track.name}
       buttons={(

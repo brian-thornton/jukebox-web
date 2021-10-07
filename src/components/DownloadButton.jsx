@@ -1,3 +1,4 @@
+import { Button } from 'react-bootstrap';
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 
@@ -13,7 +14,7 @@ const propTypes = {
 
 function DownloadButton({ track, isScreenSmall }) {
   const settings = useContext(SettingsContext);
-  const handleDownload = (track) => {
+  const handleDownload = () => {
     downloadTrack(track).then((response) => {
       response.blob().then((blob) => {
         const url = window.URL.createObjectURL(blob);
@@ -26,11 +27,15 @@ function DownloadButton({ track, isScreenSmall }) {
   };
 
   if (settings.features.admin && settings.features.downloadTrack && !isScreenSmall) {
-    return <div className="download"><a onClick={() => handleDownload(track)}>Download</a></div>;
+    return <Button className="download" variant="link" onClick={() => handleDownload()}>Download</Button>;
   }
 
   return <React.Fragment />;
 }
+
+DownloadButton.defaultProps = {
+  isScreenSmall: false,
+};
 
 DownloadButton.propTypes = propTypes;
 

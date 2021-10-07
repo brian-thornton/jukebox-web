@@ -183,6 +183,29 @@ const applyPageIfExists = (pageData, useStorePage, status, type) => {
   return paging;
 }
 
+const pageStart = (loadPage, paging) => {
+  if (loadPage) {
+    return loadPage.start;
+  }
+  
+  if (paging && paging.currentPage) {
+    return paging.currentPage.start;
+  }
+
+  return 0;
+};
+
+const pageLimit = (loadPage, paging) => {
+  if (loadPage) {
+    return loadPage.limit;
+  }
+
+  if (paging && paging.currentPage) {
+    return paging.currentPage.limit;
+  }
+
+  return 5;
+};
 
 const initPaging = async (totalItems, search, type) => {
   const pageData = initHorizontalPaging(totalItems, 275, getHeight(), 225);
@@ -219,4 +242,6 @@ export {
   saveCurrentPage,
   setKnownPage,
   clearCurrentPage,
+  pageStart,
+  pageLimit,
 };

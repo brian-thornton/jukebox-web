@@ -22,7 +22,7 @@ function Album({
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
-      coverArtUrl(album).then((url) => setCoverArt(url));
+      coverArtUrl(album).then(url => setCoverArt(url));
     }
   };
 
@@ -41,17 +41,16 @@ function Album({
   };
 
   const body = () => {
-    let body;
     if (!coverArtOnly) {
-      body = (
+      return (
         <Card.Body style={{ padding: '0px', fontFamily: settings.styles.listFont }}>
           {albumName()}
         </Card.Body>
       );
     }
 
-    return body;
-  }
+    return <React.Fragment />;
+  };
 
   return (
     <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
@@ -60,6 +59,10 @@ function Album({
     </Card>
   );
 }
+
+Album.defaultProps = {
+  coverArtOnly: false,
+};
 
 Album.propTypes = propTypes;
 

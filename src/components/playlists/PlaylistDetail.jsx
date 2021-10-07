@@ -18,7 +18,6 @@ import PlaylistAddModal from './PlaylistAddModal';
 import PlayNowButton from '../PlayNowButton';
 import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
-import { getHeight, nextPage, previousPage, initializePaging } from '../../lib/pageHelper';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -30,8 +29,6 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
-  const [paging, setPaging] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
   let renderTracks = [];
 
   const loadTracks = (playlistName) => {
@@ -40,7 +37,6 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         setIsEmpty(true);
       } else {
         setTracks(playlist.tracks);
-        setPaging(initializePaging(playlist.tracks.length, 100, initialHeight));
       }
     });
   };

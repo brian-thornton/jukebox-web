@@ -18,7 +18,6 @@ const propTypes = {
   tracks: PropTypes.arrayOf(TrackShape),
   showAlbumCovers: PropTypes.bool,
   setCurrentAlbum: PropTypes.func.isRequired,
-  showDownloadLink: PropTypes.bool,
 };
 
 function TrackList({
@@ -33,9 +32,9 @@ function TrackList({
   const isScreenSmall = window.innerWidth < 700;
   const renderTracks = [];
 
-  const getAlbums = async (tracks) => {
+  const getAlbums = async (pageTracks) => {
     setTrackAlbumsLoading(true);
-    const data = await getTrackAlbums(tracks);
+    const data = await getTrackAlbums(pageTracks);
     setTrackAlbums(data);
     setTrackAlbumsLoaded(true);
     setTrackAlbumsLoading(false);
@@ -48,15 +47,11 @@ function TrackList({
 
   useEffect(() => {
     getAlbums(tracks);
-  }, [tracks])
+  }, [tracks]);
 
   if (settings && settings.features) {
     tracks.forEach((track) => {
       if (track.path.split('.').pop().toLowerCase() === 'mp3') {
-        if (track.id) {
-          track.accessToken = window.accessToken;
-        }
-
         if (trackAlbumsLoaded && showAlbumCovers && !isScreenSmall) {
           renderTracks.push(
             (
@@ -70,9 +65,15 @@ function TrackList({
             ),
           );
         } else {
+          const itemStyle = {
+            ...styles.cardStyle,
+            color: settings.styles.fontColor,
+            background: settings.styles.trackBackgroundColor,
+          };
+
           renderTracks.push(
             (
-              <ListGroupItem style={{ ...styles.cardStyle, color: settings.styles.fontColor, background: settings.styles.trackBackgroundColor }}>
+              <ListGroupItem style={itemStyle}>
                 {track.name}
                 <br />
                 <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
@@ -94,7 +95,6 @@ function TrackList({
 TrackList.propTypes = propTypes;
 TrackList.defaultProps = {
   showAlbumCovers: false,
-  showDownloadLink: false,
   tracks: [],
 };
 

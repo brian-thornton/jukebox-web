@@ -11,13 +11,13 @@ const propTypes = {
 };
 
 function PlayNowButton({ track }) {
-  const playNow = (track) => {
+  const playNow = () => {
     enqueueTop(track);
     next();
   };
 
-  return <Button icon={<Play />} onClick={() => playNow(track)} content="Play" />;
-};
+  return <Button icon={<Play />} onClick={() => playNow()} content="Play" />;
+}
 
 PlayNowButton.propTypes = propTypes;
 

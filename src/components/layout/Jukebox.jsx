@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container } from 'react-bootstrap';
 import { debounce } from 'lodash';
+import WebFont from 'webfontloader';
 
 import AlbumList from '../albums/AlbumList';
 import Playlists from '../playlists/Playlists';
@@ -12,7 +13,6 @@ import { getSettings } from '../../lib/settings-client';
 import { getStatus } from '../../lib/status-client';
 import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
-import WebFont from 'webfontloader';
 import WithKeyboardInput from './WithKeyboardInput';
 import { getHeight } from '../../lib/pageHelper';
 
@@ -75,12 +75,12 @@ function Jukebox() {
         ],
       },
     });
-   }, []);
+  }, []);
 
   const debouncedSearch = useCallback(
-    debounce((tempSearch) => {
-      if (tempSearch.length > 2) {
-        setSearch(tempSearch);
+    debounce((updatedSearch) => {
+      if (updatedSearch.length > 2) {
+        setSearch(updatedSearch);
         setTempSearch('');
         window.scrollTo(0, 0);
       }

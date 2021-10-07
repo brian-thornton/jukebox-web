@@ -16,6 +16,8 @@ import PagingButtons from '../common/PagingButtons';
 import {
   getHeight,
   initializePaging,
+  pageLimit,
+  pageStart,
   previousPage,
   nextPage,
 } from '../../lib/pageHelper';
@@ -34,7 +36,7 @@ function Playlists({
 }) {
   const settings = useContext(SettingsContext);
   const [paging, setPaging] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const initialHeight = getHeight();
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -47,8 +49,8 @@ function Playlists({
   const playlistsMargin = isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
 
   const loadPlaylists = (loadPage) => {
-    const start = loadPage ? loadPage.start : paging ? paging.currentPage.start : 0;
-    let limit = loadPage ? loadPage.limit : paging ? paging.currentPage.limit : 5;
+    const start = pageStart(loadPage, paging);
+    let limit = pageLimit(loadPage, paging);
 
     if (start === 0) {
       limit += 1;
@@ -89,9 +91,9 @@ function Playlists({
         name: data,
         tracks: [],
       }).then(() => {
-        getPlaylists().then((data) => {
+        getPlaylists().then((playlistData) => {
           getStatus().then((status) => {
-            updateStatus({ ...status, totalPlaylists: data.length });
+            updateStatus({ ...status, totalPlaylists: playlistData.length });
           });
         });
       });
@@ -181,6 +183,5 @@ Playlists.defaultProps = {
   currentPlaylist: '',
   mode: '',
 };
-
 
 export default Playlists;

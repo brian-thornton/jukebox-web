@@ -9,10 +9,10 @@ function NavigationButtons({
   setCurrentAlbum,
 }) {
   const settings = useContext(SettingsContext);
-  let navLinks = [];
+  const navLinks = [];
   const { features } = settings;
 
-  const addNavLink = (navLinks, feature, navKey, navName) => {
+  const addNavLink = (feature, navKey, navName) => {
     if (feature) {
       navLinks.push(
         <Nav.Link
@@ -28,16 +28,15 @@ function NavigationButtons({
         </Nav.Link>,
       );
     }
-    return navLinks;
   };
 
-  navLinks = addNavLink(navLinks, features.albums, 'AlbumList', 'Albums');
-  navLinks = addNavLink(navLinks, features.tracks, 'Tracks', 'Tracks');
-  navLinks = addNavLink(navLinks, features.playlists, 'Playlists', 'Playlists');
-  navLinks = addNavLink(navLinks, features.queue, 'Queue', 'Queue');
+  addNavLink(features.albums, 'AlbumList', 'Albums');
+  addNavLink(features.tracks, 'Tracks', 'Tracks');
+  addNavLink(features.playlists, 'Playlists', 'Playlists');
+  addNavLink(features.queue, 'Queue', 'Queue');
 
   if (!isScreenSmall) {
-    navLinks = addNavLink(navLinks, features.settings, 'Settings', 'Settings');
+    addNavLink(features.settings, 'Settings', 'Settings');
   }
 
   return navLinks;

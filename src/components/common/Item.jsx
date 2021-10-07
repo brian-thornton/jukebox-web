@@ -1,15 +1,13 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import {
-  ListGroupItem
-} from 'react-bootstrap';
+import { ListGroupItem } from 'react-bootstrap';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
-  alertText: PropTypes.string,
-  content: PropTypes.node.isRequired,
-  controls: PropTypes.node.isRequired,
+  buttons: PropTypes.node,
+  onClick: PropTypes.func,
+  text: PropTypes.string,
 };
 
 function Item({ buttons, onClick, text }) {
@@ -33,6 +31,12 @@ function Item({ buttons, onClick, text }) {
     </ListGroupItem>
   );
 }
+
+Item.defaultProps = {
+  buttons: null,
+  onClick: null,
+  text: '',
+};
 
 
 Item.propTypes = propTypes;

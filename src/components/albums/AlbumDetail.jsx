@@ -34,13 +34,13 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
   const [paging, setPaging] = useState();
-  const [initialHeight, setInitialHeight] = useState(getHeight());
+  const initialHeight = getHeight();
   const settings = useContext(SettingsContext);
 
   const loadTracks = () => {
     if (!areTracksLoading) {
       getAlbumTracks(album.path).then((data) => {
-        setPaging(initHorizontalPaging(data.length, 100, initialHeight, 650));
+        setPaging(initHorizontalPaging(data.length, 150, initialHeight, 650));
         setTracks(data);
         setAreTracksLoaded(true);
         setAreTracksLoading(false);

@@ -25,7 +25,7 @@ function SettingsEditor() {
         buttons={(
           <Button
             onClick={() => updateFeature(name, !value)}
-            isToggle={true}
+            isToggle
             isToggled={value}
             content={buttonText}
           />

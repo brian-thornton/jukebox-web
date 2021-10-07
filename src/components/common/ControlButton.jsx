@@ -19,7 +19,7 @@ function ControlButton({ disabled, onClick, text }) {
     color: styles.fontColor,
     minHeight: '65px',
     fontFamily: styles.buttonFont,
-  }
+  };
 
   return (
     <Button
@@ -27,10 +27,16 @@ function ControlButton({ disabled, onClick, text }) {
       disabled={disabled}
       variant="outline-light"
       style={controlButtonStyle}
-      onClick={onClick}>{text}
+      onClick={onClick}
+    >
+      {text}
     </Button>
   );
 }
+
+ControlButton.defaultProps = {
+  disabled: false,
+};
 
 ControlButton.propTypes = propTypes;
 

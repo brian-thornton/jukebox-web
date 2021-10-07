@@ -13,20 +13,34 @@ import { SettingsContext } from './layout/SettingsProvider';
 
 import './TrackList.css';
 
-function Track({ track, trackAlbums, trackAlbumsLoaded, showAlbumCovers, setCurrentAlbum }) {
+const propTypes = {
+  setCurrentAlbum: PropTypes.func,
+  showAlbumCovers: PropTypes.bool,
+  track: TrackShape.isRequired,
+  trackAlbums: PropTypes.arrayOf(TrackShape).isRequired,
+  trackAlbumsLoaded: PropTypes.bool,
+};
+
+function Track({
+  showAlbumCovers,
+  setCurrentAlbum,
+  track,
+  trackAlbums,
+  trackAlbumsLoaded,
+}) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
-  const getAlbum = (track) => {
+  const getAlbum = (albumTrack) => {
     if (trackAlbumsLoaded) {
-      return trackAlbums.find(trackAlbum => trackAlbum.path === track.path.substr(0, track.path.lastIndexOf('/')));
+      return trackAlbums.find(trackAlbum => trackAlbum.path === albumTrack.path.substr(0, albumTrack.path.lastIndexOf('/')));
     }
 
     return null;
   };
 
-  const album = (track) => {
-    const ta = getAlbum(track);
+  const album = (albumTrack) => {
+    const ta = getAlbum(albumTrack);
     if (showAlbumCovers && ta) {
       if (settings && settings.features) {
         return (
@@ -41,11 +55,28 @@ function Track({ track, trackAlbums, trackAlbumsLoaded, showAlbumCovers, setCurr
     return <React.Fragment />;
   };
 
+  const trackCardStyle = {
+    ...styles.cardStyle,
+    color: settings.styles.fontColor,
+    width: '400px',
+    height: '125px',
+    margin: '10px',
+    background: settings.styles.trackBackgroundColor,
+  };
+
+  const trackNameStyle = {
+    width: '100%',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontFamily: settings.styles.listFont,
+  };
+
   return (
-    <Card style={{ ...styles.cardStyle, color: settings.styles.fontColor, width: '400px', height: '125px', margin: '10px', background: settings.styles.trackBackgroundColor }}>
+    <Card style={trackCardStyle}>
       <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px' }}>
         <Row>
-          <div style={{ width: '100%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontFamily: settings.styles.listFont }}>
+          <div style={trackNameStyle}>
             {track.name}
           </div>
         </Row>
@@ -54,16 +85,28 @@ function Track({ track, trackAlbums, trackAlbumsLoaded, showAlbumCovers, setCurr
             {album(track)}
           </Col>
           <Col lg={8}>
-            <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
-            <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
+            <Container style={{ marginTop: '0px' }}>
+              <Row>
+                <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
+                <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
+              </Row>
+              <Row>
+                <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+              </Row>
+            </Container>
           </Col>
-        </Row>
-        <Row>
-          <DownloadButton track={track} isScreenSmall={isScreenSmall} />
         </Row>
       </Container>
     </Card>
-  )
+  );
+}
+
+Track.defaultProps = {
+  setCurrentAlbum: null,
+  showAlbumCovers: false,
+  trackAlbumsLoaded: false,
 };
+
+Track.propTypes = propTypes;
 
 export default Track;

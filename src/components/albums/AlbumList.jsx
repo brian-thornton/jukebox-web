@@ -3,10 +3,13 @@ import { PropTypes } from 'prop-types';
 
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Album from './Album';
+import NoResults from '../common/NoResults';
 import PagedContainer from '../common/PagedContainer';
 import {
   clearCurrentPage,
   initPaging,
+  pageLimit,
+  pageStart,
   saveCurrentPage,
 } from '../../lib/pageHelper';
 
@@ -20,8 +23,7 @@ const propTypes = {
 function AlbumList({ search, setCurrentAlbum }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [alertText, setAlertText] = useState('Loading albums...');
-  const [paging, setPaging] = useState();;
+  const [paging, setPaging] = useState();
   const size = useWindowSize();
   const [lastSize, setLastSize] = useState();
   let content = [];
@@ -36,10 +38,10 @@ function AlbumList({ search, setCurrentAlbum }) {
     }
 
     setLastSize(size);
-  }, [size])
+  }, [size]);
 
   const establishPaging = async (totalItems) => {
-    const pageData = await initPaging(totalItems, search, 'albums')
+    const pageData = await initPaging(totalItems, search, 'albums');
     setPaging(pageData);
   };
 
@@ -47,15 +49,12 @@ function AlbumList({ search, setCurrentAlbum }) {
     if (!paging && albums.length && totalAlbums) {
       establishPaging(totalAlbums);
     }
-  }, [albums])
+  }, [albums]);
 
   const findAlbums = async (start, limit) => {
     await clearCurrentPage('albums');
-    setAlertText('Searching...');
     searchAlbums(search, start, limit).then((data) => {
-      if (!data.albums.length) {
-        setAlertText('No results found.');
-      } else {
+      if (data.albums.length) {
         setTotalAlbums(data.albums.length);
         setAlbums(data.albums);
         if (search !== lastSearch) {
@@ -66,19 +65,20 @@ function AlbumList({ search, setCurrentAlbum }) {
       }
       window.scrollTo(0, 0);
       setIsLoading(false);
-    }).catch(err => console.log(err));
+    }).catch(() => {});
   };
 
   const loadAlbums = (loadPage) => {
-    const start = loadPage ? loadPage.start : (paging && paging.currentPage) ? paging.currentPage.start : 0;
-    let limit = loadPage ? loadPage.limit : (paging && paging.currentPage) ? paging.currentPage.limit : 5;
+    const start = pageStart(loadPage, paging);
+    let limit = pageLimit(loadPage, paging);
 
     if (!isLoading) {
       setIsLoading(true);
       setAlbums([]);
       if (search) {
         const searchStart = searchPageSet ? start : 0;
-        const searchEnd = searchPageSet ? limit : paging ? paging.pageSize : 5;
+        const searchLimit = paging ? paging.pageSize : 5;
+        const searchEnd = searchPageSet ? limit : searchLimit;
         findAlbums(searchStart, searchEnd);
       } else {
         if (start === 0) {
@@ -86,10 +86,6 @@ function AlbumList({ search, setCurrentAlbum }) {
         }
 
         getAlbums(start, limit).then((data) => {
-          if (!data.length) {
-            setAlertText('No albums found. Set up your library in settings.');
-          }
-
           setTotalAlbums(data.totalAlbums);
           setAlbums(data.albums);
           window.scrollTo(0, 0);
@@ -97,7 +93,7 @@ function AlbumList({ search, setCurrentAlbum }) {
         });
       }
     }
-  }
+  };
 
   useEffect(() => {
     if (!search) {
@@ -122,7 +118,7 @@ function AlbumList({ search, setCurrentAlbum }) {
   }, [paging]);
 
   if (albums && albums.length) {
-    content = albums.map((album) => <Album album={album} setCurrentAlbum={setCurrentAlbum} />);
+    content = albums.map(album => <Album album={album} setCurrentAlbum={setCurrentAlbum} />);
 
     if (paging) {
       return (
@@ -136,7 +132,11 @@ function AlbumList({ search, setCurrentAlbum }) {
     }
   }
 
-  return <React.Fragment />;
+  return (
+    <div style={{ marginTop: '60px' }}>
+      <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />
+    </div>
+  );
 }
 
 AlbumList.propTypes = propTypes;
