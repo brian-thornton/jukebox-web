@@ -50,7 +50,7 @@ function Button({
     buttonStyle.minHeight = `${height}px`;
   }
 
-  const buttonContent = (isScreenSmall && icon) ? icon : content;
+  const buttonContent = ((isScreenSmall && icon) || (!content && icon)) ? icon : content;
   return <ReactButton disabled={disabled} style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{buttonContent}</ReactButton>;
 }
 

@@ -16,3 +16,7 @@ export const addTracksToPlaylist = (name, tracks) => {
 export const removeTracksFromPlaylist = (name, tracks) => {
   return post(`${path}/removeFromPlaylist`, { name, tracks });
 };
+
+export const addTrackAtPosition = (name, track, position) => {
+  return post(`${path}/addTrackAtPosition`, { name, track, position });
+}

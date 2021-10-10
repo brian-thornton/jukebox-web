@@ -1,8 +1,10 @@
+import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
 import {
+  addTrackAtPosition,
   getPlaylist,
   deletePlaylist,
   add,
@@ -16,7 +18,6 @@ import Modal from '../common/Modal';
 import NoResults from '../common/NoResults';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlayNowButton from '../PlayNowButton';
-import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 
 const propTypes = {
@@ -81,16 +82,32 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     loadTracks(name);
   }
 
-  const buttons = track => (
+  const onMoveTrackUp = (trackToMove, index) => {
+    removeTracksFromPlaylist(name, [trackToMove]);
+    addTrackAtPosition(name, trackToMove, index - 1);
+    loadTracks(name);
+  };
+
+  const onMoveTrackDown = (trackToMove, index) => {
+    removeTracksFromPlaylist(name, [trackToMove]).then(() => {
+      addTrackAtPosition(name, trackToMove, index + 1);
+      loadTracks(name);
+    });
+  };
+
+  const buttons = (track, index) => (
     <>
       <PlayNowButton track={track} />
-      <EnqueueButton track={track} />
-      <Button onClick={() => deleteTrack(name, track)} content="Delete" />
+      <Button onClick={() => deleteTrack(name, track)} icon={<TrashFill />} />
+      <Button icon={<CaretUpFill />} onClick={() => onMoveTrackUp(track, index)} />
+      <Button icon={<CaretDownFill />} onClick={() => onMoveTrackDown(track, index)} />
     </>
   );
 
   if (tracks) {
-    renderTracks = tracks.map(track => <Item text={track.name} buttons={buttons(track)} />);
+    renderTracks = tracks.map((track, index) => (
+      <Item text={track.name} buttons={buttons(track, index)} />
+    ));
   }
 
   const handleDelete = () => {
