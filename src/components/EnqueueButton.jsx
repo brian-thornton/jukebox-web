@@ -1,10 +1,12 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { CollectionPlay } from 'react-bootstrap-icons';
+import { ListOl } from 'react-bootstrap-icons';
+import { toast } from 'react-toastify';
 
 import Button from './Button';
 import { enqueue } from '../lib/queue-client';
 import { Track } from './shapes';
+import { toastProps } from './common/toast-helper';
 import './EnqueueButton.css';
 
 const propTypes = {
@@ -13,10 +15,12 @@ const propTypes = {
 };
 
 function EnqueueButton({ track, isScreenSmall }) {
-  const content = isScreenSmall ? <CollectionPlay /> : 'Enqueue';
-
   return (
-    <Button onClick={() => enqueue(track)} content={content} />
+    <Button onClick={() => {
+      enqueue(track);
+      toast.success("Added to queue!", toastProps);
+    }}
+      content={<ListOl />} />
   );
 }
 

@@ -1,8 +1,9 @@
+import { TrashFill } from 'react-bootstrap-icons';
 import React, { useEffect, useState } from 'react';
 import Button from './Button';
 
 import ControlButton from './common/ControlButton';
-import Playlists from './playlists/Playlists';
+import PlaylistsViewer from './playlists/PlaylistsViewer';
 import {
   clearQueue,
   getQueue,
@@ -110,7 +111,7 @@ function Queue() {
       buttons={(
         <>
           <PlayNowButton track={track} />
-          <Button onClick={() => remove(track)} content="Delete" />
+          <Button onClick={() => remove(track)} icon={<TrashFill />} />
         </>
       )}
     />
@@ -127,7 +128,7 @@ function Queue() {
   if (!addToPlaylist) {
     return <ContentWithControls controls={controls()} content={content()} />;
   }
-  return (<Playlists mode="addToPlaylist" tracks={tracks} />);
+  return (<PlaylistsViewer mode="addToPlaylist" tracks={tracks} />);
 }
 
 export default Queue;

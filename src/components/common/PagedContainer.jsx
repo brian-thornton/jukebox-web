@@ -30,7 +30,7 @@ function PagedContainer({
   const isScreenSmall = window.innerWidth < 700;
 
   const margin = () => {
-    const marginTop = isHorizontal ? '90px' : '0px';
+    const marginTop = isHorizontal ? '70px' : '0px';
     return isScreenSmall ? {} : { marginLeft: '0px', marginTop, height: '100%' };
   };
 
@@ -64,10 +64,10 @@ function PagedContainer({
   return (
     <Container fluid style={margin()}>
       <Row>
-        <Col lg={11} xl={11}>
+        <Col lg="11" xl="11" md="7" sm="7">
           <Row>{content}</Row>
         </Col>
-        <Col lg={1} xl={1}>
+        <Col lg="1" xl="1" md="5" sm="5">
           {pagingButtons()}
         </Col>
       </Row>

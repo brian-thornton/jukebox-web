@@ -55,7 +55,7 @@ function Tracks({ search, setCurrentAlbum }) {
   };
 
   const initPaging = () => {
-    const pageData = initHorizontalPaging(totalTracks, 275, initialHeight, 225);
+    const pageData = initHorizontalPaging(totalTracks, 250, initialHeight, 225);
     getStatus().then((status) => {
       if (!paging) {
         applyPageIfExists(pageData, status.currentPages.tracks, status);

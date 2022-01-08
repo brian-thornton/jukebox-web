@@ -1,5 +1,5 @@
 import React from 'react';
-import { Play } from 'react-bootstrap-icons';
+import { PlayFill } from 'react-bootstrap-icons';
 
 import Button from './Button';
 import { enqueueTop, next } from '../lib/queue-client';
@@ -16,7 +16,7 @@ function PlayNowButton({ track }) {
     next();
   };
 
-  return <Button icon={<Play />} onClick={() => playNow()} content="Play" />;
+  return <Button icon={<PlayFill />} onClick={() => playNow()} />;
 }
 
 PlayNowButton.propTypes = propTypes;

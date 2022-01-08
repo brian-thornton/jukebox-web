@@ -16,11 +16,29 @@ function WithKeyboardInput({
   setTempSearch,
   debouncedSearch,
 }) {
+  function handlePaste(e) {
+    var clipboardData, pastedData;
+
+    // Stop data actually being pasted into div
+    e.stopPropagation();
+    e.preventDefault();
+
+    // Get pasted data via clipboard API
+    clipboardData = e.clipboardData || window.clipboardData;
+    pastedData = clipboardData.getData('Text');
+
+    // Do whatever with pasteddata
+    debouncedSearch(pastedData);
+  }
+
+  document.addEventListener('paste', handlePaste);
+
   return (
     <>
       <KeyboardEventHandler
-        handleKeys={['alphanumeric', 'space', 'backspace']}
+        handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v']}
         onKeyEvent={(key) => {
+          console.log(key);
           let newSearch = cloneDeep(tempSearch);
           if (key === 'space') {
             newSearch = `${tempSearch} `;

@@ -14,11 +14,14 @@ function Item({ buttons, onClick, text }) {
   const settings = useContext(SettingsContext);
 
   const itemStyle = {
-    width: '90%',
+    width: '95%',
     color: settings.styles.fontColor,
     background: settings.styles.trackBackgroundColor,
     borderColor: '#708090',
     fontFamily: settings.styles.listFont,
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   };
 
   return (

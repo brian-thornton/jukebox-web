@@ -12,7 +12,11 @@ export const add = (library) => post(`${path}/add`, library);
 export const saveCoverArt = (cover) => post(`${path}/saveCoverArt`, cover);
 export const removeCoverArt = (album) => post(`${path}/removeCoverArt`, album);
 
-export const getAlbums = (start, limit) => {
+export const getAlbums = (start, limit, category) => {
+  if (category) {
+    return getData(`${path}/albums?${page(start, limit)}&category=${category}`);
+  };
+
   return getData(`${path}/albums?${page(start, limit)}`);
 };
 
@@ -46,16 +50,25 @@ export const coverArtUrl = async (album) => {
   const existingCover = await getCoverArt(album.path);
 
   if (existingCover && existingCover.type === 'image/jpeg') {
-    return URL.createObjectURL(existingCover);
+    return {
+      url: URL.createObjectURL(existingCover),
+      isLocal: true
+    };
   } else {
     const data = await albumArt(artist, { album: albumName });
 
     if (data.toString().includes('http')) {
-      return data;
-    } 
+      return {
+        url: data,
+        isLocal: false
+      };
+    }
   }
 
-  return defaultCover;
+  return {
+    url: defaultCover,
+    isDefault: true
+  };
 }
 
 export const scan = async (library) => {

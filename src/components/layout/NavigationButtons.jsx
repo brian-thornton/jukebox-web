@@ -5,6 +5,7 @@ import { SettingsContext } from './SettingsProvider';
 
 function NavigationButtons({
   isScreenSmall,
+  setCategory,
   setMode,
   setCurrentAlbum,
 }) {
@@ -19,6 +20,7 @@ function NavigationButtons({
           style={{ fontFamily: settings.styles.headerFont }}
           key={navName}
           onClick={() => {
+            setCategory(navName);
             setMode(navKey);
             setCurrentAlbum('');
             window.scrollTo(0, 0);
@@ -30,7 +32,7 @@ function NavigationButtons({
     }
   };
 
-  addNavLink(features.albums, 'AlbumList', 'Albums');
+  settings.categories.map((c) => addNavLink(features.albums, 'AlbumList', c));
   addNavLink(features.tracks, 'Tracks', 'Tracks');
   addNavLink(features.playlists, 'Playlists', 'Playlists');
   addNavLink(features.queue, 'Queue', 'Queue');

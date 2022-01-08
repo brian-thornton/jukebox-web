@@ -22,6 +22,7 @@ const propTypes = {
 
 function JukeboxHeader({
   search,
+  setCategory,
   setSearch,
   setTempSearch,
   setMode,
@@ -93,6 +94,7 @@ function JukeboxHeader({
         {brand()}
         <Nav className="mr-auto">
           <NavigationButtons
+            setCategory={setCategory}
             isScreenSmall={isScreenSmall}
             setMode={setMode}
             setCurrentAlbum={setCurrentAlbum}

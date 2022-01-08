@@ -12,7 +12,7 @@ function AlbumCover({ album }) {
   const [coverArt, setCoverArt] = useState('');
 
   const loadCoverArt = () => {
-    coverArtUrl(album).then(url => setCoverArt(url));
+    coverArtUrl(album).then(data => setCoverArt(data.url));
   };
 
   useEffect(() => loadCoverArt(), []);

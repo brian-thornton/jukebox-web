@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
 import { Album as albumShape } from '../shapes';
-import { coverArtUrl } from '../../lib/librarian-client';
+import { coverArtUrl, saveCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from '../styles';
@@ -22,7 +22,13 @@ function Album({
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
-      coverArtUrl(album).then(url => setCoverArt(url));
+      coverArtUrl(album).then((data) => {
+        setCoverArt(data.url)
+
+        if (!data.isLocal && !data.isDefault) {
+          saveCoverArt({ album, url: data.url });
+        }
+      });
     }
   };
 

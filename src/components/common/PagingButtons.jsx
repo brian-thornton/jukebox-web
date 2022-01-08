@@ -33,6 +33,7 @@ function PagingButtons({
   const pageButtonProps = {
     background: settings.styles.buttonBackgroundColor,
     height: '75px',
+    minWidth: '50px',
     color: settings.styles.fontColor,
   };
 

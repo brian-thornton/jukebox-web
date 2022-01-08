@@ -41,7 +41,7 @@ function PinModal({ isOpen, handleClose }) {
           <Row>{row([4, 5, 6])}</Row>
           <Row>{row([7, 8, 9])}</Row>
           <Row>
-            {numberButton(0)}
+            {numberButton("0")}
             <Button onClick={() => setPin('')} content="Clear" />
           </Row>
         </Container>

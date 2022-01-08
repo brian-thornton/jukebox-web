@@ -10,14 +10,14 @@ const propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-function ControlButton({ disabled, onClick, text }) {
+function ControlButton({ disabled, height, onClick, text }) {
   const settings = useContext(SettingsContext);
   const { styles } = settings;
 
   const controlButtonStyle = {
     background: styles.buttonBackgroundColor,
     color: styles.fontColor,
-    minHeight: '65px',
+    minHeight: height ? `${height}px` : '65px',
     fontFamily: styles.buttonFont,
   };
 

@@ -5,9 +5,11 @@ import {
   Search,
   Trash,
 } from 'react-bootstrap-icons';
-import { getStatus, updateStatus } from '../../lib/status-client';
-import { SettingsContext } from '../layout/SettingsProvider';
+import { toast } from 'react-toastify';
 
+import { getStatus, updateStatus } from '../../lib/status-client';
+import { updateSettings } from '../../lib/settings-client';
+import { SettingsContext } from '../layout/SettingsProvider';
 import {
   add,
   getLibraries,
@@ -16,11 +18,22 @@ import {
   scan,
   saveCoverArt,
 } from '../../lib/librarian-client';
+
+import {
+  getHeight,
+  initHorizontalPaging,
+  initListPaging,
+  nextPage,
+  previousPage,
+} from '../../lib/pageHelper';
+
 import Button from '../Button';
 import Item from '../common/Item';
 import LibraryAddModal from './LibraryAddModal';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import NoResults from '../common/NoResults';
+import PagedContainer from '../common/PagedContainer';
+import { toastProps } from '../common/toast-helper';
 
 const albumArt = require('album-art');
 
@@ -33,33 +46,44 @@ function LibraryList() {
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
   const renderLibraries = [];
+  const [paging, setPaging] = useState();
   const addButton = <Button disabled={isScanning} onClick={handleShow} content="Add" />;
   const noResultsAddButton = <Button onClick={handleShow} content="Add" />;
+  const initialHeight = getHeight();
 
   const updateTotals = (data) => {
     let totalTracks = 0;
     let totalAlbums = 0;
+
+    const categoryAlbums = {};
+    settings.categories.map((c) => {
+      categoryAlbums[c] = 0;
+    });
+
     data.forEach((lib) => {
-      totalTracks += lib.totalTracks;
-      totalAlbums += lib.albums.length;
+      if (lib.category) {
+        categoryAlbums[lib.category] += lib.albums.length;
+      } else {
+        totalTracks += lib.totalTracks;
+        totalAlbums += lib.albums.length;
+      }
     });
     getStatus().then((response) => {
-      updateStatus({ ...response, totalTracks, totalAlbums });
+      updateStatus({ ...response, totalTracks, totalAlbums, categoryAlbums });
     });
   };
 
   const loadLibraries = () => {
     getLibraries().then((data) => {
+      setPaging(initListPaging(data.length, 90, initialHeight));
       setLibraries(data);
       updateTotals(data);
     });
   };
 
-  const handleClose = (path) => {
+  const handleClose = (path, category) => {
     if (path) {
-      add({
-        path,
-      });
+      add({ path, category });
     }
     setShow(false);
     loadLibraries();
@@ -83,6 +107,17 @@ function LibraryList() {
     deleteLibrary(name).then(() => {
       getLibraries().then((data) => {
         setLibraries(data);
+
+        const actualCategories = [...new Set(data.map((lib) => lib.category))];
+        if (!actualCategories.includes('Albums')) {
+          actualCategories.splice(0, 0, 'Albums');
+        }
+
+        const deepClone = JSON.parse(JSON.stringify(settings));
+        deepClone.categories = actualCategories.filter(Boolean);
+        updateSettings(deepClone).then(() => {
+          toast.success("Library successfully deleted!", toastProps);
+        });
       });
     });
   };
@@ -92,6 +127,7 @@ function LibraryList() {
     scan(library).then(() => {
       setIsScanning(false);
       loadLibraries();
+      toast.success("Scan complete!", toastProps);
     });
   };
 
@@ -112,54 +148,60 @@ function LibraryList() {
     });
   };
 
-  useEffect(() => loadLibraries(), []);
+  useEffect(loadLibraries, []);
 
   let totalTracks = 0;
   libraries.forEach((library) => {
-    const status = library.enabled ? 'Online' : 'Offline';
     if (library.totalTracks) {
       totalTracks += library.totalTracks;
     }
-
-    renderLibraries.push(
-      (
-        <Item
-          text={`${library.path} - Tracks: ${library.totalTracks || 0} [Status: ${status}]`}
-          buttons={(
-            <>
-              <Button
-                disabled={isScanning}
-                onClick={() => onScan({
-                  name: library.name,
-                  path: library.path,
-                  enabled: library.enabled,
-                })}
-                content={<Search />}
-              />
-              <Button
-                disabled={isScanning}
-                onClick={() => removeLibrary(library.name)}
-                content={<Trash />}
-              />
-              <Button
-                disabled={isScanning}
-                onClick={() => downloadCoverArt(library)}
-                content={<CloudDownload />}
-              />
-            </>
-          )}
-        />
-      ),
-    );
   });
+
+  if (paging) {
+    libraries.slice(paging.currentPage.start, paging.currentPage.limit).forEach((library) => {
+      const status = library.enabled ? 'Online' : 'Offline';
+
+      renderLibraries.push(
+        (
+          <Item
+            text={`${library.path} - Tracks: ${library.totalTracks || 0} [Status: ${status}]`}
+            buttons={(
+              <>
+                <Button
+                  disabled={isScanning}
+                  onClick={() => onScan({
+                    name: library.name,
+                    path: library.path,
+                    enabled: library.enabled,
+                    category: library.category,
+                  })}
+                  content={<Search />}
+                />
+                <Button
+                  disabled={isScanning}
+                  onClick={() => removeLibrary(library.name)}
+                  content={<Trash />}
+                />
+                <Button
+                  disabled={isScanning}
+                  onClick={() => downloadCoverArt(library)}
+                  content={<CloudDownload />}
+                />
+              </>
+            )}
+          />
+        ),
+      );
+    });
+  }
 
   const discoverButton = (
     <Button disabled={isScanning} onClick={handleDiscover} content="Discover" />
   );
 
-  return (
+  const content = (
     <>
-      <div>
+      <div style={{ width: '100%' }}>
         {renderLibraries.length > 0 && (
           <>
             <div style={{ color: settings.styles.fontColor }}>
@@ -175,15 +217,29 @@ function LibraryList() {
       </div>
       {renderLibraries.length === 0 && (
         <NoResults
+          style={{ width: '100%' }}
           title="No Libraries"
           text="No Libraries have been added. Click Add to add your first library."
           controls={noResultsAddButton}
         />
       )}
-      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
+      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={(category) => handleClose(document.getElementById('name').value, category)} />
       <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('name').value)} />
     </>
   );
+
+  if (paging) {
+    return (
+      <PagedContainer
+        paging={paging}
+        content={content}
+        clientNextPage={() => setPaging(nextPage(paging))}
+        clientPreviousPage={() => setPaging(previousPage(paging))}
+      />
+    );
+  }
+
+  return <></>;
 }
 
 export default LibraryList;

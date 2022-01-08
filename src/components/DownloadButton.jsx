@@ -1,7 +1,8 @@
-import { Button } from 'react-bootstrap';
+import { Download } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 
+import Button from './Button';
 import { downloadTrack } from '../lib/librarian-client';
 import { Track } from './shapes';
 import './DownloadButton.css';
@@ -27,7 +28,7 @@ function DownloadButton({ track, isScreenSmall }) {
   };
 
   if (settings.features.admin && settings.features.downloadTrack && !isScreenSmall) {
-    return <Button className="download" variant="link" onClick={() => handleDownload()}>Download</Button>;
+    return <Button onClick={() => handleDownload()} content={<Download />} />
   }
 
   return <React.Fragment />;

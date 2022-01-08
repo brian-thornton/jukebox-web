@@ -4,6 +4,13 @@ import { ListGroup } from 'react-bootstrap';
 
 import Button from '../Button';
 import Item from '../common/Item';
+import PagedContainer from '../common/PagedContainer';
+import {
+  getHeight,
+  initListPaging,
+  nextPage,
+  previousPage,
+} from '../../lib/pageHelper';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import { updateSettings } from '../../lib/settings-client';
 import { getSkins, deleteSkin } from '../../lib/style-client';
@@ -24,6 +31,8 @@ function ThemeList({ resetControls, setControls }) {
   const [editSkin, setEditSkin] = useState();
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [copyFromColors, setCopyFromColors] = useState();
+  const [paging, setPaging] = useState();
+  const initialHeight = getHeight();
 
   if (!skinsLoaded && !skinsLoading) {
     setSkinsLoading(true);
@@ -31,6 +40,7 @@ function ThemeList({ resetControls, setControls }) {
 
   const loadSkins = () => {
     getSkins().then((data) => {
+      setPaging(initListPaging(data.length, 90, initialHeight));
       setSkinsLoading(false);
       setSkinsLoaded(true);
       setSkins(data);
@@ -100,7 +110,7 @@ function ThemeList({ resetControls, setControls }) {
 
   const skinRows = () => {
     if (skins && skins.length) {
-      return skins.map(skin => (
+      return skins.slice(paging.currentPage.start, paging.currentPage.limit).map(skin => (
         <Item
           text={skin.name}
           buttons={(
@@ -115,7 +125,7 @@ function ThemeList({ resetControls, setControls }) {
       ));
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   if (editSkin) {
@@ -128,23 +138,32 @@ function ThemeList({ resetControls, setControls }) {
     );
   }
 
-  if (skins && skins.length) {
+  const content = (
+    <>
+      <ListGroup style={{width: '100%'}}>
+        {skinRows()}
+      </ListGroup>
+      <SkinSaveAsModal
+        goBackToThemeList={goBackToThemeList}
+        handleHide={() => setIsSaveAsOpen(false)}
+        isOpen={isSaveAsOpen}
+        colors={copyFromColors}
+      />
+    </>
+  );
+
+  if (paging) {
     return (
-      <>
-        <ListGroup>
-          {skinRows()}
-        </ListGroup>
-        <SkinSaveAsModal
-          goBackToThemeList={goBackToThemeList}
-          handleHide={() => setIsSaveAsOpen(false)}
-          isOpen={isSaveAsOpen}
-          colors={copyFromColors}
-        />
-      </>
+      <PagedContainer
+        paging={paging}
+        content={content}
+        clientNextPage={() => setPaging(nextPage(paging))}
+        clientPreviousPage={() => setPaging(previousPage(paging))}
+      />
     );
   }
 
-  return <React.Fragment />;
+  return <></>;
 }
 
 ThemeList.propTypes = propTypes;

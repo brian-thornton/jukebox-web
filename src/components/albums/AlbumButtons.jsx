@@ -2,8 +2,12 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
 import { Tracks } from '../shapes';
+import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
 
 import './AlbumButtons.css';
@@ -26,7 +30,7 @@ function AlbumButtons({
 
   const albumButton = (onClick, name) => (
     <Col lg={6} style={{ padding: '0px' }}>
-      <ControlButton text={name} onClick={onClick} />
+      <ControlButton text={name} onClick={onClick} height={50} />
     </Col>
   );
 
@@ -37,7 +41,10 @@ function AlbumButtons({
         {albumButton(playAlbum, 'Play Album')}
       </Row>
       <Row>
-        {albumButton(() => enqueueTracks(tracks), 'Enqueue Album')}
+        {albumButton(() => {
+          enqueueTracks(tracks);
+          toast.success("Added to the queue!", toastProps);
+        }, 'Enqueue Album')}
         {albumButton(() => setAddToPlaylist(true), 'Add to Playlist')}
       </Row>
     </>

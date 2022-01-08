@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container } from 'react-bootstrap';
 import { debounce } from 'lodash';
+import { ToastContainer } from 'react-toastify';
 import WebFont from 'webfontloader';
 
 import AlbumList from '../albums/AlbumList';
-import Playlists from '../playlists/Playlists';
+import PlaylistsViewer from '../playlists/PlaylistsViewer';
 import AlbumDetail from '../albums/AlbumDetail';
 import Queue from '../Queue';
 import Tracks from '../Tracks';
@@ -20,6 +21,7 @@ import './Jukebox.css';
 import { SettingsContext } from './SettingsProvider';
 
 function Jukebox() {
+  const [category, setCategory] = useState('Albums');
   const [mode, setMode] = useState('AlbumList');
   const [search, setSearch] = useState('');
   const [settings, setSettings] = useState();
@@ -112,6 +114,7 @@ function Jukebox() {
     <AlbumList
       search={search}
       setCurrentAlbum={setCurrentAlbum}
+      category={category}
     />
   );
 
@@ -154,7 +157,7 @@ function Jukebox() {
           );
           break;
         case 'Playlists':
-          body = <Playlists />;
+          body = <PlaylistsViewer />;
           break;
         case 'Queue':
           body = <Queue />;
@@ -163,7 +166,14 @@ function Jukebox() {
           body = <Settings />;
           break;
         default:
-          body = albumList;
+          body = (
+            <WithKeyboardInput
+              component={albumList}
+              tempSearch={tempSearch}
+              setTempSearch={setTempSearch}
+              debouncedSearch={debouncedSearch}
+            />
+          );
       }
     }
   }
@@ -177,6 +187,7 @@ function Jukebox() {
           setTempSearch={setTempSearch}
           mode={mode}
           setMode={setMode}
+          setCategory={setCategory}
           currentAlbum={currentAlbum}
           setCurrentAlbum={setCurrentAlbum}
         />
@@ -197,6 +208,7 @@ function Jukebox() {
           setSearch={setSearch}
           nowPlaying={nowPlaying}
         />
+        <ToastContainer />
       </SettingsContext.Provider>
     );
   }

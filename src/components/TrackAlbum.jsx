@@ -16,7 +16,7 @@ function TrackAlbum({ album, setCurrentAlbum }) {
   const [coverArt, setCoverArt] = useState();
 
   const loadCoverArt = () => {
-    coverArtUrl(album).then(data => setCoverArt(data));
+    coverArtUrl(album).then(data => setCoverArt(data.url));
   };
 
   useEffect(() => loadCoverArt(), []);

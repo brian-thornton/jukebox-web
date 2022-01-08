@@ -13,12 +13,14 @@ import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
 import AlbumTracks from '../AlbumTracks';
 import { getAlbumTracks } from '../../lib/librarian-client';
-import Playlists from '../playlists/Playlists';
+import PlaylistsViewer from '../playlists/PlaylistsViewer';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from '../styles';
+import { toastProps } from '../common/toast-helper';
 import {
   getHeight,
   initHorizontalPaging,
+  initListPaging,
   nextPage,
   previousPage,
 } from '../../lib/pageHelper';
@@ -30,6 +32,7 @@ const propTypes = {
 
 function AlbumDetail({ album, clearCurrentAlbum }) {
   const [tracks, setTracks] = useState([]);
+  const [addTracks, setAddTracks] = useState();
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
@@ -40,7 +43,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const loadTracks = () => {
     if (!areTracksLoading) {
       getAlbumTracks(album.path).then((data) => {
-        setPaging(initHorizontalPaging(data.length, 150, initialHeight, 650));
+        setPaging(initListPaging(data.length, 90, initialHeight));
         setTracks(data);
         setAreTracksLoaded(true);
         setAreTracksLoading(false);
@@ -81,6 +84,8 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
                 previousPage={() => setPaging(previousPage(paging))}
                 paging={paging}
                 showDownloadLink
+                setAddToPlaylist={setAddToPlaylist}
+                setAddTracks={setAddTracks}
               />
             </Col>
           </Row>
@@ -88,7 +93,10 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
       );
     }
 
-    return <Playlists mode="addToPlaylist" tracks={tracks} />;
+    return <PlaylistsViewer onAddComplete={() => {
+      setAddToPlaylist(false);
+      setAddTracks(null);
+    }} mode="addToPlaylist" tracks={addTracks || tracks} />;
   };
 
 

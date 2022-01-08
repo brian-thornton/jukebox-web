@@ -59,7 +59,7 @@ function Track({
     ...styles.cardStyle,
     color: settings.styles.fontColor,
     width: '400px',
-    height: '125px',
+    height: '100px',
     margin: '10px',
     background: settings.styles.trackBackgroundColor,
   };
@@ -76,21 +76,19 @@ function Track({
     <Card style={trackCardStyle}>
       <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px' }}>
         <Row>
-          <div style={trackNameStyle}>
-            {track.name}
-          </div>
-        </Row>
-        <Row>
-          <Col lg={4}>
+          <Col lg={3} md={3}>
             {album(track)}
           </Col>
-          <Col lg={8}>
+          <Col lg={9} md={9}>
             <Container style={{ marginTop: '0px' }}>
+              <Row>
+                <div style={trackNameStyle}>
+                  {track.name}
+                </div>
+              </Row>
               <Row>
                 <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
                 <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
-              </Row>
-              <Row>
                 <DownloadButton track={track} isScreenSmall={isScreenSmall} />
               </Row>
             </Container>

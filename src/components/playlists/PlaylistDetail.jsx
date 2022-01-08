@@ -2,7 +2,15 @@ import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
 import React, { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
+
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
+import {
+  getHeight,
+  initHorizontalPaging,
+  initListPaging,
+  nextPage,
+  previousPage,
+} from '../../lib/pageHelper';
 import {
   addTrackAtPosition,
   getPlaylist,
@@ -10,12 +18,12 @@ import {
   add,
   removeTracksFromPlaylist,
 } from '../../lib/playlist-client';
-
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import ContentWithControls from '../common/ContentWithControls';
 import Modal from '../common/Modal';
 import NoResults from '../common/NoResults';
+import PagedContainer from '../common/PagedContainer';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlayNowButton from '../PlayNowButton';
 import Item from '../common/Item';
@@ -30,6 +38,8 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
+  const [paging, setPaging] = useState();
+  const initialHeight = getHeight();
   let renderTracks = [];
 
   const loadTracks = (playlistName) => {
@@ -38,6 +48,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         setIsEmpty(true);
       } else {
         setTracks(playlist.tracks);
+        setPaging(initListPaging(playlist.tracks.length, 90, initialHeight));
       }
     });
   };
@@ -129,14 +140,23 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   );
 
   const content = () => {
-    if (isEmpty) {
+    if (!paging || isEmpty) {
       return <NoResults title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
     }
 
-    return (
-      <ListGroup>
-        {renderTracks}
+    const playlistTracks = (
+      <ListGroup style={{width: '100%'}}>
+        {renderTracks.slice(paging.currentPage.start, paging.currentPage.limit)}
       </ListGroup>
+    );
+
+    return (
+      <PagedContainer
+        paging={paging}
+        content={playlistTracks}
+        clientNextPage={() => setPaging(nextPage(paging))}
+        clientPreviousPage={() => setPaging(previousPage(paging))}
+      />
     );
   };
 

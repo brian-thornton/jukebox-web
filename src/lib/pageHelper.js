@@ -89,6 +89,21 @@ const rowSize = (itemWidth) => {
   return Math.floor((getWidth() - 100) / itemWidth);
 }
 
+const initListPaging = (totalItems, itemHeight, pageHeight) => {
+  const itemPageSize = pageSize(pageHeight, itemHeight);
+  console.log(`itemPageSize: ${itemPageSize}`);
+  const currentPage = { start: 0, limit: itemPageSize - 1 };
+  const pages = calculatePages(totalItems, itemPageSize);
+  console.log(pages);
+  const paging = {
+    pageSize: itemPageSize,
+    currentPage,
+    pages
+  };
+
+  return paging;
+}
+
 const initHorizontalPaging = (totalItems, itemHeight, pageHeight, itemWidth) => {
   const itemPageSize = pageRows(pageHeight, itemHeight) * rowSize(itemWidth);
   const currentPage = { start: 0, limit: itemPageSize - 1 };
@@ -187,7 +202,7 @@ const pageStart = (loadPage, paging) => {
   if (loadPage) {
     return loadPage.start;
   }
-  
+
   if (paging && paging.currentPage) {
     return paging.currentPage.start;
   }
@@ -207,8 +222,16 @@ const pageLimit = (loadPage, paging) => {
   return 5;
 };
 
-const initPaging = async (totalItems, search, type) => {
-  const pageData = initHorizontalPaging(totalItems, 275, getHeight(), 225);
+const initPaging = async (totalItems, search, type, collectionType) => {
+  let pageData;
+
+  if (collectionType !== 'list') {
+    pageData = initHorizontalPaging(totalItems, 275, getHeight(), 225);
+  } else {
+    pageData = initListPaging(totalItems, 100, getHeight());
+  }
+
+
   let paging;
 
   const status = await getStatus();
@@ -229,6 +252,7 @@ export {
   initializePaging,
   initHorizontalPaging,
   initPaging,
+  initListPaging,
   nextPage,
   previousPage,
   getHeight,

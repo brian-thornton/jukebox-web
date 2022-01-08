@@ -18,13 +18,17 @@ function AlbumAdminButtons({ album }) {
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState('');
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
-  const saveCoverArtToLibrary = () => saveCoverArt({ album, url: coverArt });
+  const saveCoverArtToLibrary = () => {
+    saveCoverArt({ album, url: coverArt });
+  }
 
-  useEffect(() => setCoverArt(coverArtUrl(album)), []);
+  useEffect(() => {
+    coverArtUrl(album).then(data => setCoverArt(data.url));
+  }, []);
 
   const albumButton = (onClick, name) => (
     <Col lg={6} style={{ padding: '0px' }}>
-      <ControlButton onClick={onClick} text={name} />
+      <ControlButton onClick={onClick} text={name} height={50} />
     </Col>
   );
 
@@ -38,7 +42,7 @@ function AlbumAdminButtons({ album }) {
           </Row>
           <Row>
             {albumButton(() => setIsCustomSearchOpen(true), 'Custom Search')}
-            {albumButton(saveCoverArtToLibrary, 'Save Cover Art')}
+            {albumButton(saveCoverArtToLibrary, 'Save Cover')}
           </Row>
         </>
       );
