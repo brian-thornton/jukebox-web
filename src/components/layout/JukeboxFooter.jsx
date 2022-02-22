@@ -23,6 +23,7 @@ function JukeboxFooter({
   search,
   setSearch,
   nowPlaying,
+  pagingButtons,
 }) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
@@ -42,7 +43,7 @@ function JukeboxFooter({
 
   const nowPlayingText = () => {
     if (isScreenSmall) {
-      return <React.Fragment />;
+      return <></>;
     }
 
     return <div className="now-playing" style={{ fontFamily: settings.styles.footerFont }}>{`Now Playing: ${nowPlaying}`}</div>;
@@ -84,6 +85,7 @@ function JukeboxFooter({
   return (
     <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
       {nowPlayingText()}
+      {pagingButtons}
       {footerContent()}
     </Navbar>
   );

@@ -104,8 +104,8 @@ const initListPaging = (totalItems, itemHeight, pageHeight) => {
   return paging;
 }
 
-const initHorizontalPaging = (totalItems, itemHeight, pageHeight, itemWidth) => {
-  const itemPageSize = pageRows(pageHeight, itemHeight) * rowSize(itemWidth);
+const initHorizontalPaging = (pageSize, totalItems, itemHeight, pageHeight, itemWidth) => {
+  const itemPageSize = pageSize;
   const currentPage = { start: 0, limit: itemPageSize - 1 };
   const pages = calculatePages(totalItems, itemPageSize);
 
@@ -219,14 +219,14 @@ const pageLimit = (loadPage, paging) => {
     return paging.currentPage.limit;
   }
 
-  return 5;
+  return 10;
 };
 
-const initPaging = async (totalItems, search, type, collectionType) => {
+const initPaging = async (pageSize, totalItems, search, type, collectionType) => {
   let pageData;
 
   if (collectionType !== 'list') {
-    pageData = initHorizontalPaging(totalItems, 275, getHeight(), 225);
+    pageData = initHorizontalPaging(pageSize, totalItems, 275, getHeight(), 225);
   } else {
     pageData = initListPaging(totalItems, 100, getHeight());
   }

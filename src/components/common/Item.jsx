@@ -22,15 +22,20 @@ function Item({ buttons, onClick, text }) {
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    marginTop: '0px',
+    marginBottom: '0px',
+    paddingTop: '2px',
+    paddingBottom: '2px'
   };
 
   return (
-    <ListGroupItem
-      onClick={onClick}
-      style={itemStyle}
-    >
+    <ListGroupItem onClick={onClick} style={itemStyle}>
+      <div style={{ float: 'left', marginTop: '10px' }}>
       {text}
-      {buttons}
+      </div>
+      <div style={{ float: 'right' }}>
+        {buttons}
+      </div>
     </ListGroupItem>
   );
 }

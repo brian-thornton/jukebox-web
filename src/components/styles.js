@@ -2,7 +2,8 @@ const albumCardStyle = {
   background: 'transparent',
   color: 'white',
   borderColor: '#708090',
-  margin: '10px',
+  margin: '5px',
+  padding: '0px',
   maxWidth: '200px',
 };
 
@@ -19,7 +20,6 @@ const albumCardLarge = {
   color: 'white',
   borderColor: '#708090',
   maxWidth: '375px',
-  margin: '10px',
 };
 
 const albumImage = {

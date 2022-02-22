@@ -1,6 +1,5 @@
 import { Download } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
 
 import Button from './Button';
 import { downloadTrack } from '../lib/librarian-client';
@@ -9,11 +8,10 @@ import './DownloadButton.css';
 import { SettingsContext } from './layout/SettingsProvider';
 
 const propTypes = {
-  isScreenSmall: PropTypes.bool,
   track: Track.isRequired,
 };
 
-function DownloadButton({ track, isScreenSmall }) {
+function DownloadButton({ track }) {
   const settings = useContext(SettingsContext);
   const handleDownload = () => {
     downloadTrack(track).then((response) => {
@@ -27,16 +25,12 @@ function DownloadButton({ track, isScreenSmall }) {
     });
   };
 
-  if (settings.features.admin && settings.features.downloadTrack && !isScreenSmall) {
+  if (settings.features.admin && settings.features.downloadTrack) {
     return <Button onClick={() => handleDownload()} content={<Download />} />
   }
 
-  return <React.Fragment />;
+  return <></>;
 }
-
-DownloadButton.defaultProps = {
-  isScreenSmall: false,
-};
 
 DownloadButton.propTypes = propTypes;
 

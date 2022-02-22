@@ -43,12 +43,12 @@ function LibraryList() {
   const [show, setShow] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
+  const [currentScan, setCurrentScan] = useState();
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
   const renderLibraries = [];
   const [paging, setPaging] = useState();
   const addButton = <Button disabled={isScanning} onClick={handleShow} content="Add" />;
-  const noResultsAddButton = <Button onClick={handleShow} content="Add" />;
   const initialHeight = getHeight();
 
   const updateTotals = (data) => {
@@ -124,9 +124,11 @@ function LibraryList() {
 
   const onScan = (library) => {
     setIsScanning(true);
+    setCurrentScan(library.path);
     scan(library).then(() => {
       setIsScanning(false);
       loadLibraries();
+      setCurrentScan(null);
       toast.success("Scan complete!", toastProps);
     });
   };
@@ -199,15 +201,40 @@ function LibraryList() {
     <Button disabled={isScanning} onClick={handleDiscover} content="Discover" />
   );
 
+  const onScanAll = async () => {
+    setIsScanning(true);
+    for (const library of libraries) {
+      setCurrentScan(library.path);
+      await scan(library);
+    }
+
+    setIsScanning(false);
+    setCurrentScan(null);
+    loadLibraries();
+  }
+
+  const scanAllButton = (
+    <Button disabled={isScanning} onClick={onScanAll} content="Scan All" />
+  );
+
+  const noResultsButtons = (
+    <>
+      <Button onClick={handleShow} content="Add" />
+      {discoverButton}
+    </>
+  );
+
   const content = (
     <>
       <div style={{ width: '100%' }}>
         {renderLibraries.length > 0 && (
           <>
             <div style={{ color: settings.styles.fontColor }}>
-              {`Total Library Tracks: ${totalTracks}`}
+              {!currentScan && <div>{`Total Library Tracks: ${totalTracks}`}</div>}
+              {currentScan && <div style={{ float: 'left' }}>{`Currently Scanning: ${currentScan}`}</div>}
               <div style={{ float: 'right' }}>{addButton}</div>
               <div style={{ float: 'right' }}>{discoverButton}</div>
+              <div style={{ float: 'right' }}>{scanAllButton}</div>
             </div>
             <ListGroup style={{ width: '100%' }}>
               {renderLibraries}
@@ -220,7 +247,7 @@ function LibraryList() {
           style={{ width: '100%' }}
           title="No Libraries"
           text="No Libraries have been added. Click Add to add your first library."
-          controls={noResultsAddButton}
+          controls={noResultsButtons}
         />
       )}
       <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={(category) => handleClose(document.getElementById('name').value, category)} />

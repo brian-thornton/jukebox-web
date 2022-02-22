@@ -43,7 +43,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const loadTracks = () => {
     if (!areTracksLoading) {
       getAlbumTracks(album.path).then((data) => {
-        setPaging(initListPaging(data.length, 90, initialHeight));
+        setPaging(initListPaging(data.length, 70, initialHeight));
         setTracks(data);
         setAreTracksLoaded(true);
         setAreTracksLoading(false);
@@ -53,13 +53,15 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
 
   const albumButtons = (
     <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
-      <AlbumButtons
-        album={album}
-        clearCurrentAlbum={clearCurrentAlbum}
-        tracks={tracks}
-        setAddToPlaylist={setAddToPlaylist}
-      />
-      <AlbumAdminButtons album={album} />
+      <>
+        <AlbumButtons
+          album={album}
+          clearCurrentAlbum={clearCurrentAlbum}
+          tracks={tracks}
+          setAddToPlaylist={setAddToPlaylist}
+        />
+        <AlbumAdminButtons album={album} />
+      </>
     </Container>
   );
 
@@ -71,8 +73,8 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
             <Col lg={3} xl={3}>
               <Card style={styles.albumCardLarge} className="h-55 w-85">
                 <AlbumCover album={album} />
-                <Card.Body>
-                  <Card.Title style={{ maxHeight: '25px', fontSize: '15px', fontFamily: settings.styles.listFont }}>{album.name}</Card.Title>
+                <Card.Body style={{ padding: '5px' }}>
+                  <Card.Title style={{ padding: '0px', fontSize: '15px', fontFamily: settings.styles.listFont }}>{album.name}</Card.Title>
                 </Card.Body>
                 {albumButtons}
               </Card>

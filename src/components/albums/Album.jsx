@@ -37,7 +37,7 @@ function Album({
   const albumName = () => {
     if (settings.preferences.showAlbumName) {
       return (
-        <Card.Title style={{ ...styles.albumTitle, color: settings.styles.fontColor }}>
+        <Card.Title style={{ ...styles.albumTitle, color: settings.styles.fontColor, margin: '0px' }}>
           {album.name}
         </Card.Title>
       );
@@ -49,7 +49,7 @@ function Album({
   const body = () => {
     if (!coverArtOnly) {
       return (
-        <Card.Body style={{ padding: '0px', fontFamily: settings.styles.listFont }}>
+        <Card.Body style={{ padding: '0px', fontFamily: settings.styles.listFont, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
           {albumName()}
         </Card.Body>
       );

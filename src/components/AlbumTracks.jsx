@@ -1,14 +1,12 @@
 import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import React from 'react';
 
 import Item from './common/Item';
-import styles from './styles';
 import { Paging, Track } from './shapes';
 import DownloadButton from './DownloadButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import PagedContainer from './common/PagedContainer';
-import { SettingsContext } from './layout/SettingsProvider';
 
 import './TrackList.css';
 import AddToPlaylistButton from './common/AddToPlaylistButton';
@@ -29,33 +27,25 @@ function TrackList({
   setAddTracks,
   tracks,
 }) {
-  const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
   let content = [];
 
-  const trackCardStyle = {
-    ...styles.cardStyle,
-    color: settings.styles.fontColor,
-    margin: '10px',
-    width: '100%',
-    background: settings.styles.trackBackgroundColor,
-  };
-
   content = tracks.map(track => (
     <Item
+      style={{ marginTop: '0px', paddingTop: '0px' }}
       text={track.name}
       buttons={(
         <>
           <PlayNowButton
+            style={{ marginTop: '0px' }}
             track={track}
-            isScreenSmall={isScreenSmall}
           />
           <EnqueueButton
+            style={{ marginTop: '0px' }}
             track={track}
-            isScreenSmall={isScreenSmall}
           />
-          <AddToPlaylistButton track={track} isScreenSmall={isScreenSmall} setAddToPlaylist={setAddToPlaylist} setAddTracks={setAddTracks} />
-          <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+          <AddToPlaylistButton style={{ marginTop: '0px' }} track={track} setAddToPlaylist={setAddToPlaylist} setAddTracks={setAddTracks} />
+          <DownloadButton style={{ marginTop: '0px' }} track={track} isScreenSmall={isScreenSmall} />
         </>
       )}
     />

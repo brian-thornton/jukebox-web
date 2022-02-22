@@ -4,6 +4,7 @@ import {
   Container,
   Col,
   Row,
+  Navbar,
 } from 'react-bootstrap';
 
 import { Paging } from '../shapes';
@@ -61,14 +62,30 @@ function PagedContainer({
     return null;
   };
 
+  // return (
+  //   <Container fluid style={margin()}>
+  //     <Row>
+  //       <Col lg="11" xl="11" md="7" sm="7">
+  //         <Row>{content}</Row>
+  //       </Col>
+  //       <Col lg="1" xl="1" md="5" sm="5">
+  //         {pagingButtons()}
+  //       </Col>
+  //     </Row>
+  //   </Container>
+  // );
   return (
     <Container fluid style={margin()}>
       <Row>
-        <Col lg="11" xl="11" md="7" sm="7">
+        <Col lg="12" xl="12" md="12" sm="12">
           <Row>{content}</Row>
         </Col>
-        <Col lg="1" xl="1" md="5" sm="5">
-          {pagingButtons()}
+      </Row>
+      <Row>
+        <Col lg="12" xl="12" md="12" sm="12">
+          <Navbar fixed="bottom" style={{paddingBottom: '80px'}} className="justify-content-center">
+              {pagingButtons()}
+          </Navbar>
         </Col>
       </Row>
     </Container>

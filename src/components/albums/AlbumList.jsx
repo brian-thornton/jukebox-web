@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { PropTypes } from 'prop-types';
+import { number, PropTypes } from 'prop-types';
 
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import { getStatus } from '../../lib/status-client';
@@ -24,7 +24,7 @@ const propTypes = {
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function AlbumList({ category, search, setCurrentAlbum }) {
+function AlbumList({ category, search, setCurrentAlbum, setPagingButtons }) {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,12 +32,15 @@ function AlbumList({ category, search, setCurrentAlbum }) {
   const [paging, setPaging] = useState();
   const size = useWindowSize();
   const [lastSize, setLastSize] = useState();
-  let content = [];
   const [searchPageSet, setSearchPageSet] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [lastSearch, setLastSearch] = useState('');
   const [status, setStatus] = useState();
   const [resetPaging, setResetPaging] = useState(false);
+  const [content, setContent] = useState([]);
+
+  const albumsPerRow = Math.floor(size.width / 225);
+  const numberOfRows = Math.floor((size.height - 200) / 200);
 
   useEffect(() => {
     getStatus().then(data => setStatus(data));
@@ -53,8 +56,7 @@ function AlbumList({ category, search, setCurrentAlbum }) {
   }, [size]);
 
   const establishPaging = async (totalItems) => {
-    const pageData = await initPaging(totalItems, search, 'albums');
-    console.log(pageData)
+    const pageData = await initPaging((albumsPerRow * numberOfRows), totalItems, search, 'albums');
     setPaging(pageData);
   };
 
@@ -67,6 +69,8 @@ function AlbumList({ category, search, setCurrentAlbum }) {
         establishPaging(status.categoryAlbums[category]);
       }
     }
+
+    setContent(albums.map(album => <Album album={album} setCurrentAlbum={setCurrentAlbum} />));
   }, [albums]);
 
   const findAlbums = async (start, limit) => {
@@ -78,7 +82,7 @@ function AlbumList({ category, search, setCurrentAlbum }) {
         if (search !== lastSearch) {
           setLastSearch(search);
           setSearchPageSet(true);
-          establishPaging(data.totalAlbums);
+          establishPaging(data.totalAlbums - 1);
         }
       }
       window.scrollTo(0, 0);
@@ -144,8 +148,6 @@ function AlbumList({ category, search, setCurrentAlbum }) {
   }, [paging]);
 
   if (albums && albums.length) {
-    content = albums.map(album => <Album album={album} setCurrentAlbum={setCurrentAlbum} />);
-
     if (paging) {
       return (
         <PagedContainer

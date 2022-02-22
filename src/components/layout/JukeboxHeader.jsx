@@ -46,12 +46,12 @@ function JukeboxHeader({
       );
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   const brand = () => {
     if (isScreenSmall) {
-      return <React.Fragment />;
+      return <></>;
     }
 
     return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}>{settings.preferences.name}</Navbar.Brand>;
@@ -59,7 +59,7 @@ function JukeboxHeader({
 
   const searchButtons = () => {
     if (isScreenSmall) {
-      return <React.Fragment />;
+      return <></>;
     }
 
     const searchButton = (

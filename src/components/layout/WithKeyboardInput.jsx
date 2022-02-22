@@ -36,7 +36,7 @@ function WithKeyboardInput({
   return (
     <>
       <KeyboardEventHandler
-        handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v']}
+        handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.']}
         onKeyEvent={(key) => {
           console.log(key);
           let newSearch = cloneDeep(tempSearch);

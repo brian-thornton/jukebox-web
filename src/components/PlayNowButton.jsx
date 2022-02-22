@@ -16,7 +16,7 @@ function PlayNowButton({ track }) {
     next();
   };
 
-  return <Button icon={<PlayFill />} onClick={() => playNow()} />;
+  return <Button style={{ marginTop: '0px' }} icon={<PlayFill />} onClick={() => playNow()} />;
 }
 
 PlayNowButton.propTypes = propTypes;

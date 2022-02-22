@@ -35,20 +35,14 @@ function AlbumAdminButtons({ album }) {
   const adminButtons = () => {
     if (settings.features.admin) {
       return (
-        <>
           <Row>
+            {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
             {albumButton(() => removeCoverArt(album), 'Remove Cover')}
-            {albumButton(() => setCoverArt(coverArtUrl(album)), 'Refresh Cover')}
           </Row>
-          <Row>
-            {albumButton(() => setIsCustomSearchOpen(true), 'Custom Search')}
-            {albumButton(saveCoverArtToLibrary, 'Save Cover')}
-          </Row>
-        </>
       );
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   return (

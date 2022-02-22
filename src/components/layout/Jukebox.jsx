@@ -29,6 +29,7 @@ function Jukebox() {
   const [tempSearch, setTempSearch] = useState('');
   const [nowPlaying, setNowPlaying] = useState('');
   const [isIntervalSet, setIsIntervalSet] = useState(false);
+  const [pagingButtons, setPagingButtons] = useState();
 
   useEffect(() => {
     WebFont.load({
@@ -86,7 +87,7 @@ function Jukebox() {
         setTempSearch('');
         window.scrollTo(0, 0);
       }
-    }, 500), [],
+    }, 1000), [],
   );
 
   if (!isIntervalSet) {
@@ -115,6 +116,7 @@ function Jukebox() {
       search={search}
       setCurrentAlbum={setCurrentAlbum}
       category={category}
+      setPagingButtons={setPagingButtons}
     />
   );
 
@@ -122,6 +124,15 @@ function Jukebox() {
     <Tracks
       search={search}
       setCurrentAlbum={setCurrentAlbum}
+    />
+  );
+
+  const wrapWithKeyboard = (component) => (
+    <WithKeyboardInput
+      component={component}
+      tempSearch={tempSearch}
+      setTempSearch={setTempSearch}
+      debouncedSearch={debouncedSearch}
     />
   );
 
@@ -137,24 +148,10 @@ function Jukebox() {
     } else {
       switch (mode) {
         case 'AlbumList':
-          body = (
-            <WithKeyboardInput
-              component={albumList}
-              tempSearch={tempSearch}
-              setTempSearch={setTempSearch}
-              debouncedSearch={debouncedSearch}
-            />
-          );
+          body = wrapWithKeyboard(albumList);
           break;
         case 'Tracks':
-          body = (
-            <WithKeyboardInput
-              component={trackList}
-              tempSearch={tempSearch}
-              setTempSearch={setTempSearch}
-              debouncedSearch={debouncedSearch}
-            />
-          );
+          body = wrapWithKeyboard(trackList);
           break;
         case 'Playlists':
           body = <PlaylistsViewer />;
@@ -166,14 +163,7 @@ function Jukebox() {
           body = <Settings />;
           break;
         default:
-          body = (
-            <WithKeyboardInput
-              component={albumList}
-              tempSearch={tempSearch}
-              setTempSearch={setTempSearch}
-              debouncedSearch={debouncedSearch}
-            />
-          );
+          body = wrapWithKeyboard(albumList);
       }
     }
   }
@@ -207,13 +197,14 @@ function Jukebox() {
           search={search}
           setSearch={setSearch}
           nowPlaying={nowPlaying}
+          pagingButtons={pagingButtons}
         />
         <ToastContainer />
       </SettingsContext.Provider>
     );
   }
 
-  return <React.Fragment />;
+  return <></>;
 }
 
 export default Jukebox;

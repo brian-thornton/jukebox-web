@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 import {
   ChevronRight,
   ChevronLeft,
-  Disc,
 } from 'react-bootstrap-icons';
 
 import { Page } from '../shapes';
@@ -32,8 +31,8 @@ function PagingButtons({
 
   const pageButtonProps = {
     background: settings.styles.buttonBackgroundColor,
-    height: '75px',
-    minWidth: '50px',
+    height: '50px',
+    minWidth: '100px',
     color: settings.styles.fontColor,
   };
 
@@ -69,10 +68,9 @@ function PagingButtons({
 
   return (
     <>
-      <Button style={{ ...pageButtonProps, marginTop: '20px' }} disabled={pageDisabled || nextDisabled} block variant="outline-light" onClick={loadMore}><ChevronRight /></Button>
-      <Button style={{ ...pageButtonProps, marginTop: '10px' }} disabled={pageDisabled || previousDisabled} block variant="outline-light" onClick={loadPrevious}><ChevronLeft /></Button>
-      {loadRandom && <Button style={{ ...pageButtonProps, marginTop: '10px' }} disabled={pageDisabled} block variant="outline-light" onClick={loadRandom}><Disc /></Button>}
-      {pageOf()}
+      <Button style={{ ...pageButtonProps }} disabled={pageDisabled || previousDisabled} variant="outline-light" onClick={loadPrevious}><ChevronLeft /></Button>
+      {loadRandom && <Button style={{ ...pageButtonProps }} disabled={pageDisabled} variant="outline-light" onClick={loadRandom}>{pageOf()}</Button>}
+      <Button style={{ ...pageButtonProps }} disabled={pageDisabled || nextDisabled} variant="outline-light" onClick={loadMore}><ChevronRight /></Button>
     </>
   );
 }
