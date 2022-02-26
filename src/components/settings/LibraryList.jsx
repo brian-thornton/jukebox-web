@@ -34,6 +34,7 @@ import LibraryDiscoverModal from './LibraryDiscoverModal';
 import NoResults from '../common/NoResults';
 import PagedContainer from '../common/PagedContainer';
 import { toastProps } from '../common/toast-helper';
+import styles from './LibraryList.module.css';
 
 const albumArt = require('album-art');
 
@@ -213,8 +214,24 @@ function LibraryList() {
     loadLibraries();
   }
 
+  const onDeleteAll = async () => {
+    setIsScanning(true);
+    for (const library of libraries) {
+      setCurrentScan(library.path);
+      await deleteLibrary(library.name);
+    }
+
+    setIsScanning(false);
+    setCurrentScan(null);
+    loadLibraries();
+  }
+
   const scanAllButton = (
     <Button disabled={isScanning} onClick={onScanAll} content="Scan All" />
+  );
+
+  const deleteAllButton = (
+    <Button disabled={isScanning} onClick={onDeleteAll} content="Delete All" />
   );
 
   const noResultsButtons = (
@@ -226,17 +243,18 @@ function LibraryList() {
 
   const content = (
     <>
-      <div style={{ width: '100%' }}>
+      <div className={styles.fullWidth}>
         {renderLibraries.length > 0 && (
           <>
             <div style={{ color: settings.styles.fontColor }}>
               {!currentScan && <div>{`Total Library Tracks: ${totalTracks}`}</div>}
-              {currentScan && <div style={{ float: 'left' }}>{`Currently Scanning: ${currentScan}`}</div>}
-              <div style={{ float: 'right' }}>{addButton}</div>
-              <div style={{ float: 'right' }}>{discoverButton}</div>
-              <div style={{ float: 'right' }}>{scanAllButton}</div>
+              {currentScan && <div className={styles.scanText}>{`Currently Scanning: ${currentScan}`}</div>}
+              <div className={styles.libraryButton}>{addButton}</div>
+              <div className={styles.libraryButton}>{discoverButton}</div>
+              <div className={styles.libraryButton}>{deleteAllButton}</div>
+              <div className={styles.libraryButton}>{scanAllButton}</div>
             </div>
-            <ListGroup style={{ width: '100%' }}>
+            <ListGroup className={styles.fullWidth}>
               {renderLibraries}
             </ListGroup>
           </>
@@ -244,7 +262,7 @@ function LibraryList() {
       </div>
       {renderLibraries.length === 0 && (
         <NoResults
-          style={{ width: '100%' }}
+          className={styles.fullWidth}
           title="No Libraries"
           text="No Libraries have been added. Click Add to add your first library."
           controls={noResultsButtons}

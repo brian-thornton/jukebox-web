@@ -15,7 +15,6 @@ const propTypes = {
 function EnqueueButton({ track }) {
   return (
     <Button
-      style={{ marginTop: '0px' }}
       onClick={() => {
         enqueue(track);
         toast.success("Added to queue!", toastProps);

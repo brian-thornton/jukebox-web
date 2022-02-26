@@ -9,6 +9,7 @@ import CoverArtSearchModal from './CoverArtSearchModal';
 import { coverArtUrl, saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import { Album } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
+import styles from './AlbumAdminButtons.module.css';
 
 const propTypes = {
   album: Album.isRequired,
@@ -27,7 +28,7 @@ function AlbumAdminButtons({ album }) {
   }, []);
 
   const albumButton = (onClick, name) => (
-    <Col lg={6} style={{ padding: '0px' }}>
+    <Col lg={6} className={styles.adminButton}>
       <ControlButton onClick={onClick} text={name} height={50} />
     </Col>
   );

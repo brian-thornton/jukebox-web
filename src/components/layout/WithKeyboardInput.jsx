@@ -38,7 +38,6 @@ function WithKeyboardInput({
       <KeyboardEventHandler
         handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.']}
         onKeyEvent={(key) => {
-          console.log(key);
           let newSearch = cloneDeep(tempSearch);
           if (key === 'space') {
             newSearch = `${tempSearch} `;

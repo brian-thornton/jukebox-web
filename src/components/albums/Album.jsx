@@ -6,7 +6,7 @@ import { Album as albumShape } from '../shapes';
 import { coverArtUrl, saveCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from '../styles';
+import styles from './Album.module.css';
 
 const propTypes = {
   album: albumShape.isRequired,
@@ -36,31 +36,27 @@ function Album({
 
   const albumName = () => {
     if (settings.preferences.showAlbumName) {
-      return (
-        <Card.Title style={{ ...styles.albumTitle, color: settings.styles.fontColor, margin: '0px' }}>
-          {album.name}
-        </Card.Title>
-      );
+      return album.name;
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   const body = () => {
     if (!coverArtOnly) {
       return (
-        <Card.Body style={{ padding: '0px', fontFamily: settings.styles.listFont, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis'}}>
+        <Card.Body className={styles.albumCardBody}>
           {albumName()}
         </Card.Body>
       );
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   return (
-    <Card style={styles.albumCardStyle} className="h-55 w-85" onClick={() => setCurrentAlbum(album)}>
-      <Card.Img style={styles.albumImage} top src={coverArt} />
+    <Card className={styles.albumCard} onClick={() => setCurrentAlbum(album)}>
+      <Card.Img top src={coverArt} />
       {body()}
     </Card>
   );

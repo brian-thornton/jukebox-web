@@ -11,8 +11,6 @@ import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
 
-import './TrackList.css';
-
 const propTypes = {
   setCurrentAlbum: PropTypes.func,
   showAlbumCovers: PropTypes.bool,

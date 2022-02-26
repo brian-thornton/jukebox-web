@@ -29,7 +29,7 @@ function TrackAlbum({ album, setCurrentAlbum }) {
     );
   }
 
-  return <React.Fragment />;
+  return <></>;
 }
 
 TrackAlbum.propTypes = propTypes;

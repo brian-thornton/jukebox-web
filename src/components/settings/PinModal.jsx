@@ -4,7 +4,6 @@ import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import Modal from '../common/Modal';
-import './PinModal.css';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {

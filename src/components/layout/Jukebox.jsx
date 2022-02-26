@@ -94,7 +94,7 @@ function Jukebox() {
     setIsIntervalSet(true);
     setInterval(() => {
       getStatus().then((data) => {
-        if (data.nowPlaying && data.nowPlaying.name) {
+        if (data?.nowPlaying && data?.nowPlaying?.name) {
           setNowPlaying(data.nowPlaying.name);
         } else {
           setNowPlaying('');

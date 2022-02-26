@@ -13,7 +13,6 @@ import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Modal from '../common/Modal';
-import './PinModal.css';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,

@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { ListGroupItem } from 'react-bootstrap';
 
 import { SettingsContext } from '../layout/SettingsProvider';
+import styles from './Item.module.css';
 
 const propTypes = {
   buttons: PropTypes.node,
@@ -14,26 +15,17 @@ function Item({ buttons, onClick, text }) {
   const settings = useContext(SettingsContext);
 
   const itemStyle = {
-    width: '95%',
     color: settings.styles.fontColor,
     background: settings.styles.trackBackgroundColor,
-    borderColor: '#708090',
     fontFamily: settings.styles.listFont,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    marginTop: '0px',
-    marginBottom: '0px',
-    paddingTop: '2px',
-    paddingBottom: '2px'
   };
 
   return (
-    <ListGroupItem onClick={onClick} style={itemStyle}>
-      <div style={{ float: 'left', marginTop: '10px' }}>
+    <ListGroupItem className={styles.itemStyle} style={itemStyle} onClick={onClick}>
+      <div className={styles.itemText}>
       {text}
       </div>
-      <div style={{ float: 'right' }}>
+      <div className={styles.itemButtons}>
         {buttons}
       </div>
     </ListGroupItem>

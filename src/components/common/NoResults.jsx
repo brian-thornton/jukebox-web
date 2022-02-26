@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { Card } from 'react-bootstrap';
 
 import { SettingsContext } from '../layout/SettingsProvider';
+import './NoResults.scss';
 
 const propTypes = {
   controls: PropTypes.node,
@@ -25,11 +26,11 @@ function NoResults({ text, title, controls }) {
   return (
     <Card style={noResultsStyle}>
       <Card.Body>
-        <Card.Title style={{ textAlign: 'center' }}>{title}</Card.Title>
-        <Card.Text style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Card.Title className="no-results-title">{title}</Card.Title>
+        <Card.Text className="no-results-text">
           {text}
         </Card.Text>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="no-results-text">
           {controls}
         </div>
       </Card.Body>

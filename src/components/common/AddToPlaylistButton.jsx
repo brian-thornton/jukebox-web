@@ -14,7 +14,6 @@ function AddToPlaylistButton({ setAddTracks, setAddToPlaylist, track }) {
   return (
     <>
       <Button
-        style={{ marginTop: '0px' }}
         onClick={() => {
           setAddTracks([track]);
           setAddToPlaylist(true);

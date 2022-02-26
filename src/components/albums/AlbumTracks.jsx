@@ -1,15 +1,14 @@
 import { PropTypes } from 'prop-types';
 import React from 'react';
 
-import Item from './common/Item';
-import { Paging, Track } from './shapes';
-import DownloadButton from './DownloadButton';
-import PlayNowButton from './PlayNowButton';
-import EnqueueButton from './EnqueueButton';
-import PagedContainer from './common/PagedContainer';
+import Item from '../common/Item';
+import { Paging, Track } from '../shapes';
+import DownloadButton from '../DownloadButton';
+import PlayNowButton from '../PlayNowButton';
+import EnqueueButton from '../EnqueueButton';
+import PagedContainer from '../common/PagedContainer';
 
-import './TrackList.css';
-import AddToPlaylistButton from './common/AddToPlaylistButton';
+import AddToPlaylistButton from '../common/AddToPlaylistButton';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
@@ -32,20 +31,13 @@ function TrackList({
 
   content = tracks.map(track => (
     <Item
-      style={{ marginTop: '0px', paddingTop: '0px' }}
       text={track.name}
       buttons={(
         <>
-          <PlayNowButton
-            style={{ marginTop: '0px' }}
-            track={track}
-          />
-          <EnqueueButton
-            style={{ marginTop: '0px' }}
-            track={track}
-          />
-          <AddToPlaylistButton style={{ marginTop: '0px' }} track={track} setAddToPlaylist={setAddToPlaylist} setAddTracks={setAddTracks} />
-          <DownloadButton style={{ marginTop: '0px' }} track={track} isScreenSmall={isScreenSmall} />
+          <PlayNowButton track={track} />
+          <EnqueueButton track={track} />
+          <AddToPlaylistButton track={track} setAddToPlaylist={setAddToPlaylist} setAddTracks={setAddTracks} />
+          <DownloadButton track={track} isScreenSmall={isScreenSmall} />
         </>
       )}
     />

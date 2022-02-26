@@ -10,7 +10,7 @@ import { Tracks } from '../shapes';
 import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
 
-import './AlbumButtons.css';
+import styles from './AlbumButtons.module.css';
 
 const propTypes = {
   setAddToPlaylist: PropTypes.func.isRequired,
@@ -29,7 +29,7 @@ function AlbumButtons({
   };
 
   const albumButton = (onClick, name) => (
-    <Col lg={6} style={{ padding: '0px' }}>
+    <Col lg={6} className={styles.albumButton}>
       <ControlButton text={name} onClick={onClick} height={50} />
     </Col>
   );

@@ -12,8 +12,6 @@ import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
 
-import './TrackList.css';
-
 const propTypes = {
   tracks: PropTypes.arrayOf(TrackShape),
   showAlbumCovers: PropTypes.bool,
@@ -38,7 +36,7 @@ function TrackList({
     setTrackAlbums(data);
     setTrackAlbumsLoaded(true);
     setTrackAlbumsLoading(false);
-    return <React.Fragment />;
+    return <></>;
   };
 
   if (!trackAlbumsLoaded && !trackAlbumsLoading) {
@@ -89,7 +87,7 @@ function TrackList({
     return <Container fluid style={{ marginTop: '15px', marginLeft: '0px' }}><Row>{renderTracks}</Row></Container>;
   }
 
-  return <React.Fragment />;
+  return <></>;
 }
 
 TrackList.propTypes = propTypes;

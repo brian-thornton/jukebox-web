@@ -62,18 +62,6 @@ function PagedContainer({
     return null;
   };
 
-  // return (
-  //   <Container fluid style={margin()}>
-  //     <Row>
-  //       <Col lg="11" xl="11" md="7" sm="7">
-  //         <Row>{content}</Row>
-  //       </Col>
-  //       <Col lg="1" xl="1" md="5" sm="5">
-  //         {pagingButtons()}
-  //       </Col>
-  //     </Row>
-  //   </Container>
-  // );
   return (
     <Container fluid style={margin()}>
       <Row>

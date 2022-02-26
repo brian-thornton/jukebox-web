@@ -11,19 +11,17 @@ import { Album } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
-import AlbumTracks from '../AlbumTracks';
+import AlbumTracks from './AlbumTracks';
 import { getAlbumTracks } from '../../lib/librarian-client';
 import PlaylistsViewer from '../playlists/PlaylistsViewer';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from '../styles';
-import { toastProps } from '../common/toast-helper';
 import {
   getHeight,
-  initHorizontalPaging,
   initListPaging,
   nextPage,
   previousPage,
 } from '../../lib/pageHelper';
+import styles from './AlbumDetail.module.css';
 
 const propTypes = {
   album: Album.isRequired,
@@ -38,7 +36,6 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
   const [paging, setPaging] = useState();
   const initialHeight = getHeight();
-  const settings = useContext(SettingsContext);
 
   const loadTracks = () => {
     if (!areTracksLoading) {
@@ -52,7 +49,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   };
 
   const albumButtons = (
-    <Container style={{ marginTop: '0px', marginBottom: '0px' }}>
+    <Container className={styles.buttonContainer}>
       <>
         <AlbumButtons
           album={album}
@@ -69,15 +66,19 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
     if (paging && !addToPlaylist && album) {
       return (
         <>
-          <Row style={{ marginTop: '70px' }}>
+          <Row className={styles.coverRow}>
             <Col lg={3} xl={3}>
-              <Card style={styles.albumCardLarge} className="h-55 w-85">
-                <AlbumCover album={album} />
-                <Card.Body style={{ padding: '5px' }}>
-                  <Card.Title style={{ padding: '0px', fontSize: '15px', fontFamily: settings.styles.listFont }}>{album.name}</Card.Title>
-                </Card.Body>
-                {albumButtons}
-              </Card>
+              <Container className={styles.albumContainer}>
+                <>
+                  <Row>
+                    <AlbumCover album={album} />
+                  </Row>
+                  <Row className={styles.albumName}>
+                    {album.name}
+                  </Row>
+                  <Row>{albumButtons}</Row>
+                </>
+              </Container>
             </Col>
             <Col lg={9} xl={9}>
               <AlbumTracks

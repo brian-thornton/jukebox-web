@@ -1,0 +1,28 @@
+.albumContainer {
+  margin-top: 0 !important;
+  padding-top: 0;
+}
+
+.albumName {
+  margin-top: 0;
+  padding: 0;
+}
+
+.buttonContainer {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding: 0;
+  background: red;
+  background: transparent;
+}
+
+.coverBody {
+  background: transparent;
+}
+
+.coverRow {
+  margin-top: 70px;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  background: transparent;
+}
