@@ -55,13 +55,21 @@ export const coverArtUrl = async (album) => {
       isLocal: true
     };
   } else {
-    const data = await albumArt(artist, { album: albumName });
+    console.log('artHistory:');
+    const artHistory = await getData(`/status/getArtHistory`);
 
-    if (data.toString().includes('http')) {
-      return {
-        url: data,
-        isLocal: false
-      };
+    if (!artHistory?.requests.includes(album.path)) {
+      artHistory.requests.push(album.path);
+      await post(`status/updateArtHistory`, artHistory);
+
+      const data = await albumArt(artist, { album: albumName });
+
+      if (data.toString().includes('http')) {
+        return {
+          url: data,
+          isLocal: false
+        };
+      }
     }
   }
 
