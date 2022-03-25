@@ -91,10 +91,10 @@ const rowSize = (itemWidth) => {
 
 const initListPaging = (totalItems, itemHeight, pageHeight) => {
   const itemPageSize = pageSize(pageHeight, itemHeight);
-  console.log(`itemPageSize: ${itemPageSize}`);
+
   const currentPage = { start: 0, limit: itemPageSize - 1 };
   const pages = calculatePages(totalItems, itemPageSize);
-  console.log(pages);
+
   const paging = {
     pageSize: itemPageSize,
     currentPage,

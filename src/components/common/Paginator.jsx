@@ -7,8 +7,8 @@ import {
 } from 'react-bootstrap-icons';
 import React from 'react';
 
-const Paginator = ({ onPageChange, selectedPage, totalItems, pageSize }) => {
-  const pages = Math.floor(totalItems / pageSize);
+const Paginator = ({ onPageChange, selectedPage, totalItems, pageSize, disableRandom }) => {
+  let pages = Math.floor(totalItems / pageSize);
 
   return (
     <div style={{
@@ -18,9 +18,9 @@ const Paginator = ({ onPageChange, selectedPage, totalItems, pageSize }) => {
     }}>
       <Button disabled={selectedPage === 1} onClick={() => onPageChange(1)} content={<ChevronDoubleLeft />} />
       <Button disabled={selectedPage === 1} style={{ marginLeft: '5px' }} onClick={() => onPageChange(selectedPage - 1)} content={<ChevronLeft />} />
-      <Button style={{ marginLeft: '5px' }} onClick={() => onPageChange(Math.floor(Math.random() * pages))} content={`Page ${selectedPage} of ${pages}`} />
-      <Button disabled={selectedPage === pages} style={{ marginLeft: '5px' }} onClick={() => onPageChange(selectedPage + 1)} content={<ChevronRight />} />
-      <Button disabled={selectedPage === pages} style={{ marginLeft: '5px' }} onClick={() => onPageChange(pages)} content={<ChevronDoubleRight />} />
+      {!disableRandom && (<Button style={{ marginLeft: '5px' }} onClick={() => onPageChange(Math.floor(Math.random() * pages))} content={`Page ${selectedPage} of ${pages}`} />)}
+      <Button disabled={selectedPage === pages + 1} style={{ marginLeft: '5px' }} onClick={() => onPageChange(selectedPage + 1)} content={<ChevronRight />} />
+      <Button disabled={selectedPage === pages + 1} style={{ marginLeft: '5px' }} onClick={() => onPageChange(pages + 1)} content={<ChevronDoubleRight />} />
     </div>
   );
 }

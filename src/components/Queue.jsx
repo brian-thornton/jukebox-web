@@ -1,7 +1,12 @@
 import { TrashFill } from 'react-bootstrap-icons';
 import React, { useEffect, useState } from 'react';
-import Button from './Button';
+import {
+  Container,
+  Col,
+  Row,
+} from 'react-bootstrap';
 
+import Button from './Button';
 import ControlButton from './common/ControlButton';
 import PlaylistsViewer from './playlists/PlaylistsViewer';
 import {
@@ -10,86 +15,70 @@ import {
   enqueueTracks,
   removeTracksFromQueue,
 } from '../lib/queue-client';
-
 import ContentWithControls from './common/ContentWithControls';
 import PlayNowButton from './PlayNowButton';
 import Item from './common/Item';
 import NoResults from './common/NoResults';
-import PagedContainer from './common/PagedContainer';
-import {
-  getHeight,
-  initializePaging,
-  pageStart,
-  pageLimit,
-} from '../lib/pageHelper';
+import Paginator from './common/Paginator';
 
-function Queue() {
+const Queue = () => {
   const [tracks, setTracks] = useState([]);
   const [addToPlaylist, setAddToPlaylist] = useState(false);
-  const [isIntervalSet, setIsIntervalSet] = useState(false);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
   const [isEmpty, setIsEmpty] = useState(false);
+  const [totalTracks, setTotalTracks] = useState();
   let renderTracks = [];
 
-  const [paging, setPaging] = useState();
-  const initialHeight = getHeight();
+  const loadQueue = () => {
+    if (realPageSize) {
+      const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
-  const loadQueue = (loadPage) => {
-    const start = pageStart(loadPage, paging);
-    let limit = pageLimit(loadPage, paging);
-
-    if (start === 0) {
-      limit += 1;
+      getQueue(realStart, (realStart + realPageSize)).then((data) => {
+        setTracks(data.tracks);
+        setTotalTracks(data.totalTracks);
+        if (data.tracks.length === 0) {
+          setIsEmpty(true);
+        }
+      });
     }
-
-    getQueue(start, limit).then((data) => {
-      setTracks(data.tracks);
-      if (data.tracks.length === 0) {
-        setIsEmpty(true);
-      }
-      if (!paging) {
-        setPaging(initializePaging(data.totalTracks, 90, initialHeight));
-      }
-    });
   };
 
   const clear = () => clearQueue().then(loadQueue());
-  useEffect(() => loadQueue(), []);
-
-  // const refreshQueue = () => {
-  //   loadQueue(queuePage);
-  //   setTimeout(() => {
-  //     refreshQueue();
-  //   }, 3000)
-  // };
-
-  // if (!isIntervalSet) {
-  //   setIsIntervalSet(true);
-  //   setTimeout(() => {
-  //     refreshQueue();
-  //   }, 3000);
-  // }
-
   useEffect(() => {
-    if (paging) {
-      loadQueue(paging.currentPage);
-    }
-  }, [paging]);
+    const numberOfTracks = Math.floor((window.innerHeight - 200) / 50);
+    setRealPageSize(numberOfTracks);
+  }, []);
+
+  useEffect(loadQueue, [selectedPage]);
+  useEffect(loadQueue, [realPageSize]);
 
   const content = () => {
     if (isEmpty) {
       return <NoResults title="Queue Empty" text="The queue is empty. Enqueue tracks from the albums, tracks or playlist sections and your tracks will play next!" />;
     }
 
-    if (paging) {
-      return (
-        <PagedContainer
-          setPaging={setPaging}
-          paging={paging}
-          content={renderTracks}
-        />
-      );
-    }
-    return null;
+    return (
+      <Container fluid>
+        <Row>
+          <Col lg="12" xl="12" md="12" sm="12">
+            <Row>{renderTracks}</Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg="12" xl="12" md="12" sm="12">
+            <Paginator
+              disableRandom
+              onPageChange={(page) => setSelectedPage(page)}
+              style={{ marginTop: '100px' }}
+              selectedPage={selectedPage}
+              totalItems={totalTracks}
+              pageSize={realPageSize}
+            />
+          </Col>
+        </Row>
+      </Container>
+    )
   };
 
   const shuffle = () => {

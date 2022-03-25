@@ -47,8 +47,8 @@ function Modal({
       </ReactModal.Body>
       {!isFooterHidden && (
         <ReactModal.Footer style={modalHeaderStyle(settings)}>
-          <Button onClick={onCancel} content={cancelText || 'Cancel'} />
-          <Button onClick={onConfirm} content={confirmText || 'Save'} />
+          {onCancel && (<Button onClick={onCancel} content={cancelText || 'Cancel'} />)}
+          {onConfirm && (<Button onClick={onConfirm} content={confirmText || 'Save'} />)}
         </ReactModal.Footer>
       )}
     </ReactModal>

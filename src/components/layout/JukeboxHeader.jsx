@@ -2,10 +2,14 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useContext } from 'react';
 import {
   Navbar,
+  Dropdown,
   Nav,
 } from 'react-bootstrap';
+import Offcanvas from 'react-bootstrap/Offcanvas'
+import { FilterSquare, Funnel, FunnelFill } from 'react-bootstrap-icons';
 
 import Button from '../Button';
+import FilterModal from './FilterModal';
 import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
 
@@ -27,10 +31,14 @@ function JukeboxHeader({
   setTempSearch,
   setMode,
   setCurrentAlbum,
+  setSelectedLibraries,
+  selectedLibraries,
 }) {
   const settings = useContext(SettingsContext);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
   const handleSearch = (searchText) => {
     setIsSearchModalOpen(false);
@@ -56,6 +64,10 @@ function JukeboxHeader({
 
     return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}>{settings.preferences.name}</Navbar.Brand>;
   };
+
+  const handleFilterModalClose = () => {
+    setIsFilterModalOpen(false);
+  }
 
   const searchButtons = () => {
     if (isScreenSmall) {
@@ -102,6 +114,16 @@ function JukeboxHeader({
         </Nav>
         {searchResults()}
         {searchButtons()}
+        <Button
+          onClick={() => setIsFilterModalOpen(true)}
+          content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
+        />
+        <FilterModal
+          selectedLibraries={selectedLibraries}
+          setSelectedLibraries={setSelectedLibraries}
+          handleClose={handleFilterModalClose}
+          isOpen={isFilterModalOpen}
+        />
       </Navbar>
       <SearchModal
         isOpen={isSearchModalOpen}

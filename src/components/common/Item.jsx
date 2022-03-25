@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import { ListGroupItem } from 'react-bootstrap';
+import { Form, ListGroupItem } from 'react-bootstrap';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './Item.module.css';
@@ -11,7 +11,7 @@ const propTypes = {
   text: PropTypes.string,
 };
 
-function Item({ buttons, onClick, text }) {
+function Item({ buttons, onClick, text, includeCheckbox, onCheck, checked }) {
   const settings = useContext(SettingsContext);
 
   const itemStyle = {
@@ -23,7 +23,15 @@ function Item({ buttons, onClick, text }) {
   return (
     <ListGroupItem className={styles.itemStyle} style={itemStyle} onClick={onClick}>
       <div className={styles.itemText}>
-      {text}
+        {includeCheckbox && (
+          <Form.Check
+            checked={checked}
+            type="checkbox"
+            onClick={onCheck}
+          >
+          </Form.Check>
+        )}
+        {text}
       </div>
       <div className={styles.itemButtons}>
         {buttons}

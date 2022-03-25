@@ -77,11 +77,26 @@ function ThemeList({ resetControls, setControls }) {
     }
   }, [selectedSkin]);
 
-  const goBackToThemeList = () => {
-    setSelectedSkin(null);
-    setEditSkin(null);
-    resetControls();
-    loadSkins();
+  const goBackToThemeList = (applySkin) => {
+    if (applySkin) {
+      getSkins().then((updatedSkins) => {
+        updatedSkins.forEach((skin) => {
+          if (skin.name === editSkin.name) {
+            setSelectedSkin(skin);
+          }
+        });
+
+        setSelectedSkin(null);
+        setEditSkin(null);
+        resetControls();
+        loadSkins();
+      });
+    } else {
+      setSelectedSkin(null);
+      setEditSkin(null);
+      resetControls();
+      loadSkins();
+    }
   };
 
   const removeSkin = (skin) => {
@@ -134,6 +149,7 @@ function ThemeList({ resetControls, setControls }) {
         skin={editSkin}
         goBackToThemeList={goBackToThemeList}
         setControls={setControls}
+        setSelectedSkin={setSelectedSkin}
       />
     );
   }

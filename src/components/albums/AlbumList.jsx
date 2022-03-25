@@ -12,8 +12,6 @@ import { getStatus } from '../../lib/status-client';
 import Album from './Album';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
-
-import { useWindowSize } from '../../lib/hooks';
 import './AlbumList.scss';
 
 const propTypes = {
@@ -22,12 +20,10 @@ const propTypes = {
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function AlbumList({ category, search, setCurrentAlbum }) {
+function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadComplete, setLoadComplete] = useState(false);
-  const size = useWindowSize();
-  const [lastSize, setLastSize] = useState();
   const [totalAlbums, setTotalAlbums] = useState();
   const [lastSearch, setLastSearch] = useState('');
   const [status, setStatus] = useState();
@@ -45,21 +41,12 @@ function AlbumList({ category, search, setCurrentAlbum }) {
   }, []);
 
   useEffect(() => {
-    if (lastSize && lastSize.width !== size.width && lastSize.height !== size.height) {
-      setIsLoading(true);
-    }
-
-    setLastSize(size);
-  }, [size]);
-
-  useEffect(() => {
     setContent(albums.map(album => <Album album={album} setCurrentAlbum={setCurrentAlbum} />));
   }, [albums]);
 
   const findAlbums = async (start, limit) => {
     searchAlbums(search, start, limit).then((data) => {
       if (data.albums.length) {
-        console.log(data);
         setTotalAlbums(data.totalAlbums);
         setAlbums(data.albums);
         if (search !== lastSearch) {
@@ -88,7 +75,7 @@ function AlbumList({ category, search, setCurrentAlbum }) {
       } else {
         const musicCategory = category === 'Albums' ? null : category;
 
-        getAlbums(realStart, (realStart + realPageSize), musicCategory).then((data) => {
+        getAlbums(realStart, (realStart + realPageSize), musicCategory, selectedLibraries).then((data) => {
           setTotalAlbums(data.totalAlbums);
           setAlbums(data.albums);
           window.scrollTo(0, 0);
@@ -102,6 +89,7 @@ function AlbumList({ category, search, setCurrentAlbum }) {
   useEffect(loadAlbums, [category]);
   useEffect(loadAlbums, [realPageSize]);
   useEffect(loadAlbums, [selectedPage]);
+  useEffect(loadAlbums, [selectedLibraries]);
 
   useEffect(() => {
     if (!search) {
@@ -123,18 +111,20 @@ function AlbumList({ category, search, setCurrentAlbum }) {
         <Container fluid style={{ marginTop: '60px' }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row>{content}</Row>
+              <Row style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{content}</Row>
             </Col>
           </Row>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Paginator
-                onPageChange={onPageChange}
-                style={{ marginTop: '100px' }}
-                selectedPage={selectedPage}
-                totalItems={totalAlbums}
-                pageSize={realPageSize}
-              />
+              {(totalAlbums > realPageSize) && (
+                <Paginator
+                  onPageChange={onPageChange}
+                  style={{ marginTop: '100px' }}
+                  selectedPage={selectedPage}
+                  totalItems={totalAlbums}
+                  pageSize={realPageSize}
+                />
+              )}
             </Col>
           </Row>
         </Container>

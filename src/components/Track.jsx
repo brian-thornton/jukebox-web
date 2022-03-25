@@ -56,7 +56,7 @@ function Track({
   const trackCardStyle = {
     ...styles.cardStyle,
     color: settings.styles.fontColor,
-    width: '400px',
+    width: '650px',
     height: '100px',
     margin: '10px',
     background: settings.styles.trackBackgroundColor,
@@ -72,13 +72,13 @@ function Track({
 
   return (
     <Card style={trackCardStyle}>
-      <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px' }}>
+      <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px', paddingLeft: '0px' }}>
         <Row>
-          <Col lg={3} md={3}>
+          <Col lg={2} md={2}>
             {album(track)}
           </Col>
-          <Col lg={9} md={9}>
-            <Container style={{ marginTop: '0px' }}>
+          <Col lg={10} md={10}>
+            <Container style={{ marginTop: '0px', paddingLeft: '0px' }}>
               <Row>
                 <div style={trackNameStyle}>
                   {track.name}

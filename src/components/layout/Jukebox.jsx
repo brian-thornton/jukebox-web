@@ -30,6 +30,7 @@ function Jukebox() {
   const [nowPlaying, setNowPlaying] = useState('');
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const [pagingButtons, setPagingButtons] = useState();
+  const [selectedLibraries, setSelectedLibraries] = useState([]);
 
   useEffect(() => {
     WebFont.load({
@@ -117,6 +118,7 @@ function Jukebox() {
       setCurrentAlbum={setCurrentAlbum}
       category={category}
       setPagingButtons={setPagingButtons}
+      selectedLibraries={selectedLibraries}
     />
   );
 
@@ -180,6 +182,8 @@ function Jukebox() {
           setCategory={setCategory}
           currentAlbum={currentAlbum}
           setCurrentAlbum={setCurrentAlbum}
+          setSelectedLibraries={setSelectedLibraries}
+          selectedLibraries={selectedLibraries}
         />
         <Container
           fluid

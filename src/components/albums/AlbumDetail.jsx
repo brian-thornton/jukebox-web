@@ -1,7 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import {
-  Card,
   Container,
   Row,
   Col,
@@ -14,14 +13,8 @@ import AlbumCover from './AlbumCover';
 import AlbumTracks from './AlbumTracks';
 import { getAlbumTracks } from '../../lib/librarian-client';
 import PlaylistsViewer from '../playlists/PlaylistsViewer';
-import { SettingsContext } from '../layout/SettingsProvider';
-import {
-  getHeight,
-  initListPaging,
-  nextPage,
-  previousPage,
-} from '../../lib/pageHelper';
 import styles from './AlbumDetail.module.css';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   album: Album.isRequired,
@@ -34,13 +27,11 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
-  const [paging, setPaging] = useState();
-  const initialHeight = getHeight();
+  const settings = useContext(SettingsContext);
 
   const loadTracks = () => {
     if (!areTracksLoading) {
       getAlbumTracks(album.path).then((data) => {
-        setPaging(initListPaging(data.length, 70, initialHeight));
         setTracks(data);
         setAreTracksLoaded(true);
         setAreTracksLoading(false);
@@ -62,8 +53,13 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
     </Container>
   );
 
+  const albumNameStyle = {
+    color: settings.styles.fontColor,
+    fontFamily: settings.styles.buttonFont,
+  };
+
   const largeAlbum = () => {
-    if (paging && !addToPlaylist && album) {
+    if (!addToPlaylist && album) {
       return (
         <>
           <Row className={styles.coverRow}>
@@ -73,7 +69,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
                   <Row>
                     <AlbumCover album={album} />
                   </Row>
-                  <Row className={styles.albumName}>
+                  <Row className={styles.albumName} style={albumNameStyle}>
                     {album.name}
                   </Row>
                   <Row>{albumButtons}</Row>
@@ -82,11 +78,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
             </Col>
             <Col lg={9} xl={9}>
               <AlbumTracks
-                tracks={tracks.slice(paging.currentPage.start, paging.currentPage.limit)}
-                nextPage={() => setPaging(nextPage(paging))}
-                previousPage={() => setPaging(previousPage(paging))}
-                paging={paging}
-                showDownloadLink
+                tracks={tracks}
                 setAddToPlaylist={setAddToPlaylist}
                 setAddTracks={setAddTracks}
               />

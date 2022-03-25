@@ -42,10 +42,15 @@ function Album({
     return <></>;
   };
 
+  const albumNameStyle = {
+    color: settings.styles.fontColor,
+    fontFamily: settings.styles.buttonFont,
+  };
+
   const body = () => {
     if (!coverArtOnly) {
       return (
-        <Card.Body className={styles.albumCardBody}>
+        <Card.Body className={styles.albumCardBody} style={albumNameStyle}>
           {albumName()}
         </Card.Body>
       );

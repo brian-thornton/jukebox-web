@@ -23,6 +23,7 @@ function Button({
   isToggled,
   height,
   width,
+  style,
 }) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
@@ -31,7 +32,7 @@ function Button({
     background: settings.styles.buttonBackgroundColor,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,
-    fontFamily: settings.styles.buttonFont,
+    fontFamily: style?.fontFamily || settings.styles.buttonFont,
     float: 'right',
   };
 

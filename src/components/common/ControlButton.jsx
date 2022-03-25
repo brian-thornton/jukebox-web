@@ -19,6 +19,7 @@ function ControlButton({ disabled, height, onClick, text }) {
     color: styles.fontColor,
     minHeight: height ? `${height}px` : '65px',
     fontFamily: styles.buttonFont,
+    width: '100%'
   };
 
   return (

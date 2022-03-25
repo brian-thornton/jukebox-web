@@ -1,19 +1,14 @@
 import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import {
+  Container,
+  Col,
+  Row,
+} from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
-import {
-  clearCurrentPage,
-  getHeight,
-  initHorizontalPaging,
-  pageStart,
-  pageLimit,
-  saveCurrentPage,
-  setKnownPage,
-} from '../lib/pageHelper';
-import PagedContainer from './common/PagedContainer';
-import { getStatus } from '../lib/status-client';
+import Paginator from './common/Paginator';
 
 const propTypes = {
   search: PropTypes.string,
@@ -21,96 +16,68 @@ const propTypes = {
 };
 
 function Tracks({ search, setCurrentAlbum }) {
-  const [paging, setPaging] = useState();
   const [tracks, setTracks] = useState([]);
-  const [searchPageSet, setSearchPageSet] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
-  const initialHeight = getHeight();
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
 
-  const applyPageIfExists = (pageData, useStorePage, status) => {
-    if (useStorePage) {
-      try {
-        const updated = setKnownPage(pageData, status.currentPages.tracks);
-        setPaging(updated);
-      } catch (error) {
-        setPaging(pageData);
-      }
-    } else {
-      setPaging(pageData);
-    }
-  };
+  useEffect(() => {
+
+    const albumsPerRow = Math.floor(window.innerWidth / 300);
+    const numberOfRows = Math.floor((window.innerHeight - 200) / 200);
+    const s = albumsPerRow * numberOfRows;
+    setRealPageSize(s);
+  }, []);
+
+  const onPageChange = (page) => {
+    setSelectedPage(page);
+  }
 
   const findTracks = async (start, limit) => {
-    await clearCurrentPage('tracks');
     searchTracks(search, start, limit).then((data) => {
       setTotalTracks(data.totalTracks);
       setTracks(data.tracks);
-      setIsLoading(false);
-      if (!searchPageSet) {
-        setPaging(initHorizontalPaging(totalTracks, 175, getHeight(), 300));
-        setSearchPageSet(true);
-      }
     });
   };
 
-  const initPaging = () => {
-    const pageData = initHorizontalPaging(totalTracks, 250, initialHeight, 225);
-    getStatus().then((status) => {
-      if (!paging) {
-        applyPageIfExists(pageData, status.currentPages.tracks, status);
-      } else if (!search && paging && status.currentPages && status.currentPages.tracks) {
-        applyPageIfExists(pageData, !status.currentPages.tracks, status);
+  const loadTracks = () => {
+    // 1: 0
+    // 2: 2 * 12 == 24 - 12 = 12
+    // 3: 3 * 12 == 36 - 12 = 24
+    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+
+    if (realStart >= 0 && realPageSize) {
+      if (search) {
+        findTracks(realStart, (realStart + realPageSize));
       } else {
-        setPaging(pageData);
+        getTracks(realStart, (realStart + realPageSize)).then((data) => {
+          setTotalTracks(data.totalTracks);
+          setTracks(data.tracks);
+        });
       }
-    });
+    }
   };
+
+  useEffect(() => setSelectedPage(1), [search]);
+  useEffect(() => {
+    if (realPageSize && selectedPage) {
+      loadTracks();
+    }
+  }, [selectedPage]);
 
   useEffect(() => {
-    if (!paging && tracks.length) {
-      initPaging();
+    if (selectedPage && realPageSize) {
+      loadTracks();
     }
-  }, [tracks]);
-
-  const loadTracks = (loadPage) => {
-    const start = pageStart(loadPage, paging);
-    let limit = pageLimit(loadPage, paging);
-
-    if (search) {
-      findTracks(start, limit);
-    } else {
-      if (start === 0) {
-        limit += 1;
-      }
-
-      getTracks(start, limit).then((data) => {
-        setTotalTracks(data.totalTracks);
-        setTracks(data.tracks);
-        setIsLoading(false);
-      });
-    }
-  };
-
-  useEffect(() => loadTracks(), [search]);
+  }, [realPageSize]);
 
   const alert = () => {
     const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
     if (!tracks || !tracks.length) {
       return <Alert variant="primary">{alertText}</Alert>;
     }
-    return <React.Fragment />;
+    return <></>;
   };
-
-  useEffect(() => {
-    if (!isLoading && paging && paging.currentPage !== 0) {
-      if (paging.currentPage || !search) {
-        setIsLoading(true);
-        loadTracks(paging.currentPage);
-      }
-      saveCurrentPage(paging.currentPage, 'tracks');
-    }
-  }, [paging]);
 
   const content = (
     <TrackList
@@ -122,19 +89,28 @@ function Tracks({ search, setCurrentAlbum }) {
   );
 
   const trackList = () => {
-    if (paging && tracks.length) {
+    if (realPageSize && totalTracks) {
       return (
-        <PagedContainer
-          search={search}
-          setPaging={setPaging}
-          paging={paging}
-          content={content}
-          isHorizontal
-        />
+        <Container fluid style={{ marginTop: '60px' }}>
+          <Row>
+            <Col lg="12" xl="12" md="12" sm="12">
+              <Row>{content}</Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12" xl="12" md="12" sm="12">
+              <Paginator
+                onPageChange={(page) => setSelectedPage(page)}
+                style={{ marginTop: '100px' }}
+                selectedPage={selectedPage}
+                totalItems={totalTracks}
+                pageSize={realPageSize}
+              />
+            </Col>
+          </Row>
+        </Container>
       );
     }
-
-    return <React.Fragment />;
   };
 
   return (

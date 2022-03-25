@@ -12,10 +12,14 @@ export const add = (library) => post(`${path}/add`, library);
 export const saveCoverArt = (cover) => post(`${path}/saveCoverArt`, cover);
 export const removeCoverArt = (album) => post(`${path}/removeCoverArt`, album);
 
-export const getAlbums = (start, limit, category) => {
+export const getAlbums = (start, limit, category, selectedLibraries) => {
   if (category) {
     return getData(`${path}/albums?${page(start, limit)}&category=${category}`);
   };
+
+  if (selectedLibraries?.length) {
+    return getData(`${path}/albums?${page(start, limit)}&filters=${selectedLibraries.map((lib) => lib.path)}`);
+  }
 
   return getData(`${path}/albums?${page(start, limit)}`);
 };
@@ -55,7 +59,7 @@ export const coverArtUrl = async (album) => {
       isLocal: true
     };
   } else {
-    console.log('artHistory:');
+
     const artHistory = await getData(`/status/getArtHistory`);
 
     if (!artHistory?.requests.includes(album.path)) {
