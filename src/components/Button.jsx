@@ -24,12 +24,13 @@ function Button({
   height,
   width,
   style,
+  id,
 }) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
   const buttonStyle = {
-    background: settings.styles.buttonBackgroundColor,
+    background: style?.buttonBackgroundColor || settings.styles.buttonBackgroundColor,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,
     fontFamily: style?.fontFamily || settings.styles.buttonFont,
@@ -52,7 +53,7 @@ function Button({
   }
 
   const buttonContent = ((isScreenSmall && icon) || (!content && icon)) ? icon : content;
-  return <ReactButton disabled={disabled} style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{buttonContent}</ReactButton>;
+  return <ReactButton id={id} disabled={disabled} style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{content || icon}</ReactButton>;
 }
 
 Button.propTypes = propTypes;

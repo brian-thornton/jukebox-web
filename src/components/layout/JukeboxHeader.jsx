@@ -2,15 +2,12 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useContext } from 'react';
 import {
   Navbar,
-  Dropdown,
   Nav,
 } from 'react-bootstrap';
-import Offcanvas from 'react-bootstrap/Offcanvas'
-import { FilterSquare, Funnel, FunnelFill } from 'react-bootstrap-icons';
+import { Funnel, FunnelFill } from 'react-bootstrap-icons';
 
 import Button from '../Button';
 import FilterModal from './FilterModal';
-import SearchModal from './SearchModal';
 import NavigationButtons from './NavigationButtons';
 
 import './Jukebox.css';
@@ -33,17 +30,13 @@ function JukeboxHeader({
   setCurrentAlbum,
   setSelectedLibraries,
   selectedLibraries,
+  setIsSearchOpen,
+  setIsFilterOpen,
+  isFilterOpen,
 }) {
   const settings = useContext(SettingsContext);
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [showFilter, setShowFilter] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-
-  const handleSearch = (searchText) => {
-    setIsSearchModalOpen(false);
-    setSearch(searchText);
-  };
 
   const searchResults = () => {
     if (search && !isScreenSmall) {
@@ -70,13 +63,13 @@ function JukeboxHeader({
   }
 
   const searchButtons = () => {
-    if (isScreenSmall) {
-      return <></>;
-    }
 
     const searchButton = (
       <Button
-        onClick={() => setIsSearchModalOpen(true)}
+        onClick={() => {
+          setSearch('');
+          setIsSearchOpen(true);
+        }}
         content="Search"
       />
     );
@@ -91,7 +84,13 @@ function JukeboxHeader({
             }}
             content="Clear"
           />
-          {searchButtons}
+          <Button
+            onClick={() => {
+              setSearch('');
+              setIsSearchOpen(true);
+            }}
+            content="Search"
+          />
         </>
       );
     }
@@ -115,7 +114,7 @@ function JukeboxHeader({
         {searchResults()}
         {searchButtons()}
         <Button
-          onClick={() => setIsFilterModalOpen(true)}
+          onClick={() => setIsFilterOpen(true)}
           content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
         />
         <FilterModal
@@ -125,11 +124,6 @@ function JukeboxHeader({
           isOpen={isFilterModalOpen}
         />
       </Navbar>
-      <SearchModal
-        isOpen={isSearchModalOpen}
-        handleClose={handleSearch}
-        search={search}
-      />
     </>
   );
 }

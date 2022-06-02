@@ -10,6 +10,7 @@ import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import { getStatus } from '../../lib/status-client';
 
 import Album from './Album';
+import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import './AlbumList.scss';
@@ -67,8 +68,7 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
     // 3: 3 * 12 == 36 - 12 = 24
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
-    if (!isLoading && selectedPage && realPageSize) {
-      setIsLoading(true);
+    if (selectedPage && realPageSize) {
       setAlbums([]);
       if (search) {
         findAlbums(realStart, (realStart + realPageSize));
@@ -86,10 +86,10 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
     }
   };
 
-  useEffect(loadAlbums, [category]);
-  useEffect(loadAlbums, [realPageSize]);
-  useEffect(loadAlbums, [selectedPage]);
-  useEffect(loadAlbums, [selectedLibraries]);
+  useEffect(() => {
+    setIsLoading(true);
+    loadAlbums();
+  }, [category, realPageSize, selectedPage, selectedLibraries]);
 
   useEffect(() => {
     if (!search) {
@@ -105,13 +105,14 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
     setSelectedPage(page);
   }
 
-  if (albums && albums.length) {
-    return (
-      <>
+  return (
+    <>
+      {isLoading && <Loading />}
+      {!isLoading && (
         <Container fluid style={{ marginTop: '60px' }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{content}</Row>
+              <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{content}</Row>
             </Col>
           </Row>
           <Row>
@@ -128,9 +129,9 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
             </Col>
           </Row>
         </Container>
-      </>
-    );
-  }
+      )}
+    </>
+  );
 
   if (loadComplete && totalAlbums === 0) {
     return (

@@ -61,7 +61,7 @@ function Album({
 
   return (
     <Card className={styles.albumCard} onClick={() => setCurrentAlbum(album)}>
-      <Card.Img top src={coverArt} />
+      <Card.Img style={{height: '200px', maxHeight: '200px', width: '200px', maxWidth: '200px'}} top src={coverArt} />
       {body()}
     </Card>
   );

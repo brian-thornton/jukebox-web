@@ -5,6 +5,7 @@ import { ToastContainer } from 'react-toastify';
 import WebFont from 'webfontloader';
 
 import AlbumList from '../albums/AlbumList';
+import Filter from './Filters';
 import PlaylistsViewer from '../playlists/PlaylistsViewer';
 import AlbumDetail from '../albums/AlbumDetail';
 import Queue from '../Queue';
@@ -16,7 +17,7 @@ import JukeboxFooter from './JukeboxFooter';
 import JukeboxHeader from './JukeboxHeader';
 import WithKeyboardInput from './WithKeyboardInput';
 import { getHeight } from '../../lib/pageHelper';
-
+import Search from '../common/Search';
 import './Jukebox.css';
 import { SettingsContext } from './SettingsProvider';
 
@@ -30,7 +31,9 @@ function Jukebox() {
   const [nowPlaying, setNowPlaying] = useState('');
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const [pagingButtons, setPagingButtons] = useState();
-  const [selectedLibraries, setSelectedLibraries] = useState([]);
+  const [selectedLibraries, setSelectedLibraries] = useState();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     WebFont.load({
@@ -131,6 +134,7 @@ function Jukebox() {
 
   const wrapWithKeyboard = (component) => (
     <WithKeyboardInput
+      setIsSearchOpen={setIsSearchOpen}
       component={component}
       tempSearch={tempSearch}
       setTempSearch={setTempSearch}
@@ -147,7 +151,12 @@ function Jukebox() {
           clearCurrentAlbum={() => setCurrentAlbum(null)}
         />
       );
-    } else {
+    } else if (isSearchOpen) {
+      body = <Search setIsSearchOpen={setIsSearchOpen} setSearchText={setSearch} />
+    } else if (isFilterOpen) {
+      body = <Filter setIsFilterOpen={setIsFilterOpen} setSelectedLibraries={setSelectedLibraries} selectedLibraries={selectedLibraries} />
+    } 
+    else {
       switch (mode) {
         case 'AlbumList':
           body = wrapWithKeyboard(albumList);
@@ -184,6 +193,8 @@ function Jukebox() {
           setCurrentAlbum={setCurrentAlbum}
           setSelectedLibraries={setSelectedLibraries}
           selectedLibraries={selectedLibraries}
+          setIsSearchOpen={setIsSearchOpen}
+          setIsFilterOpen={setIsFilterOpen}
         />
         <Container
           fluid

@@ -15,6 +15,7 @@ function WithKeyboardInput({
   tempSearch,
   setTempSearch,
   debouncedSearch,
+  setIsSearchOpen,
 }) {
   function handlePaste(e) {
     var clipboardData, pastedData;
@@ -36,8 +37,8 @@ function WithKeyboardInput({
   return (
     <>
       <KeyboardEventHandler
-        handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.']}
-        onKeyEvent={(key) => {
+        handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.', 'cmd+f']}
+        onKeyEvent={(key, e) => {
           let newSearch = cloneDeep(tempSearch);
           if (key === 'space') {
             newSearch = `${tempSearch} `;
@@ -45,7 +46,11 @@ function WithKeyboardInput({
           } else if (key === 'backspace') {
             newSearch = `${tempSearch.substring(0, tempSearch.length - 1)}`;
             setTempSearch(`${tempSearch.substring(0, tempSearch.length - 1)}`);
-          } else {
+          } else if (key === 'cmd+f') {
+            setIsSearchOpen(true);
+            e.preventDefault();
+          }
+          else {
             newSearch = `${tempSearch}${key}`;
             setTempSearch(`${tempSearch}${key}`);
           }

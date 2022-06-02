@@ -9,6 +9,7 @@ import { Alert } from 'react-bootstrap';
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import TrackList from './TrackList';
 import Paginator from './common/Paginator';
+import Loading from './common/Loading';
 
 const propTypes = {
   search: PropTypes.string,
@@ -17,16 +18,15 @@ const propTypes = {
 
 function Tracks({ search, setCurrentAlbum }) {
   const [tracks, setTracks] = useState([]);
+  const [searchInProgress, setSearchInProgress] = useState();
   const [totalTracks, setTotalTracks] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
 
   useEffect(() => {
-
-    const albumsPerRow = Math.floor(window.innerWidth / 300);
-    const numberOfRows = Math.floor((window.innerHeight - 200) / 200);
-    const s = albumsPerRow * numberOfRows;
-    setRealPageSize(s);
+    const itemHeight = 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
   const onPageChange = (page) => {
@@ -37,6 +37,7 @@ function Tracks({ search, setCurrentAlbum }) {
     searchTracks(search, start, limit).then((data) => {
       setTotalTracks(data.totalTracks);
       setTracks(data.tracks);
+      setSearchInProgress(false);
     });
   };
 
@@ -53,23 +54,16 @@ function Tracks({ search, setCurrentAlbum }) {
         getTracks(realStart, (realStart + realPageSize)).then((data) => {
           setTotalTracks(data.totalTracks);
           setTracks(data.tracks);
+          setSearchInProgress(false);
         });
       }
     }
   };
 
-  useEffect(() => setSelectedPage(1), [search]);
   useEffect(() => {
-    if (realPageSize && selectedPage) {
-      loadTracks();
-    }
-  }, [selectedPage]);
-
-  useEffect(() => {
-    if (selectedPage && realPageSize) {
-      loadTracks();
-    }
-  }, [realPageSize]);
+    setSearchInProgress(true);
+    loadTracks();
+  }, [search, selectedPage, realPageSize]);
 
   const alert = () => {
     const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
@@ -91,7 +85,7 @@ function Tracks({ search, setCurrentAlbum }) {
   const trackList = () => {
     if (realPageSize && totalTracks) {
       return (
-        <Container fluid style={{ marginTop: '60px' }}>
+        <Container style={{ width: '100%', marginTop: '60px' }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>{content}</Row>
@@ -115,8 +109,13 @@ function Tracks({ search, setCurrentAlbum }) {
 
   return (
     <>
-      {alert()}
-      {trackList()}
+      {searchInProgress && <Loading />}
+      {!searchInProgress && (
+        <>
+          {alert()}
+          {trackList()}
+        </>
+      )}
     </>
   );
 }

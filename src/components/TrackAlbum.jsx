@@ -23,8 +23,8 @@ function TrackAlbum({ album, setCurrentAlbum }) {
 
   if (coverArt) {
     return (
-      <Card style={styles.albumCardStyleSmall} className="album-card-small" onClick={() => setCurrentAlbum(album)}>
-        <Card.Img top src={coverArt} />
+      <Card style={styles.albumCardStyleSmall} onClick={() => setCurrentAlbum(album)}>
+        <Card.Img style={{width: '50px', height: '50px'}} top src={coverArt} />
       </Card>
     );
   }

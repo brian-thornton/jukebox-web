@@ -38,7 +38,7 @@ function Modal({
   const settings = useContext(SettingsContext);
 
   return (
-    <ReactModal size={size} show={isOpen} onHide={onCancel}>
+    <ReactModal show={isOpen} fullscreen={true} fonHide={onCancel}>
       <ReactModal.Header closeButton style={modalHeaderStyle(settings)}>
         <ReactModal.Title style={modalTitleStyle(settings)}>{title}</ReactModal.Title>
       </ReactModal.Header>

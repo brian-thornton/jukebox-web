@@ -73,7 +73,6 @@ function TrackList({
             (
               <ListGroupItem style={itemStyle}>
                 {track.name}
-                <br />
                 <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
                 <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
                 <DownloadButton track={track} isScreenSmall={isScreenSmall} />
@@ -84,7 +83,7 @@ function TrackList({
       }
     });
 
-    return <Container fluid style={{ marginTop: '15px', marginLeft: '0px' }}><Row>{renderTracks}</Row></Container>;
+    return <Container style={{ width: '100%', marginTop: '15px', marginLeft: '0px' }}><Row>{renderTracks}</Row></Container>;
   }
 
   return <></>;

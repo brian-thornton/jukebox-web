@@ -56,9 +56,7 @@ function Track({
   const trackCardStyle = {
     ...styles.cardStyle,
     color: settings.styles.fontColor,
-    width: '650px',
-    height: '100px',
-    margin: '10px',
+    width: '100%',
     background: settings.styles.trackBackgroundColor,
   };
 
@@ -70,26 +68,26 @@ function Track({
     fontFamily: settings.styles.listFont,
   };
 
+  // TODO: Make this work with \
+  const pathParts = track.path.split('/');
+  const albumFolder = pathParts[pathParts.length - 2];
+
   return (
     <Card style={trackCardStyle}>
-      <Container style={{ marginTop: '0px', marginBottom: '0px', marginRight: '0px', paddingLeft: '0px' }}>
+      <Container style={{ width: '100%', marginTop: '0px', marginBottom: '0px', marginRight: '0px', paddingLeft: '0px' }}>
         <Row>
-          <Col lg={2} md={2}>
+          <Col lg={1} md={1}>
             {album(track)}
           </Col>
-          <Col lg={10} md={10}>
-            <Container style={{ marginTop: '0px', paddingLeft: '0px' }}>
-              <Row>
-                <div style={trackNameStyle}>
-                  {track.name}
-                </div>
-              </Row>
-              <Row>
-                <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
-                <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
-                <DownloadButton track={track} isScreenSmall={isScreenSmall} />
-              </Row>
-            </Container>
+          <Col lg={8} md={8}>
+            <div style={trackNameStyle}>
+              {`${albumFolder} - ${track.name}`}
+            </div>
+          </Col>
+          <Col lg={2}>
+            <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
+            <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
+            <DownloadButton track={track} isScreenSmall={isScreenSmall} />
           </Col>
         </Row>
       </Container>

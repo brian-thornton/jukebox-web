@@ -3,6 +3,6 @@
   border-color: #708090;
   color: #ffffff;
   margin-top: 7px;
-  max-width: 75px;
-  width: 75px;
+  max-width: 100% !important;
+  width: 100% !important;
 }

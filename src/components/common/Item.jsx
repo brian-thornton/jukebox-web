@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import { Form, ListGroupItem } from 'react-bootstrap';
+import { ListGroupItem } from 'react-bootstrap';
 
+import CheckToggle from '../common/CheckToggle';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './Item.module.css';
 
@@ -23,14 +24,7 @@ function Item({ buttons, onClick, text, includeCheckbox, onCheck, checked }) {
   return (
     <ListGroupItem className={styles.itemStyle} style={itemStyle} onClick={onClick}>
       <div className={styles.itemText}>
-        {includeCheckbox && (
-          <Form.Check
-            checked={checked}
-            type="checkbox"
-            onClick={onCheck}
-          >
-          </Form.Check>
-        )}
+        {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
         {text}
       </div>
       <div className={styles.itemButtons}>
