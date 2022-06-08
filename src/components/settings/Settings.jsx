@@ -31,7 +31,7 @@ function Settings() {
       );
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   const content = () => {
@@ -52,7 +52,7 @@ function Settings() {
       }
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   const handleClose = (authorized) => {

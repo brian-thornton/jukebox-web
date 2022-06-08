@@ -1,6 +1,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,16 +14,14 @@ import ControlButton from '../common/ControlButton';
 import styles from './AlbumButtons.module.css';
 
 const propTypes = {
-  setAddToPlaylist: PropTypes.func.isRequired,
   clearCurrentAlbum: PropTypes.func.isRequired,
   tracks: Tracks.isRequired,
 };
 
 function AlbumButtons({
-  clearCurrentAlbum,
   tracks,
-  setAddToPlaylist,
 }) {
+  const navigate = useNavigate();
   const playAlbum = () => {
     enqueueTracksTop(tracks);
     next();
@@ -37,7 +36,7 @@ function AlbumButtons({
   return (
     <>
       <Row>
-        {albumButton(clearCurrentAlbum, 'Back to Albums')}
+        {albumButton(() => navigate(-1), 'Back to Albums')}
         {albumButton(playAlbum, 'Play Album')}
       </Row>
       <Row>
@@ -45,7 +44,9 @@ function AlbumButtons({
           enqueueTracks(tracks);
           toast.success("Added to the queue!", toastProps);
         }, 'Enqueue Album')}
-        {albumButton(() => setAddToPlaylist(true), 'Add to Playlist')}
+        {albumButton(() => {
+          navigate('/playlists', { state: { tracks } })
+        }, 'Add to Playlist')}
       </Row>
     </>
   );

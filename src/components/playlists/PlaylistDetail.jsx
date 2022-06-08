@@ -1,16 +1,10 @@
 import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 
+import Paginator from '../common/Paginator';
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
-import {
-  getHeight,
-  initHorizontalPaging,
-  initListPaging,
-  nextPage,
-  previousPage,
-} from '../../lib/pageHelper';
 import {
   addTrackAtPosition,
   getPlaylist,
@@ -23,7 +17,6 @@ import ControlButton from '../common/ControlButton';
 import ContentWithControls from '../common/ContentWithControls';
 import Modal from '../common/Modal';
 import NoResults from '../common/NoResults';
-import PagedContainer from '../common/PagedContainer';
 import PlaylistAddModal from './PlaylistAddModal';
 import PlayNowButton from '../PlayNowButton';
 import Item from '../common/Item';
@@ -38,9 +31,15 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
-  const [paging, setPaging] = useState();
-  const initialHeight = getHeight();
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
   let renderTracks = [];
+
+  useEffect(() => {
+    const itemHeight = 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+  }, []);
 
   const loadTracks = (playlistName) => {
     getPlaylist(playlistName).then((playlist) => {
@@ -48,7 +47,6 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
         setIsEmpty(true);
       } else {
         setTracks(playlist.tracks);
-        setPaging(initListPaging(playlist.tracks.length, 90, initialHeight));
       }
     });
   };
@@ -116,7 +114,9 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   );
 
   if (tracks) {
-    renderTracks = tracks.map((track, index) => (
+    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+
+    renderTracks = tracks.slice(realStart, (realStart + realPageSize)).map((track, index) => (
       <Item text={track.name} buttons={buttons(track, index)} />
     ));
   }
@@ -140,23 +140,28 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   );
 
   const content = () => {
-    if (!paging || isEmpty) {
+    if (isEmpty) {
       return <NoResults title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
     }
 
     const playlistTracks = (
-      <ListGroup style={{width: '100%'}}>
-        {renderTracks.slice(paging.currentPage.start, paging.currentPage.limit)}
+      <ListGroup style={{ width: '100%' }}>
+        {renderTracks}
       </ListGroup>
     );
 
     return (
-      <PagedContainer
-        paging={paging}
-        content={playlistTracks}
-        clientNextPage={() => setPaging(nextPage(paging))}
-        clientPreviousPage={() => setPaging(previousPage(paging))}
-      />
+      <>
+        {playlistTracks}
+        <Paginator
+          disableRandom
+          onPageChange={(page) => setSelectedPage(page)}
+          style={{ marginTop: '100px' }}
+          selectedPage={selectedPage}
+          totalItems={tracks.length}
+          pageSize={realPageSize}
+        />
+      </>
     );
   };
 

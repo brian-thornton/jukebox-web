@@ -158,20 +158,11 @@ function Jukebox() {
     } 
     else {
       switch (mode) {
-        case 'AlbumList':
-          body = wrapWithKeyboard(albumList);
-          break;
-        case 'Tracks':
-          body = wrapWithKeyboard(trackList);
-          break;
         case 'Playlists':
           body = <PlaylistsViewer />;
           break;
         case 'Queue':
           body = <Queue />;
-          break;
-        case 'Settings':
-          body = <Settings />;
           break;
         default:
           body = wrapWithKeyboard(albumList);

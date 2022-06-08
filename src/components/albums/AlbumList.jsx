@@ -105,10 +105,17 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
     setSelectedPage(page);
   }
 
+  const noResults = search && !albums.length;
+
   return (
     <>
+      {noResults && (
+        <div className="no-albums">
+          <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." />
+        </div>
+      )}
       {isLoading && <Loading />}
-      {!isLoading && (
+      {!isLoading && !noResults && (
         <Container fluid style={{ marginTop: '60px' }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">

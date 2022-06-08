@@ -1,33 +1,29 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import { Track } from '../shapes';
+import { PlusSquare } from 'react-bootstrap-icons';
 
 const propTypes = {
-  setAddToPlaylist: PropTypes.func,
-  setAddTracks: PropTypes.func,
   track: Track.isRequired,
 };
 
-function AddToPlaylistButton({ setAddTracks, setAddToPlaylist, track }) {
+function AddToPlaylistButton({ track }) {
+  const navigate = useNavigate();
+
   return (
     <>
       <Button
         onClick={() => {
-          setAddTracks([track]);
-          setAddToPlaylist(true);
+          navigate('/playlists', { state: { tracks: [track] } })
         }}
-        content="Add to Playlist"
+        icon={<PlusSquare />}
       />
     </>
   );
 }
-
-AddToPlaylistButton.defaultProps = {
-  setAddToPlaylist: null,
-  setAddTracks: null,
-};
 
 AddToPlaylistButton.propTypes = propTypes;
 

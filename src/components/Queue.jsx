@@ -1,5 +1,6 @@
 import { TrashFill } from 'react-bootstrap-icons';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Col,
@@ -8,7 +9,6 @@ import {
 
 import Button from './Button';
 import ControlButton from './common/ControlButton';
-import PlaylistsViewer from './playlists/PlaylistsViewer';
 import {
   clearQueue,
   getQueue,
@@ -22,8 +22,8 @@ import NoResults from './common/NoResults';
 import Paginator from './common/Paginator';
 
 const Queue = () => {
+  const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
-  const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [isEmpty, setIsEmpty] = useState(false);
@@ -45,6 +45,7 @@ const Queue = () => {
   };
 
   const clear = () => clearQueue().then(loadQueue());
+
   useEffect(() => {
     const numberOfTracks = Math.floor((window.innerHeight - 200) / 50);
     setRealPageSize(numberOfTracks);
@@ -110,14 +111,13 @@ const Queue = () => {
     <>
       <ControlButton onClick={clear} disabled={isEmpty} text="Clear Queue" />
       <ControlButton onClick={() => shuffle()} disabled={isEmpty} text="Shuffle Queue" />
-      <ControlButton onClick={() => setAddToPlaylist(true)} disabled={isEmpty} text="Save to Playlist" />
+      <ControlButton onClick={() => {
+        navigate('/playlists', { state: { tracks } })
+      }} disabled={isEmpty} text="Save to Playlist" />
     </>
   );
 
-  if (!addToPlaylist) {
-    return <ContentWithControls controls={controls()} content={content()} />;
-  }
-  return (<PlaylistsViewer mode="addToPlaylist" tracks={tracks} />);
+  return <ContentWithControls controls={controls()} content={content()} />;
 }
 
 export default Queue;

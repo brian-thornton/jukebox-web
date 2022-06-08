@@ -19,13 +19,10 @@ const propTypes = {
   nextPage: PropTypes.func.isRequired,
   paging: Paging.isRequired,
   previousPage: PropTypes.func.isRequired,
-  setAddToPlaylist: PropTypes.func.isRequired,
   tracks: PropTypes.arrayOf(Track),
 };
 
 function TrackList({
-  setAddToPlaylist,
-  setAddTracks,
   tracks,
 }) {
   const [selectedPage, setSelectedPage] = useState(1);
@@ -48,7 +45,7 @@ function TrackList({
         <>
           <PlayNowButton track={track} />
           <EnqueueButton track={track} />
-          <AddToPlaylistButton track={track} setAddToPlaylist={setAddToPlaylist} setAddTracks={setAddTracks} />
+          <AddToPlaylistButton track={track} />
           <DownloadButton track={track} isScreenSmall={isScreenSmall} />
         </>
       )}

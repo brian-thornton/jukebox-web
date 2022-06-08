@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
 import { PropTypes } from 'prop-types';
 import {
   Container,
@@ -12,7 +13,6 @@ import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
 import AlbumTracks from './AlbumTracks';
 import { getAlbumTracks } from '../../lib/librarian-client';
-import PlaylistsViewer from '../playlists/PlaylistsViewer';
 import styles from './AlbumDetail.module.css';
 import { SettingsContext } from '../layout/SettingsProvider';
 
@@ -21,10 +21,11 @@ const propTypes = {
   clearCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function AlbumDetail({ album, clearCurrentAlbum }) {
+function AlbumDetail({ clearCurrentAlbum }) {
+  const { state } = useLocation();
+  const album = state.currentAlbum;
+
   const [tracks, setTracks] = useState([]);
-  const [addTracks, setAddTracks] = useState();
-  const [addToPlaylist, setAddToPlaylist] = useState(false);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
   const settings = useContext(SettingsContext);
@@ -46,7 +47,6 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
           album={album}
           clearCurrentAlbum={clearCurrentAlbum}
           tracks={tracks}
-          setAddToPlaylist={setAddToPlaylist}
         />
         <AlbumAdminButtons album={album} />
       </>
@@ -59,7 +59,7 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
   };
 
   const largeAlbum = () => {
-    if (!addToPlaylist && album) {
+    if (album) {
       return (
         <>
           <Row className={styles.coverRow}>
@@ -77,21 +77,12 @@ function AlbumDetail({ album, clearCurrentAlbum }) {
               </Container>
             </Col>
             <Col lg={9} xl={9}>
-              <AlbumTracks
-                tracks={tracks}
-                setAddToPlaylist={setAddToPlaylist}
-                setAddTracks={setAddTracks}
-              />
+              <AlbumTracks tracks={tracks} />
             </Col>
           </Row>
         </>
       );
     }
-
-    return <PlaylistsViewer onAddComplete={() => {
-      setAddToPlaylist(false);
-      setAddTracks(null);
-    }} mode="addToPlaylist" tracks={addTracks || tracks} />;
   };
 
 

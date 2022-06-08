@@ -16,7 +16,6 @@ const Loading = () => {
     borderColor: 'black',
     color: settings.styles.fontColor,
     swidth: '18rem',
-    marginTop: '60px',
   };
 
 

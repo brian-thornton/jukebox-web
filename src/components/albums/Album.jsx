@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { Album as albumShape } from '../shapes';
 import { coverArtUrl, saveCoverArt } from '../../lib/librarian-client';
@@ -17,6 +18,7 @@ const propTypes = {
 function Album({
   album, setCurrentAlbum, coverArtOnly,
 }) {
+  const navigate = useNavigate();
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState(defaultCover);
 
@@ -60,8 +62,8 @@ function Album({
   };
 
   return (
-    <Card className={styles.albumCard} onClick={() => setCurrentAlbum(album)}>
-      <Card.Img style={{height: '200px', maxHeight: '200px', width: '200px', maxWidth: '200px'}} top src={coverArt} />
+    <Card className={styles.albumCard} onClick={() => navigate(`/albums/${album.id}`, { state: { currentAlbum: album } })}>
+      <Card.Img style={{ height: '200px', maxHeight: '200px', width: '200px', maxWidth: '200px' }} top src={coverArt} />
       {body()}
     </Card>
   );

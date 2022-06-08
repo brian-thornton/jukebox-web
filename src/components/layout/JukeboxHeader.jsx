@@ -5,6 +5,7 @@ import {
   Nav,
 } from 'react-bootstrap';
 import { Funnel, FunnelFill } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import FilterModal from './FilterModal';
@@ -25,18 +26,15 @@ function JukeboxHeader({
   search,
   setCategory,
   setSearch,
-  setTempSearch,
   setMode,
   setCurrentAlbum,
   setSelectedLibraries,
   selectedLibraries,
-  setIsSearchOpen,
-  setIsFilterOpen,
-  isFilterOpen,
 }) {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const navigate = useNavigate();
 
   const searchResults = () => {
     if (search && !isScreenSmall) {
@@ -59,7 +57,7 @@ function JukeboxHeader({
   };
 
   const handleFilterModalClose = () => {
-    setIsFilterModalOpen(false);
+    setIsFilterOpen(false);
   }
 
   const searchButtons = () => {
@@ -68,7 +66,7 @@ function JukeboxHeader({
       <Button
         onClick={() => {
           setSearch('');
-          setIsSearchOpen(true);
+          navigate('/search');
         }}
         content="Search"
       />
@@ -78,19 +76,14 @@ function JukeboxHeader({
       return (
         <>
           <Button
-            onClick={() => {
-              setSearch('');
-              setTempSearch('');
-            }}
+            onClick={() => setSearch('')}
             content="Clear"
           />
-          <Button
-            onClick={() => {
-              setSearch('');
-              setIsSearchOpen(true);
-            }}
+          {!search && (<Button
+            onClick={() => setSearch('')}
             content="Search"
           />
+          )}
         </>
       );
     }
@@ -117,12 +110,14 @@ function JukeboxHeader({
           onClick={() => setIsFilterOpen(true)}
           content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
         />
-        <FilterModal
-          selectedLibraries={selectedLibraries}
-          setSelectedLibraries={setSelectedLibraries}
-          handleClose={handleFilterModalClose}
-          isOpen={isFilterModalOpen}
-        />
+        {isFilterOpen && (
+          <FilterModal
+            selectedLibraries={selectedLibraries}
+            setSelectedLibraries={setSelectedLibraries}
+            handleClose={handleFilterModalClose}
+            isOpen={true}
+          />
+        )}
       </Navbar>
     </>
   );

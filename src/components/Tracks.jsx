@@ -6,7 +6,10 @@ import {
   Row,
 } from 'react-bootstrap';
 import { Alert } from 'react-bootstrap';
+
+import PlaylistsViewer from './playlists/PlaylistsViewer';
 import { getTracks, searchTracks } from '../lib/librarian-client';
+import NoResults from './common/NoResults';
 import TrackList from './TrackList';
 import Paginator from './common/Paginator';
 import Loading from './common/Loading';
@@ -17,11 +20,13 @@ const propTypes = {
 };
 
 function Tracks({ search, setCurrentAlbum }) {
+  const [addTracks, setAddTracks] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
   const [totalTracks, setTotalTracks] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const [tracksLoaded, setTracksLoaded] = useState(false);
 
   useEffect(() => {
     const itemHeight = 55;
@@ -29,14 +34,11 @@ function Tracks({ search, setCurrentAlbum }) {
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
-  const onPageChange = (page) => {
-    setSelectedPage(page);
-  }
-
   const findTracks = async (start, limit) => {
     searchTracks(search, start, limit).then((data) => {
       setTotalTracks(data.totalTracks);
       setTracks(data.tracks);
+      setTracksLoaded(true);
       setSearchInProgress(false);
     });
   };
@@ -54,6 +56,7 @@ function Tracks({ search, setCurrentAlbum }) {
         getTracks(realStart, (realStart + realPageSize)).then((data) => {
           setTotalTracks(data.totalTracks);
           setTracks(data.tracks);
+          setTracksLoaded(true);
           setSearchInProgress(false);
         });
       }
@@ -79,6 +82,7 @@ function Tracks({ search, setCurrentAlbum }) {
       tracks={tracks}
       showAlbumCovers
       setCurrentAlbum={setCurrentAlbum}
+      setAddTracks={setAddTracks}
     />
   );
 
@@ -107,10 +111,17 @@ function Tracks({ search, setCurrentAlbum }) {
     }
   };
 
+  const noResults = search && !tracks.length;
+
   return (
     <>
+      {tracksLoaded && noResults && (
+        <div className="no-albums">
+          <NoResults title="No Results Found" text="No Tracks found matching your search. Please try again." />
+        </div>
+      )}
       {searchInProgress && <Loading />}
-      {!searchInProgress && (
+      {!noResults && !searchInProgress && (
         <>
           {alert()}
           {trackList()}

@@ -3,6 +3,8 @@ import React, { useContext } from 'react';
 import {
   Card, Container, Row, Col,
 } from 'react-bootstrap';
+
+import AddToPlaylistButton from './common/AddToPlaylistButton';
 import styles from './styles';
 import TrackAlbum from './TrackAlbum';
 import { Track as TrackShape } from './shapes';
@@ -50,7 +52,7 @@ function Track({
       }
     }
 
-    return <React.Fragment />;
+    return <></>;
   };
 
   const trackCardStyle = {
@@ -85,6 +87,7 @@ function Track({
             </div>
           </Col>
           <Col lg={2}>
+            <AddToPlaylistButton track={track} />
             <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
             <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
             <DownloadButton track={track} isScreenSmall={isScreenSmall} />

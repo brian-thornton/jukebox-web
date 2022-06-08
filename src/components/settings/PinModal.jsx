@@ -35,7 +35,7 @@ function PinModal({ isOpen, handleClose }) {
       onCancel={() => handleClose(pin === settings.pin)}
       title="Enter Pin"
       body={(
-        <Container>
+        <Container fluid>
           <Row>{row([1, 2, 3])}</Row>
           <Row>{row([4, 5, 6])}</Row>
           <Row>{row([7, 8, 9])}</Row>

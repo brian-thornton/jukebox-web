@@ -1,4 +1,4 @@
-import { Col, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
+import { Col, Form, FormControl, Row } from 'react-bootstrap';
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 
@@ -20,8 +20,6 @@ function LibraryAddModal({
   handleSave,
 }) {
   const settings = useContext(SettingsContext);
-  const [isTopLevelCategory, setTopLevelCategory] = useState(false);
-  const [isNewCategory, setIsNewCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(false);
   const [categories, setCategories] = useState(settings.categories);
   const [addMode, setAddMode] = useState(false);

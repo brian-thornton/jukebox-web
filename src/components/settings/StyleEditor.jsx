@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Dropdown, Container, Col, Row, ListGroup } from 'react-bootstrap';
+import { Container, Col, Row, ListGroup } from 'react-bootstrap';
 import ControlButton from '../common/ControlButton';
 import Item from '../common/Item';
 import { deleteSkin, createSkin } from '../../lib/style-client';

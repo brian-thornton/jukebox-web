@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap';
 
 import { Paging } from '../shapes';
+import Paginator from './Paginator';
 import PagingButtons from './PagingButtons';
 import { nextPage, previousPage, randomPage } from '../../lib/pageHelper';
 

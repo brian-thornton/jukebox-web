@@ -85,7 +85,7 @@ function JukeboxFooter({
   return (
     <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
       {nowPlayingText()}
-      {pagingButtons}
+      {/* {pagingButtons} */}
       {footerContent()}
     </Navbar>
   );

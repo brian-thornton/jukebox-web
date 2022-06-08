@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { PropTypes } from 'prop-types';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 
@@ -13,6 +14,7 @@ const propTypes = {
 function Search({
   handleClose, setIsSearchOpen, setSearchText, searchText = 'Enter Search',
 }) {
+  const navigate = useNavigate();
   const isScreenSmall = window.innerWidth < 700;
   const [localSearch, setLocalSearch] = useState('');
   const inputButton = value => (
@@ -70,11 +72,10 @@ function Search({
           }} content="Space" />
           <Button width="150" height="55" onClick={() => {
             setSearchText('');
-            setIsSearchOpen(false);
           }} content="Clear" />
           <Button width="150" height="55" onClick={() => {
             setSearchText(localSearch);
-            setIsSearchOpen(false);
+            navigate(-1);
           }} content="Search Now" />
         </Row>
       </Container>

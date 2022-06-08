@@ -1,43 +1,34 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Container } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Trash } from 'react-bootstrap-icons';
 
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
 import { getStatus, updateStatus } from '../../lib/status-client';
 import NoResults from '../common/NoResults';
+import Paginator from '../common/Paginator';
 import PlaylistDetail from './PlaylistDetail';
 import PlaylistAddModal from './PlaylistAddModal';
 import ContentWithControls from '../common/ContentWithControls';
 import Item from '../common/Item';
 import { Tracks } from '../shapes';
-import PagingButtons from '../common/PagingButtons';
-import {
-  getHeight,
-  initializePaging,
-  pageLimit,
-  pageStart,
-  previousPage,
-  nextPage,
-} from '../../lib/pageHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
-  mode: PropTypes.string,
   tracks: Tracks.isRequired,
 };
 
 function PlaylistsViewer({
-  tracks,
-  mode,
-  onAddComplete,
   currentPlaylist,
 }) {
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const tracks = state?.tracks;
   const settings = useContext(SettingsContext);
-  const [paging, setPaging] = useState();
-  const initialHeight = getHeight();
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [show, setShow] = useState(false);
@@ -45,37 +36,34 @@ function PlaylistsViewer({
   const [added, setAdded] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const selectPlaylist = playlistName => setName(playlistName);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
   let renderPlaylists = [];
   const isScreenSmall = window.innerWidth < 700;
   const playlistsMargin = isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
 
-  const loadPlaylists = (loadPage) => {
-    const start = pageStart(loadPage, paging);
-    let limit = pageLimit(loadPage, paging);
+  useEffect(() => {
+    const itemHeight = 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+  }, []);
 
-    if (start === 0) {
-      limit += 1;
-    }
+  const loadPlaylists = () => {
+    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
-    getPlaylists(start, limit).then((data) => {
+    getPlaylists(realStart, (realStart + realPageSize)).then((data) => {
       setPlaylists(data.playlists);
       if (data.playlists.length === 0) {
         setIsEmpty(true);
       } else {
         setIsEmpty(false);
       }
-
-      if (!paging) {
-        setPaging(initializePaging(data.totalPlaylists, 60, initialHeight));
-      }
     });
   };
 
   useEffect(() => {
-    if (paging) {
-      loadPlaylists(paging.currentPage);
-    }
-  }, [paging]);
+    loadPlaylists();
+  }, [selectedPage, realPageSize]);
 
   const handleBackToPlaylists = () => {
     setName('');
@@ -109,15 +97,28 @@ function PlaylistsViewer({
 
   const buttons = (playlistName) => {
     const playlistActions = [];
-    if (mode === 'addToPlaylist' && !added && settings) {
+    if (tracks?.length && !added && settings) {
       playlistActions.push((
         <Button
           onClick={() => {
             addToPlaylist(playlistName);
             setAdded(true);
-            onAddComplete();
+            navigate(-1);
           }}
           content="Add"
+        />
+      ));
+    } else {
+      playlistActions.push((
+        <Button
+          onClick={() => selectPlaylist(playlistName)}
+          content="Edit"
+        />
+      ));
+      playlistActions.push((
+        <Button
+          icon={<Trash />}
+          onClick={() => selectPlaylist(playlistName)}
         />
       ));
     }
@@ -134,7 +135,7 @@ function PlaylistsViewer({
   ));
 
   const controls = () => {
-    if (mode === 'addToPlaylist') {
+    if (tracks?.length) {
       return <></>;
     }
 
@@ -146,28 +147,23 @@ function PlaylistsViewer({
       return <NoResults title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />;
     }
 
-    if (paging) {
-      return (
-        <Container id="albums" fluid style={playlistsMargin}>
-          <Row>
-            <Col lg={11} xl={11}>
-              <Row>{renderPlaylists}</Row>
-            </Col>
-            <Col lg={1} xl={1}>
-              <PagingButtons
-                pageDisabled={false}
-                loadMore={() => setPaging(nextPage(paging))}
-                loadPrevious={() => setPaging(previousPage(paging))}
-                pages={paging.pages}
-                page={paging.currentPage}
-              />
-            </Col>
-          </Row>
-        </Container>
-      );
-    }
-
-    return null;
+    return (
+      <Container id="albums" fluid style={playlistsMargin}>
+        <Row>
+          {renderPlaylists}
+        </Row>
+        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Paginator
+            onPageChange={(page) => setSelectedPage(page)}
+            style={{ marginTop: '100px' }}
+            selectedPage={selectedPage}
+            totalItems={playlists.length}
+            pageSize={realPageSize}
+            disableRandom
+          />
+        </Row>
+      </Container >
+    );
   };
 
   if (!currentPlaylist.name && !name) {
@@ -187,7 +183,6 @@ PlaylistsViewer.propTypes = propTypes;
 
 PlaylistsViewer.defaultProps = {
   currentPlaylist: '',
-  mode: '',
 };
 
 export default PlaylistsViewer;
