@@ -1,20 +1,15 @@
 import { PropTypes } from 'prop-types';
+import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect, useContext } from 'react';
-import { ListGroup } from 'react-bootstrap';
 
 import Button from '../Button';
+import InRowDeleteConfirmation from '../common/InRowDeleteConfirmation';
 import Item from '../common/Item';
-import PagedContainer from '../common/PagedContainer';
-import {
-  getHeight,
-  initListPaging,
-  nextPage,
-  previousPage,
-} from '../../lib/pageHelper';
+import Paginator from '../common/Paginator';
 import SkinSaveAsModal from './SkinSaveAsModal';
 import { updateSettings } from '../../lib/settings-client';
 import { getSkins, deleteSkin } from '../../lib/style-client';
-import StyleEditor from './StyleEditor';
+import SkinDetail from './SkinDetail';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
@@ -22,7 +17,7 @@ const propTypes = {
   setControls: PropTypes.func.isRequired,
 };
 
-function ThemeList({ resetControls, setControls }) {
+const ThemeList = ({ resetControls, setControls }) => {
   const settings = useContext(SettingsContext);
   const [skins, setSkins] = useState();
   const [selectedSkin, setSelectedSkin] = useState();
@@ -31,8 +26,16 @@ function ThemeList({ resetControls, setControls }) {
   const [editSkin, setEditSkin] = useState();
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [copyFromColors, setCopyFromColors] = useState();
-  const [paging, setPaging] = useState();
-  const initialHeight = getHeight();
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
+  const [deleteConfirmSkin, setDeleteConfirmSkin] = useState();
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+
+  useEffect(() => {
+    const itemHeight = 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+  }, []);
 
   if (!skinsLoaded && !skinsLoading) {
     setSkinsLoading(true);
@@ -40,7 +43,6 @@ function ThemeList({ resetControls, setControls }) {
 
   const loadSkins = () => {
     getSkins().then((data) => {
-      setPaging(initListPaging(data.length, 90, initialHeight));
       setSkinsLoading(false);
       setSkinsLoaded(true);
       setSkins(data);
@@ -125,15 +127,28 @@ function ThemeList({ resetControls, setControls }) {
 
   const skinRows = () => {
     if (skins && skins.length) {
-      return skins.slice(paging.currentPage.start, paging.currentPage.limit).map(skin => (
+      return skins.slice(realStart, (realStart + realPageSize)).map(skin => (
         <Item
           text={skin.name}
           buttons={(
             <>
-              <Button onClick={() => makeCopy(skin)} content="Make a Copy" />
-              <Button onClick={() => setEditSkin(skin)} content="Edit" disabled={!skin.isEditable} />
-              <Button onClick={() => setSelectedSkin(skin)} content="Use Skin" />
-              <Button onClick={() => removeSkin(skin)} content="Delete" disabled={!skin.isEditable} />
+              {deleteConfirmSkin?.name === skin.name && (
+                <InRowDeleteConfirmation
+                  onCancel={() => setDeleteConfirmSkin(null)}
+                  onConfirm={() => {
+                    removeSkin(skin);
+                    setDeleteConfirmSkin(null);
+                  }}
+                />
+              )}
+              {deleteConfirmSkin?.name !== skin.name && (
+                <>
+                  <Button onClick={() => makeCopy(skin)} content="Make a Copy" />
+                  <Button onClick={() => setEditSkin(skin)} content="Edit" disabled={!skin.isEditable} />
+                  <Button onClick={() => setSelectedSkin(skin)} content="Use Skin" />
+                  <Button onClick={() => setDeleteConfirmSkin(skin)} content="Delete" disabled={!skin.isEditable} />
+                </>
+              )}
             </>
           )}
         />
@@ -145,7 +160,7 @@ function ThemeList({ resetControls, setControls }) {
 
   if (editSkin) {
     return (
-      <StyleEditor
+      <SkinDetail
         skin={editSkin}
         goBackToThemeList={goBackToThemeList}
         setControls={setControls}
@@ -154,28 +169,26 @@ function ThemeList({ resetControls, setControls }) {
     );
   }
 
-  const content = (
-    <>
-      <ListGroup style={{width: '100%'}}>
-        {skinRows()}
-      </ListGroup>
-      <SkinSaveAsModal
-        goBackToThemeList={goBackToThemeList}
-        handleHide={() => setIsSaveAsOpen(false)}
-        isOpen={isSaveAsOpen}
-        colors={copyFromColors}
-      />
-    </>
-  );
-
-  if (paging) {
+  if (skins?.length) {
     return (
-      <PagedContainer
-        paging={paging}
-        content={content}
-        clientNextPage={() => setPaging(nextPage(paging))}
-        clientPreviousPage={() => setPaging(previousPage(paging))}
-      />
+      <>
+        <ListGroup style={{ width: '100%' }}>
+          {skinRows()}
+        </ListGroup>
+        <SkinSaveAsModal
+          goBackToThemeList={goBackToThemeList}
+          handleHide={() => setIsSaveAsOpen(false)}
+          isOpen={isSaveAsOpen}
+          colors={copyFromColors}
+        />
+        <Paginator
+          disableRandom
+          onPageChange={(page) => setSelectedPage(page)}
+          selectedPage={selectedPage}
+          totalItems={skins.length}
+          pageSize={realPageSize}
+        />
+      </>
     );
   }
 

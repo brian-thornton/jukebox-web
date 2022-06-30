@@ -1,18 +1,17 @@
+import Card from 'react-bootstrap/Card';
 import React, { useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
-import { PropTypes } from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 import { Album as albumShape } from './shapes';
 import { coverArtUrl } from '../lib/librarian-client';
-import styles from './styles';
-import './TrackAlbum.css';
+import styles from './TrackAlbum.module.css';
 
 const propTypes = {
   album: albumShape.isRequired,
-  setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function TrackAlbum({ album, setCurrentAlbum }) {
+const TrackAlbum = ({ album }) => {
+  const navigate = useNavigate();
   const [coverArt, setCoverArt] = useState();
 
   const loadCoverArt = () => {
@@ -21,15 +20,18 @@ function TrackAlbum({ album, setCurrentAlbum }) {
 
   useEffect(() => loadCoverArt(), []);
 
-  if (coverArt) {
-    return (
-      <Card style={styles.albumCardStyleSmall} onClick={() => setCurrentAlbum(album)}>
-        <Card.Img style={{width: '50px', height: '50px'}} top src={coverArt} />
-      </Card>
-    );
-  }
-
-  return <></>;
+  return (
+    <>
+      {coverArt && (
+        <Card
+          className={styles.trackAlbumCard}
+          onClick={() => navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } })}
+        >
+          <Card.Img top src={coverArt} />
+        </Card>
+      )}
+    </>
+  );
 }
 
 TrackAlbum.propTypes = propTypes;

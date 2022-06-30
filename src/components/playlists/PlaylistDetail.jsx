@@ -1,8 +1,10 @@
-import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
+import { ArrowLeft, CaretRightFill, CaretDownFill, CaretUpFill, TrashFill, ListOl, Shuffle, Save, XLg } from 'react-bootstrap-icons';
 import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import { ListGroup } from 'react-bootstrap';
+import { Container, Row, ListGroup } from 'react-bootstrap';
+import { toast } from 'react-toastify';
 
+import Confirm from '../common/Confirm';
 import Paginator from '../common/Paginator';
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
 import {
@@ -15,34 +17,39 @@ import {
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import ContentWithControls from '../common/ContentWithControls';
-import Modal from '../common/Modal';
 import NoResults from '../common/NoResults';
-import PlaylistAddModal from './PlaylistAddModal';
 import PlayNowButton from '../PlayNowButton';
 import Item from '../common/Item';
+import { toastProps } from '../common/toast-helper';
+import AddNew from '../common/AddNew';
+import styles from './PlaylistDetail.module.css';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
 };
 
-function PlaylistDetail({ name, handleBackToPlaylists }) {
+const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const [selectedPlaylist, setSelectedPlaylist] = useState();
   let renderTracks = [];
+  const isScreenSmall = window.innerWidth < 700;
 
   useEffect(() => {
-    const itemHeight = 55;
+    const itemHeight = isScreenSmall ? 90 : 55;
     const viewPortHeight = Math.floor(window.innerHeight - 200);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
   const loadTracks = (playlistName) => {
     getPlaylist(playlistName).then((playlist) => {
+      setSelectedPlaylist(playlist);
+
       if (!playlist.tracks.length) {
         setIsEmpty(true);
       } else {
@@ -52,7 +59,7 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   };
 
   const runPlaylist = () => {
-    enqueueTracksTop(tracks);
+    enqueueTracksTop(tracks).then(() => toast.success("Playlist added to queue!", toastProps));
     play();
   };
 
@@ -122,20 +129,31 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
   }
 
   const handleDelete = () => {
-    setShowDeleteModal(true);
     deletePlaylist(name).then(() => {
+      setShowDeleteModal(false);
       handleBackToPlaylists();
     });
   };
 
   const controls = () => (
     <>
-      <ControlButton onClick={handleBackToPlaylists} text="Back to Playlists" />
-      <ControlButton onClick={runPlaylist} disabled={isEmpty} text="Run Playlist" />
-      <ControlButton onClick={enqueuePlaylist} disabled={isEmpty} text="Enqueue Playlist" />
-      <ControlButton onClick={shuffle} disabled={isEmpty} text="Shuffle Playlist" />
-      <ControlButton onClick={() => setIsSaveAsOpen(true)} disabled={isEmpty} text="Save As..." />
-      <ControlButton onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />
+      <ControlButton disabled={showDeleteModal} onClick={handleBackToPlaylists} text="Back to Playlists" />
+      <ControlButton disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run Playlist" />
+      <ControlButton disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue Playlist" />
+      <ControlButton disabled={showDeleteModal || isEmpty} onClick={shuffle} text="Shuffle Playlist" />
+      <ControlButton disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} text="Save As..." />
+      <ControlButton disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />
+    </>
+  );
+
+  const smallControls = () => (
+    <>
+      <Button disabled={showDeleteModal} onClick={handleBackToPlaylists} icon={<ArrowLeft />} />
+      <Button disabled={showDeleteModal || isEmpty} onClick={runPlaylist} icon={<CaretRightFill />} />
+      <Button disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} icon={<ListOl />} />
+      <Button disabled={showDeleteModal || isEmpty} onClick={shuffle} icon={<Shuffle />} />
+      <Button disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} icon={<Save />} />
+      <Button disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} icon={<XLg />} />
     </>
   );
 
@@ -144,19 +162,14 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
       return <NoResults title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
     }
 
-    const playlistTracks = (
-      <ListGroup style={{ width: '100%' }}>
-        {renderTracks}
-      </ListGroup>
-    );
-
     return (
       <>
-        {playlistTracks}
+        <ListGroup>
+          {renderTracks}
+        </ListGroup>
         <Paginator
           disableRandom
           onPageChange={(page) => setSelectedPage(page)}
-          style={{ marginTop: '100px' }}
           selectedPage={selectedPage}
           totalItems={tracks.length}
           pageSize={realPageSize}
@@ -165,26 +178,64 @@ function PlaylistDetail({ name, handleBackToPlaylists }) {
     );
   };
 
+  const confirm = (
+    <Confirm
+      onCancel={() => setShowDeleteModal(false)}
+      onConfirm={handleDelete}
+      title="Are you sure that you want to delete the playlist?"
+    />
+  );
+
   return (
     <>
-      <ContentWithControls
-        controls={controls()}
-        content={content()}
-      />
-      <PlaylistAddModal
-        isOpen={isSaveAsOpen}
-        handleClose={() => setIsSaveAsOpen(false)}
-        handleSave={handleSave}
-        existingPlaylistName={name}
-      />
-      <Modal
-        isOpen={showDeleteModal}
-        onCancel={() => setShowDeleteModal(false)}
-        onConfirm={handleDelete}
-        title="Delete Playlist?"
-        body="Are you sure that you want to delete the playlist?"
-        confirmText="Yes"
-      />
+      {!showDeleteModal && (
+        <>
+          {!isScreenSmall && (
+            <ContentWithControls
+              controls={controls()}
+              content={content()}
+            />
+          )}
+          {isScreenSmall && (
+            <Container style={{ marginBottom: '60px' }}>
+              <Row>
+                {smallControls()}
+              </Row>
+              <Row>
+                <ListGroup>
+                  {renderTracks}
+                </ListGroup>
+              </Row>
+              <Row className={styles.detailRow}>
+                <Paginator
+                  disableRandom
+                  onPageChange={(page) => setSelectedPage(page)}
+                  selectedPage={selectedPage}
+                  totalItems={tracks.length}
+                  pageSize={realPageSize}
+                />
+              </Row>
+            </Container>
+          )}
+          {isSaveAsOpen && (
+            <AddNew
+              onCancel={() => setIsSaveAsOpen(false)}
+              onConfirm={() => handleSave}
+            />
+          )}
+        </>
+      )}
+      {showDeleteModal && (
+        <>
+          {!isScreenSmall && (
+            <ContentWithControls
+              controls={controls()}
+              content={confirm}
+            />
+          )}
+          {isScreenSmall && confirm}
+        </>
+      )}
     </>
   );
 }

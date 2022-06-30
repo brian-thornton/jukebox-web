@@ -1,11 +1,9 @@
-import React, { useState, useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import {
-  Container,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import React, { useState, useContext } from 'react';
+import Row from 'react-bootstrap/Row';
+import { useLocation } from 'react-router-dom';
 
 import { Album } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
@@ -21,10 +19,9 @@ const propTypes = {
   clearCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function AlbumDetail({ clearCurrentAlbum }) {
+const AlbumDetail = ({ clearCurrentAlbum }) => {
   const { state } = useLocation();
   const album = state.currentAlbum;
-
   const [tracks, setTracks] = useState([]);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);

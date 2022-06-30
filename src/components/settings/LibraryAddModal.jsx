@@ -1,6 +1,9 @@
-import { Col, Form, FormControl, Row } from 'react-bootstrap';
-import React, { useContext, useEffect, useState } from 'react';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import FormControl from 'react-bootstrap/FormControl';
 import { PropTypes } from 'prop-types';
+import React, { useContext, useEffect, useState } from 'react';
+import Row from 'react-bootstrap/Row';
 
 import Button from '../Button';
 import Modal from '../common/Modal';
@@ -14,11 +17,11 @@ const propTypes = {
   handleSave: PropTypes.func.isRequired,
 };
 
-function LibraryAddModal({
+const LibraryAddModal = ({
   isOpen,
   handleHide,
   handleSave,
-}) {
+}) => {
   const settings = useContext(SettingsContext);
   const [selectedCategory, setSelectedCategory] = useState(false);
   const [categories, setCategories] = useState(settings.categories);

@@ -10,20 +10,18 @@ const propTypes = {
   handleSave: PropTypes.func.isRequired,
 };
 
-function NewSkinModal({
+const NewSkinModal = ({
   isOpen,
   handleHide,
   handleSave,
-}) {
-  return (
-    <Modal
-      isOpen={isOpen}
-      onCancel={handleHide}
-      onConfirm={handleSave}
-      body={<NameInput />}
-    />
-  );
-}
+}) => (
+  <Modal
+    isOpen={isOpen}
+    onCancel={handleHide}
+    onConfirm={handleSave}
+    body={<NameInput />}
+  />
+);
 
 NewSkinModal.propTypes = propTypes;
 

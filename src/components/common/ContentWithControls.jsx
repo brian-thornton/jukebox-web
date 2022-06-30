@@ -1,8 +1,11 @@
-import React from 'react';
+import Alert from 'react-bootstrap/Alert';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import {
-  Alert, Container, Row, Col,
-} from 'react-bootstrap';
+import React from 'react';
+import Row from 'react-bootstrap/Row';
+
+import styles from './ContentWithControls.module.css';
 
 const propTypes = {
   alertText: PropTypes.string,
@@ -10,25 +13,23 @@ const propTypes = {
   controls: PropTypes.node.isRequired,
 };
 
-function ContentWithControls({ controls, content, alertText }) {
-  return (
-    <Container fluid style={{ marginTop: '60px' }}>
-      <Row>
-        <Col lg={12} xl={12}>
-          {alertText && <Alert variant="primary">{alertText}</Alert>}
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={2} xl={2}>
-          {controls}
-        </Col>
-        <Col lg={10} xl={10}>
-          {content}
-        </Col>
-      </Row>
-    </Container>
-  );
-}
+const ContentWithControls = ({ controls, content, alertText }) => (
+  <Container fluid className={styles.contentContainer}>
+    <Row>
+      <Col lg={12} xl={12}>
+        {alertText && <Alert variant="primary">{alertText}</Alert>}
+      </Col>
+    </Row>
+    <Row>
+      <Col lg={2} xl={2}>
+        {controls}
+      </Col>
+      <Col lg={10} xl={10}>
+        {content}
+      </Col>
+    </Row>
+  </Container>
+);
 
 ContentWithControls.defaultProps = {
   alertText: '',

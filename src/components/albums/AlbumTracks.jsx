@@ -1,33 +1,26 @@
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useEffect, useState } from 'react';
-import {
-  Container,
-  Col,
-  Row,
-} from 'react-bootstrap';
-
-import Item from '../common/Item';
-import { Paging, Track } from '../shapes';
-import DownloadButton from '../DownloadButton';
-import PlayNowButton from '../PlayNowButton';
-import EnqueueButton from '../EnqueueButton';
-import Paginator from '../common/Paginator';
+import Row from 'react-bootstrap/Row';
 
 import AddToPlaylistButton from '../common/AddToPlaylistButton';
+import DownloadButton from '../DownloadButton';
+import EnqueueButton from '../EnqueueButton';
+import Item from '../common/Item';
+import Paginator from '../common/Paginator';
+import PlayNowButton from '../PlayNowButton';
+import { Track } from '../shapes';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
-  paging: Paging.isRequired,
   previousPage: PropTypes.func.isRequired,
   tracks: PropTypes.arrayOf(Track),
 };
 
-function TrackList({
-  tracks,
-}) {
+const TrackList = ({ tracks }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-
   const isScreenSmall = window.innerWidth < 700;
   let content = [];
 
@@ -56,15 +49,42 @@ function TrackList({
     <Container fluid>
       <Row>
         <Col lg="12" xl="12" md="12" sm="12">
-          <Row>{content}</Row>
+          <Row className="d-none d-md-block d-lg-block">
+            {tracks.slice(realStart, (realStart + realPageSize)).map(track => (
+              <Item
+                text={track.name}
+                buttons={(
+                  <>
+                    <PlayNowButton track={track} />
+                    <EnqueueButton track={track} />
+                    <AddToPlaylistButton track={track} />
+                    <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+                  </>
+                )}
+              />
+            ))}
+          </Row>
+          <Row className="d-block d-sm-none">
+            {tracks.map(track => (
+              <Item
+                text={track.name}
+                buttons={(
+                  <>
+                    <PlayNowButton track={track} />
+                    <EnqueueButton track={track} />
+                    <AddToPlaylistButton track={track} />
+                  </>
+                )}
+              />
+            ))}
+          </Row>
         </Col>
       </Row>
-      <Row>
+      <Row className="d-none d-md-block d-lg-block" style={{ paddingBottom: '70px' }}>
         <Col lg="12" xl="12" md="12" sm="12">
           <Paginator
             disableRandom
             onPageChange={(page) => setSelectedPage(page)}
-            style={{ marginTop: '100px' }}
             selectedPage={selectedPage}
             totalItems={tracks.length}
             pageSize={realPageSize}

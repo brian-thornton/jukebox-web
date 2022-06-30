@@ -10,11 +10,11 @@ const propTypes = {
   handleHide: PropTypes.func.isRequired,
 };
 
-function LibraryDiscoverModal({
+const LibraryDiscoverModal = ({
   isOpen,
   handleHide,
   handleSave,
-}) {
+}) => {
   return (
     <Modal
       isOpen={isOpen}

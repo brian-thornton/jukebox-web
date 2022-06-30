@@ -1,67 +1,32 @@
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import { PropTypes } from 'prop-types';
-import React, { useState, useContext } from 'react';
-import {
-  Navbar,
-  Nav,
-} from 'react-bootstrap';
+import React, { useContext } from 'react';
 import { Funnel, FunnelFill } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
-import FilterModal from './FilterModal';
-import NavigationButtons from './NavigationButtons';
-
 import './Jukebox.css';
 import { SettingsContext } from './SettingsProvider';
 
 const propTypes = {
   search: PropTypes.string,
-  setCurrentAlbum: PropTypes.string.isRequired,
-  setMode: PropTypes.func.isRequired,
   setSearch: PropTypes.func.isRequired,
   setTempSearch: PropTypes.func.isRequired,
 };
 
-function JukeboxHeader({
+const JukeboxHeader = ({
   search,
-  setCategory,
   setSearch,
-  setMode,
-  setCurrentAlbum,
-  setSelectedLibraries,
   selectedLibraries,
-}) {
+  lastModule,
+}) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const navigate = useNavigate();
 
-  const searchResults = () => {
-    if (search && !isScreenSmall) {
-      return (
-        <div className="search-result">
-          {`Search Results: ${search}`}
-        </div>
-      );
-    }
-
-    return <></>;
-  };
-
-  const brand = () => {
-    if (isScreenSmall) {
-      return <></>;
-    }
-
-    return <Navbar.Brand href="#home" style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}>{settings.preferences.name}</Navbar.Brand>;
-  };
-
-  const handleFilterModalClose = () => {
-    setIsFilterOpen(false);
-  }
-
   const searchButtons = () => {
-
     const searchButton = (
       <Button
         onClick={() => {
@@ -76,7 +41,15 @@ function JukeboxHeader({
       return (
         <>
           <Button
-            onClick={() => setSearch('')}
+            onClick={() => {
+              setSearch('');
+              if (lastModule === 'Albums') {
+                navigate('/albums');
+              } else if (lastModule === 'Tracks') {
+                navigate('/tracks');
+              }
+
+            }}
             content="Clear"
           />
           {!search && (<Button
@@ -91,35 +64,40 @@ function JukeboxHeader({
     return searchButton;
   };
 
-
   return (
-    <>
-      <Navbar fixed="top" collapseOnSelect variant="dark" style={{ background: settings.styles.headerColor }}>
-        {brand()}
-        <Nav className="mr-auto">
-          <NavigationButtons
-            setCategory={setCategory}
-            isScreenSmall={isScreenSmall}
-            setMode={setMode}
-            setCurrentAlbum={setCurrentAlbum}
-          />
-        </Nav>
-        {searchResults()}
-        {searchButtons()}
-        <Button
-          onClick={() => setIsFilterOpen(true)}
-          content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
-        />
-        {isFilterOpen && (
-          <FilterModal
-            selectedLibraries={selectedLibraries}
-            setSelectedLibraries={setSelectedLibraries}
-            handleClose={handleFilterModalClose}
-            isOpen={true}
-          />
-        )}
-      </Navbar>
-    </>
+    <Navbar style={{ background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Container fluid>
+        <Navbar.Brand
+          style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}
+          href="#home">{settings.preferences.name}
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/albums">Albums</Nav.Link>
+            {settings.categories.map((c) => {
+              return <>{c !== 'Albums' && <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href={`/albums/categories/${c.replace(' ', '%20')}`}>{c}</Nav.Link>}</>;
+            })}
+            <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/tracks">Tracks</Nav.Link>
+            <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/playlists">Playlists</Nav.Link>
+            <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/queue">Queue</Nav.Link>
+            <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/settings">Settings</Nav.Link>
+            {isScreenSmall && <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/filters">Filters</Nav.Link>}
+            {isScreenSmall && <Nav.Link style={{ fontFamily: settings.styles.headerFont }} href="/search">Search</Nav.Link>}
+          </Nav>
+          <Nav className="ml-auto">
+            {search && !isScreenSmall && <div className="search-result">{`Search Results: ${search}`}</div>}
+            {!isScreenSmall && searchButtons()}
+            {!isScreenSmall && (
+              <Button
+                onClick={() => navigate('/filters', { state: { selectedLibraries } })}
+                content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
+              />
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 

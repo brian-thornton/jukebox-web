@@ -1,49 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import {
-  Container,
-  Col,
-  Row,
-} from 'react-bootstrap';
-
-import { getAlbums, searchAlbums } from '../../lib/librarian-client';
-import { getStatus } from '../../lib/status-client';
+import React, { useState, useEffect } from 'react';
+import Row from 'react-bootstrap/Row';
+import { useLocation } from 'react-router-dom';
 
 import Album from './Album';
+import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
-import './AlbumList.scss';
+import styles from './AlbumList.module.css';
 
 const propTypes = {
-  category: PropTypes.string,
   search: PropTypes.string,
-  setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
+const AlbumList = ({ search, selectedLibraries }) => {
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadComplete, setLoadComplete] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [lastSearch, setLastSearch] = useState('');
-  const [status, setStatus] = useState();
-  const [content, setContent] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const { state } = useLocation();
+  let category = state?.category;
+
+  const { pathname } = window.location;
+  if (!category && pathname.includes('/categories')) {
+    category = pathname.slice(window.location.pathname.lastIndexOf("/") + 1 , pathname.length);
+  }
 
   useEffect(() => {
-    getStatus().then(data => setStatus(data));
-
     const albumsPerRow = Math.floor(window.innerWidth / 225);
     const numberOfRows = Math.floor((window.innerHeight - 200) / 200);
-    const s = albumsPerRow * numberOfRows;
-    setRealPageSize(s);
+    setRealPageSize(albumsPerRow * numberOfRows);
   }, []);
-
-  useEffect(() => {
-    setContent(albums.map(album => <Album album={album} setCurrentAlbum={setCurrentAlbum} />));
-  }, [albums]);
 
   const findAlbums = async (start, limit) => {
     searchAlbums(search, start, limit).then((data) => {
@@ -57,7 +50,6 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
       window.scrollTo(0, 0);
       setIsLoading(false);
     }).catch((e) => {
-      console.log('Bad search');
       console.log(e);
     });
   };
@@ -92,6 +84,7 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
   }, [category, realPageSize, selectedPage, selectedLibraries]);
 
   useEffect(() => {
+    setIsLoading(true);
     if (!search) {
       if (albums.length) {
         window.location.reload();
@@ -105,21 +98,28 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
     setSelectedPage(page);
   }
 
-  const noResults = search && !albums.length;
+  const noResults = search && !albums.length && !isLoading;
 
   return (
     <>
+      {loadComplete && totalAlbums === 0 && (
+        <div className={styles.noAlbums}>
+          <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />
+        </div>
+      )}
       {noResults && (
-        <div className="no-albums">
+        <div className={styles.noAlbums}>
           <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." />
         </div>
       )}
       {isLoading && <Loading />}
       {!isLoading && !noResults && (
-        <Container fluid style={{ marginTop: '60px' }}>
+        <Container fluid className={styles.albumListContainer}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{content}</Row>
+              <Row className={styles.albumRow}>
+                {albums.map(album => <Album album={album} />)}
+              </Row>
             </Col>
           </Row>
           <Row>
@@ -127,7 +127,6 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
               {(totalAlbums > realPageSize) && (
                 <Paginator
                   onPageChange={onPageChange}
-                  style={{ marginTop: '100px' }}
                   selectedPage={selectedPage}
                   totalItems={totalAlbums}
                   pageSize={realPageSize}
@@ -139,16 +138,6 @@ function AlbumList({ category, search, setCurrentAlbum, selectedLibraries }) {
       )}
     </>
   );
-
-  if (loadComplete && totalAlbums === 0) {
-    return (
-      <div className="no-albums">
-        <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />
-      </div>
-    );
-  }
-
-  return <></>;
 }
 
 AlbumList.propTypes = propTypes;

@@ -1,119 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
+import React, { useState, useEffect } from 'react';
+import Row from 'react-bootstrap/Row';
 
+import Button from '../Button';
 import Item from '../common/Item';
 import Modal from '../common/Modal';
 import Paginator from '../common/Paginator';
+import { supportedFonts } from '../../lib/styleHelper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 
-function FontModal({ isOpen, handleClose, editFont }) {
+const FontModal = ({ editFont, onUpdateFont }) => {
   const [selectedFont, setSelectedFont] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(10);
+  const [realPageSize, setRealPageSize] = useState();
   const [realStart, setRealStart] = useState(1);
+  const availableFonts = supportedFonts.google.families;
+  const isScreenSmall = window.innerWidth < 700;
 
   useEffect(() => {
     setRealStart(selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize));
-  }, [realPageSize]);
+  }, [realPageSize, selectedPage]);
 
   useEffect(() => {
-    setRealStart(selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize));
-  }, [selectedPage]);
-
-  const availableFonts = [
-    'Azeret Mono',
-    'Audiowide',
-    'Black Ops One',
-    'Macondo',
-    'Roboto Condensed',
-    'Oswald',
-    'Titillium Web',
-    'Bebas Neue',
-    'Anton',
-    'Josefin Sans',
-    'Lobster',
-    'Prompt',
-    'Cairo',
-    'Teko',
-    'Architects Daughter',
-    'Indie Flower',
-    'Balsamiq Sans',
-    'Staatliches',
-    'Patrick Hand',
-    'Permanent Marker',
-    'Alfa Slab One',
-    'Play',
-    'Amatic SC',
-    'Cookie',
-    'Fredoka One',
-    'Righteous',
-    'Bangers',
-    'Cinzel',
-    'Courgette',
-    'Luckiest Guy',
-    'Jost',
-    'Russo One',
-    'Orbitron',
-    'Press Start 2P',
-    'Monoton',
-    'Ultra',
-    'Rock Salt',
-    'Carter One',
-    'Unica One',
-    'Julius Sans One',
-  ];
+    const itemHeight = isScreenSmall ? 90 : 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 220);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+  }, []);
 
   return (
-    <Modal
-      size="lg"
-      isOpen={isOpen}
-      confirmText={"Apply Font"}
-      onConfirm={() => {
-        handleClose(selectedFont);
-        setSelectedFont(null);
-      }}
-      title="Select Font"
-      body={(
-        <Container fluid>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row>{availableFonts.slice(realStart, (realStart + realPageSize)).map((f) => {
-                const workingFont = selectedFont || editFont;
+    <Container fluid>
+      <Row>
+        <Col lg="12" xl="12" md="12" sm="12">
+          <Row>{availableFonts.slice(realStart, (realStart + realPageSize)).map((f) => {
+            const workingFont = selectedFont || editFont;
 
-                return (
-                  <Item
-                    checked={workingFont === f}
-                    includeCheckbox
-                    onCheck={() => {
-                      setSelectedFont(f);
-                    }}
-                    text={<div style={{ fontFamily: f }}>{f}</div>}
-                  />
-                );
-              }
-              )}</Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Paginator
-                disableRandom
-                onPageChange={(page) => setSelectedPage(page)}
-                style={{ marginTop: '100px' }}
-                selectedPage={selectedPage}
-                totalItems={availableFonts.length}
-                pageSize={realPageSize}
+            return (
+              <Item
+                checked={workingFont === f}
+                includeCheckbox
+                onCheck={() => {
+                  onUpdateFont(f);
+                }}
+                text={<div style={{ marginTop: '5px', float: 'right', fontFamily: f }}>{f}</div>}
               />
-            </Col>
-          </Row>
-        </Container>
-      )}
-    />
+            );
+          }
+          )}</Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col lg="12" xl="12" md="12" sm="12">
+          <Paginator
+            disableRandom
+            onPageChange={(page) => setSelectedPage(page)}
+            selectedPage={selectedPage}
+            totalItems={availableFonts.length}
+            pageSize={realPageSize}
+          />
+        </Col>
+      </Row>
+    </Container>
   );
 }
 

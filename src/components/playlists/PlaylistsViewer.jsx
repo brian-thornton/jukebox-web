@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import { Row, Container } from 'react-bootstrap';
+import React, { useState, useEffect, useContext } from 'react';
+import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Trash } from 'react-bootstrap-icons';
+import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
@@ -11,20 +12,19 @@ import { getStatus, updateStatus } from '../../lib/status-client';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import PlaylistDetail from './PlaylistDetail';
-import PlaylistAddModal from './PlaylistAddModal';
 import ContentWithControls from '../common/ContentWithControls';
 import Item from '../common/Item';
 import { Tracks } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
+import styles from './PlaylistsViewer.module.css';
+import AddNew from '../common/AddNew';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
   tracks: Tracks.isRequired,
 };
 
-function PlaylistsViewer({
-  currentPlaylist,
-}) {
+const PlaylistsViewer = ({ currentPlaylist }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const tracks = state?.tracks;
@@ -77,6 +77,7 @@ function PlaylistsViewer({
   const handleClose = (data) => {
     if ((typeof data) === 'string') {
       add({
+        id: uuidv4(),
         name: data,
         tracks: [],
       }).then(() => {
@@ -115,12 +116,6 @@ function PlaylistsViewer({
           content="Edit"
         />
       ));
-      playlistActions.push((
-        <Button
-          icon={<Trash />}
-          onClick={() => selectPlaylist(playlistName)}
-        />
-      ));
     }
 
     return playlistActions;
@@ -135,11 +130,12 @@ function PlaylistsViewer({
   ));
 
   const controls = () => {
-    if (tracks?.length) {
-      return <></>;
-    }
-
-    return <ControlButton text="Add" onClick={handleShow} />;
+    return (
+      <>
+        <ControlButton text="Back" onClick={() => navigate(-1)} />
+        <ControlButton text="Add" onClick={handleShow} />
+      </>
+    );
   };
 
   const content = () => {
@@ -148,30 +144,31 @@ function PlaylistsViewer({
     }
 
     return (
-      <Container id="albums" fluid style={playlistsMargin}>
-        <Row>
-          {renderPlaylists}
-        </Row>
-        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Paginator
-            onPageChange={(page) => setSelectedPage(page)}
-            style={{ marginTop: '100px' }}
-            selectedPage={selectedPage}
-            totalItems={playlists.length}
-            pageSize={realPageSize}
-            disableRandom
-          />
-        </Row>
-      </Container >
+      <>
+        {show && <AddNew onCancel={() => setShow(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
+        {!show && (
+          <Container id="albums" fluid style={playlistsMargin}>
+            <Row>
+              {renderPlaylists}
+            </Row>
+            <Row className={styles.playlistsRow}>
+              <Paginator
+                onPageChange={(page) => setSelectedPage(page)}
+                selectedPage={selectedPage}
+                totalItems={playlists.length}
+                pageSize={realPageSize}
+                disableRandom
+              />
+            </Row>
+          </Container>
+        )}
+      </>
     );
   };
 
   if (!currentPlaylist.name && !name) {
     return (
-      <>
-        <ContentWithControls content={content()} controls={controls()} />
-        <PlaylistAddModal isOpen={show} handleClose={() => setShow(false)} handleSave={() => handleClose(document.getElementById('name').value)} />
-      </>
+      <ContentWithControls content={content()} controls={controls()} />
     );
   }
   return (

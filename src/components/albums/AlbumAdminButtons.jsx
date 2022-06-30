@@ -1,8 +1,6 @@
+import Col from 'react-bootstrap/Col';
 import React, { useEffect, useState, useContext } from 'react';
-import {
-  Row,
-  Col,
-} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
 import ControlButton from '../common/ControlButton';
 import CoverArtSearchModal from './CoverArtSearchModal';
@@ -15,10 +13,11 @@ const propTypes = {
   album: Album.isRequired,
 };
 
-function AlbumAdminButtons({ album }) {
+const AlbumAdminButtons = ({ album }) => {
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState('');
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
+  const isScreenSmall = window.innerWidth < 700;
   const saveCoverArtToLibrary = () => {
     saveCoverArt({ album, url: coverArt });
   }
@@ -33,22 +32,18 @@ function AlbumAdminButtons({ album }) {
     </Col>
   );
 
-  const adminButtons = () => {
-    if (settings.features.admin) {
-      return (
-          <Row>
-            {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
-            {albumButton(() => removeCoverArt(album), 'Remove Cover')}
-          </Row>
-      );
-    }
-
-    return <></>;
-  };
-
   return (
     <>
-      {adminButtons()}
+      {settings.features.admin && (
+        <>
+          {!isScreenSmall && (
+            <Row>
+              {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
+              {albumButton(() => removeCoverArt(album), 'Remove Cover')}
+            </Row>
+          )}
+        </>
+      )}
       <CoverArtSearchModal
         album={album}
         isOpen={isCustomSearchOpen}

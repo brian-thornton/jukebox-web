@@ -1,16 +1,15 @@
+import Col from 'react-bootstrap/Col';
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { Row, Col } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-
+import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
 import { Tracks } from '../shapes';
 import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
-
 import styles from './AlbumButtons.module.css';
 
 const propTypes = {
@@ -18,9 +17,8 @@ const propTypes = {
   tracks: Tracks.isRequired,
 };
 
-function AlbumButtons({
-  tracks,
-}) {
+const AlbumButtons = ({ tracks }) => {
+  const { state } = useLocation();
   const navigate = useNavigate();
   const playAlbum = () => {
     enqueueTracksTop(tracks);
@@ -33,10 +31,19 @@ function AlbumButtons({
     </Col>
   );
 
+  const backText = () => {
+    let text = 'Back to Albums';
+    if (state?.prevUrl.includes('tracks')) {
+      text = 'Back to Tracks';
+    }
+
+    return text;
+  }
+
   return (
     <>
       <Row>
-        {albumButton(() => navigate(-1), 'Back to Albums')}
+        {albumButton(() => navigate(-1), backText())}
         {albumButton(playAlbum, 'Play Album')}
       </Row>
       <Row>

@@ -9,7 +9,7 @@ const propTypes = {
   track: Track.isRequired,
 };
 
-function PlayNowButton({ track }) {
+const PlayNowButton = ({ track }) => {
   const playNow = () => {
     enqueueTop(track);
     next();

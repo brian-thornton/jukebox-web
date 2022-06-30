@@ -5,30 +5,25 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { SettingsContext } from '../layout/SettingsProvider';
+import styles from './Loading.module.css';
 
 const Loading = () => {
   const settings = useContext(SettingsContext);
 
-  const searchInProgressStyle = {
-    background: 'transparent',
-    minHeight: '200px',
-    height: '100%',
-    borderColor: 'black',
+  const loadingInProgressSkin = {
     color: settings.styles.fontColor,
-    swidth: '18rem',
   };
 
-
   return (
-    <Card style={searchInProgressStyle}>
+    <Card className={styles.loadingInProgress} style={loadingInProgressSkin}>
       <Card.Body>
-        <Container style={{minHeight: '100%', height: '100%'}}>
-          <Row style={{ marginTop: '300px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Container className={styles.loadingContainer}>
+          <Row className={styles.animationRow}>
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="secondary" />
           </Row>
-          <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Row className={styles.textRow}>
             Loading...
           </Row>
         </Container>

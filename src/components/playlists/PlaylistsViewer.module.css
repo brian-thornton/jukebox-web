@@ -1,0 +1,5 @@
+.playlistsRow {
+  align-items: center !important;
+  display: flex !important;
+  justify-content: center !important;
+}

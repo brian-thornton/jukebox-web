@@ -16,6 +16,7 @@
     "react-color": "^2.19.3",
     "react-dom": "^16.14.0",
     "react-keyboard-event-handler": "^1.5.4",
+    "react-native-get-random-values": "^1.8.0",
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^3.4.4",
@@ -24,10 +25,11 @@
     "request-promise": "^4.2.6",
     "sass": "^1.52.2",
     "stream-to-blob": "^2.0.1",
+    "uuid": "^8.3.2",
     "webfontloader": "^1.6.28"
   },
   "scripts": {
-    "start": "concurrently \"react-scripts start\" & node ../jukebox-service/index.js",
+    "start": "node check-version && concurrently \"react-scripts start\" & node ../jukebox-service/index.js",
     "server": "node ../jukebox-service/index.js",
     "client": "react-scripts start",
     "build": "react-scripts build",

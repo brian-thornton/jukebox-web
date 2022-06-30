@@ -11,7 +11,7 @@ const propTypes = {
   track: Track.isRequired,
 };
 
-function DownloadButton({ track }) {
+const DownloadButton = ({ track }) => {
   const settings = useContext(SettingsContext);
   const handleDownload = () => {
     downloadTrack(track).then((response) => {

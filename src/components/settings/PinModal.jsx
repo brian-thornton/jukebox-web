@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
+import React, { useState, useEffect, useContext } from 'react';
+import Row from 'react-bootstrap/Row';
 
 import Button from '../Button';
 import Modal from '../common/Modal';
@@ -11,12 +12,12 @@ const propTypes = {
   handleClose: PropTypes.func.isRequired,
 };
 
-function PinModal({ isOpen, handleClose }) {
+const PinModal = ({ isOpen, handleClose }) => {
   const settings = useContext(SettingsContext);
   const [pin, setPin] = useState('');
 
   useEffect(() => {
-    if (pin === settings.pin) {
+    if (pin === settings.preferences.pin) {
       handleClose(true);
     }
   }, [pin]);

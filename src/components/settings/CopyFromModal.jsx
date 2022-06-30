@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Form } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
 import { PropTypes } from 'prop-types';
+import React, { useState } from 'react';
 
 import Modal from '../common/Modal';
 import { Colors } from '../shapes';
@@ -12,12 +12,12 @@ const propTypes = {
   handleCopyColor: PropTypes.func.isRequired,
 };
 
-function CopyFromModal({
+const CopyFromModal = ({
   isOpen,
   handleHide,
   colors,
   handleCopyColor,
-}) {
+}) => {
   const [copiedColor, setCopiedColor] = useState();
 
   return (

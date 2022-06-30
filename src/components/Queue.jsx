@@ -1,13 +1,13 @@
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import { XLg } from 'react-bootstrap-icons';
 import { TrashFill } from 'react-bootstrap-icons';
 import React, { useEffect, useState } from 'react';
+import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
-import {
-  Container,
-  Col,
-  Row,
-} from 'react-bootstrap';
 
 import Button from './Button';
+import Confirm from './common/Confirm';
 import ControlButton from './common/ControlButton';
 import {
   clearQueue,
@@ -20,6 +20,7 @@ import PlayNowButton from './PlayNowButton';
 import Item from './common/Item';
 import NoResults from './common/NoResults';
 import Paginator from './common/Paginator';
+import styles from './Queue.module.css';
 
 const Queue = () => {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ const Queue = () => {
   const [realPageSize, setRealPageSize] = useState();
   const [isEmpty, setIsEmpty] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
+  const [clearConfirm, setClearConfirm] = useState(false);
+  const isScreenSmall = window.innerWidth < 700;
   let renderTracks = [];
 
   const loadQueue = () => {
@@ -47,12 +50,20 @@ const Queue = () => {
   const clear = () => clearQueue().then(loadQueue());
 
   useEffect(() => {
-    const numberOfTracks = Math.floor((window.innerHeight - 200) / 50);
+    const numberOfTracks = Math.floor((window.innerHeight - 200) / 55);
     setRealPageSize(numberOfTracks);
   }, []);
 
   useEffect(loadQueue, [selectedPage]);
   useEffect(loadQueue, [realPageSize]);
+
+  const confirm = (
+    <Confirm
+      text="Are you sure you want to clear all tracks in the queue?"
+      onConfirm={clear}
+      onCancel={() => setClearConfirm(false)}
+    />
+  );
 
   const content = () => {
     if (isEmpty) {
@@ -60,25 +71,30 @@ const Queue = () => {
     }
 
     return (
-      <Container fluid>
-        <Row>
-          <Col lg="12" xl="12" md="12" sm="12">
-            <Row>{renderTracks}</Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg="12" xl="12" md="12" sm="12">
-            <Paginator
-              disableRandom
-              onPageChange={(page) => setSelectedPage(page)}
-              style={{ marginTop: '100px' }}
-              selectedPage={selectedPage}
-              totalItems={totalTracks}
-              pageSize={realPageSize}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <>
+        {!clearConfirm && (
+          <Container fluid>
+            <Row>
+              <Col lg="12" xl="12" md="12" sm="12">
+                <Row>{renderTracks}</Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col lg="12" xl="12" md="12" sm="12">
+                <Paginator
+                  disableRandom
+                  onPageChange={(page) => setSelectedPage(page)}
+                  className={styles.queue}
+                  selectedPage={selectedPage}
+                  totalItems={totalTracks}
+                  pageSize={realPageSize}
+                />
+              </Col>
+            </Row>
+          </Container>
+        )}
+        {clearConfirm && confirm}
+      </>
     )
   };
 
@@ -109,15 +125,33 @@ const Queue = () => {
 
   const controls = () => (
     <>
-      <ControlButton onClick={clear} disabled={isEmpty} text="Clear Queue" />
-      <ControlButton onClick={() => shuffle()} disabled={isEmpty} text="Shuffle Queue" />
+      <ControlButton onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" />
+      <ControlButton onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" />
       <ControlButton onClick={() => {
         navigate('/playlists', { state: { tracks } })
-      }} disabled={isEmpty} text="Save to Playlist" />
+      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" />
     </>
   );
 
-  return <ContentWithControls controls={controls()} content={content()} />;
+  return (
+    <>
+      {!isScreenSmall && <ContentWithControls controls={controls()} content={content()} />}
+      {isScreenSmall && (
+        <>
+          <Container>
+            {!clearConfirm && (
+              <Row>
+                <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
+              </Row>
+            )}
+            <Row>
+              {content()}
+            </Row>
+          </Container>
+        </>
+      )}
+    </>
+  );
 }
 
 export default Queue;

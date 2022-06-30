@@ -12,16 +12,14 @@ const propTypes = {
   track: Track.isRequired,
 };
 
-function EnqueueButton({ track }) {
-  return (
-    <Button
-      onClick={() => {
-        enqueue(track);
-        toast.success("Added to queue!", toastProps);
-      }}
-      content={<ListOl />} />
-  );
-}
+const EnqueueButton = ({ track }) => (
+  <Button
+    onClick={() => {
+      enqueue(track);
+      toast.success("Added to queue!", toastProps);
+    }}
+    content={<ListOl />} />
+);
 
 EnqueueButton.propTypes = propTypes;
 

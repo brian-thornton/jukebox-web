@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import FormControl from 'react-bootstrap/FormControl';
+import InputGroup from 'react-bootstrap/InputGroup';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { PropTypes } from 'prop-types';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import Row from 'react-bootstrap/Row';
+import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
+import styles from './Search.module.css';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 
-function Search({
-  handleClose, setIsSearchOpen, setSearchText, searchText = 'Enter Search',
-}) {
+const Search = ({
+  setIsSearchOpen, setSearchText, searchText = 'Enter Search',
+}) => {
   const navigate = useNavigate();
   const isScreenSmall = window.innerWidth < 700;
   const [localSearch, setLocalSearch] = useState('');
@@ -41,42 +46,67 @@ function Search({
             setLocalSearch(`${localSearch.substring(0, localSearch.length - 1)}`);
           } else if (key === 'enter') {
             setSearchText(localSearch);
-            setIsSearchOpen(false);
+            navigate('/albums');
           } else {
             setLocalSearch(`${localSearch}${key}`);
           }
         }}
       />
 
-      <Container fluid style={{ marginTop: '60px' }}>
-        <div style={{ color: 'white', fontSize: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{localSearch || searchText}</div>
-        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {inputButton(1, 60)}
-          {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
+      <Container className={styles.searchContainer}>
+        <Row>
+            <FormControl
+              id="name"
+              placeholder={localSearch || ''}
+              aria-label="Name"
+              defaultValue={localSearch}
+              aria-describedby="basic-addon1"
+              onChange={(event) => setLocalSearch(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  setSearchText(localSearch);
+                  navigate('/albums');
+                }
+              }}
+            />
         </Row>
-        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {inputButton('Q', 60)}
-          {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
+        <Row styles={{marginTop: '0px', paddingTop: '0px'}}>
+          <Container fluid className={`d-none d-sm-block`} styles={{marginTop: '0px'}}>
+            <Row className={`${styles.keyboardRow}`}>
+              {inputButton(1, 60)}
+              {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
+            </Row>
+            <Row className={`${styles.keyboardRow}`}>
+              {inputButton('Q', 60)}
+              {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
+            </Row>
+            <Row className={`${styles.keyboardRow}`}>
+              {inputButton('A', 100)}
+              {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
+            </Row>
+            <Row className={`${styles.keyboardRow}`}>
+              {inputButton('Z', 150)}
+              {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
+            </Row>
+            <Row className={styles.keyboardRow}>
+              <Button hideOnSmall width="150" height="55" onClick={() => {
+                setLocalSearch(`${localSearch} `);
+              }} content="Space" />
+              <Button hideOnSmall width="150" height="55" onClick={() => {
+                setSearchText('');
+              }} content="Clear" />
+            </Row>
+          </Container>
         </Row>
-        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {inputButton('A', 100)}
-          {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
-        </Row>
-        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          {inputButton('Z', 150)}
-          {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
-        </Row>
-        <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Button width="150" height="55" onClick={() => {
-            setLocalSearch(`${localSearch} `);
-          }} content="Space" />
-          <Button width="150" height="55" onClick={() => {
-            setSearchText('');
-          }} content="Clear" />
-          <Button width="150" height="55" onClick={() => {
+        <Row className={styles.keyboardRow}>
+        <Button className={styles.keyboardRow} width="150" height="55" onClick={() => {
             setSearchText(localSearch);
-            navigate(-1);
-          }} content="Search Now" />
+            navigate('/albums');
+          }} content="Search Albums" />
+          <Button className={styles.keyboardRow} width="150" height="55" onClick={() => {
+            setSearchText(localSearch);
+            navigate('/tracks');
+          }} content="Search Tracks" />
         </Row>
       </Container>
     </>

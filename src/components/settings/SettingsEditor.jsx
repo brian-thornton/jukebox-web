@@ -1,23 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ListGroup } from 'react-bootstrap';
 
 import Button from '../Button';
 import Item from '../common/Item';
-import PagedContainer from '../common/PagedContainer';
-import {
-  getHeight,
-  initListPaging,
-  nextPage,
-  previousPage,
-} from '../../lib/pageHelper';
+import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 
-function SettingsEditor() {
+const SettingsEditor = () => {
   const [features, setFeatures] = useState();
   const settings = useContext(SettingsContext);
-  const [paging, setPaging] = useState();
-  const initialHeight = getHeight();
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
+
+  useEffect(() => {
+    const itemHeight = 50;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+  }, []);
+
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   const updateFeature = (name, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
@@ -30,7 +31,6 @@ function SettingsEditor() {
   const loadSettings = () => {
     const data = Object.keys(settings.features);
     setFeatures(data);
-    setPaging(initListPaging(data.length, 90, initialHeight));
   }
 
   useEffect(loadSettings, []);
@@ -53,18 +53,18 @@ function SettingsEditor() {
     );
   };
 
-  const content = () => {
-    return features.slice(paging.currentPage.start, paging.currentPage.limit).map(key => settingRow(key, settings.features[key]));
-  };
-
-  if (paging && features) {
+  if (features) {
     return (
-      <PagedContainer
-        paging={paging}
-        content={<ListGroup style={{width: '100%'}}>{content()}</ListGroup>}
-        clientNextPage={() => setPaging(nextPage(paging))}
-        clientPreviousPage={() => setPaging(previousPage(paging))}
-      />
+      <>
+        {features.slice(realStart, (realStart + realPageSize)).map(key => settingRow(key, settings.features[key]))}
+        <Paginator
+          disableRandom
+          onPageChange={(page) => setSelectedPage(page)}
+          selectedPage={selectedPage}
+          totalItems={features.length}
+          pageSize={realPageSize}
+        />
+      </>
     );
   }
 

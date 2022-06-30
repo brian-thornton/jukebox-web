@@ -1,10 +1,8 @@
+import Button from 'react-bootstrap/Button';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import { PropTypes } from 'prop-types';
 import React, { useState, useCallback, useContext } from 'react';
-import {
-  Navbar,
-  Nav,
-  Button,
-} from 'react-bootstrap';
 import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 
@@ -19,12 +17,11 @@ const propTypes = {
   setSearch: PropTypes.func,
 };
 
-function JukeboxFooter({
+const JukeboxFooter = ({
   search,
   setSearch,
   nowPlaying,
-  pagingButtons,
-}) {
+}) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
   const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
@@ -85,7 +82,6 @@ function JukeboxFooter({
   return (
     <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
       {nowPlayingText()}
-      {/* {pagingButtons} */}
       {footerContent()}
     </Navbar>
   );

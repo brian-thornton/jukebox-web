@@ -1,25 +1,23 @@
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useState, useContext } from 'react';
-import { Container } from 'react-bootstrap';
 
-import styles from './styles';
 import { getTrackAlbums } from '../lib/librarian-client';
 import { Track as TrackShape } from './shapes';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
+import styles from './TrackList.module.css';
 
 const propTypes = {
   tracks: PropTypes.arrayOf(TrackShape),
   showAlbumCovers: PropTypes.bool,
-  setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function TrackList({
+const TrackList = ({
   tracks,
   showAlbumCovers,
-  setCurrentAlbum,
   setAddTracks,
-}) {
+}) => {
   const settings = useContext(SettingsContext);
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
@@ -39,11 +37,11 @@ function TrackList({
     getTrackCoverArt(tracks);
   }
 
-  if (settings && settings.features) {
+  if (settings?.features) {
     return (
       <>
         {trackAlbumsLoaded && (
-          <Container style={{ width: '100%', marginTop: '15px', marginLeft: '0px' }}>
+          <Container className={styles.trackListContainer}>
             {tracks.map((track) => {
               if (isMp3(track)) {
                 return (
@@ -52,7 +50,6 @@ function TrackList({
                     trackAlbums={trackAlbums}
                     trackAlbumsLoaded={trackAlbumsLoaded}
                     showAlbumCovers={showAlbumCovers}
-                    setCurrentAlbum={setCurrentAlbum}
                     setAddTracks={setAddTracks}
                   />
                 )

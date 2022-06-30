@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
+import Card from 'react-bootstrap/Card';
 import { PropTypes } from 'prop-types';
-import { Card } from 'react-bootstrap';
+import React, { useContext } from 'react';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import './NoResults.scss';
@@ -11,7 +11,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-function NoResults({ text, title, controls }) {
+const NoResults = ({ text, title, controls }) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {

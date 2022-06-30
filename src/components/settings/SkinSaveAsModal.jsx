@@ -13,12 +13,12 @@ const propTypes = {
   goBackToThemeList: PropTypes.func.isRequired,
 };
 
-function SkinSaveAsModal({
+const SkinSaveAsModal = ({
   goBackToThemeList,
   isOpen,
   handleHide,
   colors,
-}) {
+}) => {
   const handleSave = () => {
     createSkin({ name: document.getElementById('name').value, skin: { ...colors, isEditable: true, name: document.getElementById('name').value } });
     handleHide();

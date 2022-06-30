@@ -24,7 +24,7 @@ const propTypes = {
   title: PropTypes.string,
 };
 
-function Modal({
+const Modal = ({
   body,
   cancelText,
   confirmText,
@@ -34,7 +34,7 @@ function Modal({
   onConfirm,
   size,
   title,
-}) {
+}) => {
   const settings = useContext(SettingsContext);
 
   return (

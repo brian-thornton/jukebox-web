@@ -10,13 +10,13 @@ const propTypes = {
   setTempSearch: PropTypes.func.isRequired,
 };
 
-function WithKeyboardInput({
+const WithKeyboardInput = ({
   component,
   tempSearch,
   setTempSearch,
   debouncedSearch,
   setIsSearchOpen,
-}) {
+}) => {
   function handlePaste(e) {
     var clipboardData, pastedData;
 

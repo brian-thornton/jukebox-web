@@ -1,0 +1,19 @@
+.deleteCardTitle {
+  margin-top: 20px !important;
+}
+
+.deleteConfirmButton {
+  margin-left: 10px !important;
+}
+
+.deletePlaylistCard {
+  align-items: center !important;
+  background: transparent !important;
+  display: flex !important;
+  height: 80% !important;
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+  margin-top: 80px !important;
+  min-height: 200px !important;
+  justify-content: center !important;
+}

@@ -1,18 +1,16 @@
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import React, { useEffect, useState, useContext } from 'react';
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Row,
-  Tab,
-  Tabs,
-} from 'react-bootstrap';
 import { ChromePicker } from 'react-color';
 import { PropTypes } from 'prop-types';
+import Row from 'react-bootstrap/Row';
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 
+import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import Modal from '../common/Modal';
+import styles from './ColorPicker.module.css';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -20,11 +18,10 @@ const propTypes = {
   setColor: PropTypes.func.isRequired,
 };
 
-function ColorPicker({
-  isOpen,
+const ColorPicker = ({
   setIsOpen,
   setColor,
-}) {
+}) => {
   const settings = useContext(SettingsContext);
   const [colorType, setColorType] = useState('solid');
   const [gradientA, setGradientA] = useState();
@@ -33,7 +30,9 @@ function ColorPicker({
   const [solidColor, setSolidColor] = useState();
 
   const picker = (color, width, handler) => (
-    <ChromePicker width={width} color={color} onChangeComplete={handler} />
+    <div style={{ width: width, display: 'inline-block' }}>
+      <ChromePicker color={color} onChangeComplete={handler} />
+    </div>
   );
 
   const formatColor = () => {
@@ -55,58 +54,59 @@ function ColorPicker({
   useEffect(formatColor, [gradientA]);
   useEffect(formatColor, [gradientB]);
 
-  const transparentCardStyle = {
-    background: 'transparent',
-    minHeight: '200px',
-    height: '100%',
-    borderColor: 'black',
+  const transparentCardSkin = {
     color: settings.styles.fontColor,
-    swidth: '18rem',
-  };
+  }
 
   return (
-    <Modal
-      size="lg"
-      isOpen={isOpen}
-      onCancel={() => setIsOpen(false)}
-      onConfirm={() => {
-        formatColor();
-        setIsOpen(false);
-      }}
-      title="Select Color"
-      body={(
+    <Card className={styles.transparentCardStyle}>
+      <Card.Body>
         <Tabs onSelect={e => setColorType(e)}>
           <Tab eventKey="solid" title="Solid Color">
-            {picker(solidColor, '100%', colorData => setSolidColor(colorData))}
+            <Container fluid>
+              <Row>
+                <Col lg="3" md="3" sm="3">
+                  {picker(solidColor, '50%', colorData => setSolidColor(colorData))}
+                </Col>
+                <Col lg="6" md="6" sm="6">
+                  <div style={{ backgroundColor: colorString, height: '40vh', width: '100%' }}>Example</div>
+                </Col>
+              </Row>
+            </Container>
           </Tab>
           <Tab eventKey="gradient" title="Gradient">
-            <Container>
+            <Container fluid>
               <Row>
-                <Col lg="4" md="4" sm="4">
-                  {picker(gradientA, '100%', colorData => setGradientA(colorData))}
+                <Col lg="3" md="3" sm="3">
+                  {picker(gradientA, '50%', colorData => setGradientA(colorData))}
                 </Col>
-                <Col lg="4" md="4" sm="4">
-                  {picker(gradientB, '100%', colorData => setGradientB(colorData))}
+                <Col lg="3" md="3" sm="3">
+                  {picker(gradientB, '50%', colorData => setGradientB(colorData))}
                 </Col>
-                <Col lg="4" md="4" sm="4">
-                  <Button style={{ background: colorString }}>Example</Button>
+                <Col lg="6" md="6" sm="6">
+                  <div style={{ background: colorString, height: '40vh', width: '100%' }}>Example</div>
                 </Col>
               </Row>
             </Container>
           </Tab>
           <Tab eventKey="transparent" title="Transparent">
-            <Card style={transparentCardStyle}>
-              <Card.Title style={{ textAlign: 'center' }}>Transparent</Card.Title>
+            <Card className={styles.transparentCardStyle} style={transparentCardSkin}>
+              <Card.Title className={styles.colorPickerTitle}>Transparent</Card.Title>
               <Card.Body>
-                <Card.Text style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Card.Text className={styles.colorPickerText}>
                   If this tab is selected, the color will be transparent.
                 </Card.Text>
               </Card.Body>
             </Card>
           </Tab>
         </Tabs>
-      )}
-    />
+        <Button onClick={() => setIsOpen(false)} content="Cancel" />
+        <Button onClick={() => {
+          formatColor();
+          setIsOpen(false);
+        }} content="Save" />
+      </Card.Body>
+    </Card>
   );
 }
 

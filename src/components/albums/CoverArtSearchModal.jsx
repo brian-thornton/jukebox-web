@@ -1,5 +1,5 @@
+import Card from 'react-bootstrap/Card';
 import React, { useState } from 'react';
-import { Card } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 
 import { Album } from '../shapes';
@@ -17,11 +17,11 @@ const propTypes = {
   album: Album.isRequired,
 };
 
-function CoverArtSearchModal({
+const CoverArtSearchModal = ({
   isOpen,
   handleClose,
   album,
-}) {
+}) => {
   const [results, setResults] = useState();
   const title = 'Custom Cover Art Search';
   const [query, setQuery] = useState(album.name);

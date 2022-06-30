@@ -1,25 +1,23 @@
+import Alert from 'react-bootstrap/Alert';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Col,
-  Row,
-} from 'react-bootstrap';
-import { Alert } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
-import PlaylistsViewer from './playlists/PlaylistsViewer';
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import NoResults from './common/NoResults';
 import TrackList from './TrackList';
 import Paginator from './common/Paginator';
 import Loading from './common/Loading';
+import styles from './Tracks.module.css';
 
 const propTypes = {
   search: PropTypes.string,
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-function Tracks({ search, setCurrentAlbum }) {
+const Tracks = ({ search, setCurrentAlbum }) => {
   const [addTracks, setAddTracks] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
@@ -27,11 +25,12 @@ function Tracks({ search, setCurrentAlbum }) {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [tracksLoaded, setTracksLoaded] = useState(false);
+  const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
 
   useEffect(() => {
-    const itemHeight = 55;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+      const itemHeight = 55;
+      const viewPortHeight = Math.floor(window.innerHeight - 200);
+      setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
   const findTracks = async (start, limit) => {
@@ -68,17 +67,8 @@ function Tracks({ search, setCurrentAlbum }) {
     loadTracks();
   }, [search, selectedPage, realPageSize]);
 
-  const alert = () => {
-    const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
-    if (!tracks || !tracks.length) {
-      return <Alert variant="primary">{alertText}</Alert>;
-    }
-    return <></>;
-  };
-
   const content = (
     <TrackList
-      style={{ width: '100%', marginRight: '0px' }}
       tracks={tracks}
       showAlbumCovers
       setCurrentAlbum={setCurrentAlbum}
@@ -89,7 +79,7 @@ function Tracks({ search, setCurrentAlbum }) {
   const trackList = () => {
     if (realPageSize && totalTracks) {
       return (
-        <Container style={{ width: '100%', marginTop: '60px' }}>
+        <Container className={styles.tracksContainer}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>{content}</Row>
@@ -99,7 +89,6 @@ function Tracks({ search, setCurrentAlbum }) {
             <Col lg="12" xl="12" md="12" sm="12">
               <Paginator
                 onPageChange={(page) => setSelectedPage(page)}
-                style={{ marginTop: '100px' }}
                 selectedPage={selectedPage}
                 totalItems={totalTracks}
                 pageSize={realPageSize}
@@ -123,7 +112,7 @@ function Tracks({ search, setCurrentAlbum }) {
       {searchInProgress && <Loading />}
       {!noResults && !searchInProgress && (
         <>
-          {alert()}
+          {(!tracks || !tracks.length) && <Alert variant="primary">{alertText}</Alert>}
           {trackList()}
         </>
       )}

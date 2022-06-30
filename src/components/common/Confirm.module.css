@@ -1,0 +1,16 @@
+.confirmCard {
+  background: transparent;
+  min-height: 200px;
+  height: 100%;
+  border-color: black;
+}
+
+.confirmText {
+  align-items: center;
+  display: flex; 
+  justify-content: center;
+}
+
+.confirmTitle {
+  text-align: center;
+}

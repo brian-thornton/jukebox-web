@@ -1,0 +1,17 @@
+.keyboardRow {
+  align-items: center !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.searchContainer {
+margin-top: 60px !important;
+}
+
+.searchText {
+  align-items: center !important;
+  color: white !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+

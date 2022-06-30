@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
@@ -10,7 +10,7 @@ const propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-function ControlButton({ disabled, height, onClick, text }) {
+const ControlButton = ({ disabled, height, onClick, text }) => {
   const settings = useContext(SettingsContext);
   const { styles } = settings;
 

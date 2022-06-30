@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import { ListGroupItem } from 'react-bootstrap';
+import ListGroupItem from 'react-bootstrap/ListGroupItem';
 
 import CheckToggle from '../common/CheckToggle';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -12,13 +12,14 @@ const propTypes = {
   text: PropTypes.string,
 };
 
-function Item({ buttons, onClick, text, includeCheckbox, onCheck, checked }) {
+const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked }) => {
   const settings = useContext(SettingsContext);
 
   const itemStyle = {
     color: settings.styles.fontColor,
     background: settings.styles.trackBackgroundColor,
     fontFamily: settings.styles.listFont,
+    width: '100%',
   };
 
   return (

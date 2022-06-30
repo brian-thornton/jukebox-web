@@ -1,17 +1,19 @@
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
-import {
-  Card, Container, Row, Col,
-} from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
 
 import AddToPlaylistButton from './common/AddToPlaylistButton';
-import styles from './styles';
 import TrackAlbum from './TrackAlbum';
 import { Track as TrackShape } from './shapes';
 import DownloadButton from './DownloadButton';
+import GoToAlbumButton from './GoToAlbumButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
+import styles from './Track.module.css';
 
 const propTypes = {
   setCurrentAlbum: PropTypes.func,
@@ -21,13 +23,13 @@ const propTypes = {
   trackAlbumsLoaded: PropTypes.bool,
 };
 
-function Track({
+const Track = ({
   showAlbumCovers,
   setCurrentAlbum,
   track,
   trackAlbums,
   trackAlbumsLoaded,
-}) {
+}) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
@@ -38,6 +40,8 @@ function Track({
 
     return null;
   };
+
+  console.log(getAlbum(track));
 
   const album = (albumTrack) => {
     const ta = getAlbum(albumTrack);
@@ -55,18 +59,12 @@ function Track({
     return <></>;
   };
 
-  const trackCardStyle = {
-    ...styles.cardStyle,
+  const trackCardSkin = {
     color: settings.styles.fontColor,
-    width: '100%',
     background: settings.styles.trackBackgroundColor,
   };
 
-  const trackNameStyle = {
-    width: '100%',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+  const trackNameSkin = {
     fontFamily: settings.styles.listFont,
   };
 
@@ -75,18 +73,19 @@ function Track({
   const albumFolder = pathParts[pathParts.length - 2];
 
   return (
-    <Card style={trackCardStyle}>
-      <Container style={{ width: '100%', marginTop: '0px', marginBottom: '0px', marginRight: '0px', paddingLeft: '0px' }}>
+    <Card className={styles.trackCard} style={trackCardSkin}>
+      <Container className={styles.trackContainer}>
         <Row>
-          <Col lg={1} md={1}>
+          <Col className="d-none d-sm-block" lg={1} md={1}>
             {album(track)}
           </Col>
           <Col lg={8} md={8}>
-            <div style={trackNameStyle}>
+            <div className={styles.trackName} style={trackNameSkin}>
               {`${albumFolder} - ${track.name}`}
             </div>
           </Col>
-          <Col lg={2}>
+          <Col lg={3} md={3}>
+            <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />
             <AddToPlaylistButton track={track} />
             <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
             <EnqueueButton track={track} isScreenSmall={isScreenSmall} />

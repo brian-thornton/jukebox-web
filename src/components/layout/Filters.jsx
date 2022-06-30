@@ -1,19 +1,24 @@
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+import Row from 'react-bootstrap/Row';
+import { useNavigate } from 'react-router-dom';
 
 import { getLibraries } from '../../lib/librarian-client';
 import Item from '../common/Item';
 import Loading from '../common/Loading';
 import Paginator from '../common/Paginator';
 import Button from '../Button';
+import styles from './Filters.module.css';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 
-function Filters({ setIsFilterOpen, setSelectedLibraries, selectedLibraries }) {
+const Filters = ({ setIsFilterOpen, selectedLibraries, setSelectedLibraries }) => {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState(selectedLibraries);
   const [libraries, setLibraries] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -49,7 +54,7 @@ function Filters({ setIsFilterOpen, setSelectedLibraries, selectedLibraries }) {
         <Container fluid style={{ marginTop: '60px ' }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
+              <Row className={styles.filterRow}>{libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
                 const checked = selectedLibraries.find((lib) => lib.path === library.path);
                 
                 return (
@@ -70,7 +75,6 @@ function Filters({ setIsFilterOpen, setSelectedLibraries, selectedLibraries }) {
               <Paginator
                 disableRandom
                 onPageChange={(page) => setSelectedPage(page)}
-                style={{ marginTop: '100px' }}
                 selectedPage={selectedPage}
                 totalItems={libraries.length}
                 pageSize={realPageSize}
@@ -83,14 +87,14 @@ function Filters({ setIsFilterOpen, setSelectedLibraries, selectedLibraries }) {
                 content="Clear Filters"
                 onClick={() => {
                   setSelectedLibraries([]);
-                  setIsFilterOpen(false);
+                  navigate('/albums');
                 }}
               />
               <Button
                 content="Apply Filters"
                 onClick={() => {
                   setSelectedLibraries(filters);
-                  setIsFilterOpen(false);
+                  navigate('/albums');
                 }}
               />
             </Col>

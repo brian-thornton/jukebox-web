@@ -14,7 +14,7 @@ const propTypes = {
   width: PropTypes.string,
 };
 
-function Button({
+const Button = ({
   onClick,
   content,
   icon,
@@ -25,9 +25,10 @@ function Button({
   width,
   style,
   id,
-}) {
+  hideOnSmall,
+  hideOnLarge,
+}) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
 
   const buttonStyle = {
     background: style?.buttonBackgroundColor || settings.styles.buttonBackgroundColor,
@@ -52,8 +53,12 @@ function Button({
     buttonStyle.minHeight = `${height}px`;
   }
 
-  const buttonContent = ((isScreenSmall && icon) || (!content && icon)) ? icon : content;
-  return <ReactButton id={id} disabled={disabled} style={buttonStyle} className="button" variant="outline-light" onClick={onClick}>{content || icon}</ReactButton>;
+  let dynamicClasses = '';
+  if (hideOnSmall) {
+    dynamicClasses = `${dynamicClasses} d-none d-sm-block`;
+  }
+
+  return <ReactButton id={id} disabled={disabled} style={buttonStyle} className={`button ${dynamicClasses}`} variant="outline-light" onClick={onClick}>{content || icon}</ReactButton>;
 }
 
 Button.propTypes = propTypes;

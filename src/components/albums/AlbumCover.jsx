@@ -1,5 +1,5 @@
+import Card from 'react-bootstrap/Card';
 import React, { useState, useEffect } from 'react';
-import { Card } from 'react-bootstrap';
 
 import { coverArtUrl } from '../../lib/librarian-client';
 import { Album } from '../shapes';
@@ -9,7 +9,7 @@ const propTypes = {
   album: Album.isRequired,
 };
 
-function AlbumCover({ album }) {
+const AlbumCover = ({ album }) => {
   const [coverArt, setCoverArt] = useState('');
 
   const loadCoverArt = () => {
