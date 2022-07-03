@@ -31,6 +31,7 @@ const Button = ({
   const settings = useContext(SettingsContext);
 
   const buttonStyle = {
+    marginTop: style?.marginTop,
     background: style?.buttonBackgroundColor || settings.styles.buttonBackgroundColor,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,

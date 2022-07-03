@@ -15,7 +15,7 @@ const ControlButton = ({ disabled, height, onClick, text }) => {
   const { styles } = settings;
 
   const controlButtonStyle = {
-    background: styles.buttonBackgroundColor,
+    background: styles.controlButtonBackgroundColor || styles.buttonBackgroundColor,
     color: styles.fontColor,
     minHeight: height ? `${height}px` : '65px',
     fontFamily: styles.buttonFont,

@@ -68,6 +68,8 @@ const ThemeList = ({ resetControls, setControls }) => {
       deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
       deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
       deepClone.styles.buttonFont = selectedSkin.buttonFont;
+      deepClone.styles.controlButtonBackgroundColor = selectedSkin.controlButtonBackgroundColor;
+      deepClone.styles.controlButtonFont = selectedSkin.controlButtonFont;
       deepClone.styles.buttonFontColor = selectedSkin.buttonFontColor;
       deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
       deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
@@ -116,6 +118,7 @@ const ThemeList = ({ resetControls, setControls }) => {
       backgroundColor: skin.backgroundColor,
       popupBackgroundColor: skin.popupBackgroundColor,
       buttonBackgroundColor: skin.buttonBackgroundColor,
+      controlButtonBackgroundColor: skin.controlButtonBackgroundColor,
       buttonFontColor: skin.buttonFontColor,
       buttonFontWeight: skin.buttonFontWeight,
       trackBackgroundColor: skin.trackBackgroundColor,

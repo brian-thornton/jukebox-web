@@ -4,6 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
+import ColorCopy from './ColorCopy';
 import Item from '../common/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import ColorPicker from './ColorPicker';
@@ -13,10 +14,10 @@ import styles from './SkinDetail.module.css';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 
 const SkinColors = ({ skin }) => {
+  const [isColorCopyOpen, setIsColorCopyOpen] = useState(false);
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(5);
-  const [realStart, setRealStart] = useState(1);
+  const [realPageSize, setRealPageSize] = useState();
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [colorMode, setColorMode] = useState();
   const [allowGradient, setAllowGradient] = useState();
@@ -30,17 +31,19 @@ const SkinColors = ({ skin }) => {
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    controlButtonBackgroundColor: skin.controlButtonBackgroundColor,
     buttonFont: skin.buttonFont,
     buttonFontColor: skin.buttonFontColor,
     buttonFontWeight: skin.buttonFontWeight,
     trackBackgroundColor: skin.trackBackgroundColor,
     listFont: skin.listFont,
   });
-
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   useEffect(() => {
-    const numberOfItems = Math.floor((window.innerHeight - 200) / 50);
-    setRealPageSize(numberOfItems);
+    const itemHeight = 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 250);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
   useEffect(() => {
@@ -86,14 +89,12 @@ const SkinColors = ({ skin }) => {
             }}
             content="Select Color"
           />
-          {/* <Button
-            {...buttonProps(settings)}
+          <Button
             onClick={() => {
-              setCopyTo(name);
-              setIsCopyFromOpen(true);
+              setIsColorCopyOpen(true);
             }}
             content="Copy From"
-          /> */}
+          />
         </>
       )}
     />
@@ -101,28 +102,28 @@ const SkinColors = ({ skin }) => {
 
   const rows = [
     styleRow('headerColor', 'Header Background Color'),
-    styleRow('headerColor', 'Header Background Color'),
     styleRow('footerColor', 'Footer Background Color'),
     styleRow('fontColor', 'Font Color'),
     styleRow('backgroundColor', 'Background Color'),
     styleRow('popupBackgroundColor', 'Dialog Background Color'),
     styleRow('buttonBackgroundColor', 'Button Background Color'),
     styleRow('buttonTextColor', 'Button Text Color'),
+    styleRow('controlButtonBackgroundColor', 'Control Button Background Color'),
+    styleRow('controlButtonTextColor', 'Control Button Text Color'),
     styleRow('trackBackgroundColor', 'Track Background Color'),
   ];
 
   return (
     <>
-      {isColorModalOpen && (
-        <ColorPicker
-          isOpen={isColorModalOpen}
-          setIsOpen={setIsColorModalOpen}
-          color={colors[colorMode]}
-          setColor={handleSetColor}
-          allowGradient={allowGradient}
+      {isColorModalOpen && !isColorCopyOpen && (
+        <ColorPicker skin={skin} setColor={handleSetColor} setIsOpen={setIsColorModalOpen} />
+      )}
+      {!isColorModalOpen && isColorCopyOpen && (
+        <ColorCopy
+          skin={skin}
         />
       )}
-      {!isColorModalOpen && <Container fluid className={styles.styleEditorContent}>
+      {!isColorCopyOpen && !isColorModalOpen && <Container fluid className={styles.styleEditorContent}>
         <Row>
           <Col lg="12" xl="12" md="12" sm="12">
             <Row>
@@ -138,7 +139,7 @@ const SkinColors = ({ skin }) => {
               disableRandom
               onPageChange={(page) => setSelectedPage(page)}
               selectedPage={selectedPage}
-              totalItems={12}
+              totalItems={rows.length}
               pageSize={realPageSize}
             />
           </Col>

@@ -1,13 +1,18 @@
 import { Card } from 'react-bootstrap';
+import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container';
 import React, { useState, useEffect, useContext } from 'react';
+import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
 import AddNew from '../common/AddNew';
+import Button from '../Button';
+import ColorCopy from './ColorCopy';
 import ControlButton from '../common/ControlButton';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import ColorPicker from './ColorPicker';
+import NameInput from '../common/NameInput';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './SkinDetail.module.css';
 import SkinColors from './SkinColors';
@@ -18,6 +23,7 @@ const StyleEditor = ({
   goBackToThemeList,
   setControls,
 }) => {
+  const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState(5);
@@ -37,6 +43,8 @@ const StyleEditor = ({
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    controlButtonBackgroundColor: skin.controlButtonBackgroundColor,
+    controlButtonFont: skin.controlButtonFont,
     buttonFont: skin.buttonFont,
     buttonFontColor: skin.buttonFontColor,
     buttonFontWeight: skin.buttonFontWeight,
@@ -83,6 +91,15 @@ const StyleEditor = ({
     setColorMode(null);
   };
 
+  const saveSkin = (name = skin.name) => {
+    deleteSkin(skin.name).then(() => {
+      createSkin({
+        name: name,
+        skin: { isEditable: skin.isEditable, name: name, ...colors },
+      }).then(() => { });
+    });
+  };
+
   useEffect(() => {
     deleteSkin(skin.name).then(() => {
       createSkin({
@@ -111,18 +128,30 @@ const StyleEditor = ({
       )}
       {isColorModalOpen && (
         <Container fluid className={styles.styleEditorContent}>
-          <ColorPicker
-            isOpen={isColorModalOpen}
-            setIsOpen={setIsColorModalOpen}
-            color={colors[colorMode]}
-            setColor={handleSetColor}
-            allowGradient={allowGradient}
-          />
+          <ColorCopy skin={skin} />
         </Container>
       )}
       {!isSaveAsModalOpen && !isColorModalOpen && (
         <Card style={{ background: 'transparent' }}>
-          <Card.Title style={{ marginTop: '10px', color: settings.styles.fontColor }}>Skin Name: {skin.name}</Card.Title>
+          <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
+            <Container fluid>
+              <Row style={{ marginBottom: '0px' }}>
+                <Col lg="2" md="2" sm="2">
+                  <div style={{ marginTop: '10px' }}>Skin Name:</div>
+                </Col>
+                <Col lg="9" md="9" sm="9">
+                  <NameInput
+                    defaultValue={skin.name}
+                    onChang
+                    e={e => setUpdatedName(e.target.value)}
+                  />
+                </Col>
+                <Col lg="1" md="1" sm="1">
+                  <Button style={{marginTop: '0px'}} content="Save" onClick={() => saveSkin(updatedName)} />
+                </Col>
+              </Row>
+            </Container>
+          </Card.Title>
           <Tabs>
             <Tab eventKey="colors" title="Skin Colors">
               <SkinColors skin={skin} />

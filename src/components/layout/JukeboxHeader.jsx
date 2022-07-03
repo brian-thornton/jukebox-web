@@ -65,7 +65,7 @@ const JukeboxHeader = ({
   };
 
   return (
-    <Navbar style={{ background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar style={{ marginBottom: '0px', background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
         <Navbar.Brand
           style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}
