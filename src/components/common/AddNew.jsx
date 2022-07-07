@@ -6,7 +6,7 @@ import NameInput from './NameInput';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './AddNew.module.css';
 
-const AddNew = ({ onConfirm, onCancel, confirmText = 'Save', cancelText = 'Cancel' }) => {
+const AddNew = ({ onConfirm, defaultValue, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel' }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
@@ -23,9 +23,9 @@ const AddNew = ({ onConfirm, onCancel, confirmText = 'Save', cancelText = 'Cance
   return (
     <Card style={confirmStyle}>
       <Card.Body>
-        <Card.Title className={styles.addNewTitle}>Add</Card.Title>
+        <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
         <Card.Text className={styles.addNewText}>
-          <NameInput onEnter={onConfirm} />
+          <NameInput onEnter={onConfirm} defaultValue={defaultValue} />
         </Card.Text>
         <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />

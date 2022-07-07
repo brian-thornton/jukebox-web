@@ -2,11 +2,12 @@ import { PropTypes } from 'prop-types';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect, useContext } from 'react';
 
+import AddNew from '../common/AddNew';
 import Button from '../Button';
+import { createSkin } from '../../lib/style-client';
 import InRowDeleteConfirmation from '../common/InRowDeleteConfirmation';
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
-import SkinSaveAsModal from './SkinSaveAsModal';
 import { updateSettings } from '../../lib/settings-client';
 import { getSkins, deleteSkin } from '../../lib/style-client';
 import SkinDetail from './SkinDetail';
@@ -25,10 +26,10 @@ const ThemeList = ({ resetControls, setControls }) => {
   const [skinsLoading, setSkinsLoading] = useState(false);
   const [editSkin, setEditSkin] = useState();
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
-  const [copyFromColors, setCopyFromColors] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [deleteConfirmSkin, setDeleteConfirmSkin] = useState();
+  const [copySkinBase, setCopySkinBase] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   useEffect(() => {
@@ -110,21 +111,7 @@ const ThemeList = ({ resetControls, setControls }) => {
   };
 
   const makeCopy = (skin) => {
-    setCopyFromColors({
-      headerColor: skin.headerColor,
-      footerColor: skin.footerColor,
-      fontColor: skin.fontColor,
-      fontWeight: skin.fontWeight,
-      backgroundColor: skin.backgroundColor,
-      popupBackgroundColor: skin.popupBackgroundColor,
-      buttonBackgroundColor: skin.buttonBackgroundColor,
-      controlButtonBackgroundColor: skin.controlButtonBackgroundColor,
-      buttonFontColor: skin.buttonFontColor,
-      buttonFontWeight: skin.buttonFontWeight,
-      trackBackgroundColor: skin.trackBackgroundColor,
-      listFont: skin.listFont,
-    });
-
+    setCopySkinBase(skin);
     setIsSaveAsOpen(true);
   };
 
@@ -172,18 +159,37 @@ const ThemeList = ({ resetControls, setControls }) => {
     );
   }
 
+  const handleSkinSaveAs = () => {
+    const {name, isEditable, ...colors} = copySkinBase;
+
+    createSkin({
+      name: document.getElementById('name').value,
+      skin: {
+        name: document.getElementById('name').value,
+        isEditable: true,
+        ...colors },
+    }).then(() => {
+      setIsSaveAsOpen(false);
+      loadSkins();
+    });
+  };
+
   if (skins?.length) {
     return (
       <>
+        {!isSaveAsOpen && (
         <ListGroup style={{ width: '100%' }}>
           {skinRows()}
         </ListGroup>
-        <SkinSaveAsModal
-          goBackToThemeList={goBackToThemeList}
-          handleHide={() => setIsSaveAsOpen(false)}
-          isOpen={isSaveAsOpen}
-          colors={copyFromColors}
-        />
+        )}
+        {isSaveAsOpen && (
+          <AddNew
+            title={`Save ${copySkinBase.name} as...`}
+            defaultValue={`${copySkinBase.name} Copy`}
+            onCancel={() => setIsSaveAsOpen(false)}
+            onConfirm={handleSkinSaveAs}
+          />
+        )}
         <Paginator
           disableRandom
           onPageChange={(page) => setSelectedPage(page)}
