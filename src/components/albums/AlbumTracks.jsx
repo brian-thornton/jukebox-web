@@ -1,7 +1,7 @@
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import AddToPlaylistButton from '../common/AddToPlaylistButton';
@@ -10,6 +10,7 @@ import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
+import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
 
 const propTypes = {
@@ -19,6 +20,7 @@ const propTypes = {
 };
 
 const TrackList = ({ tracks }) => {
+  const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const isScreenSmall = window.innerWidth < 700;
@@ -36,10 +38,10 @@ const TrackList = ({ tracks }) => {
       text={track.name}
       buttons={(
         <>
-          <PlayNowButton track={track} />
-          <EnqueueButton track={track} />
-          <AddToPlaylistButton track={track} />
-          <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+          {settings.features.play && <PlayNowButton track={track} />}
+          {settings.features.queue && <EnqueueButton track={track} />}
+          {settings.features.playlists && <AddToPlaylistButton track={track} />}
+          {settings.features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
         </>
       )}
     />
@@ -55,10 +57,10 @@ const TrackList = ({ tracks }) => {
                 text={track.name}
                 buttons={(
                   <>
-                    <PlayNowButton track={track} />
-                    <EnqueueButton track={track} />
-                    <AddToPlaylistButton track={track} />
-                    <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+                    {settings.features.play && <PlayNowButton track={track} />}
+                    {settings.features.queue && <EnqueueButton track={track} />}
+                    {settings.features.playlists && <AddToPlaylistButton track={track} />}
+                    {settings.features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
                   </>
                 )}
               />
@@ -70,9 +72,9 @@ const TrackList = ({ tracks }) => {
                 text={track.name}
                 buttons={(
                   <>
-                    <PlayNowButton track={track} />
-                    <EnqueueButton track={track} />
-                    <AddToPlaylistButton track={track} />
+                    {settings.features.play && <PlayNowButton track={track} />}
+                    {settings.features.queue && <EnqueueButton track={track} />}
+                    {settings.features.playlists && <AddToPlaylistButton track={track} />}
                   </>
                 )}
               />

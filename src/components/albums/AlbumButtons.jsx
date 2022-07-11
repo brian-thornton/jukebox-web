@@ -1,5 +1,5 @@
 import Col from 'react-bootstrap/Col';
-import React from 'react';
+import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import { toast } from 'react-toastify';
@@ -11,6 +11,7 @@ import { Tracks } from '../shapes';
 import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
 import styles from './AlbumButtons.module.css';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   clearCurrentAlbum: PropTypes.func.isRequired,
@@ -18,6 +19,7 @@ const propTypes = {
 };
 
 const AlbumButtons = ({ tracks }) => {
+  const settings = useContext(SettingsContext);
   const { state } = useLocation();
   const navigate = useNavigate();
   const playAlbum = () => {
@@ -25,9 +27,9 @@ const AlbumButtons = ({ tracks }) => {
     next();
   };
 
-  const albumButton = (onClick, name) => (
+  const albumButton = (onClick, name, enabled = true) => (
     <Col lg={6} className={styles.albumButton}>
-      <ControlButton text={name} onClick={onClick} height={50} />
+      <ControlButton disabled={!enabled} text={name} onClick={onClick} height={50} />
     </Col>
   );
 
@@ -44,16 +46,16 @@ const AlbumButtons = ({ tracks }) => {
     <>
       <Row>
         {albumButton(() => navigate(-1), backText())}
-        {albumButton(playAlbum, 'Play Album')}
+        {albumButton(playAlbum, 'Play Album', settings.features.play)}
       </Row>
       <Row>
         {albumButton(() => {
           enqueueTracks(tracks);
           toast.success("Added to the queue!", toastProps);
-        }, 'Enqueue Album')}
+        }, 'Enqueue Album', settings.features.queue)}
         {albumButton(() => {
           navigate('/playlists', { state: { tracks } })
-        }, 'Add to Playlist')}
+        }, 'Add to Playlist', settings.features.playlists)}
       </Row>
     </>
   );

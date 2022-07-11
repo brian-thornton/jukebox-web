@@ -1,9 +1,10 @@
 import Card from 'react-bootstrap/Card';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Album as albumShape } from './shapes';
 import { coverArtUrl } from '../lib/librarian-client';
+import { SettingsContext } from './layout/SettingsProvider';
 import styles from './TrackAlbum.module.css';
 
 const propTypes = {
@@ -11,6 +12,7 @@ const propTypes = {
 };
 
 const TrackAlbum = ({ album }) => {
+  const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const [coverArt, setCoverArt] = useState();
 
@@ -25,7 +27,11 @@ const TrackAlbum = ({ album }) => {
       {coverArt && (
         <Card
           className={styles.trackAlbumCard}
-          onClick={() => navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } })}
+          onClick={() => {
+            if (settings.features.albums) {
+              navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
+            }}
+          }
         >
           <Card.Img top src={coverArt} />
         </Card>

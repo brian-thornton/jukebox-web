@@ -1,5 +1,5 @@
 import { ArrowLeft, CaretRightFill, CaretDownFill, CaretUpFill, TrashFill, ListOl, Shuffle, Save, XLg } from 'react-bootstrap-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Container, Row, ListGroup } from 'react-bootstrap';
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ import PlayNowButton from '../PlayNowButton';
 import Item from '../common/Item';
 import { toastProps } from '../common/toast-helper';
 import AddNew from '../common/AddNew';
+import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './PlaylistDetail.module.css';
 
 const propTypes = {
@@ -30,6 +31,7 @@ const propTypes = {
 };
 
 const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
+  const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -138,19 +140,19 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const controls = () => (
     <>
       <ControlButton disabled={showDeleteModal} onClick={handleBackToPlaylists} text="Back to Playlists" />
-      <ControlButton disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run Playlist" />
-      <ControlButton disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue Playlist" />
+      {settings.features.play && <ControlButton disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run Playlist" />}
+      {settings.features.queue && <ControlButton disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue Playlist" />}
       <ControlButton disabled={showDeleteModal || isEmpty} onClick={shuffle} text="Shuffle Playlist" />
       <ControlButton disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} text="Save As..." />
-      <ControlButton disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />
+      {settings.features.deletePlaylist && <ControlButton disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />}
     </>
   );
 
   const smallControls = () => (
     <>
       <Button disabled={showDeleteModal} onClick={handleBackToPlaylists} icon={<ArrowLeft />} />
-      <Button disabled={showDeleteModal || isEmpty} onClick={runPlaylist} icon={<CaretRightFill />} />
-      <Button disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} icon={<ListOl />} />
+      {settings.features.play && <Button disabled={showDeleteModal || isEmpty} onClick={runPlaylist} icon={<CaretRightFill />} />}
+      {settings.features.queue && <Button disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} icon={<ListOl />} />}
       <Button disabled={showDeleteModal || isEmpty} onClick={shuffle} icon={<Shuffle />} />
       <Button disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} icon={<Save />} />
       <Button disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} icon={<XLg />} />

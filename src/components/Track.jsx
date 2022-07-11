@@ -41,8 +41,6 @@ const Track = ({
     return null;
   };
 
-  console.log(getAlbum(track));
-
   const album = (albumTrack) => {
     const ta = getAlbum(albumTrack);
     if (showAlbumCovers && ta) {
@@ -85,11 +83,11 @@ const Track = ({
             </div>
           </Col>
           <Col lg={3} md={3}>
-            <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />
-            <AddToPlaylistButton track={track} />
-            <PlayNowButton track={track} isScreenSmall={isScreenSmall} />
-            <EnqueueButton track={track} isScreenSmall={isScreenSmall} />
-            <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+            {settings.features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
+            {settings.features.playlists && <AddToPlaylistButton track={track} />}
+            {settings.features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
+            {settings.features.queue && <EnqueueButton track={track} isScreenSmall={isScreenSmall} />}
+            {settings.features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
           </Col>
         </Row>
       </Container>

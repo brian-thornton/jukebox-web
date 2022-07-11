@@ -123,29 +123,30 @@ const SkinColors = ({ skin }) => {
           skin={skin}
         />
       )}
-      {!isColorCopyOpen && !isColorModalOpen && <Container fluid className={styles.styleEditorContent}>
-        <Row>
-          <Col lg="12" xl="12" md="12" sm="12">
-            <Row>
-              <ListGroup className={styles.styleEditorContent}>
-                {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
-              </ListGroup>
-            </Row>
-          </Col>
-        </Row>
-        <Row>
-          <Col lg="12" xl="12" md="12" sm="12">
-            <Paginator
-              disableRandom
-              onPageChange={(page) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={rows.length}
-              pageSize={realPageSize}
-            />
-          </Col>
-        </Row>
-      </Container>
-      }
+      {!isColorCopyOpen && !isColorModalOpen && (
+        <Container fluid className={styles.styleEditorContent}>
+          <Row>
+            <Col lg="12" xl="12" md="12" sm="12">
+              <Row>
+                <ListGroup className={styles.styleEditorContent}>
+                  {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
+                </ListGroup>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg="12" xl="12" md="12" sm="12">
+              <Paginator
+                disableRandom
+                onPageChange={(page) => setSelectedPage(page)}
+                selectedPage={selectedPage}
+                totalItems={rows.length}
+                pageSize={realPageSize}
+              />
+            </Col>
+          </Row>
+        </Container>
+      )}
     </>
   );
 };

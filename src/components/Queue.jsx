@@ -2,7 +2,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { XLg } from 'react-bootstrap-icons';
 import { TrashFill } from 'react-bootstrap-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,9 +20,11 @@ import PlayNowButton from './PlayNowButton';
 import Item from './common/Item';
 import NoResults from './common/NoResults';
 import Paginator from './common/Paginator';
+import { SettingsContext } from './layout/SettingsProvider';
 import styles from './Queue.module.css';
 
 const Queue = () => {
+  const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -116,7 +118,7 @@ const Queue = () => {
       text={track.name}
       buttons={(
         <>
-          <PlayNowButton track={track} />
+          {settings.features.play && <PlayNowButton track={track} />}
           <Button onClick={() => remove(track)} icon={<TrashFill />} />
         </>
       )}
@@ -127,9 +129,9 @@ const Queue = () => {
     <>
       <ControlButton onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" />
       <ControlButton onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" />
-      <ControlButton onClick={() => {
+      {settings.features.playlists && <ControlButton onClick={() => {
         navigate('/playlists', { state: { tracks } })
-      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" />
+      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" />}
     </>
   );
 

@@ -15,6 +15,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './SkinDetail.module.css';
 import SkinColors from './SkinColors';
 import SkinFonts from './SkinFonts';
+import SkinGraphics from './SkinGraphics';
 
 const StyleEditor = ({
   skin,
@@ -25,24 +26,6 @@ const StyleEditor = ({
   const settings = useContext(SettingsContext);
   const [isContextSet, setIsContextSet] = useState(false);
   const [isSaveAsModalOpen, setIsSaveAsModalOpen] = useState(false);
-  // const [colors, setColors] = useState({
-  //   headerColor: skin.headerColor,
-  //   headerFont: skin.headerFont,
-  //   footerColor: skin.footerColor,
-  //   footerFont: skin.footerFont,
-  //   fontColor: skin.fontColor,
-  //   fontWeight: skin.fontWeight,
-  //   backgroundColor: skin.backgroundColor,
-  //   popupBackgroundColor: skin.popupBackgroundColor,
-  //   buttonBackgroundColor: skin.buttonBackgroundColor,
-  //   controlButtonBackgroundColor: skin.controlButtonBackgroundColor,
-  //   controlButtonFont: skin.controlButtonFont,
-  //   buttonFont: skin.buttonFont,
-  //   buttonFontColor: skin.buttonFontColor,
-  //   buttonFontWeight: skin.buttonFontWeight,
-  //   trackBackgroundColor: skin.trackBackgroundColor,
-  //   listFont: skin.listFont,
-  // });
 
   const controls = () => (
     <>
@@ -118,6 +101,9 @@ const StyleEditor = ({
             </Tab>
             <Tab eventKey="fonts" title="Skin Fonts">
               <SkinFonts skin={skin} />
+            </Tab>
+            <Tab eventKey="graphics" title="Skin Graphics">
+              <SkinGraphics skin={skin} />
             </Tab>
           </Tabs>
         </Card>
