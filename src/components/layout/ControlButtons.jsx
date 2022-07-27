@@ -17,11 +17,11 @@ const ControlButtons = () => {
 
   return (
     <>
-      {settings.features.play && <Button onClick={next} content={<Play className="volume-icon" />} />}
-      {settings.features.next && <Button onClick={next} content={<ChevronDoubleRight className="volume-icon" />} />}
-      {settings.features.stop && <Button onClick={stop} content={<StopFill className="volume-icon" />} />}
-      {settings.features.volume && <Button onClick={up} content={<VolumeUp className="volume-icon" />} />}
-      {settings.features.volume && <Button onClick={down} content={<VolumeDown className="volume-icon" />} />}
+      {settings.features.play && <Button disabled={settings.features.isLocked} onClick={next} content={<Play className="volume-icon" />} />}
+      {settings.features.next && <Button disabled={settings.features.isLocked}  onClick={next} content={<ChevronDoubleRight className="volume-icon" />} />}
+      {settings.features.stop && <Button disabled={settings.features.isLocked}  onClick={stop} content={<StopFill className="volume-icon" />} />}
+      {settings.features.volume && <Button disabled={settings.features.isLocked}  onClick={up} content={<VolumeUp className="volume-icon" />} />}
+      {settings.features.volume && <Button disabled={settings.features.isLocked}  onClick={down} content={<VolumeDown className="volume-icon" />} />}
     </>
   )
 }

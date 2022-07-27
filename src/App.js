@@ -11,6 +11,7 @@ import { getStatus } from './lib/status-client';
 import Filters from './components/layout/Filters';
 import JukeboxFooter from './components/layout/JukeboxFooter';
 import JukeboxHeader from './components/layout/JukeboxHeader';
+import PinEntry from './components/common/PinEntry';
 import PlaylistsViewer from './components/playlists/PlaylistsViewer';
 import Queue from './components/Queue';
 import Search from './components/common/Search';
@@ -19,8 +20,10 @@ import Tracks from './components/Tracks';
 import { SettingsContext } from './components/layout/SettingsProvider'
 import WithKeyboardInput from './components/layout/WithKeyboardInput';
 import { supportedFonts } from './lib/styleHelper';
+import { updateSettings } from './lib/settings-client';
 
 function App() {
+  const [isPinOpen, setIsPinOpen] = useState(false);
   const [tempSearch, setTempSearch] = useState('');
   const [settings, setSettings] = useState();
   const [search, setSearch] = useState();
@@ -29,6 +32,7 @@ function App() {
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const [background, setBackground] = useState();
   const [lastModule, setLastModule] = useState('albums');
+  const [isLocked, setIsLocked] = useState();
 
   useEffect(() => WebFont.load(supportedFonts), []);
 
@@ -83,7 +87,6 @@ function App() {
           backgroundSize: '100% 100%',
         });
       } else {
-        console.log(settings.styles.backgroundColor);
         setBackground({
           background: settings.styles.backgroundColor,
         })
@@ -91,42 +94,73 @@ function App() {
     }
   }, [settings])
 
+  const handlePinAction = (onAuthorized) => {
+    setIsPinOpen(true);
+  }
+
+  useEffect(() => {
+    //setIsPinOpen(true);
+  }, [isLocked])
+
+  const updateFeature = (name, value) => {
+    const deepClone = JSON.parse(JSON.stringify(settings));
+    deepClone.features[name] = value;
+    updateSettings(deepClone).then(() => {
+      window.location.reload();
+    });
+  };
+
   return (
     <>
-      {settings && (
-        <SettingsContext.Provider value={settings}>
+      <SettingsContext.Provider value={settings}>
+        {settings && isPinOpen && (
           <div style={{
             ...background,
             height: window.innerHeight - 60,
           }}>
-            <JukeboxHeader
-              setSelectedLibraries={setSelectedLibraries}
-              selectedLibraries={selectedLibraries}
-              search={search}
-              setSearch={setSearch}
-              setLastModule={setLastModule}
-              lastModule={lastModule}
-            />
-            <Routes>
-              <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} />)} />
-              <Route path="/albums" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} />)} />
-              <Route path="/albums/:id" element={<AlbumDetail />} />
-              <Route path="/albums/categories/:id" element={<AlbumList />} search={search} />
-              <Route path="/filters" element={<Filters selectedLibraries={selectedLibraries} setSelectedLibraries={setSelectedLibraries} />} />
-              <Route path="/playlists" element={<PlaylistsViewer />} />
-              <Route path="/queue" element={<Queue />} />
-              <Route path="/search" element={<Search setSearchText={setSearch} />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/tracks" element={wrapWithKeyboard(<Tracks setSearch={setSearch} search={search} />)} />
-            </Routes>
-            <JukeboxFooter
-              search={search}
-              setSearch={setSearch}
-              nowPlaying={nowPlaying}
+            <PinEntry
+              onAuthorize={() => updateFeature('isLocked', isLocked)}
+              onCancel={() => setIsPinOpen(false)}
             />
           </div>
-        </SettingsContext.Provider>
-      )}
+        )}
+        {settings && !isPinOpen && (
+          <>
+            <div style={{
+              ...background,
+              height: window.innerHeight - 60,
+            }}>
+              <JukeboxHeader
+                setSelectedLibraries={setSelectedLibraries}
+                selectedLibraries={selectedLibraries}
+                search={search}
+                setSearch={setSearch}
+                setLastModule={setLastModule}
+                lastModule={lastModule}
+                setIsLocked={setIsLocked}
+                setIsPinOpen={setIsPinOpen}
+              />
+              <Routes>
+                <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} />)} />
+                <Route path="/albums" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} />)} />
+                <Route path="/albums/:id" element={<AlbumDetail />} />
+                <Route path="/albums/categories/:id" element={<AlbumList />} search={search} />
+                <Route path="/filters" element={<Filters selectedLibraries={selectedLibraries} setSelectedLibraries={setSelectedLibraries} />} />
+                <Route path="/playlists" element={<PlaylistsViewer />} />
+                <Route path="/queue" element={<Queue />} />
+                <Route path="/search" element={<Search setSearchText={setSearch} />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/tracks" element={wrapWithKeyboard(<Tracks setSearch={setSearch} search={search} />)} />
+              </Routes>
+              <JukeboxFooter
+                search={search}
+                setSearch={setSearch}
+                nowPlaying={nowPlaying}
+              />
+            </div>
+          </>
+        )}
+      </SettingsContext.Provider>
     </>
   );
 }

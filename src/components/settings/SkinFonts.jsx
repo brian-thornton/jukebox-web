@@ -41,14 +41,15 @@ const SkinFonts = ({ skin }) => {
     setRealPageSize(numberOfItems);
   }, []);
 
-  useEffect(() => {
-    deleteSkin(skin.name).then(() => {
-      createSkin({
-        name: skin.name,
-        skin: { isEditable: skin.isEditable, name: skin.name, ...colors },
-      }).then(() => { });
-    });
-  }, [colors]);
+  // useEffect(() => {
+  //   alert('debug 4');
+  //   deleteSkin(skin.name).then(() => {
+  //     createSkin({
+  //       name: skin.name,
+  //       skin: { isEditable: skin.isEditable, name: skin.name, ...colors },
+  //     }).then(() => { });
+  //   });
+  // }, [colors]);
 
   const onUpdateFont = (font) => {
     setColors({ ...colors, [editProperty]: font })

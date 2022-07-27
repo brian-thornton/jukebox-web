@@ -58,7 +58,7 @@ const TrackList = ({ tracks }) => {
                 buttons={(
                   <>
                     {settings.features.play && <PlayNowButton track={track} />}
-                    {settings.features.queue && <EnqueueButton track={track} />}
+                    {settings.features.queue && <EnqueueButton mode="Albums" track={track} />}
                     {settings.features.playlists && <AddToPlaylistButton track={track} />}
                     {settings.features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
                   </>
@@ -73,7 +73,7 @@ const TrackList = ({ tracks }) => {
                 buttons={(
                   <>
                     {settings.features.play && <PlayNowButton track={track} />}
-                    {settings.features.queue && <EnqueueButton track={track} />}
+                    {settings.features.queue && <EnqueueButton mode="Albums" track={track} />}
                     {settings.features.playlists && <AddToPlaylistButton track={track} />}
                   </>
                 )}

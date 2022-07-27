@@ -1,8 +1,9 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../layout/SettingsProvider';
+import { applyLighting } from '../../lib/lightingHelper';
 
 import styles from './PlaylistDetail.module.css';
 
@@ -10,6 +11,8 @@ const DeletePlaylist = () => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   
+  useEffect(() => applyLighting(settings, 'Delete'), []);
+
   const noResultsStyle = {
     borderColor: settings.styles.fontColor,
     color: settings.styles.fontColor,

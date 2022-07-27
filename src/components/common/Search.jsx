@@ -4,12 +4,14 @@ import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { PropTypes } from 'prop-types';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import styles from './Search.module.css';
+import { SettingsContext } from '../layout/SettingsProvider';
+import { applyLighting } from '../../lib/lightingHelper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -19,6 +21,7 @@ const propTypes = {
 const Search = ({
   setIsSearchOpen, setSearchText, searchText = 'Enter Search',
 }) => {
+  const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const isScreenSmall = window.innerWidth < 700;
   const [localSearch, setLocalSearch] = useState('');
@@ -32,6 +35,8 @@ const Search = ({
       content={value}
     />
   );
+
+  useEffect(() => applyLighting(settings, 'Search'), []);
 
   const row = content => content.map(char => inputButton(char));
 

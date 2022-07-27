@@ -43,14 +43,10 @@ const SkinGraphics = ({ skin }) => {
     const { name, isEditable, ...colors } = skin;
 
     deleteSkin(updatedSkin.name).then(() => {
-      console.log({
-        name: updatedSkin.name,
-        skin: { [key]: value, ...colors },
-      });
       createSkin({
         name: updatedSkin.name,
         skin: { [key]: value, ...colors },
-      }).then(() => alert('good')).catch((err) => console.log(err));
+      }).then(() => {}).catch((err) => console.log(err));
     });
   };
 

@@ -1,13 +1,16 @@
 import Card from 'react-bootstrap/Card';
-import React, { useContext }  from 'react';
+import React, { useContext, useEffect }  from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './Confirm.module.css';
+import { applyLighting } from '../../lib/lightingHelper';
 
 const Confirm = ({ onConfirm, onCancel, text }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
+
+  useEffect(() => applyLighting(settings, 'Delete'));
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
@@ -16,7 +19,6 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
     height: '100%',
     borderColor: 'black',
     color: settings.styles.fontColor,
-    swidth: '18rem',
   };
 
   return (

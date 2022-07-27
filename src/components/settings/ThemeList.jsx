@@ -75,6 +75,7 @@ const ThemeList = ({ resetControls, setControls }) => {
       deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
       deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
       deepClone.styles.listFont = selectedSkin.listFont;
+      deepClone.lighting = selectedSkin.lighting;
 
       updateSettings(deepClone).then(() => {
         window.location.reload();
@@ -159,13 +160,13 @@ const ThemeList = ({ resetControls, setControls }) => {
     );
   }
 
-  const handleSkinSaveAs = () => {
+  const handleSkinSaveAs = (data) => {
     const {name, isEditable, ...colors} = copySkinBase;
 
     createSkin({
-      name: document.getElementById('name').value,
+      name: data.name,
       skin: {
-        name: document.getElementById('name').value,
+        name: data.name,
         isEditable: true,
         ...colors },
     }).then(() => {
@@ -186,8 +187,9 @@ const ThemeList = ({ resetControls, setControls }) => {
           <AddNew
             title={`Save ${copySkinBase.name} as...`}
             defaultValue={`${copySkinBase.name} Copy`}
+            fields={{name: 'Name'}}
             onCancel={() => setIsSaveAsOpen(false)}
-            onConfirm={handleSkinSaveAs}
+            onConfirm={(data) => handleSkinSaveAs(data)}
           />
         )}
         <Paginator

@@ -86,7 +86,7 @@ const Track = ({
             {settings.features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
             {settings.features.playlists && <AddToPlaylistButton track={track} />}
             {settings.features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
-            {settings.features.queue && <EnqueueButton track={track} isScreenSmall={isScreenSmall} />}
+            {settings.features.queue && <EnqueueButton track={track} mode="Tracks" isScreenSmall={isScreenSmall} />}
             {settings.features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
           </Col>
         </Row>

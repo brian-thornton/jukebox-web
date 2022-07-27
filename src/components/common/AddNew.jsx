@@ -1,35 +1,39 @@
 import Card from 'react-bootstrap/Card';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 
 import Button from '../Button';
 import NameInput from './NameInput';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './AddNew.module.css';
 
-const AddNew = ({ onConfirm, defaultValue, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel' }) => {
+const AddNew = ({ onConfirm, defaultValue, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel', fields = { name: 'Name' } }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
+  const [textValue, setTextValue] = useState();
+  const [fieldValues, setFieldValues] = useState(fields);
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    background: 'transparent',
-    minHeight: '200px',
-    height: '100%',
-    borderColor: 'black',
     color: settings.styles.fontColor,
-    swidth: '18rem',
   };
 
   return (
-    <Card style={confirmStyle}>
+    <Card className={styles.addNewCard} style={confirmStyle}>
       <Card.Body>
         <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
         <Card.Text className={styles.addNewText}>
-          <NameInput onEnter={onConfirm} defaultValue={defaultValue} />
+          {Object.keys(fieldValues).map((f) => <NameInput onChange={(event) => {
+            setFieldValues({
+              ...fieldValues,
+              [f]: event.target.value,
+            })
+
+            setTextValue(event.target.value)
+          }} placeholder={fieldValues[f]} defaultValue={fieldValues[f]} />)}
         </Card.Text>
         <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />
-          <Button onClick={onConfirm} content={confirmText} />
+          <Button onClick={() => onConfirm(fieldValues)} content={confirmText} />
         </div>
       </Card.Body>
     </Card>

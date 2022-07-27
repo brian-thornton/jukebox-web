@@ -1,5 +1,8 @@
 import Card from 'react-bootstrap/Card';
-import React, { useState } from 'react';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import React, { useContext, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import { PropTypes } from 'prop-types';
 
 import { Album } from '../shapes';
@@ -7,7 +10,10 @@ import Button from '../Button';
 import NameInput from '../common/NameInput';
 import Modal from '../common/Modal';
 import { saveCoverArt } from '../../lib/librarian-client';
-import styles from '../styles';
+import styles from './CoverArtSearchModal.module.css';
+import { Container } from 'react-bootstrap';
+import Loading from '../common/Loading';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const albumArt = require('album-art');
 
@@ -22,10 +28,13 @@ const CoverArtSearchModal = ({
   handleClose,
   album,
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState();
   const title = 'Custom Cover Art Search';
   const [query, setQuery] = useState(album.name);
   const saveCoverArtToLibrary = () => saveCoverArt({ album, url: results });
+  const settings = useContext(SettingsContext);
+  const isScreenSmall = window.innerWidth < 700;
 
   const handleResult = (data) => {
     if (data.toString().includes('http')) {
@@ -34,11 +43,18 @@ const CoverArtSearchModal = ({
   };
 
   const handleSearch = () => {
+    setIsLoading(true);
     if (query.includes('-')) {
       const nameArray = query.split('-');
-      albumArt(nameArray[0], { album: nameArray[1] }).then(data => handleResult(data));
+      albumArt(nameArray[0], { album: nameArray[1] }).then(data => {
+        handleResult(data);
+        setIsLoading(false);
+      });
     } else {
-      albumArt(query).then(data => handleResult(data));
+      albumArt(query).then(data => {
+        handleResult(data);
+        setIsLoading(false);
+      });
     }
   };
 
@@ -47,22 +63,33 @@ const CoverArtSearchModal = ({
     handleClose();
   };
 
+  const resultsStyle = {
+    marginTop: isScreenSmall ? '60px' : '0px',
+    color: settings.styles.fontColor,
+  };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      title={title}
-      body={(
-        <>
+    <div style={{ marginTop: '60px' }}>
+      <Container>
+        <Row className={styles.addNewText}>
           <NameInput defaultValue={album.name} onChange={e => setQuery(e.target.value)} />
-          <Button onClick={handleSearch} content="Search" />
-          <Card className="h-55 w-85 album-card-small">
-            <Card.Img style={{ ...styles.albumCardLarge, width: '150px' }} top src={results} />
-          </Card>
-        </>
-      )}
-      onCancel={handleClose}
-      onConfirm={handleSave}
-    />
+        </Row>
+        {!isLoading && results && (
+          <Row className={styles.addNewText}>
+            <Col>
+              <Card className={styles.addNewText} style={resultsStyle}>
+                <Card.Title>Results</Card.Title>
+                <Card.Img style={{ width: '150px' }} top src={results} onClick={handleSave} />
+              </Card>
+            </Col>
+          </Row>
+        )}
+        <Row className={styles.addNewText}>
+          <Button disabled={isLoading} onClick={handleSearch} content="Search" />
+          <Button disabled={isLoading} onClick={handleClose} content="Cancel" />
+        </Row>
+      </Container>
+    </div>
   );
 }
 

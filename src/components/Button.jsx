@@ -21,6 +21,7 @@ const Button = ({
   disabled,
   isToggle,
   isToggled,
+  isSelected,
   height,
   width,
   style,
@@ -39,6 +40,10 @@ const Button = ({
     float: 'right',
   };
 
+  if (isSelected) {
+    buttonStyle.borderColor = '#7CFC00';
+  }
+
   if (isToggle && isToggled) {
     // TODO: Make these colors configurable.
     buttonStyle.background = '#7CFC00';
@@ -48,6 +53,10 @@ const Button = ({
 
   if (width) {
     buttonStyle.minWidth = `${width}px`;
+    buttonStyle.maxWidth = `${width}px`;
+    buttonStyle.overflow = 'hidden';
+    buttonStyle.whiteSpace = 'nowrap';
+    buttonStyle.textOverflow = 'ellipsis';
   }
 
   if (height) {
@@ -66,7 +75,7 @@ Button.propTypes = propTypes;
 
 Button.defaultProps = {
   content: '',
-  icon: <React.Fragment />,
+  icon: <></>,
   disabled: false,
   isToggle: false,
   isToggled: false,

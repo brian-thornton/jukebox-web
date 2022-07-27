@@ -16,6 +16,7 @@ import styles from './SkinDetail.module.css';
 import SkinColors from './SkinColors';
 import SkinFonts from './SkinFonts';
 import SkinGraphics from './SkinGraphics';
+import SkinLights from './SkinLights';
 
 const StyleEditor = ({
   skin,
@@ -53,13 +54,13 @@ const StyleEditor = ({
     });
   };
 
-  const handleSkinSaveAs = () => {
+  const handleSkinSaveAs = (data) => {
     const {name, isEditable, ...colors} = skin;
 
     createSkin({
-      name: document.getElementById('name').value,
+      name: data.name,
       skin: {
-        name: document.getElementById('name').value,
+        name: data.name,
         isEditable: true,
         ...colors },
     }).then(() => setIsSaveAsModalOpen(false));
@@ -71,8 +72,9 @@ const StyleEditor = ({
         <AddNew
           title={`Save ${skin.name} as...`}
           defaultValue={`${skin.name} Copy`}
+          fields={{name: 'Name'}}
           onCancel={() => setIsSaveAsModalOpen(false)}
-          onConfirm={handleSkinSaveAs}
+          onConfirm={(data) => handleSkinSaveAs(data)}
         />
       )}
       {!isSaveAsModalOpen && (
@@ -104,6 +106,9 @@ const StyleEditor = ({
             </Tab>
             <Tab eventKey="graphics" title="Skin Graphics">
               <SkinGraphics skin={skin} />
+            </Tab>
+            <Tab eventKey="lights" title="Skin Lighting">
+              <SkinLights skin={skin} />
             </Tab>
           </Tabs>
         </Card>

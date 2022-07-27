@@ -16,7 +16,7 @@
 }
 
 .itemText {
-  float: left; 
+  float: left !important; 
   margin-top: 10px;
   overflow: hidden;
   white-space: nowrap;

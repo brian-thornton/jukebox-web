@@ -37,6 +37,7 @@ const SkinColors = ({ skin }) => {
     buttonFontWeight: skin.buttonFontWeight,
     trackBackgroundColor: skin.trackBackgroundColor,
     listFont: skin.listFont,
+    lighting: skin.lighting,
   });
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 

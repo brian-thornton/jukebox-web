@@ -3,12 +3,14 @@
   min-height: 200px !important;
   height: 100% !important;
   border-color: black !important;
+  width: 100% !important;
 }
 
 .addNewText {
   align-items: center;
   display: flex; 
   justify-content: center;
+  background: transparent !important;
 }
 
 .addNewTitle {

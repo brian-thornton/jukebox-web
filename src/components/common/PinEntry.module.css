@@ -1,16 +1,16 @@
-.addNewCard {
+.pinCard {
   background: transparent !important;
   min-height: 200px !important;
   height: 100% !important;
   border-color: black !important;
 }
 
-.addNewText {
+.pinText {
   align-items: center;
   display: flex; 
   justify-content: center;
 }
 
-.addNewTitle {
+.pinTitle {
   text-align: center;
 }

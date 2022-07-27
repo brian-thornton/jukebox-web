@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
+import { applyLighting } from '../../lib/lightingHelper';
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
@@ -46,6 +47,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     const itemHeight = 55;
     const viewPortHeight = Math.floor(window.innerHeight - 200);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+    applyLighting(settings, 'Playlists');
   }, []);
 
   const loadPlaylists = () => {

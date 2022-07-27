@@ -22,7 +22,6 @@ const propTypes = {
 const ColorCopy = ({
   skin
 }) => {
-  console.log(skin);
   const [selectedColor, setSelectedColor] = useState();
   const [target, setTarget] = useState();
 
@@ -59,7 +58,6 @@ const ColorCopy = ({
   }
 
   const saveSkin = (name = skin.name) => {
-    console.log(skin);
     skin[target] = skin[selectedColor];
 
     deleteSkin(skin.name).then(() => {

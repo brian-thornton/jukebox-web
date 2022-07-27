@@ -24,6 +24,7 @@ import { toastProps } from '../common/toast-helper';
 import AddNew from '../common/AddNew';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './PlaylistDetail.module.css';
+import { applyLighting } from '../../lib/lightingHelper';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -47,6 +48,12 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     const viewPortHeight = Math.floor(window.innerHeight - 200);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
+
+  useEffect(() => {
+    if (!showDeleteModal) {
+      applyLighting(settings, 'Playlists');
+    }
+  }, [showDeleteModal]);
 
   const loadTracks = (playlistName) => {
     getPlaylist(playlistName).then((playlist) => {
@@ -80,13 +87,11 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     });
   };
 
-  const handleSave = (data) => {
-    if ((typeof data) === 'string') {
-      add({
-        name: data,
-        tracks,
-      });
-    }
+  const handleSave = async (data) => {
+    await add({
+      name: data.name,
+      tracks,
+    })
     setIsSaveAsOpen(false);
     handleBackToPlaylists();
   };
@@ -166,16 +171,27 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
     return (
       <>
-        <ListGroup>
-          {renderTracks}
-        </ListGroup>
-        <Paginator
-          disableRandom
-          onPageChange={(page) => setSelectedPage(page)}
-          selectedPage={selectedPage}
-          totalItems={tracks.length}
-          pageSize={realPageSize}
-        />
+        {isSaveAsOpen && (
+          <AddNew
+            fields={{ name: 'Name' }}
+            onCancel={() => setIsSaveAsOpen(false)}
+            onConfirm={(data) => handleSave(data)}
+          />
+        )}
+        {!isSaveAsOpen && (
+          <>
+            <ListGroup>
+              {renderTracks}
+            </ListGroup>
+            <Paginator
+              disableRandom
+              onPageChange={(page) => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={tracks.length}
+              pageSize={realPageSize}
+            />
+          </>
+        )}
       </>
     );
   };
@@ -218,12 +234,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
                 />
               </Row>
             </Container>
-          )}
-          {isSaveAsOpen && (
-            <AddNew
-              onCancel={() => setIsSaveAsOpen(false)}
-              onConfirm={() => handleSave}
-            />
           )}
         </>
       )}

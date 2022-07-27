@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
 
+import CabinetConfiguration from './CabinetConfiguration';
 import ContentWithControls from '../common/ContentWithControls';
 import ControlButton from '../common/ControlButton';
 import LibraryList from './LibraryList';
-import PinModal from './PinModal';
 import Preferences from './Preferences';
 import SettingsEditor from './SettingsEditor';
 import { SettingsContext } from '../layout/SettingsProvider';
 import ThemeList from './ThemeList';
+import PinEntry from '../common/PinEntry';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -31,6 +32,7 @@ const Settings = () => {
           <ControlButton onClick={() => setMode('SETTINGS')} text="Features" />
           <ControlButton onClick={() => setMode('PREFERENCES')} text="Preferences" />
           <ControlButton onClick={() => setMode('STYLE')} text="Style" />
+          <ControlButton onClick={() => setMode('CABINET')} text="Cabinet Config" />
         </>
       );
     }
@@ -42,11 +44,21 @@ const Settings = () => {
     if (isAuthorized || !settings.preferences.pinEnabled) {
       if (mode === 'LIBRARY') {
         return <LibraryList />;
-      } if (mode === 'SETTINGS') {
+      } 
+      
+      if (mode === 'SETTINGS') {
         return <SettingsEditor />;
-      } if (mode === 'PREFERENCES') {
+      } 
+      
+      if (mode === 'PREFERENCES') {
         return <Preferences />;
-      } if (mode === 'STYLE') {
+      }
+
+      if (mode === 'CABINET') {
+        return <CabinetConfiguration />;
+      }
+      
+      if (mode === 'STYLE') {
         return (
           <ThemeList
             resetControls={() => setControls(leftControls())}
@@ -59,12 +71,6 @@ const Settings = () => {
     return <></>;
   };
 
-  const handleClose = (authorized) => {
-    setIsPinOpen(false);
-    setIsAuthorized(authorized);
-    setModalClosed(true);
-  };
-
   if ((isAuthorized || !settings.preferences.pinEnabled) && !controls) {
     setControls(leftControls());
   }
@@ -73,7 +79,20 @@ const Settings = () => {
     return <ContentWithControls controls={controls} content={content()} />;
   }
 
-  return <PinModal isOpen={isPinOpen} handleClose={handleClose} />;
+  return (!isAuthorized && (
+    <div style={{ marginTop: '60px' }}>
+      <PinEntry
+        onAuthorize={() => {
+          setIsAuthorized(true);
+          setIsPinOpen(false);
+        }}
+        onCancel={() => {
+          setIsAuthorized(false);
+          setIsPinOpen(false);
+        }}
+      />
+    </div>
+  ));
 }
 
 export default Settings;

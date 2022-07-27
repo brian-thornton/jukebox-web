@@ -2,15 +2,17 @@ import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { getTracks, searchTracks } from '../lib/librarian-client';
+import { SettingsContext } from './layout/SettingsProvider';
 import NoResults from './common/NoResults';
 import TrackList from './TrackList';
 import Paginator from './common/Paginator';
 import Loading from './common/Loading';
 import styles from './Tracks.module.css';
+import { applyLighting } from '../lib/lightingHelper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -18,6 +20,7 @@ const propTypes = {
 };
 
 const Tracks = ({ search, setCurrentAlbum }) => {
+  const settings = useContext(SettingsContext);
   const [addTracks, setAddTracks] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
@@ -31,6 +34,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
       const itemHeight = 55;
       const viewPortHeight = Math.floor(window.innerHeight - 200);
       setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+      applyLighting(settings, 'Tracks');
   }, []);
 
   const findTracks = async (start, limit) => {

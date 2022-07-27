@@ -39,7 +39,11 @@ const Album = ({ album, coverArtOnly }) => {
   };
 
   return (
-    <Card className={styles.albumCard} onClick={() => navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } })}>
+    <Card className={styles.albumCard} onClick={() => {
+      if (!settings.features.isLocked) {
+        navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
+      }
+    }}>
       <Card.Img className={styles.albumImage} top src={coverArt} />
       {!coverArtOnly && (
         <Card.Body className={styles.albumCardBody} style={albumNameStyle}>

@@ -3,7 +3,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import ControlButton from '../common/ControlButton';
-import CoverArtSearchModal from './CoverArtSearchModal';
 import { coverArtUrl, saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import { Album } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -13,10 +12,9 @@ const propTypes = {
   album: Album.isRequired,
 };
 
-const AlbumAdminButtons = ({ album }) => {
+const AlbumAdminButtons = ({ album, setIsCustomSearchOpen }) => {
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState('');
-  const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
   const saveCoverArtToLibrary = () => {
     saveCoverArt({ album, url: coverArt });
@@ -44,11 +42,6 @@ const AlbumAdminButtons = ({ album }) => {
           )}
         </>
       )}
-      <CoverArtSearchModal
-        album={album}
-        isOpen={isCustomSearchOpen}
-        handleClose={() => setIsCustomSearchOpen(false)}
-      />
     </>
   );
 }

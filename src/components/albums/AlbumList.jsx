@@ -1,15 +1,17 @@
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
 
+import { applyLighting } from '../../lib/lightingHelper';
 import Album from './Album';
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
+import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './AlbumList.module.css';
 
 const propTypes = {
@@ -17,6 +19,7 @@ const propTypes = {
 };
 
 const AlbumList = ({ search, selectedLibraries }) => {
+  const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadComplete, setLoadComplete] = useState(false);
@@ -36,6 +39,7 @@ const AlbumList = ({ search, selectedLibraries }) => {
     const albumsPerRow = Math.floor(window.innerWidth / 225);
     const numberOfRows = Math.floor((window.innerHeight - 200) / 200);
     setRealPageSize(albumsPerRow * numberOfRows);
+    applyLighting(settings, 'Albums');
   }, []);
 
   const findAlbums = async (start, limit) => {

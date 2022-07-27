@@ -4,9 +4,7 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import Button from '../Button';
 import Item from '../common/Item';
-import Modal from '../common/Modal';
 import Paginator from '../common/Paginator';
 import { supportedFonts } from '../../lib/styleHelper';
 

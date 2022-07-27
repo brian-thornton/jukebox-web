@@ -1,7 +1,7 @@
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
 import AlbumTracks from './AlbumTracks';
+import CoverArtSearchModal from './CoverArtSearchModal';
 import { getAlbumTracks } from '../../lib/librarian-client';
 import styles from './AlbumDetail.module.css';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -25,6 +26,8 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [tracks, setTracks] = useState([]);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
+  const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
+  const [reload, setReload] = useState(false);
   const settings = useContext(SettingsContext);
 
   const loadTracks = () => {
@@ -37,6 +40,16 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     }
   };
 
+  useEffect(() => {
+    if (isCustomSearchOpen) {
+      setReload(true);
+    }
+
+    if (!isCustomSearchOpen && reload) {
+      window.location.reload();
+    }
+  }, [isCustomSearchOpen])
+
   const albumButtons = (
     <Container className={styles.buttonContainer}>
       <>
@@ -45,7 +58,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
           clearCurrentAlbum={clearCurrentAlbum}
           tracks={tracks}
         />
-        <AlbumAdminButtons album={album} />
+        <AlbumAdminButtons album={album} setIsCustomSearchOpen={setIsCustomSearchOpen} />
       </>
     </Container>
   );
@@ -74,7 +87,14 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               </Container>
             </Col>
             <Col lg={9} xl={9}>
-              <AlbumTracks tracks={tracks} />
+              {!isCustomSearchOpen && <AlbumTracks tracks={tracks} />}
+              {isCustomSearchOpen && (
+                <CoverArtSearchModal
+                  album={album}
+                  isOpen={isCustomSearchOpen}
+                  handleClose={() => setIsCustomSearchOpen(false)}
+                />
+              )}
             </Col>
           </Row>
         </>

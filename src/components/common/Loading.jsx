@@ -12,6 +12,7 @@ const Loading = () => {
 
   const loadingInProgressSkin = {
     color: settings.styles.fontColor,
+    width: '100%',
   };
 
   return (

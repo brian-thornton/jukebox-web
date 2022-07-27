@@ -6,6 +6,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 
+import { applyLighting } from '../lib/lightingHelper';
 import Button from './Button';
 import Confirm from './common/Confirm';
 import ControlButton from './common/ControlButton';
@@ -54,6 +55,7 @@ const Queue = () => {
   useEffect(() => {
     const numberOfTracks = Math.floor((window.innerHeight - 200) / 55);
     setRealPageSize(numberOfTracks);
+    applyLighting(settings, 'Queue');
   }, []);
 
   useEffect(loadQueue, [selectedPage]);

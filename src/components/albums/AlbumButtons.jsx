@@ -12,6 +12,7 @@ import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
 import styles from './AlbumButtons.module.css';
 import { SettingsContext } from '../layout/SettingsProvider';
+import { applyLighting } from '../../lib/lightingHelper';
 
 const propTypes = {
   clearCurrentAlbum: PropTypes.func.isRequired,
@@ -50,8 +51,10 @@ const AlbumButtons = ({ tracks }) => {
       </Row>
       <Row>
         {albumButton(() => {
+          applyLighting(settings, 'Enqueue');
           enqueueTracks(tracks);
           toast.success("Added to the queue!", toastProps);
+          setTimeout(() => applyLighting(settings, 'Albums'), 700);
         }, 'Enqueue Album', settings.features.queue)}
         {albumButton(() => {
           navigate('/playlists', { state: { tracks } })
