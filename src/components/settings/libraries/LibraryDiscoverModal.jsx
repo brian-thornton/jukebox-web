@@ -1,8 +1,8 @@
 import { PropTypes } from 'prop-types';
 import React from 'react';
 
-import Modal from '../common/Modal';
-import NameInput from '../common/NameInput';
+import Modal from '../../common/Modal';
+import NameInput from '../../common/NameInput';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,

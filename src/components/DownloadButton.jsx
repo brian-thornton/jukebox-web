@@ -1,5 +1,5 @@
-import { Download } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
+import { Download } from 'react-bootstrap-icons';
 
 import Button from './Button';
 import { downloadTrack } from '../lib/librarian-client';

@@ -5,11 +5,11 @@ import { PropTypes } from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import Button from '../Button';
-import Modal from '../common/Modal';
-import NameInput from '../common/NameInput';
-import { SettingsContext } from '../layout/SettingsProvider';
-import { updateSettings } from '../../lib/settings-client';
+import Button from '../../Button';
+import Modal from '../../common/Modal';
+import NameInput from '../../common/NameInput';
+import { SettingsContext } from '../../layout/SettingsProvider';
+import { updateSettings } from '../../../lib/settings-client';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,

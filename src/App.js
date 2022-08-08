@@ -74,8 +74,6 @@ function App() {
     />
   );
 
-  useEffect(() => console.log(selectedLibraries), [selectedLibraries]);
-
   useEffect(() => {
     if (settings) {
       let bg = settings.styles.backgroundColor;

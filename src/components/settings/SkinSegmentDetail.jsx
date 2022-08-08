@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
-import { getCurrentState, powerOff, powerOn, setEffect } from '../../lib/lighting-client';
+import { getCurrentState } from '../../lib/lighting-client';
 import Segments from './Segments';
 import SegmentColorSelection from './SegmentColorSelection';
 
@@ -23,20 +23,34 @@ const SkinSegmentDetail = ({ controller, skin, event, onCancel, onSave }) => {
     }
   }, []);
 
-  const onConfigure = (segment) => {
-    setConfigSegment(segment);
-  }
-
   return (
     <>
-      {!configSegment && controllerState?.state && <Segments skin={skin} event={event} controller={controller} segments={controllerState.state.seg} allowAdd={false} allowRemove={false} onConfigure={onConfigure} />}
+      {!configSegment && controllerState?.state && (
+        <Segments
+          skin={skin}
+          event={event}
+          controller={controller}
+          segments={controllerState.state.seg}
+          allowAdd={false}
+          allowRemove={false}
+          onConfigure={(segment) => {
+            setConfigSegment(segment)
+          }}
+        />
+      )}
       {`Skin Lighting for controller ${controller.ip} segment ${configSegment?.id} during event ${event}`}
-      {configSegment && <SegmentColorSelection event={event} controller={controller} skin={skin} segment={configSegment} onSaveComplete={() => setConfigSegment(null)} />}
+      {configSegment && (
+        <SegmentColorSelection
+          event={event}
+          controller={controller}
+          skin={skin}
+          segment={configSegment}
+          onSaveComplete={() => setConfigSegment(null)}
+        />
+      )}
       <Button
         style={{ float: 'right', width: '100px' }}
-        onClick={() => {
-          onCancel(null);
-        }}
+        onClick={() => onCancel(null)}
         content="Done"
       />
     </>

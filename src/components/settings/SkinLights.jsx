@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Button from '../Button';
 import LightingControllers from './LightingControllers';
 import SkinSegmentConfiguration from './SkinSegmentConfiguration';
-import { powerOff, powerOn, setEffect } from '../../lib/lighting-client';
 
 const SkinLights = ({ skin }) => {
   const [selectedController, setSelectedController] = useState();
@@ -11,8 +10,7 @@ const SkinLights = ({ skin }) => {
   const buttons = [
     <Button
       style={{ float: 'right', width: '100px' }}
-      onClick={() => {
-      }}
+      onClick={() => {}}
       content="Enabled"
     />
   ]

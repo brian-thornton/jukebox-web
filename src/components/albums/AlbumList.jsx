@@ -22,6 +22,7 @@ const AlbumList = ({ search, selectedLibraries }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [lightingApplied, setLightingApplied] = useState(false);
   const [loadComplete, setLoadComplete] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [lastSearch, setLastSearch] = useState('');
@@ -32,7 +33,7 @@ const AlbumList = ({ search, selectedLibraries }) => {
 
   const { pathname } = window.location;
   if (!category && pathname.includes('/categories')) {
-    category = pathname.slice(window.location.pathname.lastIndexOf("/") + 1 , pathname.length);
+    category = pathname.slice(window.location.pathname.lastIndexOf("/") + 1, pathname.length);
   }
 
   useEffect(() => {
@@ -58,7 +59,7 @@ const AlbumList = ({ search, selectedLibraries }) => {
     });
   };
 
-  const loadAlbums = () => {
+  const loadAlbums = async () => {
     // 1: 0
     // 2: 2 * 12 == 24 - 12 = 12
     // 3: 3 * 12 == 36 - 12 = 24

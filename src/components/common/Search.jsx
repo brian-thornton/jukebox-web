@@ -1,4 +1,3 @@
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
@@ -21,6 +20,7 @@ const propTypes = {
 const Search = ({
   setIsSearchOpen, setSearchText, searchText = 'Enter Search',
 }) => {
+  const [lightingApplied, setLightingApplied] = useState(false);
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const isScreenSmall = window.innerWidth < 700;
@@ -36,7 +36,16 @@ const Search = ({
     />
   );
 
-  useEffect(() => applyLighting(settings, 'Search'), []);
+  // useEffect(() => applyLighting(settings, 'Search'), []);
+
+  const fireLightingEvents = () => {
+    applyLighting(settings, 'Albums');
+    setLightingApplied(true);
+  };
+
+  if (!lightingApplied) {
+    fireLightingEvents();
+  };
 
   const row = content => content.map(char => inputButton(char));
 
@@ -60,23 +69,23 @@ const Search = ({
 
       <Container className={styles.searchContainer}>
         <Row>
-            <FormControl
-              id="name"
-              placeholder={localSearch || ''}
-              aria-label="Name"
-              defaultValue={localSearch}
-              aria-describedby="basic-addon1"
-              onChange={(event) => setLocalSearch(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  setSearchText(localSearch);
-                  navigate('/albums');
-                }
-              }}
-            />
+          <FormControl
+            id="name"
+            placeholder={localSearch || ''}
+            aria-label="Name"
+            defaultValue={localSearch}
+            aria-describedby="basic-addon1"
+            onChange={(event) => setLocalSearch(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                setSearchText(localSearch);
+                navigate('/albums');
+              }
+            }}
+          />
         </Row>
-        <Row styles={{marginTop: '0px', paddingTop: '0px'}}>
-          <Container fluid className={`d-none d-sm-block`} styles={{marginTop: '0px'}}>
+        <Row styles={{ marginTop: '0px', paddingTop: '0px' }}>
+          <Container fluid className={`d-none d-sm-block`} styles={{ marginTop: '0px' }}>
             <Row className={`${styles.keyboardRow}`}>
               {inputButton(1, 60)}
               {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
@@ -104,7 +113,7 @@ const Search = ({
           </Container>
         </Row>
         <Row className={styles.keyboardRow}>
-        <Button className={styles.keyboardRow} width="150" height="55" onClick={() => {
+          <Button className={styles.keyboardRow} width="150" height="55" onClick={() => {
             setSearchText(localSearch);
             navigate('/albums');
           }} content="Search Albums" />

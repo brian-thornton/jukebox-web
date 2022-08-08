@@ -6,8 +6,6 @@ import Row from 'react-bootstrap/Row';
 
 import Button from '../Button';
 import Item from '../common/Item';
-import LightingControllers from './LightingControllers';
-import { powerOff, powerOn, setEffect } from '../../lib/lighting-client';
 import styles from './SkinSegmentConfiguration.module.css';
 import SkinSegmentDetail from './SkinSegmentDetail';
 
@@ -51,6 +49,7 @@ const SkinSegmentConfiguration = ({ skin, controller }) => {
                   {eventRow('Settings')}
                   {eventRow('Delete')}
                   {eventRow('Enqueue')}
+                  {eventRow('Loading')}
                   {eventRow('Search')}
                   {eventRow('Lock')}
                 </ListGroup>
@@ -70,7 +69,12 @@ const SkinSegmentConfiguration = ({ skin, controller }) => {
         </Container>
       )}
       {isDetailOpen && (
-        <SkinSegmentDetail skin={skin} event={selectedEvent} controller={controller} onCancel={() => setIsDetailOpen(false)} />
+        <SkinSegmentDetail
+          skin={skin}
+          event={selectedEvent}
+          controller={controller}
+          onCancel={() => setIsDetailOpen(false)}
+        />
       )}
     </>
   );

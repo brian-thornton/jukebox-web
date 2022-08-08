@@ -3,7 +3,6 @@ import Form from 'react-bootstrap/Form';
 import React, { useContext } from 'react';
 
 import Button from '../Button';
-import NameInput from './NameInput';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './AddNew.module.css';
 

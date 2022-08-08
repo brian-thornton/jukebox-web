@@ -158,10 +158,33 @@ const card = (settings) => {
   };
 };
 
+const deepCloneSkin = (settings, selectedSkin) => {
+  const deepClone = JSON.parse(JSON.stringify(settings));
+  deepClone.styles.headerColor = selectedSkin.headerColor;
+  deepClone.styles.headerFont = selectedSkin.headerFont;
+  deepClone.styles.footerColor = selectedSkin.footerColor;
+  deepClone.styles.footerFont = selectedSkin.footerFont;
+  deepClone.styles.fontColor = selectedSkin.fontColor;
+  deepClone.styles.fontWeight = selectedSkin.fontWeight;
+  deepClone.styles.backgroundColor = selectedSkin.backgroundColor;
+  deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
+  deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
+  deepClone.styles.buttonFont = selectedSkin.buttonFont;
+  deepClone.styles.controlButtonBackgroundColor = selectedSkin.controlButtonBackgroundColor;
+  deepClone.styles.controlButtonFont = selectedSkin.controlButtonFont;
+  deepClone.styles.buttonFontColor = selectedSkin.buttonFontColor;
+  deepClone.styles.buttonFontWeight = selectedSkin.buttonFontWeight;
+  deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
+  deepClone.styles.listFont = selectedSkin.listFont;
+  deepClone.lighting = selectedSkin.lighting;
+  return deepClone;
+}
+
 export {
   buttonProps,
   card,
   controlButtonProps,
+  deepCloneSkin,
   disabledButton,
   enabledButton,
   modalBodyStyle,

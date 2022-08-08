@@ -7,9 +7,7 @@ import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { deleteSkin, createSkin } from '../../lib/style-client';
-import Item from '../common/Item';
 import { Colors } from '../shapes';
-import styles from '../styles';
 import Button from '../Button';
 
 const propTypes = {
@@ -68,33 +66,33 @@ const ColorCopy = ({
     });
   };
 
+  const toWords = (text) => {
+    const result = text.replace(/([A-Z])/g, " $1");
+    return result.charAt(0).toUpperCase() + result.slice(1);
+  };
+
+  const sourceColor = (name) => {
+    return <ListGroupItem onClick={() => setSelectedColor(name)} style={sourceStyle(name)}>{toWords(name)}</ListGroupItem>
+  };
+
+  const targetColor = (name) => {
+    return <ListGroupItem onClick={() => setTarget(name)} style={targetStyle(name)}>{toWords(name)}</ListGroupItem>
+  };
+
+  const colors = ['headerColor', 'footerColor', 'fontColor', 'backgroundColor', 'buttonBackgroundColor', 'buttonFontColor',
+    'controlButtonBackgroundColor', 'controlButtonFontColor', 'trackBackgroundColor'];
+
   return (
     <Container fluid>
       <Row>
         <Col>
           <ListGroup>
-            <ListGroupItem onClick={() => setSelectedColor('headerColor')} style={sourceStyle('headerColor')}>Header Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('footerColor')} style={sourceStyle('footerColor')}>Footer Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('fontColor')} style={sourceStyle('fontColor')}>Font Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('backgroundColor')} style={sourceStyle('backgroundColor')}>Background Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('buttonBackgroundColor')} style={sourceStyle('buttonBackgroundColor')}>Button Background Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('buttonFontColor')} style={sourceStyle('buttonFontColor')}>Button Font Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('controlButtonBackgroundColor')} style={sourceStyle('controlButtonBackgroundColor')}>Control Button Background Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('controlButtonFontColor')} style={sourceStyle('controlButtonFontColor')}>Control Button Font Color</ListGroupItem>
-            <ListGroupItem onClick={() => setSelectedColor('trackBackgroundColor')} style={sourceStyle('trackBackgroundColor')}>Track Background Color</ListGroupItem>
+            {colors.map((c) => sourceColor(c))}
           </ListGroup>
         </Col>
         <Col>
           <ListGroup>
-            <ListGroupItem onClick={() => setTarget('headerColor')} style={targetStyle('headerColor')}>Header Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('footerColor')} style={targetStyle('footerColor')}>Footer Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('fontColor')} style={targetStyle('fontColor')}>Font Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('backgroundColor')} style={targetStyle('backgroundColor')}>Background Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('buttonBackgroundColor')} style={targetStyle('buttonBackgroundColor')}>Button Background Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('buttonFontColor')} style={targetStyle('buttonFontColor')}>Button Font Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('controlButtonBackgroundColor')} style={targetStyle('controlButtonBackgroundColor')}>Control Button Background Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('controlButtonFontColor')} style={targetStyle('controlButtonFontColor')}>Control Button Font Color</ListGroupItem>
-            <ListGroupItem onClick={() => setTarget('trackBackgroundColor')} style={targetStyle('trackBackgroundColor')}>Track Background Color</ListGroupItem>
+          {colors.map((c) => targetColor(c))}
           </ListGroup>
         </Col>
       </Row>
@@ -102,7 +100,6 @@ const ColorCopy = ({
         <Button content="Save" onClick={() => saveSkin()} />
       </Row>
     </Container>
-
   );
 }
 

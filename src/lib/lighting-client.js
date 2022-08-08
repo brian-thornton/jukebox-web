@@ -1,4 +1,4 @@
-import { getData, page, post } from './service-helper';
+import { getData, page, post, postParams } from './service-helper';
 
 const path = '/lighting';
 
@@ -24,6 +24,14 @@ export const powerOff = (ip) => {
 
 export const setEffect = (ip, effect, palette, start, stop) => {
   return getData(`${path}/setEffect?ip=${ip}&effect=${effect}&palette=${palette}&start=${start}&stop=${stop}`);
+};
+
+export const demoEffect = (ip, effect, palette, start, stop) => {
+  return getData(`${path}/demoEffect?ip=${ip}&effect=${effect}&palette=${palette}&start=${start}&stop=${stop}`);
+};
+
+export const applyEventSegments = (ip, eventSegments) => {
+  return post(`${path}/applyEventSegments?ip=${ip}`, postParams({ eventSegments }));
 };
 
 export const setSolidColor = (ip, rgbColor, start, stop) => {

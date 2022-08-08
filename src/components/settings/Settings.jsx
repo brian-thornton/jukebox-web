@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import CabinetConfiguration from './CabinetConfiguration';
 import ContentWithControls from '../common/ContentWithControls';
 import ControlButton from '../common/ControlButton';
-import LibraryList from './LibraryList';
-import Preferences from './Preferences';
+import Libraries from './libraries/Libraries';
+import Preferences from './preferences/Preferences';
 import SettingsEditor from './SettingsEditor';
 import { SettingsContext } from '../layout/SettingsProvider';
-import ThemeList from './ThemeList';
+import Skins from './Skins';
 import PinEntry from '../common/PinEntry';
+import { applyLighting } from '../../lib/lightingHelper';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -17,6 +18,8 @@ const Settings = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
   const [controls, setControls] = useState(null);
+
+  useEffect(() => applyLighting(settings, 'Settings'), []);
 
   if (settings) {
     if (settings.preferences.pinEnabled && !isAuthorized && !isPinOpen && !modalClosed) {
@@ -42,30 +45,20 @@ const Settings = () => {
 
   const content = () => {
     if (isAuthorized || !settings.preferences.pinEnabled) {
-      if (mode === 'LIBRARY') {
-        return <LibraryList />;
-      } 
-      
-      if (mode === 'SETTINGS') {
-        return <SettingsEditor />;
-      } 
-      
-      if (mode === 'PREFERENCES') {
-        return <Preferences />;
-      }
-
-      if (mode === 'CABINET') {
-        return <CabinetConfiguration />;
-      }
-      
-      if (mode === 'STYLE') {
-        return (
-          <ThemeList
-            resetControls={() => setControls(leftControls())}
-            setControls={setControls}
-          />
-        );
-      }
+      return (
+        <>
+          {mode === 'LIBRARY' && <Libraries />}
+          {mode === 'SETTINGS' && <SettingsEditor />}
+          {mode === 'PREFERENCES' && <Preferences />}
+          {mode === 'CABINET' && <CabinetConfiguration />}
+          {mode === 'STYLE' && (
+            <Skins
+              resetControls={() => setControls(leftControls())}
+              setControls={setControls}
+            />
+          )}
+        </>
+      );
     }
 
     return <></>;

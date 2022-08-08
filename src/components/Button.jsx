@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
+import React, { useContext } from 'react';
 import { Button as ReactButton } from 'react-bootstrap';
+
 import { SettingsContext } from './layout/SettingsProvider';
 
 const propTypes = {

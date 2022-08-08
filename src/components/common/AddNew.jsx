@@ -6,10 +6,9 @@ import NameInput from './NameInput';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './AddNew.module.css';
 
-const AddNew = ({ onConfirm, defaultValue, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel', fields = { name: 'Name' } }) => {
+const AddNew = ({ onConfirm, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel', fields = { name: 'Name' } }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
-  const [textValue, setTextValue] = useState();
   const [fieldValues, setFieldValues] = useState(fields);
 
   const confirmStyle = {
@@ -22,14 +21,18 @@ const AddNew = ({ onConfirm, defaultValue, onCancel, title = 'Add', confirmText 
       <Card.Body>
         <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
         <Card.Text className={styles.addNewText}>
-          {Object.keys(fieldValues).map((f) => <NameInput onChange={(event) => {
-            setFieldValues({
-              ...fieldValues,
-              [f]: event.target.value,
-            })
-
-            setTextValue(event.target.value)
-          }} placeholder={fieldValues[f]} defaultValue={fieldValues[f]} />)}
+          {Object.keys(fieldValues).map((f) => (
+            <NameInput
+              onChange={(event) => {
+                setFieldValues({
+                  ...fieldValues,
+                  [f]: event.target.value,
+                })
+              }}
+              placeholder={fieldValues[f]}
+              defaultValue={fieldValues[f]}
+            />
+          ))}
         </Card.Text>
         <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />

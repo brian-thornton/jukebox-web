@@ -1,18 +1,12 @@
 
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import ColorCopy from './ColorCopy';
 import Item from '../common/Item';
-import { SettingsContext } from '../layout/SettingsProvider';
-import ColorPicker from './ColorPicker';
 import Button from '../Button';
-import Paginator from '../common/Paginator';
 import styles from './SkinDetail.module.css';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import FilePicker from '../common/FilePicker';
@@ -20,8 +14,6 @@ import FilePicker from '../common/FilePicker';
 const SkinGraphics = ({ skin }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState();
   const [imageKey, setImageKey] = useState();
-  const settings = useContext(SettingsContext);
-  const { preferences } = settings;
 
   const imageUpload = (e) => {
     const file = e.target.files[0];

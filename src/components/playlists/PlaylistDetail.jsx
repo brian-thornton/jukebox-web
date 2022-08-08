@@ -1,30 +1,23 @@
-import { ArrowLeft, CaretRightFill, CaretDownFill, CaretUpFill, TrashFill, ListOl, Shuffle, Save, XLg } from 'react-bootstrap-icons';
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Container, Row, ListGroup } from 'react-bootstrap';
-import { toast } from 'react-toastify';
 
 import Confirm from '../common/Confirm';
 import Paginator from '../common/Paginator';
-import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
 import {
-  addTrackAtPosition,
   getPlaylist,
   deletePlaylist,
   add,
-  removeTracksFromPlaylist,
 } from '../../lib/playlist-client';
-import Button from '../Button';
-import ControlButton from '../common/ControlButton';
 import ContentWithControls from '../common/ContentWithControls';
 import NoResults from '../common/NoResults';
-import PlayNowButton from '../PlayNowButton';
 import Item from '../common/Item';
-import { toastProps } from '../common/toast-helper';
 import AddNew from '../common/AddNew';
 import { SettingsContext } from '../layout/SettingsProvider';
 import styles from './PlaylistDetail.module.css';
 import { applyLighting } from '../../lib/lightingHelper';
+import PlaylistControls from './PlaylistControls';
+import PlaylistButtons from './PlaylistButtons';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -67,26 +60,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     });
   };
 
-  const runPlaylist = () => {
-    enqueueTracksTop(tracks).then(() => toast.success("Playlist added to queue!", toastProps));
-    play();
-  };
-
-  const enqueuePlaylist = () => {
-    enqueueTracks(tracks);
-  };
-
-  const shuffle = () => {
-    deletePlaylist(name).then(() => {
-      const newOrder = tracks.sort(() => Math.random() - 0.5);
-
-      add({
-        name,
-        tracks: newOrder,
-      }).then(() => loadTracks(name));
-    });
-  };
-
   const handleSave = async (data) => {
     await add({
       name: data.name,
@@ -96,35 +69,12 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     handleBackToPlaylists();
   };
 
-  const deleteTrack = (trackName, track) => {
-    removeTracksFromPlaylist(trackName, [track]);
-    loadTracks(name);
-  };
-
   if (!isEmpty && !tracks.length) {
     loadTracks(name);
   }
 
-  const onMoveTrackUp = (trackToMove, index) => {
-    removeTracksFromPlaylist(name, [trackToMove]);
-    addTrackAtPosition(name, trackToMove, index - 1);
-    loadTracks(name);
-  };
-
-  const onMoveTrackDown = (trackToMove, index) => {
-    removeTracksFromPlaylist(name, [trackToMove]).then(() => {
-      addTrackAtPosition(name, trackToMove, index + 1);
-      loadTracks(name);
-    });
-  };
-
   const buttons = (track, index) => (
-    <>
-      <PlayNowButton track={track} />
-      <Button onClick={() => deleteTrack(name, track)} icon={<TrashFill />} />
-      <Button icon={<CaretUpFill />} onClick={() => onMoveTrackUp(track, index)} />
-      <Button icon={<CaretDownFill />} onClick={() => onMoveTrackDown(track, index)} />
-    </>
+    <PlaylistButtons name={name} track={track} index={index} reloadTracks={loadTracks} />
   );
 
   if (tracks) {
@@ -142,25 +92,31 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     });
   };
 
-  const controls = () => (
-    <>
-      <ControlButton disabled={showDeleteModal} onClick={handleBackToPlaylists} text="Back to Playlists" />
-      {settings.features.play && <ControlButton disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run Playlist" />}
-      {settings.features.queue && <ControlButton disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue Playlist" />}
-      <ControlButton disabled={showDeleteModal || isEmpty} onClick={shuffle} text="Shuffle Playlist" />
-      <ControlButton disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} text="Save As..." />
-      {settings.features.deletePlaylist && <ControlButton disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />}
-    </>
+  const controls = (
+    <PlaylistControls
+      name={name}
+      tracks={tracks}
+      handleBackToPlaylists={handleBackToPlaylists}
+      setIsSaveAsOpen={setIsSaveAsOpen}
+      setShowDeleteModal={setShowDeleteModal}
+      reloadTracks={loadTracks}
+      isEmpty={isEmpty}
+      showDeleteModal={showDeleteModal}
+    />
   );
 
-  const smallControls = () => (
+  const playlistTracks = (
     <>
-      <Button disabled={showDeleteModal} onClick={handleBackToPlaylists} icon={<ArrowLeft />} />
-      {settings.features.play && <Button disabled={showDeleteModal || isEmpty} onClick={runPlaylist} icon={<CaretRightFill />} />}
-      {settings.features.queue && <Button disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} icon={<ListOl />} />}
-      <Button disabled={showDeleteModal || isEmpty} onClick={shuffle} icon={<Shuffle />} />
-      <Button disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} icon={<Save />} />
-      <Button disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} icon={<XLg />} />
+      <ListGroup>
+        {renderTracks}
+      </ListGroup>
+      <Paginator
+        disableRandom
+        onPageChange={(page) => setSelectedPage(page)}
+        selectedPage={selectedPage}
+        totalItems={tracks.length}
+        pageSize={realPageSize}
+      />
     </>
   );
 
@@ -178,20 +134,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
             onConfirm={(data) => handleSave(data)}
           />
         )}
-        {!isSaveAsOpen && (
-          <>
-            <ListGroup>
-              {renderTracks}
-            </ListGroup>
-            <Paginator
-              disableRandom
-              onPageChange={(page) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={tracks.length}
-              pageSize={realPageSize}
-            />
-          </>
-        )}
+        {!isSaveAsOpen && playlistTracks}
       </>
     );
   };
@@ -210,29 +153,16 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
         <>
           {!isScreenSmall && (
             <ContentWithControls
-              controls={controls()}
+              controls={controls}
               content={content()}
             />
           )}
           {isScreenSmall && (
             <Container style={{ marginBottom: '60px' }}>
               <Row>
-                {smallControls()}
+                {controls}
               </Row>
-              <Row>
-                <ListGroup>
-                  {renderTracks}
-                </ListGroup>
-              </Row>
-              <Row className={styles.detailRow}>
-                <Paginator
-                  disableRandom
-                  onPageChange={(page) => setSelectedPage(page)}
-                  selectedPage={selectedPage}
-                  totalItems={tracks.length}
-                  pageSize={realPageSize}
-                />
-              </Row>
+              {playlistTracks}
             </Container>
           )}
         </>
@@ -241,7 +171,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
         <>
           {!isScreenSmall && (
             <ContentWithControls
-              controls={controls()}
+              controls={controls}
               content={confirm}
             />
           )}

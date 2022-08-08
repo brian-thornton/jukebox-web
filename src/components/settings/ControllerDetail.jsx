@@ -15,8 +15,6 @@ const ControllerDetail = ({ controller }) => {
     const updatedController = deepClone.controllers?.find((c) => c.ip === controller.ip);
     let saveUpdate = false;
 
-    const segmentsMissingFromSettings = [];
-
     data.state.seg.map((s) => {
       if (!updatedController.segments.find((q) => q.start.toString() === s.start.toString() && q.stop.toString() === s.stop.toString())) {
         saveUpdate = true;
@@ -39,7 +37,7 @@ const ControllerDetail = ({ controller }) => {
   const loadState = async () => {
     getCurrentState(controller.ip).then(data => {
       setControllerState(data)
-      updateSettingsToMatchController(data);
+      // updateSettingsToMatchController(data);
       // Update controller in master settings here.
 
 

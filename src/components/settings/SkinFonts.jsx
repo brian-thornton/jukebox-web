@@ -9,7 +9,6 @@ import FontModal from './FontModal';
 import Button from '../Button';
 import Paginator from '../common/Paginator';
 import styles from './SkinDetail.module.css';
-import { deleteSkin, createSkin } from '../../lib/style-client';
 
 const SkinFonts = ({ skin }) => {
   const [selectedPage, setSelectedPage] = useState(1);
@@ -35,21 +34,10 @@ const SkinFonts = ({ skin }) => {
     listFont: skin.listFont,
   });
 
-
   useEffect(() => {
     const numberOfItems = Math.floor((window.innerHeight - 200) / 50);
     setRealPageSize(numberOfItems);
   }, []);
-
-  // useEffect(() => {
-  //   alert('debug 4');
-  //   deleteSkin(skin.name).then(() => {
-  //     createSkin({
-  //       name: skin.name,
-  //       skin: { isEditable: skin.isEditable, name: skin.name, ...colors },
-  //     }).then(() => { });
-  //   });
-  // }, [colors]);
 
   const onUpdateFont = (font) => {
     setColors({ ...colors, [editProperty]: font })

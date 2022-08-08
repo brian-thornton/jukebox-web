@@ -1,5 +1,5 @@
 import { PlusSquare } from 'react-bootstrap-icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -12,7 +12,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew';
 import { updateSettings } from '../../lib/settings-client';
 import styles from './LightingControllers.module.css';
-import { discover } from '../../lib/lighting-client';
+import { discover, createSegment, getCurrentState } from '../../lib/lighting-client';
 import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
 
@@ -33,6 +33,12 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     });
   }
 
+  const saveSettings = (updatedSettings) => {
+    updateSettings(updatedSettings).then(() => {
+      window.location.reload();
+    });
+  };
+
   const onControllerAdd = async (name, ip) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
 
@@ -52,18 +58,14 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
       ];
     }
 
-    updateSettings(deepClone).then(() => {
-      window.location.reload();
-    });
+    saveSettings(deepClone);
   };
 
   const onControllerRemove = (ip) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.controllers = deepClone.controllers.filter((f) => f.ip !== ip);
 
-    updateSettings(deepClone).then(() => {
-      window.location.reload();
-    });
+    saveSettings(deepClone);
   };
 
   const onSetName = async (controller) => {
@@ -76,9 +78,15 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
       updatedController.name = updatedControllerName;
     }
 
-    updateSettings(deepClone).then(() => {
-      window.location.reload();
-    });
+    saveSettings(deepClone);
+  };
+
+  const pushSegmentsFromMetadata = async (controller) => {
+    if (controller.segments) {
+      for (const segment of controller.segments) {
+        await createSegment(controller.ip, segment.start, segment.stop);
+      }
+    }
   };
 
   const controllerRow = (controller) => {
@@ -117,6 +125,13 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                     onSetName(controller);
                   }}
                   content="Save"
+                />
+                <Button
+                  style={{ float: 'right', width: '100px' }}
+                  onClick={() => {
+                    pushSegmentsFromMetadata(controller);
+                  }}
+                  content="Push Segments"
                 />
               </>
             )}
@@ -173,7 +188,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
             title="Add New Lighting Controller"
             defaultValue="IP Address"
             onCancel={() => setIsAddOpen(false)}
-            fields={{name: 'Name', ip: 'ip'}}
+            fields={{ name: 'Name', ip: 'ip' }}
             onConfirm={(data) => onControllerAdd(data.name, data.ip)}
           />
         </>

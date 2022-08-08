@@ -2,17 +2,14 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import React, { useContext, useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
 import { PropTypes } from 'prop-types';
 
 import { Album } from '../shapes';
 import Button from '../Button';
 import NameInput from '../common/NameInput';
-import Modal from '../common/Modal';
 import { saveCoverArt } from '../../lib/librarian-client';
 import styles from './CoverArtSearchModal.module.css';
 import { Container } from 'react-bootstrap';
-import Loading from '../common/Loading';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const albumArt = require('album-art');

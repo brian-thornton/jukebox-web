@@ -1,10 +1,8 @@
 import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/'
 import React from "react";
 import Row from 'react-bootstrap/Row';
 
 import LightingControllers from './LightingControllers';
-import NameInput from '../common/NameInput';
 
 const CabinetConfiguration = ({ }) => {
   return (
