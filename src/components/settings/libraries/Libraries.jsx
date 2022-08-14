@@ -13,12 +13,12 @@ import {
 
 import Button from '../../Button';
 import LibraryAdd from './LibraryAdd';
-import LibraryDiscoverModal from './LibraryDiscoverModal';
 import NoResults from '../../common/NoResults';
 import styles from './Libraries.module.css';
 import LibraryInfoAndGlobalControls from './LibraryInfoAndGlobalControls';
 import LibraryList from './LibraryList';
 import Categories from './Categories';
+import Discover from './Discover';
 
 const Libraries = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -124,8 +124,8 @@ const Libraries = () => {
 
   return (
     <>
-      {!show && !isCategoryConfigOpen && isLoading && <Loading />}
-      {!show && !isCategoryConfigOpen && !isLoading && !libraries.length && (
+      {!showDiscover && !show && !isCategoryConfigOpen && isLoading && <Loading />}
+      {!showDiscover && !show && !isCategoryConfigOpen && !isLoading && !libraries.length && (
         <NoResults
           className={styles.fullWidth}
           title="No Libraries"
@@ -133,7 +133,7 @@ const Libraries = () => {
           controls={noResultsButtons}
         />
       )}
-      {!show && !isCategoryConfigOpen && !isLoading && libraries.length && (
+      {!showDiscover && !show && !isCategoryConfigOpen && !isLoading && libraries.length && (
         <>
           <LibraryInfoAndGlobalControls
             onScanAll={onScanAll}
@@ -152,16 +152,15 @@ const Libraries = () => {
           />
         </>
       )}
-      {!isCategoryConfigOpen && show && (
+      {!showDiscover && !isCategoryConfigOpen && show && (
         <LibraryAdd
           setShow={setShow}
           handleHide={() => setShow(false)}
           handleSave={(category) => handleClose(document.getElementById('name').value, category)}
         />
       )}
-      {!isCategoryConfigOpen && !show && (
-        <LibraryDiscoverModal
-          isOpen={showDiscover}
+      {!isCategoryConfigOpen && showDiscover && !show && (
+        <Discover
           handleHide={() => setShowDiscover(false)}
           handleSave={() => handleCloseDiscover(document.getElementById('name').value)}
         />

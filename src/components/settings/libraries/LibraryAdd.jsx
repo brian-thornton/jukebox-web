@@ -7,7 +7,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import Button from '../../Button';
-import Modal from '../../common/Modal';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { updateSettings } from '../../../lib/settings-client';
@@ -20,9 +19,7 @@ const propTypes = {
 };
 
 const LibraryAdd = ({
-  isOpen,
   setShow,
-  handleHide,
   handleSave,
 }) => {
   const settings = useContext(SettingsContext);
