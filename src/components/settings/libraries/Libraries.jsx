@@ -12,12 +12,13 @@ import {
 } from '../../../lib/librarian-client';
 
 import Button from '../../Button';
-import LibraryAddModal from './LibraryAddModal';
+import LibraryAdd from './LibraryAdd';
 import LibraryDiscoverModal from './LibraryDiscoverModal';
 import NoResults from '../../common/NoResults';
 import styles from './Libraries.module.css';
 import LibraryInfoAndGlobalControls from './LibraryInfoAndGlobalControls';
 import LibraryList from './LibraryList';
+import Categories from './Categories';
 
 const Libraries = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +28,7 @@ const Libraries = () => {
   const [showDiscover, setShowDiscover] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [currentScan, setCurrentScan] = useState();
+  const [isCategoryConfigOpen, setIsCategoryConfigOpen] = useState(false);
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
 
@@ -122,8 +124,8 @@ const Libraries = () => {
 
   return (
     <>
-      {isLoading && <Loading />}
-      {!isLoading && !libraries.length && (
+      {!show && !isCategoryConfigOpen && isLoading && <Loading />}
+      {!show && !isCategoryConfigOpen && !isLoading && !libraries.length && (
         <NoResults
           className={styles.fullWidth}
           title="No Libraries"
@@ -131,7 +133,7 @@ const Libraries = () => {
           controls={noResultsButtons}
         />
       )}
-      {!isLoading && libraries.length && (
+      {!show && !isCategoryConfigOpen && !isLoading && libraries.length && (
         <>
           <LibraryInfoAndGlobalControls
             onScanAll={onScanAll}
@@ -141,12 +143,30 @@ const Libraries = () => {
             currentScan={currentScan}
             totalTracks={totalTracks}
             isScanning={isScanning}
+            setIsCategoryConfigOpen={setIsCategoryConfigOpen}
           />
-          <LibraryList libraries={libraries} reloadLibraries={loadLibraries} setCurrentScan={setCurrentScan} />
+          <LibraryList
+            libraries={libraries}
+            reloadLibraries={loadLibraries}
+            setCurrentScan={setCurrentScan}
+          />
         </>
       )}
-      <LibraryAddModal isOpen={show} handleHide={() => setShow(false)} handleSave={(category) => handleClose(document.getElementById('name').value, category)} />
-      <LibraryDiscoverModal isOpen={showDiscover} handleHide={() => setShowDiscover(false)} handleSave={() => handleCloseDiscover(document.getElementById('name').value)} />
+      {!isCategoryConfigOpen && show && (
+        <LibraryAdd
+          setShow={setShow}
+          handleHide={() => setShow(false)}
+          handleSave={(category) => handleClose(document.getElementById('name').value, category)}
+        />
+      )}
+      {!isCategoryConfigOpen && !show && (
+        <LibraryDiscoverModal
+          isOpen={showDiscover}
+          handleHide={() => setShowDiscover(false)}
+          handleSave={() => handleCloseDiscover(document.getElementById('name').value)}
+        />
+      )}
+      {isCategoryConfigOpen && <Categories />}
     </>
   );
 }

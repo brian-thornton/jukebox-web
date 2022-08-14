@@ -38,7 +38,7 @@ const SegmentRowInfo = ({ segment, controller, skin, event, onConfigure, isOnCon
         <>
           <Button content="Configure" onClick={() => onConfigure(segment)} />
           {!isOnController && <Button content="Push to Controller" onClick={() => pushSegment(segment) } />}
-          {isOnController && <Button content="Remove from Controller" onClick={() => removeRemoteSegment(segment)} />}
+          {isOnController && !onConfigure && <Button content="Remove from Controller" onClick={() => removeRemoteSegment(segment)} />}
         </>
       }
     />

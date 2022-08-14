@@ -7,14 +7,6 @@ import SkinSegmentConfiguration from './SkinSegmentConfiguration';
 const SkinLights = ({ skin }) => {
   const [selectedController, setSelectedController] = useState();
 
-  const buttons = [
-    <Button
-      style={{ float: 'right', width: '100px' }}
-      onClick={() => {}}
-      content="Enabled"
-    />
-  ]
-
   const onConfigure = (controller) => {
     setSelectedController(controller);
   };
@@ -25,7 +17,6 @@ const SkinLights = ({ skin }) => {
       <LightingControllers
         allowAdd={false}
         allowRemove={false}
-        buttons={buttons}
         skin={skin}
         onConfigure={onConfigure}
         allowName={false}

@@ -119,20 +119,24 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                   }}
                   content="Configure"
                 />
-                <Button
-                  style={{ float: 'right', width: '100px' }}
-                  onClick={() => {
-                    onSetName(controller);
-                  }}
-                  content="Save"
-                />
-                <Button
-                  style={{ float: 'right', width: '100px' }}
-                  onClick={() => {
-                    pushSegmentsFromMetadata(controller);
-                  }}
-                  content="Push Segments"
-                />
+                {!skin && (
+                  <Button
+                    style={{ float: 'right', width: '100px' }}
+                    onClick={() => {
+                      onSetName(controller);
+                    }}
+                    content="Save"
+                  />
+                )}
+                {!skin && (
+                  <Button
+                    style={{ float: 'right', width: '100px' }}
+                    onClick={() => {
+                      pushSegmentsFromMetadata(controller);
+                    }}
+                    content="Push Segments"
+                  />
+                )}
               </>
             )}
             {buttons?.length && buttons.map((b) => b)}

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import CabinetConfiguration from './CabinetConfiguration';
 import ContentWithControls from '../common/ContentWithControls';
@@ -18,8 +19,15 @@ const Settings = () => {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
   const [controls, setControls] = useState(null);
+  const [searchParams] = useSearchParams();
 
-  useEffect(() => applyLighting(settings, 'Settings'), []);
+  useEffect(() => {
+    if (searchParams.get('mode')) {
+      setMode(searchParams.get('mode').toUpperCase());
+    }
+
+    applyLighting(settings, 'Settings');
+  }, []);
 
   if (settings) {
     if (settings.preferences.pinEnabled && !isAuthorized && !isPinOpen && !modalClosed) {

@@ -180,6 +180,14 @@ const deepCloneSkin = (settings, selectedSkin) => {
   return deepClone;
 }
 
+const pageSize = (type) => {
+  if (type === 'item') {
+    const itemHeight = 55;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    return Math.floor(viewPortHeight / itemHeight);
+  }
+};
+
 export {
   buttonProps,
   card,
@@ -192,4 +200,5 @@ export {
   modalHeaderStyle,
   modalTitleStyle,
   supportedFonts,
+  pageSize,
 }
