@@ -1,13 +1,14 @@
 import { PropTypes } from 'prop-types';
 import React, { useState, useEffect, useContext } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import AddNew from '../common/AddNew';
-import { createSkin } from '../../lib/style-client';
-import { updateSettings } from '../../lib/settings-client';
-import { getSkins } from '../../lib/style-client';
+import AddNew from '../../common/AddNew';
+import { createSkin } from '../../../lib/style-client';
+import { updateSettings } from '../../../lib/settings-client';
+import { getSkins } from '../../../lib/style-client';
 import SkinDetail from './SkinDetail';
-import { SettingsContext } from '../layout/SettingsProvider';
-import { deepCloneSkin } from '../../lib/styleHelper';
+import { SettingsContext } from '../../layout/SettingsProvider';
+import { deepCloneSkin } from '../../../lib/styleHelper';
 import SkinList from './SkinList';
 
 const propTypes = {
@@ -24,6 +25,7 @@ const Skins = ({ resetControls, setControls }) => {
   const [editSkin, setEditSkin] = useState();
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [copySkinBase, setCopySkinBase] = useState();
+  const [searchParams] = useSearchParams();
 
   if (!skinsLoaded && !skinsLoading) {
     setSkinsLoading(true);
@@ -34,6 +36,10 @@ const Skins = ({ resetControls, setControls }) => {
       setSkinsLoading(false);
       setSkinsLoaded(true);
       setSkins(data);
+
+      if (searchParams.get('skin')) {
+        setEditSkin(data.find((s) => s.name === searchParams.get('skin')));
+      }
     });
   };
 
@@ -83,6 +89,7 @@ const Skins = ({ resetControls, setControls }) => {
   if (editSkin) {
     return (
       <SkinDetail
+        loadSkins={loadSkins}
         skin={editSkin}
         goBackToThemeList={goBackToThemeList}
         setControls={setControls}

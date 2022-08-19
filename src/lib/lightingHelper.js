@@ -8,7 +8,10 @@ export const applyLighting = async (settings, event) => {
           powerOff(controller.ip);
         } else {
           const eventSegments = controller.segments.filter((s) => s.event === event);
-          applyEventSegments(controller.ip, eventSegments);
+          if (eventSegments?.length > 0) {
+            console.log(eventSegments);
+            applyEventSegments(controller.ip, eventSegments);
+          }
         }
       }
     }

@@ -8,7 +8,7 @@ import { Album } from '../shapes';
 import Button from '../Button';
 import NameInput from '../common/NameInput';
 import { saveCoverArt } from '../../lib/librarian-client';
-import styles from './CoverArtSearchModal.module.css';
+import './CoverArtSearchModal.scss';
 import { Container } from 'react-bootstrap';
 import { SettingsContext } from '../layout/SettingsProvider';
 
@@ -68,20 +68,20 @@ const CoverArtSearchModal = ({
   return (
     <div style={{ marginTop: '60px' }}>
       <Container>
-        <Row className={styles.addNewText}>
+        <Row className="addNewText">
           <NameInput defaultValue={album.name} onChange={e => setQuery(e.target.value)} />
         </Row>
         {!isLoading && results && (
-          <Row className={styles.addNewText}>
+          <Row className="addNewText">
             <Col>
-              <Card className={styles.addNewText} style={resultsStyle}>
+              <Card className="addNewText" style={resultsStyle}>
                 <Card.Title>Results</Card.Title>
                 <Card.Img style={{ width: '150px' }} top src={results} onClick={handleSave} />
               </Card>
             </Col>
           </Row>
         )}
-        <Row className={styles.addNewText}>
+        <Row className="addNewText">
           <Button disabled={isLoading} onClick={handleSearch} content="Search" />
           <Button disabled={isLoading} onClick={handleClose} content="Cancel" />
         </Row>

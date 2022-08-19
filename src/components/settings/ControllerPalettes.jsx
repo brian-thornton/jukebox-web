@@ -3,11 +3,14 @@ import { ListGroup } from 'react-bootstrap';
 
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
+import { useSwipeable } from 'react-swipeable';
+import { handlers } from '../../lib/gesture-helper';
 
 const ControllerPalettes = ({ controllerState, onSelect }) => {
-  const [selectedPalettePage, setSelectedPalettePage] = useState(1);
+  const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-  const paletteStart = selectedPalettePage === 1 ? 0 : ((selectedPalettePage * realPageSize) - realPageSize);
+  const paletteStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   useEffect(() => {
     const itemHeight = 55;
@@ -17,7 +20,7 @@ const ControllerPalettes = ({ controllerState, onSelect }) => {
 
   return (
     <>
-      <ListGroup>
+      <ListGroup {...swipe}>
         {controllerState?.palettes.slice(paletteStart, (paletteStart + realPageSize)).map((palette) => (
           <Item
             text={`${palette} (Color Palette)`}
@@ -29,8 +32,8 @@ const ControllerPalettes = ({ controllerState, onSelect }) => {
       </ListGroup>
       <Paginator
         disableRandom
-        onPageChange={(page) => setSelectedPalettePage(page)}
-        selectedPage={selectedPalettePage}
+        onPageChange={(page) => setSelectedPage(page)}
+        selectedPage={selectedPage}
         totalItems={controllerState?.palettes.length}
         pageSize={realPageSize}
       />

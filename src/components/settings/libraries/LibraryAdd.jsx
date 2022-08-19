@@ -10,7 +10,7 @@ import Button from '../../Button';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { updateSettings } from '../../../lib/settings-client';
-import styles from './LibraryAdd.module.css';
+import './LibraryAdd.scss';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -47,7 +47,7 @@ const LibraryAdd = ({
   };
 
   return (
-    <Card className={styles.addNewCard} style={confirmStyle}>
+    <Card className="addNewCard" style={confirmStyle}>
       <Card.Title>Add Library</Card.Title>
       <Card.Body>
         <NameInput placeholder="Path" />

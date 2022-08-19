@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 
 import { applyLighting } from '../../lib/lightingHelper';
 import Album from './Album';
@@ -12,7 +13,8 @@ import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './AlbumList.module.css';
+import './AlbumList.scss';
+import { handlers } from '../../lib/gesture-helper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -29,7 +31,12 @@ const AlbumList = ({ search, selectedLibraries }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const { state } = useLocation();
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
+
+  const onPageChange = (page) => {
+    setSelectedPage(page);
+  }
 
   const { pathname } = window.location;
   if (!category && pathname.includes('/categories')) {
@@ -99,30 +106,18 @@ const AlbumList = ({ search, selectedLibraries }) => {
     loadAlbums();
   }, [search]);
 
-  const onPageChange = (page) => {
-    setSelectedPage(page);
-  }
-
   const noResults = search && !albums.length && !isLoading;
 
   return (
     <>
-      {loadComplete && totalAlbums === 0 && (
-        <div className={styles.noAlbums}>
-          <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />
-        </div>
-      )}
-      {noResults && (
-        <div className={styles.noAlbums}>
-          <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." />
-        </div>
-      )}
+      {loadComplete && totalAlbums === 0 && <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />}
+      {noResults && <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." />}
       {isLoading && <Loading />}
       {!isLoading && !noResults && (
-        <Container fluid className={styles.albumListContainer}>
+        <Container {...swipe} fluid className="albumListContainer">
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row className={styles.albumRow}>
+              <Row className="albumRow">
                 {albums.map(album => <Album album={album} />)}
               </Row>
             </Col>

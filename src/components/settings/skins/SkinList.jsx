@@ -1,9 +1,11 @@
 import { PropTypes } from 'prop-types';
 import ListGroup from 'react-bootstrap/ListGroup';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable'; 
 
-import Paginator from '../common/Paginator';
+import Paginator from '../../common/Paginator';
 import SkinRow from './SkinRow';
+import { handlers } from '../../../lib/gesture-helper';
 
 const propTypes = {
   resetControls: PropTypes.func.isRequired,
@@ -14,6 +16,7 @@ const SkinList = ({ skins, reloadSkins, onCopy, setEditSkin, setSelectedSkin }) 
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   useEffect(() => {
     const itemHeight = 55;
@@ -40,7 +43,7 @@ const SkinList = ({ skins, reloadSkins, onCopy, setEditSkin, setSelectedSkin }) 
   if (skins?.length) {
     return (
       <>
-        <ListGroup style={{ width: '100%' }}>
+        <ListGroup style={{ width: '100%' }} {...swipe}>
           {skinRows()}
         </ListGroup>
         <Paginator

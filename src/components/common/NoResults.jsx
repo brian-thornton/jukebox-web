@@ -20,7 +20,7 @@ const NoResults = ({ text, title, controls }) => {
     height: '100%',
     borderColor: 'black',
     color: settings.styles.fontColor,
-    swidth: '18rem',
+    marginTop: '60px',
   };
 
   return (

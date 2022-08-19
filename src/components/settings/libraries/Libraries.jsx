@@ -14,7 +14,7 @@ import {
 import Button from '../../Button';
 import LibraryAdd from './LibraryAdd';
 import NoResults from '../../common/NoResults';
-import styles from './Libraries.module.css';
+import './Libraries.scss';
 import LibraryInfoAndGlobalControls from './LibraryInfoAndGlobalControls';
 import LibraryList from './LibraryList';
 import Categories from './Categories';
@@ -111,7 +111,6 @@ const Libraries = () => {
   const onDeleteAll = async () => {
     setIsScanning(true);
     for (const library of libraries) {
-      setCurrentScan(library.path);
       await deleteLibrary(library.name);
     }
 
@@ -127,7 +126,7 @@ const Libraries = () => {
       {!showDiscover && !show && !isCategoryConfigOpen && isLoading && <Loading />}
       {!showDiscover && !show && !isCategoryConfigOpen && !isLoading && !libraries.length && (
         <NoResults
-          className={styles.fullWidth}
+          className="fullWidth"
           title="No Libraries"
           text="No Libraries have been added. Click Add to add your first library."
           controls={noResultsButtons}

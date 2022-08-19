@@ -11,7 +11,7 @@ import Item from '../common/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew';
 import { updateSettings } from '../../lib/settings-client';
-import styles from './Segments.module.css';
+import './Segments.scss';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
 import SegmentRowEdit from './SegmentRowEdit';
 import SegmentRowInfo from './SegmentRowInfo';
@@ -107,7 +107,7 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
         />
       )}
       {!isAddOpen && (
-        <Container fluid className={styles.styleEditorContent}>
+        <Container fluid className="styleEditorContent">
           {allowAdd && (
             <Row>
               <Button
@@ -121,7 +121,7 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>
-                <ListGroup className={styles.styleEditorContent}>
+                <ListGroup className="styleEditorContent">
                   {settings.controllers?.find((c) => c.ip === (controller.info?.ip || controller.ip)).segments.map((s) => segmentRow(s, isSegmentOnController(s.start, s.stop)))}
                   {segments?.map((segment) => {
                     if (!settings.controllers?.find((c) => c.ip === (controller.info?.ip || controller.ip)).segments.find((s) => s.start.toString() === segment.start.toString() && s.stop.toString() === segment.stop.toString())) {

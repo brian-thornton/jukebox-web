@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Button from '../../Button';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import styles from './Libraries.module.css';
+import './Libraries.scss';
 
 const LibraryInfoAndGlobalControls = ({ setIsCategoryConfigOpen, onScanAll, onDeleteAll, handleDiscover, handleShow, currentScan, totalTracks, isScanning }) => {
   const settings = useContext(SettingsContext);
@@ -35,15 +35,15 @@ const LibraryInfoAndGlobalControls = ({ setIsCategoryConfigOpen, onScanAll, onDe
         <Col lg="4" md="4">
           <div style={{ color: settings.styles.fontColor, marginTop: '20px' }}>
             {!currentScan && <div>{`Total Library Tracks: ${totalTracks}`}</div>}
-            {currentScan && <div className={styles.scanText}>{`Currently Scanning: ${currentScan}`}</div>}
+            {currentScan && <div className="scanText">{`Currently Scanning: ${currentScan}`}</div>}
           </div>
         </Col>
         <Col lg="8" md="8">
-          <div className={styles.libraryButton}>{addButton}</div>
-          <div className={styles.libraryButton}>{discoverButton}</div>
-          <div className={styles.libraryButton}>{deleteAllButton}</div>
-          <div className={styles.libraryButton}>{scanAllButton}</div>
-          <div className={styles.libraryButton}>{categories}</div>
+          <div className="libraryButton">{addButton}</div>
+          <div className="libraryButton">{discoverButton}</div>
+          <div className="libraryButton">{deleteAllButton}</div>
+          <div className="libraryButton">{scanAllButton}</div>
+          <div className="libraryButton">{categories}</div>
         </Col>
       </Row>
     </Container>

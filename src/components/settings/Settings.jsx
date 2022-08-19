@@ -8,7 +8,7 @@ import Libraries from './libraries/Libraries';
 import Preferences from './preferences/Preferences';
 import SettingsEditor from './SettingsEditor';
 import { SettingsContext } from '../layout/SettingsProvider';
-import Skins from './Skins';
+import Skins from './skins/Skins';
 import PinEntry from '../common/PinEntry';
 import { applyLighting } from '../../lib/lightingHelper';
 

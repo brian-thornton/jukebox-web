@@ -180,10 +180,9 @@ const deepCloneSkin = (settings, selectedSkin) => {
   return deepClone;
 }
 
-const pageSize = (type) => {
+const pageSize = (type, reservedHeight = 200, itemHeight = 55) => {
   if (type === 'item') {
-    const itemHeight = 55;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    const viewPortHeight = Math.floor(window.innerHeight - reservedHeight);
     return Math.floor(viewPortHeight / itemHeight);
   }
 };

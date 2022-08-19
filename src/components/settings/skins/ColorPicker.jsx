@@ -8,9 +8,9 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 
-import Button from '../Button';
-import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './ColorPicker.module.css';
+import Button from '../../Button';
+import { SettingsContext } from '../../layout/SettingsProvider';
+import './ColorPicker.scss';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -69,7 +69,7 @@ const ColorPicker = ({
   return (
     <>
       {!solidOnly && (
-        <Card className={styles.transparentCardStyle}>
+        <Card className="transparentCardStyle">
           <Card.Body>
             <Tabs onSelect={e => setColorType(e)}>
               <Tab eventKey="solid" title="Solid Color">
@@ -100,10 +100,10 @@ const ColorPicker = ({
                 </Container>
               </Tab>
               <Tab eventKey="transparent" title="Transparent">
-                <Card className={styles.transparentCardStyle} style={transparentCardSkin}>
-                  <Card.Title className={styles.colorPickerTitle}>Transparent</Card.Title>
+                <Card className="transparentCardStyle" style={transparentCardSkin}>
+                  <Card.Title className="colorPickerTitle">Transparent</Card.Title>
                   <Card.Body>
-                    <Card.Text className={styles.colorPickerText}>
+                    <Card.Text className="colorPickerText">
                       If this tab is selected, the color will be transparent.
                     </Card.Text>
                   </Card.Body>

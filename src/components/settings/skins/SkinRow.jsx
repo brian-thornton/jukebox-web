@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import Button from "../Button";
-import InRowDeleteConfirmation from "../common/InRowDeleteConfirmation";
-import Item from "../common/Item";
-import { deleteSkin } from '../../lib/style-client';
+import Button from "../../Button";
+import InRowDeleteConfirmation from "../../common/InRowDeleteConfirmation";
+import Item from "../../common/Item";
+import { deleteSkin } from '../../../lib/style-client';
 
 const SkinRow = ({ skin, reloadSkins, onCopy, setEditSkin, setSelectedSkin }) => {
   const [deleteConfirmSkin, setDeleteConfirmSkin] = useState();

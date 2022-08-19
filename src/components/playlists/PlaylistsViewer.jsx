@@ -4,6 +4,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useSwipeable } from 'react-swipeable';
 
 import { applyLighting } from '../../lib/lightingHelper';
 import Button from '../Button';
@@ -17,8 +18,9 @@ import ContentWithControls from '../common/ContentWithControls';
 import Item from '../common/Item';
 import { Tracks } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './PlaylistsViewer.module.css';
+import './PlaylistsViewer.scss';
 import AddNew from '../common/AddNew';
+import { handlers } from '../../lib/gesture-helper';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -39,6 +41,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const selectPlaylist = playlistName => setName(playlistName);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let renderPlaylists = [];
   const isScreenSmall = window.innerWidth < 700;
   const playlistsMargin = isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
@@ -149,11 +152,11 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
       <>
         {show && <AddNew onCancel={() => setShow(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
         {!show && (
-          <Container id="albums" fluid style={playlistsMargin}>
+          <Container {...swipe} id="albums" fluid style={playlistsMargin}>
             <Row>
               {renderPlaylists}
             </Row>
-            <Row className={styles.playlistsRow}>
+            <Row className="playlistsRow">
               <Paginator
                 onPageChange={(page) => setSelectedPage(page)}
                 selectedPage={selectedPage}

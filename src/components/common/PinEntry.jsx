@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './PinEntry.module.css';
+import './PinEntry.scss';
 
 const PinEntry = ({ onAuthorize, onCancel, title = 'Enter Pin' }) => {
   const settings = useContext(SettingsContext);
@@ -35,15 +35,15 @@ const PinEntry = ({ onAuthorize, onCancel, title = 'Enter Pin' }) => {
   return (
     <>
       {settings && (
-        <Card className={styles.pinCard} style={pinStyle}>
+        <Card className="pinCard" style={pinStyle}>
           <Card.Body>
-            <Card.Title className={styles.pinTitle}>{title}</Card.Title>
-            <Card.Text className={styles.pinText}>{pin.split('').map((p) => '*')}</Card.Text>
+            <Card.Title className="pinTitle">{title}</Card.Title>
+            <Card.Text className="pinText">{pin.split('').map((p) => '*')}</Card.Text>
             <Container fluid>
-              <Row className={styles.pinText}>{row([1, 2, 3])}</Row>
-              <Row className={styles.pinText}>{row([4, 5, 6])}</Row>
-              <Row className={styles.pinText}>{row([7, 8, 9])}</Row>
-              <Row className={styles.pinText}>
+              <Row className="pinText">{row([1, 2, 3])}</Row>
+              <Row className="pinText">{row([4, 5, 6])}</Row>
+              <Row className="pinText">{row([7, 8, 9])}</Row>
+              <Row className="pinText">
                 {numberButton("0")}
                 <Col lg="1" md="1" sm="3" xs="3">
                   <Button height="75" width="75" onClick={() => setPin('')} content="Clear" />

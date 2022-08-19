@@ -12,7 +12,7 @@ import AlbumCover from './AlbumCover';
 import AlbumTracks from './AlbumTracks';
 import CoverArtSearchModal from './CoverArtSearchModal';
 import { getAlbumTracks } from '../../lib/librarian-client';
-import styles from './AlbumDetail.module.css';
+import './AlbumDetail.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
@@ -51,7 +51,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   }, [isCustomSearchOpen])
 
   const albumButtons = (
-    <Container className={styles.buttonContainer}>
+    <Container className="buttonContainer">
       <>
         <AlbumButtons
           album={album}
@@ -72,14 +72,14 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     if (album) {
       return (
         <>
-          <Row className={styles.coverRow}>
+          <Row className="coverRow">
             <Col lg={3} xl={3}>
-              <Container className={styles.albumContainer}>
+              <Container className="albumContainer">
                 <>
                   <Row>
                     <AlbumCover album={album} />
                   </Row>
-                  <Row className={styles.albumName} style={albumNameStyle}>
+                  <Row className="albumName" style={albumNameStyle}>
                     {album.name}
                   </Row>
                   <Row>{albumButtons}</Row>

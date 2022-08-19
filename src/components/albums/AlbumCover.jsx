@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 
 import { coverArtUrl } from '../../lib/librarian-client';
 import { Album } from '../shapes';
-import styles from './AlbumCover.module.css';
+import './AlbumCover.scss';
 
 const propTypes = {
   album: Album.isRequired,
@@ -17,7 +17,7 @@ const AlbumCover = ({ album }) => {
   };
 
   useEffect(() => loadCoverArt(), []);
-  return <Card.Img top src={coverArt} className={styles.albumCover} />;
+  return <Card.Img top src={coverArt} className="albumCover" />;
 }
 
 AlbumCover.propTypes = propTypes;

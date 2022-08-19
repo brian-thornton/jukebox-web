@@ -13,7 +13,7 @@ import GoToAlbumButton from './GoToAlbumButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
-import styles from './Track.module.css';
+import './Track.scss';
 
 const propTypes = {
   setCurrentAlbum: PropTypes.func,
@@ -71,14 +71,14 @@ const Track = ({
   const albumFolder = pathParts[pathParts.length - 2];
 
   return (
-    <Card className={styles.trackCard} style={trackCardSkin}>
-      <Container className={styles.trackContainer}>
+    <Card className="trackCard" style={trackCardSkin}>
+      <Container className="trackContainer">
         <Row>
           <Col className="d-none d-sm-block" lg={1} md={1}>
             {album(track)}
           </Col>
           <Col lg={8} md={8}>
-            <div className={styles.trackName} style={trackNameSkin}>
+            <div className="trackName" style={trackNameSkin}>
               {`${albumFolder} - ${track.name}`}
             </div>
           </Col>

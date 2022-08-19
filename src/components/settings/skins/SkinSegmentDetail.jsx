@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { SettingsContext } from '../layout/SettingsProvider';
-import Button from '../Button';
-import { getCurrentState } from '../../lib/lighting-client';
-import Segments from './Segments';
-import SegmentColorSelection from './SegmentColorSelection';
+import Button from '../../Button';
+import { getCurrentState } from '../../../lib/lighting-client';
+import Segments from '../Segments';
+import SegmentColorSelection from '../SegmentColorSelection';
 
-const SkinSegmentDetail = ({ controller, skin, event, onCancel, onSave }) => {
-  const settings = useContext(SettingsContext);
+const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
   const [controllerState, setControllerState] = useState();
   const [configSegment, setConfigSegment] = useState();
 

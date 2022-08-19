@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './Loading.module.css';
+import './Loading.scss';
 
 const Loading = () => {
   const settings = useContext(SettingsContext);
@@ -16,15 +16,15 @@ const Loading = () => {
   };
 
   return (
-    <Card className={styles.loadingInProgress} style={loadingInProgressSkin}>
+    <Card className="loadingInProgress" style={loadingInProgressSkin}>
       <Card.Body>
-        <Container className={styles.loadingContainer}>
-          <Row className={styles.animationRow}>
+        <Container className="loadingContainer">
+          <Row className="animationRow">
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="secondary" />
           </Row>
-          <Row className={styles.textRow}>
+          <Row className="textRow">
             Loading...
           </Row>
         </Container>

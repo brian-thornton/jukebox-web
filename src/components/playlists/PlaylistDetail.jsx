@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Container, Row, ListGroup } from 'react-bootstrap';
+import { useSwipeable } from 'react-swipeable';
 
 import Confirm from '../common/Confirm';
 import Paginator from '../common/Paginator';
@@ -14,10 +15,10 @@ import NoResults from '../common/NoResults';
 import Item from '../common/Item';
 import AddNew from '../common/AddNew';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './PlaylistDetail.module.css';
 import { applyLighting } from '../../lib/lightingHelper';
 import PlaylistControls from './PlaylistControls';
 import PlaylistButtons from './PlaylistButtons';
+import { handlers } from '../../lib/gesture-helper';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -33,6 +34,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [selectedPlaylist, setSelectedPlaylist] = useState();
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let renderTracks = [];
   const isScreenSmall = window.innerWidth < 700;
 
@@ -107,7 +109,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
   const playlistTracks = (
     <>
-      <ListGroup>
+      <ListGroup {...swipe}>
         {renderTracks}
       </ListGroup>
       <Paginator

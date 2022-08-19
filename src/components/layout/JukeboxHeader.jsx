@@ -5,7 +5,6 @@ import React, { useContext } from 'react';
 
 import JukeboxNavLeft from './JukeboxNavLeft';
 import JukeboxNavRight from './JukeboxNavRight';
-import './Jukebox.css';
 import { SettingsContext } from './SettingsProvider';
 
 const propTypes = {

@@ -6,7 +6,7 @@ import { getTrackAlbums } from '../lib/librarian-client';
 import { Track as TrackShape } from './shapes';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
-import styles from './TrackList.module.css';
+import './TrackList.scss';
 
 const propTypes = {
   tracks: PropTypes.arrayOf(TrackShape),
@@ -41,7 +41,7 @@ const TrackList = ({
     return (
       <>
         {trackAlbumsLoaded && (
-          <Container className={styles.trackListContainer}>
+          <Container className="trackListContainer">
             {tracks.map((track) => {
               if (isMp3(track)) {
                 return (

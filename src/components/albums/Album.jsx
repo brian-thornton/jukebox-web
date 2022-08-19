@@ -7,7 +7,7 @@ import { Album as albumShape } from '../shapes';
 import { coverArtUrl, saveCoverArt } from '../../lib/librarian-client';
 import defaultCover from './default_album.jpg';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './Album.module.css';
+import './Album.scss';
 
 const propTypes = {
   album: albumShape.isRequired,
@@ -39,14 +39,14 @@ const Album = ({ album, coverArtOnly }) => {
   };
 
   return (
-    <Card className={styles.albumCard} onClick={() => {
+    <Card className="albumCard" onClick={() => {
       if (!settings.features.isLocked) {
         navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
       }
     }}>
-      <Card.Img className={styles.albumImage} top src={coverArt} />
+      <Card.Img className="albumImage" top src={coverArt} />
       {!coverArtOnly && (
-        <Card.Body className={styles.albumCardBody} style={albumNameStyle}>
+        <Card.Body className="albumCardBody" style={albumNameStyle}>
           {settings.preferences.showAlbumName && album.name}
         </Card.Body>
       )}

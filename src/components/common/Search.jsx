@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
-import styles from './Search.module.css';
+import './Search.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
 
@@ -67,7 +67,7 @@ const Search = ({
         }}
       />
 
-      <Container className={styles.searchContainer}>
+      <Container className="searchContainer">
         <Row>
           <FormControl
             id="name"
@@ -86,23 +86,23 @@ const Search = ({
         </Row>
         <Row styles={{ marginTop: '0px', paddingTop: '0px' }}>
           <Container fluid className={`d-none d-sm-block`} styles={{ marginTop: '0px' }}>
-            <Row className={`${styles.keyboardRow}`}>
+            <Row className="keyboardRow">
               {inputButton(1, 60)}
               {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
             </Row>
-            <Row className={`${styles.keyboardRow}`}>
+            <Row className="keyboardRow">
               {inputButton('Q', 60)}
               {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
             </Row>
-            <Row className={`${styles.keyboardRow}`}>
+            <Row className="keyboardRow">
               {inputButton('A', 100)}
               {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
             </Row>
-            <Row className={`${styles.keyboardRow}`}>
+            <Row className="keyboardRow">
               {inputButton('Z', 150)}
               {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
-            <Row className={styles.keyboardRow}>
+            <Row className="keyboardRow">
               <Button hideOnSmall width="150" height="55" onClick={() => {
                 setLocalSearch(`${localSearch} `);
               }} content="Space" />
@@ -112,12 +112,12 @@ const Search = ({
             </Row>
           </Container>
         </Row>
-        <Row className={styles.keyboardRow}>
-          <Button className={styles.keyboardRow} width="150" height="55" onClick={() => {
+        <Row className="keyboardRow">
+          <Button className="keyboardRow" width="150" height="55" onClick={() => {
             setSearchText(localSearch);
             navigate('/albums');
           }} content="Search Albums" />
-          <Button className={styles.keyboardRow} width="150" height="55" onClick={() => {
+          <Button className="keyboardRow" width="150" height="55" onClick={() => {
             setSearchText(localSearch);
             navigate('/tracks');
           }} content="Search Tracks" />

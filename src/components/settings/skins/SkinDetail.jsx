@@ -1,32 +1,41 @@
 import { Card } from 'react-bootstrap';
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container';
-import React, { useState, useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { useSearchParams } from 'react-router-dom';
 
-import AddNew from '../common/AddNew';
-import Button from '../Button';
-import ControlButton from '../common/ControlButton';
-import { deleteSkin, createSkin } from '../../lib/style-client';
-import NameInput from '../common/NameInput';
-import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './SkinDetail.module.css';
+import AddNew from '../../common/AddNew';
+import Button from '../../Button';
+import ControlButton from '../../common/ControlButton';
+import { deleteSkin, createSkin } from '../../../lib/style-client';
+import NameInput from '../../common/NameInput';
+import { SettingsContext } from '../../layout/SettingsProvider';
 import SkinColors from './SkinColors';
 import SkinFonts from './SkinFonts';
 import SkinGraphics from './SkinGraphics';
 import SkinLights from './SkinLights';
 
-const StyleEditor = ({
+const SkinDetail = ({
   skin,
   goBackToThemeList,
   setControls,
+  loadSkins,
 }) => {
+  const [activeKey, setActiveKey] = useState('colors');
   const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
   const [isContextSet, setIsContextSet] = useState(false);
   const [isSaveAsModalOpen, setIsSaveAsModalOpen] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.get('tab')) {
+      setActiveKey(searchParams.get('tab'));
+    }
+  }, []);
 
   const controls = () => (
     <>
@@ -97,12 +106,12 @@ const StyleEditor = ({
               </Row>
             </Container>
           </Card.Title>
-          <Tabs>
+          <Tabs activeKey={activeKey} onSelect={(k) => setActiveKey(k)}>
             <Tab eventKey="colors" title="Skin Colors">
               <SkinColors skin={skin} />
             </Tab>
             <Tab eventKey="fonts" title="Skin Fonts">
-              <SkinFonts skin={skin} />
+              <SkinFonts loadSkins={loadSkins} skin={skin} />
             </Tab>
             <Tab eventKey="graphics" title="Skin Graphics">
               <SkinGraphics skin={skin} />
@@ -118,4 +127,4 @@ const StyleEditor = ({
 
   return content();
 }
-export default StyleEditor;
+export default SkinDetail;

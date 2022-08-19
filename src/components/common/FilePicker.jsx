@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './AddNew.module.css';
+import styles from './FilePicker.scss';
 
 const FilePicker = ({ onConfirm, defaultValue, onSelectFile, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel' }) => {
   const settings = useContext(SettingsContext);
@@ -23,11 +23,11 @@ const FilePicker = ({ onConfirm, defaultValue, onSelectFile, onCancel, title = '
   return (
     <Card style={confirmStyle}>
       <Card.Body>
-        <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
-        <Card.Text className={styles.addNewText}>
+        <Card.Title className="addNewTitle">{title}</Card.Title>
+        <Card.Text className="addNewText">
           <Form.Control style={{ marginBottom: '0px' }} type="file" onChange={onSelectFile} />
         </Card.Text>
-        <div className={styles.addNewText}>
+        <div className="addNewText">
           <Button onClick={onCancel} content={cancelText} />
           <Button onClick={onConfirm} content={confirmText} />
         </div>

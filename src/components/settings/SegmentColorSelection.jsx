@@ -4,7 +4,7 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { getCurrentState, powerOff, setEffect, setSolidColor, demoEffect } from '../../lib/lighting-client';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import Button from '../Button';
-import ColorPicker from './ColorPicker';
+import ColorPicker from './skins/ColorPicker';
 import ControllerEffects from './ControllerEffects';
 import ControllerPalettes from './ControllerPalettes';
 

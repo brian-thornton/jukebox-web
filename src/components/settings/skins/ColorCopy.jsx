@@ -6,9 +6,9 @@ import { PropTypes } from 'prop-types';
 import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import { deleteSkin, createSkin } from '../../lib/style-client';
-import { Colors } from '../shapes';
-import Button from '../Button';
+import { deleteSkin, createSkin } from '../../../lib/style-client';
+import { Colors } from '../../shapes';
+import Button from '../../Button';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,

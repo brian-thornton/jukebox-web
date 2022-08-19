@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
+import { useSwipeable } from 'react-swipeable';
+import { handlers } from '../../lib/gesture-helper';
 
 const ControllerEffects = ({ controllerState, onSelect }) => {
-  const [selectedEffectPage, setSelectedEffectPage] = useState(1);
+  const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const palletEffects = ['Palette', 'Colorwaves', 'BPM', 'Lake', 'Pacifica', 'Noise Pal', 'Flow', 'Blends', 'Dynamic Smooth'];
-  const effectStart = selectedEffectPage === 1 ? 0 : ((selectedEffectPage * realPageSize) - realPageSize);
+  const effectStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   useEffect(() => {
     const itemHeight = 55;
@@ -18,7 +21,7 @@ const ControllerEffects = ({ controllerState, onSelect }) => {
 
   return (
     <>
-      <ListGroup>
+      <ListGroup {...swipe}>
         {controllerState?.effects.slice(effectStart, (effectStart + realPageSize)).map((effect) => {
           const effectType = palletEffects.includes(effect) ? '(Effect with Palette)' : '(Effect)';
 
@@ -32,8 +35,8 @@ const ControllerEffects = ({ controllerState, onSelect }) => {
       </ListGroup>
       <Paginator
         disableRandom
-        onPageChange={(page) => setSelectedEffectPage(page)}
-        selectedPage={selectedEffectPage}
+        onPageChange={(page) => setSelectedPage(page)}
+        selectedPage={selectedPage}
         totalItems={controllerState?.effects.length}
         pageSize={realPageSize}
       />

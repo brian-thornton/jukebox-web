@@ -5,6 +5,7 @@ import { TrashFill } from 'react-bootstrap-icons';
 import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 
 import { applyLighting } from '../lib/lightingHelper';
 import Button from './Button';
@@ -22,7 +23,8 @@ import Item from './common/Item';
 import NoResults from './common/NoResults';
 import Paginator from './common/Paginator';
 import { SettingsContext } from './layout/SettingsProvider';
-import styles from './Queue.module.css';
+import './Queue.scss';
+import { handlers } from '../lib/gesture-helper';
 
 const Queue = () => {
   const settings = useContext(SettingsContext);
@@ -34,6 +36,7 @@ const Queue = () => {
   const [totalTracks, setTotalTracks] = useState();
   const [clearConfirm, setClearConfirm] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let renderTracks = [];
 
   const loadQueue = () => {
@@ -77,7 +80,7 @@ const Queue = () => {
     return (
       <>
         {!clearConfirm && (
-          <Container fluid>
+          <Container {...swipe} fluid>
             <Row>
               <Col lg="12" xl="12" md="12" sm="12">
                 <Row>{renderTracks}</Row>
@@ -88,7 +91,7 @@ const Queue = () => {
                 <Paginator
                   disableRandom
                   onPageChange={(page) => setSelectedPage(page)}
-                  className={styles.queue}
+                  className="queue"
                   selectedPage={selectedPage}
                   totalItems={totalTracks}
                   pageSize={realPageSize}

@@ -6,7 +6,7 @@ import ControlButton from '../common/ControlButton';
 import { coverArtUrl, saveCoverArt, removeCoverArt } from '../../lib/librarian-client';
 import { Album } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './AlbumAdminButtons.module.css';
+import './AlbumAdminButtons.scss';
 
 const propTypes = {
   album: Album.isRequired,
@@ -25,7 +25,7 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen }) => {
   }, []);
 
   const albumButton = (onClick, name) => (
-    <Col lg={6} className={styles.adminButton}>
+    <Col lg={6} className="adminButton">
       <ControlButton onClick={onClick} text={name} height={50} />
     </Col>
   );

@@ -4,26 +4,29 @@ import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
+import { useSwipeable } from 'react-swipeable';
 
 import { getLibraries } from '../../lib/librarian-client';
 import Item from '../common/Item';
 import Loading from '../common/Loading';
 import Paginator from '../common/Paginator';
 import Button from '../Button';
-import styles from './Filters.module.css';
+import './Filters.scss';
+import { handlers } from '../../lib/gesture-helper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
 };
 
-const Filters = ({ setIsFilterOpen, selectedLibraries, setSelectedLibraries }) => {
+const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState(selectedLibraries);
   const [libraries, setLibraries] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   const loadLibraries = async () => {
     const libs = await getLibraries();
@@ -51,10 +54,10 @@ const Filters = ({ setIsFilterOpen, selectedLibraries, setSelectedLibraries }) =
     <>
       {isLoading && <Loading />}
       {!isLoading && libraries.length && (
-        <Container fluid style={{ marginTop: '60px ' }}>
+        <Container {...swipe} fluid style={{ marginTop: '60px ' }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row className={styles.filterRow}>{libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
+              <Row className="filterRow">{libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
                 const checked = selectedLibraries.find((lib) => lib.path === library.path);
                 
                 return (

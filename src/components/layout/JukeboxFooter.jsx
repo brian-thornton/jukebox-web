@@ -7,9 +7,10 @@ import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 
 import ControlButtons from './ControlButtons';
+import AnimatedMeter from '../common/AnimatedMeter';
 import { SettingsContext } from './SettingsProvider';
 
-import './Jukebox.css';
+import './Jukebox.scss';
 
 const propTypes = {
   nowPlaying: PropTypes.string,
@@ -47,16 +48,12 @@ const JukeboxFooter = ({
   };
 
   const footerContent = () => {
-    const props = {
-      className: 'button',
-      variant: 'outline-light',
-    };
-
     if (isSmallSearchEnabled) {
       return (
         <Nav className="ml-auto">
           <Button
-            {...props}
+            className="button"
+            variant="outline-light"
             onClick={() => {
               document.activeElement.blur();
               setIsSmallSearchEnabled(false);
@@ -81,7 +78,8 @@ const JukeboxFooter = ({
 
   return (
     <Navbar fixed="bottom" collapseOnSelect style={{ background: settings.styles.footerColor }} variant="dark">
-      {nowPlayingText()}
+      {nowPlaying && <AnimatedMeter />}
+      {nowPlaying && nowPlayingText()}
       {footerContent()}
     </Navbar>
   );

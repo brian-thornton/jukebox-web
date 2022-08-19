@@ -10,7 +10,7 @@ import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
 import { Tracks } from '../shapes';
 import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
-import styles from './AlbumButtons.module.css';
+import './AlbumButtons.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
 
@@ -29,7 +29,7 @@ const AlbumButtons = ({ tracks }) => {
   };
 
   const albumButton = (onClick, name, enabled = true) => (
-    <Col lg={6} className={styles.albumButton}>
+    <Col lg={6} className="albumButton">
       <ControlButton disabled={!enabled} text={name} onClick={onClick} height={50} />
     </Col>
   );

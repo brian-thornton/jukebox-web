@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Album as albumShape } from './shapes';
 import { coverArtUrl } from '../lib/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
-import styles from './TrackAlbum.module.css';
+import './TrackAlbum.scss';
 
 const propTypes = {
   album: albumShape.isRequired,
@@ -26,7 +26,7 @@ const TrackAlbum = ({ album }) => {
     <>
       {coverArt && (
         <Card
-          className={styles.trackAlbumCard}
+          className="trackAlbumCard"
           onClick={() => {
             if (settings.features.albums) {
               navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });

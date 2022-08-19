@@ -5,11 +5,11 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import Item from '../common/Item';
-import Button from '../Button';
-import styles from './SkinDetail.module.css';
-import { deleteSkin, createSkin } from '../../lib/style-client';
-import FilePicker from '../common/FilePicker';
+import Item from '../../common/Item';
+import Button from '../../Button';
+import './SkinDetail.scss';
+import { deleteSkin, createSkin } from '../../../lib/style-client';
+import FilePicker from '../../common/FilePicker';
 
 const SkinGraphics = ({ skin }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState();
@@ -87,11 +87,11 @@ const SkinGraphics = ({ skin }) => {
         />
       )}
       {!isFilePickerOpen && (
-        <Container fluid className={styles.styleEditorContent}>
+        <Container fluid className="styleEditorContent">
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>
-                <ListGroup className={styles.styleEditorContent}>
+                <ListGroup className="styleEditorContent">
                   {rows}
                 </ListGroup>
               </Row>

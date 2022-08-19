@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
+import { useSwipeable } from 'react-swipeable';
 
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
@@ -11,8 +12,9 @@ import NoResults from './common/NoResults';
 import TrackList from './TrackList';
 import Paginator from './common/Paginator';
 import Loading from './common/Loading';
-import styles from './Tracks.module.css';
+import './Tracks.scss';
 import { applyLighting } from '../lib/lightingHelper';
+import { handlers } from '../lib/gesture-helper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -28,6 +30,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [tracksLoaded, setTracksLoaded] = useState(false);
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
 
   useEffect(() => {
@@ -83,7 +86,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const trackList = () => {
     if (realPageSize && totalTracks) {
       return (
-        <Container className={styles.tracksContainer}>
+        <Container className="tracksContainer" {...swipe}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>{content}</Row>

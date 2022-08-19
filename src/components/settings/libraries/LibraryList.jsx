@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 
 import Paginator from '../../common/Paginator';
 import LibraryRow from './LibraryRow';
+import { useSwipeable } from 'react-swipeable';
+import { handlers } from '../../../lib/gesture-helper';
 
 const LibraryList = ({ libraries, reloadLibraries, setCurrentScan }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   useEffect(() => {
     const itemHeight = 55;
@@ -14,20 +17,11 @@ const LibraryList = ({ libraries, reloadLibraries, setCurrentScan }) => {
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
-  let totalTracks = 0;
-  if (libraries?.length) {
-    libraries.forEach((library) => {
-      if (library.totalTracks) {
-        totalTracks += library.totalTracks;
-      }
-    });
-  }
-
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   return (
     <>
-      <ListGroup>
+      <ListGroup {...swipe}>
         {libraries.slice(realStart, (realStart + realPageSize)).map((library) => (
           <LibraryRow library={library} reloadLibraries={reloadLibraries} setCurrentScan={setCurrentScan} />
         )

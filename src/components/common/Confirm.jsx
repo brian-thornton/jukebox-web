@@ -3,7 +3,7 @@ import React, { useContext, useEffect }  from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './Confirm.module.css';
+import './Confirm.scss';
 import { applyLighting } from '../../lib/lightingHelper';
 
 const Confirm = ({ onConfirm, onCancel, text }) => {
@@ -24,11 +24,11 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
   return (
     <Card style={confirmStyle}>
       <Card.Body>
-        <Card.Title className={styles.confirmTitle}>Are you sure?</Card.Title>
-        <Card.Text className={styles.confirmText}>
+        <Card.Title className="confirmTitle">Are you sure?</Card.Title>
+        <Card.Text className="confirmText">
           {text}
         </Card.Text>
-        <div className={styles.confirmText}>
+        <div className="confirmText">
           <Button onClick={onCancel} content="No" />
           <Button onClick={onConfirm} content="Yes" />
         </div>

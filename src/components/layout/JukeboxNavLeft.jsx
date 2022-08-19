@@ -2,7 +2,6 @@ import Nav from 'react-bootstrap/Nav';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
-import './Jukebox.css';
 import { SettingsContext } from './SettingsProvider';
 
 const JukeboxNavLeft = ({}) => {

@@ -5,7 +5,7 @@ import { PropTypes } from 'prop-types';
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import styles from './ContentWithControls.module.css';
+import './ContentWithControls.scss';
 
 const propTypes = {
   alertText: PropTypes.string,
@@ -14,7 +14,7 @@ const propTypes = {
 };
 
 const ContentWithControls = ({ controls, content, alertText }) => (
-  <Container fluid className={styles.contentContainer}>
+  <Container fluid className="contentContainer">
     <Row>
       <Col lg={12} xl={12}>
         {alertText && <Alert variant="primary">{alertText}</Alert>}

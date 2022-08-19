@@ -3,15 +3,17 @@ import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
+import { useSwipeable } from 'react-swipeable';
 
 import ColorCopy from './ColorCopy';
-import Item from '../common/Item';
-import { SettingsContext } from '../layout/SettingsProvider';
+import Item from '../../common/Item';
+import { SettingsContext } from '../../layout/SettingsProvider';
 import ColorPicker from './ColorPicker';
-import Button from '../Button';
-import Paginator from '../common/Paginator';
-import styles from './SkinDetail.module.css';
-import { deleteSkin, createSkin } from '../../lib/style-client';
+import Button from '../../Button';
+import Paginator from '../../common/Paginator';
+import './SkinDetail.scss';
+import { deleteSkin, createSkin } from '../../../lib/style-client';
+import { handlers } from '../../../lib/gesture-helper';
 
 const SkinColors = ({ skin }) => {
   const [isColorCopyOpen, setIsColorCopyOpen] = useState(false);
@@ -21,6 +23,7 @@ const SkinColors = ({ skin }) => {
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [colorMode, setColorMode] = useState();
   const [allowGradient, setAllowGradient] = useState();
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const [colors, setColors] = useState({
     headerColor: skin.headerColor,
     headerFont: skin.headerFont,
@@ -125,11 +128,11 @@ const SkinColors = ({ skin }) => {
         />
       )}
       {!isColorCopyOpen && !isColorModalOpen && (
-        <Container fluid className={styles.styleEditorContent}>
+        <Container fluid className="styleEditorContent" {...swipe}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>
-                <ListGroup className={styles.styleEditorContent}>
+                <ListGroup className="styleEditorContent">
                   {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
                 </ListGroup>
               </Row>

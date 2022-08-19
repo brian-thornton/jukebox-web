@@ -11,7 +11,7 @@ import Item from '../common/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew';
 import { updateSettings } from '../../lib/settings-client';
-import styles from './LightingControllers.module.css';
+import './LightingControllers.scss';
 import { discover, createSegment, getCurrentState } from '../../lib/lighting-client';
 import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
@@ -166,12 +166,12 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
               />
             </>
           )}
-          <Container fluid className={styles.styleEditorContent}>
+          <Container fluid className="styleEditorContent">
             <Row>
               <Col lg="12" xl="12" md="12" sm="12">
                 {!discoveryInProgress && (
                   <Row>
-                    <ListGroup className={styles.styleEditorContent}>
+                    <ListGroup className="styleEditorContent">
                       {settings.controllers?.map((controller) => controllerRow(controller))}
                     </ListGroup>
                   </Row>

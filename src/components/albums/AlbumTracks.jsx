@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
+import { useSwipeable } from 'react-swipeable';
 
 import AddToPlaylistButton from '../common/AddToPlaylistButton';
 import DownloadButton from '../DownloadButton';
@@ -12,6 +13,7 @@ import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
+import { handlers } from '../../lib/gesture-helper';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
@@ -24,6 +26,7 @@ const TrackList = ({ tracks }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const isScreenSmall = window.innerWidth < 700;
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let content = [];
 
   useEffect(() => {
@@ -48,7 +51,7 @@ const TrackList = ({ tracks }) => {
   ));
 
   return (
-    <Container fluid>
+    <Container {...swipe} fluid>
       <Row>
         <Col lg="12" xl="12" md="12" sm="12">
           <Row className="d-none d-md-block d-lg-block">

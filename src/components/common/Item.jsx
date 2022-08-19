@@ -4,7 +4,7 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 
 import CheckToggle from '../common/CheckToggle';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './Item.module.css';
+import './Item.scss';
 
 const propTypes = {
   buttons: PropTypes.node,
@@ -23,12 +23,12 @@ const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked }) => 
   };
 
   return (
-    <ListGroupItem className={styles.itemStyle} style={itemStyle} onClick={onClick}>
-      <div className={styles.itemText}>
+    <ListGroupItem className="itemStyle" style={itemStyle} onClick={onClick}>
+      <div className="itemText">
         {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
         {text}
       </div>
-      <div className={styles.itemButtons}>
+      <div className="itemButtons">
         {buttons}
       </div>
     </ListGroupItem>

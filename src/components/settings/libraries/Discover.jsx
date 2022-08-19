@@ -5,7 +5,7 @@ import React, { useContext } from 'react';
 import Button from '../../Button';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import styles from './LibraryAdd.module.css';
+import './LibraryAdd.scss';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -26,7 +26,7 @@ const Discover = ({
   };
 
   return (
-    <Card className={styles.addNewCard} style={confirmStyle}>
+    <Card className="addNewCard" style={confirmStyle}>
       <Card.Title>Discover</Card.Title>
       <Card.Body>
         <NameInput placeholder="Path" />

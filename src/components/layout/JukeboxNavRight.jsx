@@ -5,7 +5,7 @@ import { Funnel, FunnelFill, LockFill, UnlockFill } from 'react-bootstrap-icons'
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
-import './Jukebox.css';
+import './Jukebox.scss';
 import { SettingsContext } from './SettingsProvider';
 
 const propTypes = {

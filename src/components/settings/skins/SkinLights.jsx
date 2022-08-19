@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
-import Button from '../Button';
-import LightingControllers from './LightingControllers';
+import LightingControllers from '../LightingControllers';
 import SkinSegmentConfiguration from './SkinSegmentConfiguration';
 
 const SkinLights = ({ skin }) => {
