@@ -4,6 +4,7 @@ import Button from '../../Button';
 import Item from '../../common/Item';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { updateSettings } from '../../../lib/settings-client';
+import './PreferenceToggleRow.scss';
 
 const PreferenceToggleRow = ({ name, value }) => {
   const settings = useContext(SettingsContext);
@@ -25,7 +26,7 @@ const PreferenceToggleRow = ({ name, value }) => {
 
   return (
     <Item
-      style={{ width: '100%' }}
+      className="preference-toggle-row"
       buttons={(
         <Button
           onClick={() => updatePreference(name, !value)}

@@ -66,22 +66,22 @@ const CoverArtSearchModal = ({
   };
 
   return (
-    <div style={{ marginTop: '60px' }}>
+    <div className="cover-art-search">
       <Container>
-        <Row className="addNewText">
+        <Row className="cover-art-search-center">
           <NameInput defaultValue={album.name} onChange={e => setQuery(e.target.value)} />
         </Row>
         {!isLoading && results && (
-          <Row className="addNewText">
+          <Row className="cover-art-search-center">
             <Col>
-              <Card className="addNewText" style={resultsStyle}>
+              <Card className="cover-art-search-center albumCover" style={resultsStyle}>
                 <Card.Title>Results</Card.Title>
-                <Card.Img style={{ width: '150px' }} top src={results} onClick={handleSave} />
+                <Card.Img className="cover-art-search-album-cover" top src={results} onClick={handleSave} />
               </Card>
             </Col>
           </Row>
         )}
-        <Row className="addNewText">
+        <Row className="cover-art-search-center">
           <Button disabled={isLoading} onClick={handleSearch} content="Search" />
           <Button disabled={isLoading} onClick={handleClose} content="Cancel" />
         </Row>

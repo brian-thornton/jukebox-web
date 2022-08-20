@@ -6,6 +6,7 @@ import { useSwipeable } from 'react-swipeable';
 import Paginator from '../../common/Paginator';
 import SkinRow from './SkinRow';
 import { handlers } from '../../../lib/gesture-helper';
+import './SkinList.scss';
 
 const propTypes = {
   resetControls: PropTypes.func.isRequired,
@@ -43,7 +44,7 @@ const SkinList = ({ skins, reloadSkins, onCopy, setEditSkin, setSelectedSkin }) 
   if (skins?.length) {
     return (
       <>
-        <ListGroup style={{ width: '100%' }} {...swipe}>
+        <ListGroup className="skin-list-group" {...swipe}>
           {skinRows()}
         </ListGroup>
         <Paginator

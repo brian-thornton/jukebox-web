@@ -19,6 +19,7 @@ import { applyLighting } from '../../lib/lightingHelper';
 import PlaylistControls from './PlaylistControls';
 import PlaylistButtons from './PlaylistButtons';
 import { handlers } from '../../lib/gesture-helper';
+import './PlaylistDetail.scss';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -160,7 +161,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
             />
           )}
           {isScreenSmall && (
-            <Container style={{ marginBottom: '60px' }}>
+            <Container className="playlist-detail-container">
               <Row>
                 {controls}
               </Row>

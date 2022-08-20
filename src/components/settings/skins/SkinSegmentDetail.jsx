@@ -4,6 +4,7 @@ import Button from '../../Button';
 import { getCurrentState } from '../../../lib/lighting-client';
 import Segments from '../Segments';
 import SegmentColorSelection from '../SegmentColorSelection';
+import './SkinSegmentDetail.scss';
 
 const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
   const [controllerState, setControllerState] = useState();
@@ -47,7 +48,7 @@ const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
         />
       )}
       <Button
-        style={{ float: 'right', width: '100px' }}
+        className="skin-segment-detail-done-button"
         onClick={() => onCancel(null)}
         content="Done"
       />

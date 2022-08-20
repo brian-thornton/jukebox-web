@@ -54,7 +54,7 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
     <>
       {isLoading && <Loading />}
       {!isLoading && libraries.length && (
-        <Container {...swipe} fluid style={{ marginTop: '60px ' }}>
+        <Container {...swipe} fluid className="filter-container">
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row className="filterRow">{libraries.slice(realStart, (realStart + realPageSize)).map((library) => {

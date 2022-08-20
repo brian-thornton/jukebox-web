@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import { Colors } from '../../shapes';
 import Button from '../../Button';
+import './ColorCopy.scss';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -92,7 +93,7 @@ const ColorCopy = ({
         </Col>
         <Col>
           <ListGroup>
-          {colors.map((c) => targetColor(c))}
+            {colors.map((c) => targetColor(c))}
           </ListGroup>
         </Col>
       </Row>

@@ -3,11 +3,11 @@ import Container from 'react-bootstrap/Container';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
-import { useNavigate } from 'react-router-dom';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { updateSettings } from '../../../lib/settings-client';
 import NameInput from '../../common/NameInput';
+import './PreferenceTextRow.scss';
 
 const PreferenceTextRow = ({rowName, value}) => {
   const settings = useContext(SettingsContext);
@@ -34,7 +34,7 @@ const PreferenceTextRow = ({rowName, value}) => {
 
   return (
     <ListGroupItem style={itemStyle}>
-      <Container fluid style={{ marginBottom: '0px' }}>
+      <Container fluid className="preference-text-row-container">
         <Row>
           <Col lg="2">
             {rowLabel(rowName)}

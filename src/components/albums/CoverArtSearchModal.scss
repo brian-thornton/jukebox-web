@@ -1,18 +1,15 @@
-.addNewCard {
-  background: transparent !important;
-  min-height: 200px !important;
-  height: 100% !important;
-  border-color: black !important;
-  width: 100% !important;
+.cover-art-search {
+  margin-top: 60px !important;
 }
 
-.addNewText {
+.cover-art-search-album-cover {
+  width: 250px !important;
+  max-width: 250px !important;
+}
+
+.cover-art-search-center {
   align-items: center;
   display: flex; 
   justify-content: center;
   background: transparent !important;
-}
-
-.addNewTitle {
-  text-align: center;
 }

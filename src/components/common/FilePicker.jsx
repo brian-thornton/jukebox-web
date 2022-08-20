@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import styles from './FilePicker.scss';
+import './FilePicker.scss';
 
 const FilePicker = ({ onConfirm, defaultValue, onSelectFile, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel' }) => {
   const settings = useContext(SettingsContext);

@@ -103,7 +103,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
           <>
             {allowRemove && (
               <Button
-                style={{ float: 'right', width: '100px' }}
+                className="lighting-controller-button"
                 onClick={() => onControllerRemove(controller.ip)}
                 content="Remove"
               />
@@ -111,7 +111,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
             {allowConfigure && (
               <>
                 <Button
-                  style={{ float: 'right', width: '100px' }}
+                  className="lighting-controller-button"
                   onClick={() => {
                     setIsConfigureOpen(true);
                     setSelectedController(controller);
@@ -121,7 +121,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 />
                 {!skin && (
                   <Button
-                    style={{ float: 'right', width: '100px' }}
+                    className="lighting-controller-button"
                     onClick={() => {
                       onSetName(controller);
                     }}
@@ -130,7 +130,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 )}
                 {!skin && (
                   <Button
-                    style={{ float: 'right', width: '100px' }}
+                    className="lighting-controller-button"
                     onClick={() => {
                       pushSegmentsFromMetadata(controller);
                     }}
@@ -177,7 +177,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                   </Row>
                 )}
                 {discoveryInProgress && (
-                  <Row style={{ width: '100%' }}>
+                  <Row className="lighting-controller-loading">
                     <Loading />
                   </Row>
                 )}

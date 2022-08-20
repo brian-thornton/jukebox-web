@@ -5,6 +5,7 @@ import { getCurrentState } from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
 import Segments from './Segments';
+import './ControllerDetail.scss';
 
 const ControllerDetail = ({ controller }) => {
   const settings = useContext(SettingsContext);
@@ -50,7 +51,7 @@ const ControllerDetail = ({ controller }) => {
 
   return (
     <>
-      <Card style={{ width: '100%', background: 'transparent' }}>
+      <Card className="controller-card">
         <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
           Segments for IP: {controller.ip}
         </Card.Title>

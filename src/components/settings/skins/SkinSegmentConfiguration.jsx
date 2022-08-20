@@ -1,7 +1,7 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Paginator from '../../common/Paginator';
 import React, { useEffect, useState } from 'react';
-import { useSwipeable } from 'react-swipeable'; 
+import { useSwipeable } from 'react-swipeable';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
@@ -29,7 +29,7 @@ const SkinSegmentConfiguration = ({ skin, controller }) => {
         buttons={(
           <>
             <Button
-              style={{ float: 'right', width: '100px' }}
+              className="skin-segment-configure-button"
               onClick={() => {
                 setSelectedEvent(event);
                 setIsDetailOpen(true);

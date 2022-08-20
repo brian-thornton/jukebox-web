@@ -17,6 +17,7 @@ import SkinColors from './SkinColors';
 import SkinFonts from './SkinFonts';
 import SkinGraphics from './SkinGraphics';
 import SkinLights from './SkinLights';
+import './SkinDetail.scss';
 
 const SkinDetail = ({
   skin,
@@ -87,12 +88,12 @@ const SkinDetail = ({
         />
       )}
       {!isSaveAsModalOpen && (
-        <Card style={{ background: 'transparent' }}>
+        <Card className="skin-detail-card">
           <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
             <Container fluid>
-              <Row style={{ marginBottom: '0px' }}>
+              <Row className="skin-name-row">
                 <Col lg="2" md="2" sm="2">
-                  <div style={{ marginTop: '10px' }}>Skin Name:</div>
+                  <div className="skin-name-label">Skin Name:</div>
                 </Col>
                 <Col lg="9" md="9" sm="9">
                   <NameInput
@@ -101,7 +102,7 @@ const SkinDetail = ({
                   />
                 </Col>
                 <Col lg="1" md="1" sm="1">
-                  <Button style={{marginTop: '0px'}} content="Save" onClick={() => saveSkin(updatedName)} />
+                  <Button classNam="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} />
                 </Col>
               </Row>
             </Container>

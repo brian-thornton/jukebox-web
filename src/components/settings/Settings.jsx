@@ -11,6 +11,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import Skins from './skins/Skins';
 import PinEntry from '../common/PinEntry';
 import { applyLighting } from '../../lib/lightingHelper';
+import './Settings.scss';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -81,7 +82,7 @@ const Settings = () => {
   }
 
   return (!isAuthorized && (
-    <div style={{ marginTop: '60px' }}>
+    <div className="settings-pin-container">
       <PinEntry
         onAuthorize={() => {
           setIsAuthorized(true);

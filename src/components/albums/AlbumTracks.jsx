@@ -14,6 +14,7 @@ import PlayNowButton from '../PlayNowButton';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
 import { handlers } from '../../lib/gesture-helper';
+import './AlbumTracks.scss';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
@@ -85,7 +86,7 @@ const TrackList = ({ tracks }) => {
           </Row>
         </Col>
       </Row>
-      <Row className="d-none d-md-block d-lg-block" style={{ paddingBottom: '70px' }}>
+      <Row className="d-none d-md-block d-lg-block album-tracks-paginator">
         <Col lg="12" xl="12" md="12" sm="12">
           <Paginator
             disableRandom

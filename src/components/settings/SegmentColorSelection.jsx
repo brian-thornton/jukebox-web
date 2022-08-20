@@ -7,6 +7,7 @@ import Button from '../Button';
 import ColorPicker from './skins/ColorPicker';
 import ControllerEffects from './ControllerEffects';
 import ControllerPalettes from './ControllerPalettes';
+import './SegmentColorSelection.scss';
 
 const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplete }) => {
   const segmentEventConfig = skin.lighting?.controllers?.find((c) => c.ip === controller.ip).segments.find((s) => s.id === segment.id && s.event === event);
@@ -92,8 +93,8 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
   return (
     <>
       {controllerState && (
-        <Container fluid style={{ width: '100%' }}>
-          <Row style={{ alignItems: 'left', display: 'flex', justifyContent: 'left' }}>
+        <Container fluid className="segment-color-container">
+          <Row className="segment-effects-row">
             <Col lg={size} md={size}>
               <ControllerEffects
                 controllerState={controllerState}
