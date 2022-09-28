@@ -1,25 +1,20 @@
 import React, { useState } from 'react';
 import {
-  CloudDownload,
+  PencilSquare,
   Search,
   Trash,
 } from 'react-bootstrap-icons';
-import { toast } from 'react-toastify';
 
 import InRowDeleteConfirmation from '../../common/InRowDeleteConfirmation';
 import {
   deleteLibrary,
   scan,
-  saveCoverArt,
 } from '../../../lib/librarian-client';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
-import { toastProps } from '../../common/toast-helper';
 
-const albumArt = require('album-art');
-
-const LibraryRow = ({ library, reloadLibraries, setCurrentScan }) => {
+const LibraryRow = ({ library, reloadLibraries, setCurrentScan, setSelectedLibrary }) => {
   const [isScanning, setIsScanning] = useState(false);
   const [deleteConfirmLibrary, setDeleteConfirmLibrary] = useState();
 
@@ -34,24 +29,6 @@ const LibraryRow = ({ library, reloadLibraries, setCurrentScan }) => {
       setIsScanning(false);
       reloadLibraries();
       setCurrentScan(null);
-      toast.success("Scan complete!", toastProps);
-    });
-  };
-
-  const downloadCoverArt = (library) => {
-    let count = 0;
-    library.albums.forEach((album) => {
-      if (!album.coverArtExists) {
-        const nameArray = album.name.split('-');
-        setTimeout(() => {
-          albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
-            if (data.toString().includes('http')) {
-              saveCoverArt({ album, url: data });
-            }
-          });
-        }, 2000 * count);
-        count += 1;
-      }
     });
   };
 
@@ -59,6 +36,7 @@ const LibraryRow = ({ library, reloadLibraries, setCurrentScan }) => {
 
   return (
     <Item
+      actionVisible={deleteConfirmLibrary}
       text={`${library.path} - Tracks: ${library.totalTracks || 0} [Status: ${status}]`}
       buttons={(
         <>
@@ -72,12 +50,15 @@ const LibraryRow = ({ library, reloadLibraries, setCurrentScan }) => {
             <>
               <Button
                 disabled={isScanning}
-                onClick={() => onScan({
-                  name: library.name,
-                  path: library.path,
-                  enabled: library.enabled,
-                  category: library.category,
-                })}
+                onClick={() => {
+                  onScan({
+                    name: library.name,
+                    path: library.path,
+                    enabled: library.enabled,
+                    category: library.category,
+                    allowCoverArtDownload: library.allowCoverArtDownload,
+                  });
+                }}
                 content={<Search />}
               />
               <Button
@@ -87,8 +68,8 @@ const LibraryRow = ({ library, reloadLibraries, setCurrentScan }) => {
               />
               <Button
                 disabled={isScanning}
-                onClick={() => downloadCoverArt(library)}
-                content={<CloudDownload />}
+                onClick={() => setSelectedLibrary(library)}
+                content={<PencilSquare />}
               />
             </>
           )}

@@ -9,6 +9,7 @@
   margin-bottom: 0 !important;
   padding-top: 2px !important;
   padding-bottom: 2px !important;
+  table-layout: fixed !important;
 }
 
 .itemButtons {
@@ -16,8 +17,10 @@
 }
 
 .itemText {
+  max-width: 100% !important;
   float: left !important; 
   margin-top: 10px;
-  overflow: hidden;
-  white-space: nowrap;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }

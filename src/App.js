@@ -27,6 +27,7 @@ function App() {
   const [tempSearch, setTempSearch] = useState('');
   const [settings, setSettings] = useState();
   const [search, setSearch] = useState();
+  const [display, setDisplay] = useState('covers');
   const [selectedLibraries, setSelectedLibraries] = useState([]);
   const [nowPlaying, setNowPlaying] = useState('');
   const [isIntervalSet, setIsIntervalSet] = useState(false);
@@ -78,8 +79,8 @@ function App() {
     if (settings) {
       let bg = settings.styles.backgroundColor;
 
-      if (localStorage["jukebox-wallpaper"]) {
-        bg = `url(${localStorage["jukebox-wallpaper"]})`;
+      if (settings.styles.wallpaper) {
+        bg = `url(${settings.styles.wallpaper})`;
         setBackground({
           backgroundImage: bg,
           backgroundSize: '100% 100%',
@@ -129,6 +130,8 @@ function App() {
               height: window.innerHeight - 60,
             }}>
               <JukeboxHeader
+                display={display}
+                setDisplay={setDisplay}
                 setSelectedLibraries={setSelectedLibraries}
                 selectedLibraries={selectedLibraries}
                 search={search}
@@ -139,10 +142,10 @@ function App() {
                 setIsPinOpen={setIsPinOpen}
               />
               <Routes>
-                <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} />)} />
-                <Route path="/albums" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} />)} />
+                <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} display={display} />)} />
+                <Route path="/albums" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} display={display} search={search} />)} />
                 <Route path="/albums/:id" element={<AlbumDetail />} />
-                <Route path="/albums/categories/:id" element={<AlbumList />} search={search} />
+                <Route path="/albums/categories/:id" element={<AlbumList />} search={search} display={display} />
                 <Route path="/filters" element={<Filters selectedLibraries={selectedLibraries} setSelectedLibraries={setSelectedLibraries} />} />
                 <Route path="/playlists" element={<PlaylistsViewer />} />
                 <Route path="/queue" element={<Queue />} />

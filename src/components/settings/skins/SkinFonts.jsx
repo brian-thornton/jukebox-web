@@ -27,6 +27,7 @@ const SkinFonts = ({ skin }) => {
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    activeButtonColor: skin.activeButtonColor,
     buttonFont: skin.buttonFont,
     buttonFontColor: skin.buttonFontColor,
     buttonFontWeight: skin.buttonFontWeight,

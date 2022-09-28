@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import PreferenceFileRow from './PreferenceFileRow';
 import PreferenceTextRow from './PreferenceTextRow';
 import PreferenceToggleRow from './PreferenceToggleRow';
 
@@ -24,7 +23,6 @@ const Preferences = () => {
             <PreferenceToggleRow name="showAlbumsWithoutCoverArt" value={preferences.showAlbumsWithoutCoverArt} />
             <PreferenceToggleRow name="pinEnabled" value={preferences.pinEnabled} />
             <PreferenceTextRow rowName="pin" value={preferences.pin} />
-            <PreferenceFileRow name="jukeboxWallpaper" />
           </ListGroup>
         </Col>
       </Row>

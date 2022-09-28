@@ -1,15 +1,15 @@
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import FormControl from 'react-bootstrap/FormControl';
 import { PropTypes } from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import Button from '../../Button';
+import CategoryPicker from './CategoryPicker';
+import DownloadCoverArtPicker from './DownloadCoverArtPreference';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { updateSettings } from '../../../lib/settings-client';
 import './LibraryAdd.scss';
 
 const propTypes = {
@@ -20,71 +20,46 @@ const propTypes = {
 
 const LibraryAdd = ({
   setShow,
+  setSelectedLibrary,
   handleSave,
+  library,
 }) => {
   const settings = useContext(SettingsContext);
+  const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(false);
-  const [categories, setCategories] = useState(settings.categories);
-  const [addMode, setAddMode] = useState(false);
-  const [newCategory, setNewCategory] = useState();
+  const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
-
-  const onAddCategory = () => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.categories.push(newCategory);
-    updateSettings(deepClone).then(() => {
-      setCategories(deepClone.categories);
-      setNewCategory('');
-      setAddMode(false);
-    });
-  };
-
-  useEffect(() => setSelectedCategory(newCategory), [categories]);
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
     color: settings.styles.fontColor,
   };
 
+  const onSelectDownloadPreference = (value) => {
+    setAllowCoverArtDownload(value);
+    setDownloadCoverArtDirty(true);
+  };
+
   return (
     <Card className="addNewCard" style={confirmStyle}>
-      <Card.Title>Add Library</Card.Title>
+      <Card.Title>{library ? 'Edit Library' : 'Add Library'}</Card.Title>
       <Card.Body>
-        <NameInput placeholder="Path" />
-        <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-          <Form.Label column sm="2" style={{ color: settings.styles.fontColor }}>
-            Category:
-          </Form.Label>
-          <Col sm="10">
-            <Form.Control as="select" value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-              {categories.map((category) => <option>{category}</option>)}
-            </Form.Control>
-          </Col>
-        </Form.Group>
-        {!addMode && <Button onClick={() => setAddMode(true)} content="Add New Category" />}
-        {addMode && (
-          <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
-            <Form.Label column sm="3" style={{ color: settings.styles.fontColor }}>
-              New Category:
-            </Form.Label>
-            <Col sm="6">
-              <FormControl
-                id="category"
-                placeholder="New Category Name"
-                aria-label="Name"
-                defaultValue={newCategory}
-                aria-describedby="basic-addon1"
-                onChange={(event) => setNewCategory(event.target.value)}
-              />
-            </Col>
-            <Col sm="3">
-              <Button onClick={onAddCategory} content="Save" />
-              <Button onClick={() => setAddMode(false)} content="Cancel" />
-            </Col>
-          </Form.Group>
-        )}
-        <Button content="Cancel" onClick={() => setShow(false)} />
-        <Button content="Save" onClick={() => handleSave(selectedCategory)} />
+        <Container fluid style={{ width: '100%' }}>
+          <Row>
+            <NameInput placeholder={library?.path} />
+          </Row>
+          <Row>
+            <CategoryPicker onSelectCategory={(category) => setSelectedCategory(category)} category={selectedCategory} />
+          </Row>
+          <Row>
+            <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
+          </Row>
+        </Container>
+        <Button content="Cancel" onClick={() => {
+          setShow(false);
+          setSelectedLibrary(null);
+        }} />
+        <Button content="Save" disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
       </Card.Body>
     </Card>
   );

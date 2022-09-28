@@ -1,7 +1,7 @@
-import Button from 'react-bootstrap/Button';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
+import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
@@ -10,7 +10,7 @@ const propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-const ControlButton = ({ disabled, height, onClick, text }) => {
+const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelected }) => {
   const settings = useContext(SettingsContext);
   const { styles } = settings;
 
@@ -24,14 +24,16 @@ const ControlButton = ({ disabled, height, onClick, text }) => {
 
   return (
     <Button
+      width={width}
+      height="75"
       block
       disabled={disabled}
       variant="outline-light"
       style={controlButtonStyle}
       onClick={onClick}
-    >
-      {text}
-    </Button>
+      content={text}
+      isSelected={isSelected}
+    />
   );
 }
 

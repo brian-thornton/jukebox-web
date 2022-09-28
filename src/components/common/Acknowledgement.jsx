@@ -5,7 +5,7 @@ import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Confirm.scss';
 
-const Confirm = ({ onConfirm, onCancel, text }) => {
+const Acknowledgement = ({ onGoToTargetClick, onStayOnPageClick, text }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
@@ -26,12 +26,12 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
           {text}
         </Card.Text>
         <div className="confirmText">
-          <Button onClick={onCancel} content="No" />
-          <Button onClick={onConfirm} content="Yes" />
+          <Button onClick={onGoToTargetClick} content="No" />
+          <Button onClick={onStayOnPageClick} content="Yes" />
         </div>
       </Card.Body>
     </Card>
   )
 };
 
-export default Confirm;
+export default Acknowledgement;

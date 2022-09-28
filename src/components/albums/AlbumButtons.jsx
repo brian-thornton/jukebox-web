@@ -2,13 +2,12 @@ import Col from 'react-bootstrap/Col';
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import Row from 'react-bootstrap/Row';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { BoxArrowInDownLeft, ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
 
+import Button from '../Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
 import { Tracks } from '../shapes';
-import { toastProps } from '../common/toast-helper';
 import ControlButton from '../common/ControlButton';
 import './AlbumButtons.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -20,6 +19,7 @@ const propTypes = {
 };
 
 const AlbumButtons = ({ tracks }) => {
+  const isScreenSmall = window.innerWidth < 700;
   const settings = useContext(SettingsContext);
   const { state } = useLocation();
   const navigate = useNavigate();
@@ -29,8 +29,8 @@ const AlbumButtons = ({ tracks }) => {
   };
 
   const albumButton = (onClick, name, enabled = true) => (
-    <Col lg={6} className="albumButton">
-      <ControlButton disabled={!enabled} text={name} onClick={onClick} height={50} />
+    <Col lg="6" xl="6" sm="12" xs="12" className="albumButton">
+      <ControlButton disabled={!enabled} text={name} onClick={onClick} height={50} width="100%" />
     </Col>
   );
 
@@ -45,21 +45,38 @@ const AlbumButtons = ({ tracks }) => {
 
   return (
     <>
-      <Row>
-        {albumButton(() => navigate(-1), backText())}
-        {albumButton(playAlbum, 'Play Album', settings.features.play)}
-      </Row>
-      <Row>
-        {albumButton(() => {
-          applyLighting(settings, 'Enqueue');
-          enqueueTracks(tracks);
-          toast.success("Added to the queue!", toastProps);
-          setTimeout(() => applyLighting(settings, 'Albums'), 700);
-        }, 'Enqueue Album', settings.features.queue)}
-        {albumButton(() => {
-          navigate('/playlists', { state: { tracks } })
-        }, 'Add to Playlist', settings.features.playlists)}
-      </Row>
+      {isScreenSmall && (
+        <>
+          <Row style={{ marginBottom: '0', paddingBottom: '0' }}>
+            {settings.features.play && (
+              <Button
+                icon={<PlayFill />}
+                onClick={playAlbum}
+              />
+            )}
+            {settings.features.queue && <Button icon={<ListOl />} onClick={() => enqueueTracks(tracks)} />}
+            {settings.features.playlists && <Button icon={<PlusSquare />} onClick={() => navigate('/playlists', { state: { tracks }})} />}
+          </Row>
+        </>
+      )}
+      {!isScreenSmall && (
+        <>
+          <Row>
+            {albumButton(() => navigate(-1), backText())}
+            {albumButton(playAlbum, 'Play Album', settings.features.play)}
+          </Row>
+          <Row>
+            {albumButton(() => {
+              applyLighting(settings, 'Enqueue');
+              enqueueTracks(tracks);
+              setTimeout(() => applyLighting(settings, 'Albums'), 700);
+            }, 'Enqueue Album', settings.features.queue)}
+            {albumButton(() => {
+              navigate('/playlists', { state: { tracks } })
+            }, 'Add to Playlist', settings.features.playlists)}
+          </Row>
+        </>
+      )}
     </>
   );
 }

@@ -1,5 +1,6 @@
 import { getBlob, getData, page, post, postParams } from './service-helper';
 import defaultCover from './default_album.jpg';
+import { updateArtHistory } from './status-client';
 const albumArt = require('album-art');
 const path = '/librarian';
 
@@ -47,10 +48,11 @@ export const deleteLibrary = async (name) => {
   return response;
 }
 
-export const coverArtUrl = async (album) => {
+export const coverArtUrl = async (album, skinDefaultCover) => {
   const nameArray = album.name.split('-');
   const artist = nameArray[0];
   const albumName = nameArray[1];
+
   const existingCover = await getCoverArt(album.path);
 
   if (existingCover && existingCover.type === 'image/jpeg') {
@@ -61,12 +63,10 @@ export const coverArtUrl = async (album) => {
   } else {
 
     const artHistory = await getData(`/status/getArtHistory`);
+    if (album.allowCoverArtDownload && !artHistory?.requests.includes(album.path)) {
+      await updateArtHistory({ albumPath: album.path });
 
-    if (!artHistory?.requests.includes(album.path)) {
-      artHistory.requests.push(album.path);
-      await post(`status/updateArtHistory`, artHistory);
-
-      const data = await albumArt(artist, { album: albumName });
+      const data = await albumArt(artist, { album: JSON.stringify(albumName) });
 
       if (data.toString().includes('http')) {
         return {
@@ -78,7 +78,7 @@ export const coverArtUrl = async (album) => {
   }
 
   return {
-    url: defaultCover,
+    url: skinDefaultCover || defaultCover,
     isDefault: true
   };
 }

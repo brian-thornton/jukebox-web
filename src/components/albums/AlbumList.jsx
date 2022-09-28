@@ -3,11 +3,13 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table';
 import { useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
 import { applyLighting } from '../../lib/lightingHelper';
 import Album from './Album';
+import AlbumTable from './AlbumTable';
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
@@ -20,7 +22,7 @@ const propTypes = {
   search: PropTypes.string,
 };
 
-const AlbumList = ({ search, selectedLibraries }) => {
+const AlbumList = ({ search, selectedLibraries, display}) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +47,7 @@ const AlbumList = ({ search, selectedLibraries }) => {
 
   useEffect(() => {
     const albumsPerRow = Math.floor(window.innerWidth / 225);
-    const numberOfRows = Math.floor((window.innerHeight - 200) / 200);
+    const numberOfRows = Math.floor((window.innerHeight - 200) / (display === 'grid' ? 65 : 200));
     setRealPageSize(albumsPerRow * numberOfRows);
     applyLighting(settings, 'Albums');
   }, []);
@@ -91,6 +93,17 @@ const AlbumList = ({ search, selectedLibraries }) => {
   };
 
   useEffect(() => {
+    if (display !== 'covers') {
+      const itemsPerColumn = Math.floor((window.innerHeight - 200) / 33);
+      setRealPageSize(itemsPerColumn * 3);
+    } else {
+      const albumsPerRow = Math.floor(window.innerWidth / 225);
+      const numberOfRows = Math.floor((window.innerHeight - 200) / (display === 'grid' ? 65 : 200));
+      setRealPageSize(albumsPerRow * numberOfRows);
+    }
+  }, [display]);
+
+  useEffect(() => {
     setIsLoading(true);
     loadAlbums();
   }, [category, realPageSize, selectedPage, selectedLibraries]);
@@ -108,6 +121,14 @@ const AlbumList = ({ search, selectedLibraries }) => {
 
   const noResults = search && !albums.length && !isLoading;
 
+  const albumTable = (
+    <Table striped bordered hover variant="dark">
+      <tbody>
+        {albums.map(album => <tr>{album.name}</tr>)}
+      </tbody>
+    </Table>
+  );
+
   return (
     <>
       {loadComplete && totalAlbums === 0 && <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />}
@@ -117,9 +138,12 @@ const AlbumList = ({ search, selectedLibraries }) => {
         <Container {...swipe} fluid className="albumListContainer">
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row className="albumRow">
-                {albums.map(album => <Album album={album} />)}
-              </Row>
+              {display !== 'grid' && (
+                <Row className="albumRow">
+                  {albums.map(album => <Album album={album} />)}
+                </Row>
+              )}
+              {display === 'grid' && <AlbumTable albums={albums} />}
             </Col>
           </Row>
           <Row>

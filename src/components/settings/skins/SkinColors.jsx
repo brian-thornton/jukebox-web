@@ -34,6 +34,7 @@ const SkinColors = ({ skin }) => {
     backgroundColor: skin.backgroundColor,
     popupBackgroundColor: skin.popupBackgroundColor,
     buttonBackgroundColor: skin.buttonBackgroundColor,
+    activeButtonColor: skin.activeButtonColor,
     controlButtonBackgroundColor: skin.controlButtonBackgroundColor,
     buttonFont: skin.buttonFont,
     buttonFontColor: skin.buttonFontColor,
@@ -83,7 +84,7 @@ const SkinColors = ({ skin }) => {
               setIsColorModalOpen(true);
               setColorMode(name);
 
-              const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor', 'trackBackgroundColor'];
+              const gradientTypes = ['headerColor', 'footerColor', 'backgroundColor', 'popupBackgroundColor', 'buttonBackgroundColor', 'activeButtonColor', 'trackBackgroundColor'];
 
               if (gradientTypes.includes(name)) {
                 setAllowGradient(true);
@@ -111,6 +112,7 @@ const SkinColors = ({ skin }) => {
     styleRow('backgroundColor', 'Background Color'),
     styleRow('popupBackgroundColor', 'Dialog Background Color'),
     styleRow('buttonBackgroundColor', 'Button Background Color'),
+    styleRow('activeButtonColor', 'Active Button Color'),
     styleRow('buttonTextColor', 'Button Text Color'),
     styleRow('controlButtonBackgroundColor', 'Control Button Background Color'),
     styleRow('controlButtonTextColor', 'Control Button Text Color'),

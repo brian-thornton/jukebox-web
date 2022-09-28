@@ -43,6 +43,7 @@ const Track = ({
 
   const album = (albumTrack) => {
     const ta = getAlbum(albumTrack);
+
     if (showAlbumCovers && ta) {
       if (settings && settings.features) {
         return (
@@ -72,7 +73,7 @@ const Track = ({
 
   return (
     <Card className="trackCard" style={trackCardSkin}>
-      <Container className="trackContainer">
+      <Container className="trackContainer" fluid>
         <Row>
           <Col className="d-none d-sm-block" lg={1} md={1}>
             {album(track)}

@@ -86,7 +86,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const trackList = () => {
     if (realPageSize && totalTracks) {
       return (
-        <Container className="tracksContainer" {...swipe}>
+        <Container className="tracksContainer" {...swipe} fluid>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>{content}</Row>

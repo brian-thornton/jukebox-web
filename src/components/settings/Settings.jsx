@@ -40,11 +40,11 @@ const Settings = () => {
     if ((settings.preferences.pinEnabled && isAuthorized) || !settings.preferences.pinEnabled) {
       return (
         <>
-          <ControlButton onClick={() => setMode('LIBRARY')} text="Library" />
-          <ControlButton onClick={() => setMode('SETTINGS')} text="Features" />
-          <ControlButton onClick={() => setMode('PREFERENCES')} text="Preferences" />
-          <ControlButton onClick={() => setMode('STYLE')} text="Style" />
-          <ControlButton onClick={() => setMode('CABINET')} text="Cabinet Config" />
+          <ControlButton isSelected={mode === 'LIBRARY'} width="100%" onClick={() => setMode('LIBRARY')} text="Library" />
+          <ControlButton isSelected={mode === 'SETTINGS'} width="100%" onClick={() => setMode('SETTINGS')} text="Features" />
+          <ControlButton isSelected={mode === 'PREFERENCES'} width="100%" onClick={() => setMode('PREFERENCES')} text="Preferences" />
+          <ControlButton isSelected={mode === 'STYLE'} width="100%" onClick={() => setMode('STYLE')} text="Style" />
+          <ControlButton isSelected={mode === 'CABINET'} width="100%" onClick={() => setMode('CABINET')} text="Cabinet Config" />
         </>
       );
     }
@@ -78,7 +78,7 @@ const Settings = () => {
   }
 
   if (isAuthorized || !settings.preferences.pinEnabled) {
-    return <ContentWithControls controls={controls} content={content()} />;
+    return <ContentWithControls controls={leftControls()} content={content()} />;
   }
 
   return (!isAuthorized && (

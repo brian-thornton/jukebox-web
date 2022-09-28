@@ -135,12 +135,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   ));
 
   const controls = () => {
-    return (
-      <>
-        <ControlButton text="Back" onClick={() => navigate(-1)} />
-        <ControlButton text="Add" onClick={handleShow} />
-      </>
-    );
+    return <ControlButton text="Add" width="100%" onClick={handleShow} />
   };
 
   const content = () => {

@@ -1,4 +1,4 @@
-import styles from '../components/styles';
+import styles from './styles';
 
 const supportedFonts = {
   google: {
@@ -169,6 +169,7 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.backgroundColor = selectedSkin.backgroundColor;
   deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
   deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
+  deepClone.styles.activeButtonColor = selectedSkin.activeButtonColor;
   deepClone.styles.buttonFont = selectedSkin.buttonFont;
   deepClone.styles.controlButtonBackgroundColor = selectedSkin.controlButtonBackgroundColor;
   deepClone.styles.controlButtonFont = selectedSkin.controlButtonFont;
@@ -177,6 +178,9 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.trackBackgroundColor = selectedSkin.trackBackgroundColor;
   deepClone.styles.listFont = selectedSkin.listFont;
   deepClone.lighting = selectedSkin.lighting;
+  deepClone.styles.defaultAlbumCover = selectedSkin.defaultAlbumCover;
+  deepClone.styles.wallpaper = selectedSkin.wallpaper;
+  deepClone.styles.navButtonType = selectedSkin.navButtonType;
   return deepClone;
 }
 

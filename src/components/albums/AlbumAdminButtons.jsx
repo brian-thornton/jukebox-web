@@ -25,8 +25,8 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen }) => {
   }, []);
 
   const albumButton = (onClick, name) => (
-    <Col lg={6} className="adminButton">
-      <ControlButton onClick={onClick} text={name} height={50} />
+    <Col lg="6" xl="6" sm="12" xs="12" className="adminButton">
+      <ControlButton onClick={onClick} text={name} width="100%" height={50} />
     </Col>
   );
 

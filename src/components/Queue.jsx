@@ -1,11 +1,11 @@
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import { XLg } from 'react-bootstrap-icons';
 import { TrashFill } from 'react-bootstrap-icons';
-import React, { useContext, useEffect, useState } from 'react';
-import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
+import { XLg } from 'react-bootstrap-icons';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import React, { useContext, useEffect, useState } from 'react';
+import Row from 'react-bootstrap/Row';
 
 import { applyLighting } from '../lib/lightingHelper';
 import Button from './Button';
@@ -68,7 +68,10 @@ const Queue = () => {
     <Confirm
       text="Are you sure you want to clear all tracks in the queue?"
       onConfirm={clear}
-      onCancel={() => setClearConfirm(false)}
+      onCancel={() => {
+        setClearConfirm(false);
+        applyLighting(settings, 'Queue');
+      }}
     />
   );
 
@@ -132,9 +135,9 @@ const Queue = () => {
 
   const controls = () => (
     <>
-      <ControlButton onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" />
-      <ControlButton onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" />
-      {settings.features.playlists && <ControlButton onClick={() => {
+      <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" />
+      <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" />
+      {settings.features.playlists && <ControlButton width="100%" onClick={() => {
         navigate('/playlists', { state: { tracks } })
       }} disabled={isEmpty || clearConfirm} text="Save to Playlist" />}
     </>

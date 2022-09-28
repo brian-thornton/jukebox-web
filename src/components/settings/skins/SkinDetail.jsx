@@ -1,23 +1,20 @@
 import { Card } from 'react-bootstrap';
-import Col from 'react-bootstrap/Col'
-import Container from 'react-bootstrap/Container';
-import React, { useEffect, useState, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
+import React, { useEffect, useState } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 import AddNew from '../../common/AddNew';
-import Button from '../../Button';
 import ControlButton from '../../common/ControlButton';
-import { deleteSkin, createSkin } from '../../../lib/style-client';
-import NameInput from '../../common/NameInput';
-import { SettingsContext } from '../../layout/SettingsProvider';
+import Confirm from '../../common/Confirm';
+import { createSkin } from '../../../lib/style-client';
 import SkinColors from './SkinColors';
 import SkinFonts from './SkinFonts';
 import SkinGraphics from './SkinGraphics';
 import SkinLights from './SkinLights';
 import './SkinDetail.scss';
+import SkinPreferences from './SkinPreferences';
+import { deleteSkin } from '../../../lib/style-client';
 
 const SkinDetail = ({
   skin,
@@ -25,9 +22,9 @@ const SkinDetail = ({
   setControls,
   loadSkins,
 }) => {
-  const [activeKey, setActiveKey] = useState('colors');
-  const [updatedName, setUpdatedName] = useState();
-  const settings = useContext(SettingsContext);
+  const navigate = useNavigate();
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [activeKey, setActiveKey] = useState('preferences');
   const [isContextSet, setIsContextSet] = useState(false);
   const [isSaveAsModalOpen, setIsSaveAsModalOpen] = useState(false);
   const [searchParams] = useSearchParams();
@@ -40,11 +37,12 @@ const SkinDetail = ({
 
   const controls = () => (
     <>
-      <ControlButton onClick={goBackToThemeList} text="Back to Settings" />
-      <ControlButton onClick={() => {
+      <ControlButton width="100%" onClick={goBackToThemeList} text="Back to Settings" />
+      <ControlButton width="100%" onClick={() => {
         goBackToThemeList(true);
       }} text="Save and Apply" />
-      <ControlButton onClick={() => setIsSaveAsModalOpen(true)} text="Save As" />
+      <ControlButton width="100%" onClick={() => setIsSaveAsModalOpen(true)} text="Save As" />
+      <ControlButton width="100%" onClick={() => setIsDeleteConfirmOpen(true)} text="Delete" />
     </>
   );
 
@@ -53,27 +51,23 @@ const SkinDetail = ({
     setIsContextSet(true);
   }
 
-  const saveSkin = (newName = skin.name) => {
-    deleteSkin(skin.name).then(() => {
-      const {name, ...colors} = skin;
-
-      createSkin({
-        name: newName,
-        skin: { name: newName, ...colors },
-      }).then(() => { });
-    });
-  };
-
   const handleSkinSaveAs = (data) => {
-    const {name, isEditable, ...colors} = skin;
+    const { name, isEditable, ...colors } = skin;
 
     createSkin({
       name: data.name,
       skin: {
         name: data.name,
         isEditable: true,
-        ...colors },
+        ...colors
+      },
     }).then(() => setIsSaveAsModalOpen(false));
+  };
+
+  const onDeleteConfirm = () => {
+    deleteSkin(skin.name).then(() => {
+      window.location.reload();
+    });
   };
 
   const content = () => (
@@ -82,32 +76,24 @@ const SkinDetail = ({
         <AddNew
           title={`Save ${skin.name} as...`}
           defaultValue={`${skin.name} Copy`}
-          fields={{name: 'Name'}}
+          fields={{ name: 'Name' }}
           onCancel={() => setIsSaveAsModalOpen(false)}
           onConfirm={(data) => handleSkinSaveAs(data)}
         />
       )}
-      {!isSaveAsModalOpen && (
+      {isDeleteConfirmOpen && (
+        <Confirm
+          text="Are you sure you want to delete the skin?"
+          onCancel={() => setIsDeleteConfirmOpen(false)}
+          onConfirm={onDeleteConfirm}
+        />
+      )}
+      {!isDeleteConfirmOpen && !isSaveAsModalOpen && (
         <Card className="skin-detail-card">
-          <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
-            <Container fluid>
-              <Row className="skin-name-row">
-                <Col lg="2" md="2" sm="2">
-                  <div className="skin-name-label">Skin Name:</div>
-                </Col>
-                <Col lg="9" md="9" sm="9">
-                  <NameInput
-                    defaultValue={skin.name}
-                    onChange={e => setUpdatedName(e.target.value)}
-                  />
-                </Col>
-                <Col lg="1" md="1" sm="1">
-                  <Button classNam="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} />
-                </Col>
-              </Row>
-            </Container>
-          </Card.Title>
           <Tabs activeKey={activeKey} onSelect={(k) => setActiveKey(k)}>
+            <Tab eventKey="preferences" title="Skin Preferences">
+              <SkinPreferences skin={skin} />
+            </Tab>
             <Tab eventKey="colors" title="Skin Colors">
               <SkinColors skin={skin} />
             </Tab>

@@ -15,6 +15,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
 import { handlers } from '../../lib/gesture-helper';
 import './AlbumTracks.scss';
+import { pageSize } from '../../lib/styleHelper';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
@@ -30,10 +31,7 @@ const TrackList = ({ tracks }) => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let content = [];
 
-  useEffect(() => {
-    const numberOfTracks = Math.floor((window.innerHeight - 200) / 50);
-    setRealPageSize(numberOfTracks);
-  }, []);
+  useEffect(() => setRealPageSize(pageSize('item', 200, 60)), []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 

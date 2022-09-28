@@ -29,6 +29,7 @@ const Libraries = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [currentScan, setCurrentScan] = useState();
   const [isCategoryConfigOpen, setIsCategoryConfigOpen] = useState(false);
+  const [selectedLibrary, setSelectedLibrary] = useState();
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
 
@@ -63,20 +64,26 @@ const Libraries = () => {
     });
   };
 
-  const handleClose = (path, category) => {
-    if (path) {
-      add({ path, category });
+  const handleClose = (path, category, allowCoverArtDownload = true) => {
+    if (!selectedLibrary && path) {
+      add({ path, category, allowCoverArtDownload });
+    } else if (selectedLibrary && (path || selectedLibrary)) {
+      deleteLibrary(selectedLibrary.name).then(() => {
+        add({ path: path || selectedLibrary.path, category, allowCoverArtDownload });
+      });
     }
+    setSelectedLibrary(null);
     setShow(false);
     loadLibraries();
   };
 
-  const handleCloseDiscover = (path) => {
+  const handleCloseDiscover = (path, category, downloadCoverArt) => {
+    console.log(path)
     if (path) {
       discover(path).then((libs) => {
         libs.forEach((lib) => {
           if (!libraries.find(l => l.path === lib)) {
-            add({ path: lib });
+            add({ path: lib, category, allowCoverArtDownload: downloadCoverArt });
           }
         });
         loadLibraries();
@@ -119,12 +126,17 @@ const Libraries = () => {
     loadLibraries();
   }
 
-  const noResultsButtons = <Button onClick={handleShow} content="Add" />;
+  const noResultsButtons = (
+    <>
+      <Button onClick={handleShow} content="Add" />
+      <Button onClick={handleDiscover} content="Discover" />
+    </>
+  );
 
   return (
     <>
-      {!showDiscover && !show && !isCategoryConfigOpen && isLoading && <Loading />}
-      {!showDiscover && !show && !isCategoryConfigOpen && !isLoading && !libraries.length && (
+      {!showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen && isLoading && <Loading />}
+      {!showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen && !isLoading && !libraries.length && (
         <NoResults
           className="fullWidth"
           title="No Libraries"
@@ -132,7 +144,7 @@ const Libraries = () => {
           controls={noResultsButtons}
         />
       )}
-      {!showDiscover && !show && !isCategoryConfigOpen && !isLoading && libraries.length && (
+      {!showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen && !isLoading && libraries.length && (
         <>
           <LibraryInfoAndGlobalControls
             onScanAll={onScanAll}
@@ -148,20 +160,23 @@ const Libraries = () => {
             libraries={libraries}
             reloadLibraries={loadLibraries}
             setCurrentScan={setCurrentScan}
+            setSelectedLibrary={setSelectedLibrary}
           />
         </>
       )}
-      {!showDiscover && !isCategoryConfigOpen && show && (
+      {!showDiscover && !isCategoryConfigOpen && (selectedLibrary || show) && (
         <LibraryAdd
+          library={selectedLibrary}
+          setSelectedLibrary={setSelectedLibrary}
           setShow={setShow}
           handleHide={() => setShow(false)}
-          handleSave={(category) => handleClose(document.getElementById('name').value, category)}
+          handleSave={(category, allowCoverArtDownload) => handleClose(document.getElementById('name').value, category, allowCoverArtDownload)}
         />
       )}
-      {!isCategoryConfigOpen && showDiscover && !show && (
+      {!isCategoryConfigOpen && showDiscover && !(show || selectedLibrary) && (
         <Discover
           handleHide={() => setShowDiscover(false)}
-          handleSave={() => handleCloseDiscover(document.getElementById('name').value)}
+          handleSave={(category, downloadCoverArt) => handleCloseDiscover(document.getElementById('name').value, category, downloadCoverArt)}
         />
       )}
       {isCategoryConfigOpen && <Categories />}

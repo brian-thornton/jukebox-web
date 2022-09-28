@@ -41,7 +41,7 @@ const TrackList = ({
     return (
       <>
         {trackAlbumsLoaded && (
-          <Container className="trackListContainer">
+          <Container fluid className="trackListContainer">
             {tracks.map((track) => {
               if (isMp3(track)) {
                 return (

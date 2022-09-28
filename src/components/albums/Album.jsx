@@ -21,7 +21,7 @@ const Album = ({ album, coverArtOnly }) => {
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
-      coverArtUrl(album).then((data) => {
+      coverArtUrl(album, settings.styles.defaultAlbumCover).then((data) => {
         setCoverArt(data.url)
 
         if (!data.isLocal && !data.isDefault) {

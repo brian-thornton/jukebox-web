@@ -22,6 +22,7 @@ const CategoryRow = ({ category }) => {
 
   return (
     <Item
+      actionVisible={deleteConfirmCategory}
       text={category}
       buttons={(
         <>

@@ -20,6 +20,8 @@ const JukeboxHeader = ({
   lastModule,
   setIsLocked,
   setIsPinOpen,
+  display,
+  setDisplay,
 }) => {
   const settings = useContext(SettingsContext);
 
@@ -40,6 +42,8 @@ const JukeboxHeader = ({
             lastModule={lastModule}
             setIsLocked={setIsLocked}
             setIsPinOpen={setIsPinOpen}
+            display={display}
+            setDisplay={setDisplay}
           />
         </Navbar.Collapse>
       </Container>

@@ -35,6 +35,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [selectedPlaylist, setSelectedPlaylist] = useState();
+  const [show, setShow] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let renderTracks = [];
   const isScreenSmall = window.innerWidth < 700;

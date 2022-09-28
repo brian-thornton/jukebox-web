@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button as ReactButton } from 'react-bootstrap';
 
 import { SettingsContext } from './layout/SettingsProvider';
@@ -31,9 +31,11 @@ const Button = ({
   hideOnLarge,
 }) => {
   const settings = useContext(SettingsContext);
+  const [isHover, setIsHover] = useState(false);
 
   const buttonStyle = {
     marginTop: style?.marginTop,
+    marginBottom: style?.marginBottom,
     background: style?.buttonBackgroundColor || settings.styles.buttonBackgroundColor,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,
@@ -42,17 +44,23 @@ const Button = ({
   };
 
   if (isSelected) {
-    buttonStyle.borderColor = '#7CFC00';
+    buttonStyle.background = settings.styles.activeButtonColor;
   }
 
-  if (isToggle && isToggled) {
+  if (isHover || (isToggle && isToggled)) {
     // TODO: Make these colors configurable.
-    buttonStyle.background = '#7CFC00';
+    buttonStyle.background = settings.styles.activeButtonColor;
   } else if (isToggle && !isToggled) {
-    buttonStyle.background = '#FF0000';
+    buttonStyle.background = settings.styles.buttonBackgroundColor;
   }
 
-  if (width) {
+  if (width === "100%") {
+    buttonStyle.minWidth = "100%";
+    buttonStyle.maxWidth = "100%";
+    buttonStyle.overflow = 'hidden';
+    buttonStyle.whiteSpace = 'nowrap';
+    buttonStyle.textOverflow = 'ellipsis';
+  } else if (width) {
     buttonStyle.minWidth = `${width}px`;
     buttonStyle.maxWidth = `${width}px`;
     buttonStyle.overflow = 'hidden';
@@ -69,7 +77,7 @@ const Button = ({
     dynamicClasses = `${dynamicClasses} d-none d-sm-block`;
   }
 
-  return <ReactButton id={id} disabled={disabled} style={buttonStyle} className={`button ${dynamicClasses}`} variant="outline-light" onClick={onClick}>{content || icon}</ReactButton>;
+  return <ReactButton onMouseLeave={() => setIsHover(false)} onMouseEnter={() => setIsHover(true)} id={id} disabled={disabled} style={buttonStyle} className={`button ${dynamicClasses}`} variant="outline-light" onClick={onClick}>{content || icon}</ReactButton>;
 }
 
 Button.propTypes = propTypes;

@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Form from 'react-bootstrap/Form';
 
 import Button from '../Button';
 import ControllerDetail from './ControllerDetail';
@@ -15,6 +16,7 @@ import './LightingControllers.scss';
 import { discover, createSegment, getCurrentState } from '../../lib/lighting-client';
 import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
+import CloneController from './CloneController';
 
 const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = true, allowConfigure = true, buttons, skin, onConfigure = () => { } }) => {
   const settings = useContext(SettingsContext);
@@ -24,6 +26,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
   const [discoveryInProgress, setDiscoveryInProgress] = useState(false);
   const [networkControllers, setNetworkControllers] = useState();
   const [updatedControllerName, setsUpdateControllerName] = useState();
+  const [cloneSource, setCloneSource] = useState();
 
   const discoverControllers = () => {
     setDiscoveryInProgress(true);
@@ -89,6 +92,13 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     }
   };
 
+  const targetControllers = (
+    <Form.Select>
+      {networkControllers?.map((c) => <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>)}
+      {settings.controllers?.map((c) => <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>)}
+    </Form.Select>
+  );
+
   const controllerRow = (controller) => {
     return (
       <Item
@@ -101,41 +111,60 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
         )}
         buttons={(
           <>
-            {allowRemove && (
-              <Button
-                className="lighting-controller-button"
-                onClick={() => onControllerRemove(controller.ip)}
-                content="Remove"
-              />
+            {!skin && controller.ip === cloneSource?.ip && (
+              <CloneController cloneSource={cloneSource} setCloneSource={setCloneSource} networkControllers={networkControllers} />
             )}
-            {allowConfigure && (
+            {controller.ip !== cloneSource?.ip && (
               <>
-                <Button
-                  className="lighting-controller-button"
-                  onClick={() => {
-                    setIsConfigureOpen(true);
-                    setSelectedController(controller);
-                    onConfigure(controller);
-                  }}
-                  content="Configure"
-                />
-                {!skin && (
+                {allowRemove && (
                   <Button
                     className="lighting-controller-button"
-                    onClick={() => {
-                      onSetName(controller);
-                    }}
-                    content="Save"
+                    onClick={() => onControllerRemove(controller.ip)}
+                    content="Remove"
                   />
                 )}
-                {!skin && (
-                  <Button
-                    className="lighting-controller-button"
-                    onClick={() => {
-                      pushSegmentsFromMetadata(controller);
-                    }}
-                    content="Push Segments"
-                  />
+                {allowConfigure && (
+                  <>
+                    <Button
+                      disabled={!controller.online}
+                      className="lighting-controller-button"
+                      onClick={() => {
+                        setIsConfigureOpen(true);
+                        setSelectedController(controller);
+                        onConfigure(controller);
+                      }}
+                      content="Configure"
+                    />
+                    {!skin && (
+                      <Button
+                        className="lighting-controller-button"
+                        onClick={() => {
+                          setCloneSource(controller);
+                        }}
+                        content="Clone to..."
+                      />
+                    )}
+                    {!skin && (
+                      <Button
+                        disabled={!controller.online}
+                        className="lighting-controller-button"
+                        onClick={() => {
+                          onSetName(controller);
+                        }}
+                        content="Save"
+                      />
+                    )}
+                    {!skin && (
+                      <Button
+                        disabled={!controller.online}
+                        className="lighting-controller-button"
+                        onClick={() => {
+                          pushSegmentsFromMetadata(controller);
+                        }}
+                        content="Push Segments"
+                      />
+                    )}
+                  </>
                 )}
               </>
             )}
@@ -172,6 +201,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 {!discoveryInProgress && (
                   <Row>
                     <ListGroup className="styleEditorContent">
+                      {networkControllers?.map((controller) => controllerRow(controller))}
                       {settings.controllers?.map((controller) => controllerRow(controller))}
                     </ListGroup>
                   </Row>
