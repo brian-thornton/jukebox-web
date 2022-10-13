@@ -7,15 +7,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { useSwipeable } from 'react-swipeable';
 
 import { applyLighting } from '../../lib/lightingHelper';
-import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
 import { getStatus, updateStatus } from '../../lib/status-client';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import PlaylistDetail from './PlaylistDetail';
+import PlaylistRow from './PlaylistRow';
 import ContentWithControls from '../common/ContentWithControls';
-import Item from '../common/Item';
 import { Tracks } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './PlaylistsViewer.scss';
@@ -42,7 +41,6 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  let renderPlaylists = [];
   const isScreenSmall = window.innerWidth < 700;
   const playlistsMargin = isScreenSmall ? {} : { marginLeft: '0px', height: '100%' };
 
@@ -75,10 +73,6 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     loadPlaylists();
   };
 
-  if (!playlists.length) {
-    loadPlaylists();
-  }
-
   const handleClose = (data) => {
     if ((typeof data) === 'string') {
       add({
@@ -97,46 +91,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     loadPlaylists();
   };
 
-  const addToPlaylist = (playlistName) => {
-    addTracksToPlaylist(playlistName, tracks);
-  };
-
-  const buttons = (playlistName) => {
-    const playlistActions = [];
-    if (tracks?.length && !added && settings) {
-      playlistActions.push((
-        <Button
-          onClick={() => {
-            addToPlaylist(playlistName);
-            setAdded(true);
-            navigate(-1);
-          }}
-          content="Add"
-        />
-      ));
-    } else {
-      playlistActions.push((
-        <Button
-          onClick={() => selectPlaylist(playlistName)}
-          content="Edit"
-        />
-      ));
-    }
-
-    return playlistActions;
-  };
-
-  renderPlaylists = playlists.map(playlist => (
-    <Item
-      onClick={() => selectPlaylist(playlist.name)}
-      text={playlist.name}
-      buttons={buttons(playlist.name)}
-    />
-  ));
-
-  const controls = () => {
-    return <ControlButton text="Add" width="100%" onClick={handleShow} />
-  };
+  const controls = <ControlButton text="Add" width="100%" onClick={handleShow} />;
 
   const content = () => {
     if (isEmpty) {
@@ -149,7 +104,18 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
         {!show && (
           <Container {...swipe} id="albums" fluid style={playlistsMargin}>
             <Row>
-              {renderPlaylists}
+              {playlists.map(playlist => (
+                <PlaylistRow
+                  playlist={playlist}
+                  addMode={tracks?.length && !added && settings}
+                  onAdd={() => {
+                    addTracksToPlaylist(playlist.name, tracks)
+                    setAdded(true);
+                    navigate(-1);
+                  }}
+                  onSelect={() => selectPlaylist(playlist.name)}
+                />
+              ))}
             </Row>
             <Row className="playlistsRow">
               <Paginator
@@ -168,7 +134,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
 
   if (!currentPlaylist.name && !name) {
     return (
-      <ContentWithControls content={content()} controls={controls()} />
+      <ContentWithControls content={content()} controls={controls} />
     );
   }
   return (

@@ -8,7 +8,7 @@ import { pageSize } from '../../../lib/styleHelper';
 import { useSwipeable } from 'react-swipeable';
 import { handlers } from '../../../lib/gesture-helper';
 
-const Categories = ({ }) => {
+const Categories = () => {
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();

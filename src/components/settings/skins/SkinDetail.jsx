@@ -2,7 +2,7 @@ import { Card } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 
 import AddNew from '../../common/AddNew';
 import ControlButton from '../../common/ControlButton';
@@ -22,7 +22,6 @@ const SkinDetail = ({
   setControls,
   loadSkins,
 }) => {
-  const navigate = useNavigate();
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [activeKey, setActiveKey] = useState('preferences');
   const [isContextSet, setIsContextSet] = useState(false);

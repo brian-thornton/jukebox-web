@@ -1,14 +1,9 @@
-import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 
-import Button from '../../Button';
-import CategoryPicker from './CategoryPicker';
-import NameInput from '../../common/NameInput';
-import { SettingsContext } from '../../layout/SettingsProvider';
 import './LibraryAdd.scss';
 
 const propTypes = {

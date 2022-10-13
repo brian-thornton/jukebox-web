@@ -19,10 +19,6 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
 
   const updateSkin = (skin) => {
     deleteSkin(skin.name).then(() => {
-      const newObject = {
-        ...skin,
-      };
-
       createSkin({
         name: skin.name,
         skin: skin,

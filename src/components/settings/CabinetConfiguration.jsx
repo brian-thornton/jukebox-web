@@ -5,7 +5,7 @@ import './CabinetConfiguration.scss'
 
 import LightingControllers from './LightingControllers';
 
-const CabinetConfiguration = ({ }) => {
+const CabinetConfiguration = () => {
   return (
     <>
       <Container fluid className="cabinet-container">

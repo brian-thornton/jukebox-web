@@ -60,6 +60,12 @@ const Button = ({
     buttonStyle.overflow = 'hidden';
     buttonStyle.whiteSpace = 'nowrap';
     buttonStyle.textOverflow = 'ellipsis';
+  } else if (width.includes('%')) {
+    buttonStyle.minWidth = width;
+    buttonStyle.maxWidth = width;
+    buttonStyle.overflow = 'hidden';
+    buttonStyle.whiteSpace = 'nowrap';
+    buttonStyle.textOverflow = 'ellipsis';
   } else if (width) {
     buttonStyle.minWidth = `${width}px`;
     buttonStyle.maxWidth = `${width}px`;

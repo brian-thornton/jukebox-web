@@ -1,5 +1,5 @@
 import { PlusSquare } from 'react-bootstrap-icons';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -7,7 +7,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuidv4 } from 'uuid';
 
 import Button from '../Button';
-import Item from '../common/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew';
 import { updateSettings } from '../../lib/settings-client';
@@ -20,7 +19,6 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
   const settings = useContext(SettingsContext);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [segment, setSegment] = useState();
-  const [existingSegment, setExistingSegment] = useState();
   const [configureSegment, setConfigureSegment] = useState();
 
   const isSegmentOnController = (start, stop) => {

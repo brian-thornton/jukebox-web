@@ -13,7 +13,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew';
 import { updateSettings } from '../../lib/settings-client';
 import './LightingControllers.scss';
-import { discover, createSegment, getCurrentState } from '../../lib/lighting-client';
+import { discover, createSegment } from '../../lib/lighting-client';
 import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
 import CloneController from './CloneController';

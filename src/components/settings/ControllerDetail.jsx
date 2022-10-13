@@ -11,37 +11,10 @@ const ControllerDetail = ({ controller }) => {
   const settings = useContext(SettingsContext);
   const [controllerState, setControllerState] = useState();
 
-  const updateSettingsToMatchController = async (data) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    const updatedController = deepClone.controllers?.find((c) => c.ip === controller.ip);
-    let saveUpdate = false;
-
-    data.state.seg.map((s) => {
-      if (!updatedController.segments.find((q) => q.start.toString() === s.start.toString() && q.stop.toString() === s.stop.toString())) {
-        saveUpdate = true;
-        updatedController.segments.push(
-          {
-            start: s.start.toString(),
-            stop: s.stop.toString(),
-            name: '',
-          }
-        );
-      }
-    })
-
-    if (saveUpdate) {
-      updateSettings(deepClone);
-    }
-  };
-
 
   const loadState = async () => {
     getCurrentState(controller.ip).then(data => {
       setControllerState(data)
-      // updateSettingsToMatchController(data);
-      // Update controller in master settings here.
-
-
     });
   };
 

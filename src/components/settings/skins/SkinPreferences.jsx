@@ -16,8 +16,7 @@ const SkinPreferences = ({ skin }) => {
   const [navButtonType, setNavButtonType] = useState('buttons');
   const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
-  const { preferences } = settings;
-
+  
   const saveSkin = (newName = skin.name) => {
     deleteSkin(skin.name).then(() => {
       const { name, ...colors } = skin;

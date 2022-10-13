@@ -113,7 +113,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
     <>
       {tracksLoaded && noResults && (
         <div className="no-albums">
-          <NoResults title="No Results Found" text="No Tracks found matching your search. Please try again." />
+          <NoResults title="No Results Found" text="No Tracks found matching your search. Please try again." marginTop="60px" />
         </div>
       )}
       {searchInProgress && <Loading />}

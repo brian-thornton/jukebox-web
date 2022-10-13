@@ -25,7 +25,7 @@ const JukeboxNavRight = ({
   setDisplay,
 }) => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
+  const { features, preferences } = settings;
   const isScreenSmall = window.innerWidth < 700;
   const navigate = useNavigate();
 
@@ -74,14 +74,14 @@ const JukeboxNavRight = ({
     <Nav className="ml-auto">
       {search && !isScreenSmall && <div className="search-result">{`Search Results: ${search}`}</div>}
       {(features.albums || features.tracks) && searchButtons()}
-      {!isScreenSmall && features.albums && (
+      {!isScreenSmall && features.albums && preferences.showLibraryFilter && (
         <Button
           disabled={features.isLocked}
           onClick={() => navigate('/filters', { state: { selectedLibraries } })}
           content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
         />
       )}
-      {settings.features.albums && (
+      {settings.features.albums && preferences.showAlbumTable && (
         <Button
           disabled={features.isLocked}
           onClick={(() => setDisplay(display === 'grid' ? 'covers' : 'grid'))}

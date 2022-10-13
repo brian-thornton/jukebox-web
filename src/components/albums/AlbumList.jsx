@@ -3,7 +3,6 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
-import Table from 'react-bootstrap/Table';
 import { useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
@@ -14,6 +13,7 @@ import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
+import StartsWithFilter from './StartsWithFilter';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './AlbumList.scss';
 import { handlers } from '../../lib/gesture-helper';
@@ -22,17 +22,17 @@ const propTypes = {
   search: PropTypes.string,
 };
 
-const AlbumList = ({ search, selectedLibraries, display}) => {
+const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setStartsWithFilter }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [lightingApplied, setLightingApplied] = useState(false);
   const [loadComplete, setLoadComplete] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState();
   const [lastSearch, setLastSearch] = useState('');
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const { state } = useLocation();
+  const { startsWithLocation } = settings.preferences;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
 
@@ -53,7 +53,7 @@ const AlbumList = ({ search, selectedLibraries, display}) => {
   }, []);
 
   const findAlbums = async (start, limit) => {
-    searchAlbums(search, start, limit).then((data) => {
+    searchAlbums(search, start, limit, startsWithFilter).then((data) => {
       if (data.albums.length) {
         setTotalAlbums(data.totalAlbums);
         setAlbums(data.albums);
@@ -76,7 +76,7 @@ const AlbumList = ({ search, selectedLibraries, display}) => {
 
     if (selectedPage && realPageSize) {
       setAlbums([]);
-      if (search) {
+      if (search || startsWithFilter) {
         findAlbums(realStart, (realStart + realPageSize));
       } else {
         const musicCategory = category === 'Albums' ? null : category;
@@ -98,7 +98,7 @@ const AlbumList = ({ search, selectedLibraries, display}) => {
       setRealPageSize(itemsPerColumn * 3);
     } else {
       const albumsPerRow = Math.floor(window.innerWidth / 225);
-      const numberOfRows = Math.floor((window.innerHeight - 200) / (display === 'grid' ? 65 : 200));
+      const numberOfRows = Math.floor((window.innerHeight - 250) / (display === 'grid' ? 65 : 200));
       setRealPageSize(albumsPerRow * numberOfRows);
     }
   }, [display]);
@@ -109,35 +109,37 @@ const AlbumList = ({ search, selectedLibraries, display}) => {
   }, [category, realPageSize, selectedPage, selectedLibraries]);
 
   useEffect(() => {
-    setIsLoading(true);
-    if (!search) {
+    if (!search && !startsWithFilter) {
       if (albums.length) {
         window.location.reload();
       }
     }
 
-    loadAlbums();
-  }, [search]);
+    if (selectedPage === 1) {
+      loadAlbums();
+    } else {
+
+      setSelectedPage(1);
+    }
+  }, [search, startsWithFilter]);
 
   const noResults = search && !albums.length && !isLoading;
-
-  const albumTable = (
-    <Table striped bordered hover variant="dark">
-      <tbody>
-        {albums.map(album => <tr>{album.name}</tr>)}
-      </tbody>
-    </Table>
-  );
+  const cols = startsWithLocation === 'none' ? "12" : "11";
 
   return (
     <>
       {loadComplete && totalAlbums === 0 && <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />}
-      {noResults && <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." />}
+      {noResults && <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." marginTop="60px" />}
       {isLoading && <Loading />}
       {!isLoading && !noResults && (
         <Container {...swipe} fluid className="albumListContainer">
           <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
+            {startsWithLocation === 'left' && (
+              <Col lg="1" xl="1" md="1" sm="1">
+                <StartsWithFilter startsWithFilter={startsWithFilter} setStartsWithFilter={setStartsWithFilter} />
+              </Col>
+            )}
+            <Col lg={cols} xl={cols} md={cols} sm={cols} style={{ marginLeft: '0px', paddingLeft: '0px',  marginRight: '0px', paddingRight: '0px' }}>
               {display !== 'grid' && (
                 <Row className="albumRow">
                   {albums.map(album => <Album album={album} />)}
@@ -145,6 +147,11 @@ const AlbumList = ({ search, selectedLibraries, display}) => {
               )}
               {display === 'grid' && <AlbumTable albums={albums} />}
             </Col>
+            {startsWithLocation === 'right' && (
+              <Col lg="1" xl="1" md="1" sm="1">
+                <StartsWithFilter startsWithFilter={startsWithFilter} setStartsWithFilter={setStartsWithFilter} />
+              </Col>
+            )}
           </Row>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">

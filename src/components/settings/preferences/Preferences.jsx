@@ -6,12 +6,19 @@ import Row from 'react-bootstrap/Row';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
+import PreferenceRadioRow from './PreferenceRadioRow';
 import PreferenceTextRow from './PreferenceTextRow';
 import PreferenceToggleRow from './PreferenceToggleRow';
 
 const Preferences = () => {
   const settings = useContext(SettingsContext);
   const { preferences } = settings;
+
+  const startsWithFilterOptions = [
+    {display: 'None', value: 'none'},
+    {display: 'Left', value: 'left'},
+    {display: 'Right', value: 'right'},
+  ];
 
   return (
     <Container fluid>
@@ -23,6 +30,9 @@ const Preferences = () => {
             <PreferenceToggleRow name="showAlbumsWithoutCoverArt" value={preferences.showAlbumsWithoutCoverArt} />
             <PreferenceToggleRow name="pinEnabled" value={preferences.pinEnabled} />
             <PreferenceTextRow rowName="pin" value={preferences.pin} />
+            <PreferenceRadioRow rowName="Starts with Filter" preferenceName="startsWithLocation" options={startsWithFilterOptions} />
+            <PreferenceToggleRow name="showLibraryFilter" value={preferences.showLibraryFilter} />
+            <PreferenceToggleRow name="showAlbumTable" value={preferences.showAlbumTable} />
           </ListGroup>
         </Col>
       </Row>

@@ -29,8 +29,14 @@ export const getTrackAlbum = async (track) => {
   return await getData(`${path}/getTrackAlbum?track=${track}`);
 };
 
-export const searchAlbums = (search, start, limit) => {
-  return getData(`${path}/search?search=${search}&type=albums&${page(start, limit)}`);
+export const searchAlbums = (search, start, limit, startsWithFilter) => {
+  let url = `${path}/search?search=${search}&type=albums&${page(start, limit)}`;
+
+  if (startsWithFilter) {
+    url += `&startsWithFilter=${startsWithFilter}`;
+  }
+
+  return getData(url);
 };
 
 export const searchTracks = (search, start, limit) => {

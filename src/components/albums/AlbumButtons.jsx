@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { BoxArrowInDownLeft, ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
+import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
 
 import Button from '../Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';

@@ -1,9 +1,8 @@
 import Container from 'react-bootstrap/Container';
 import FormControl from 'react-bootstrap/FormControl';
-import InputGroup from 'react-bootstrap/InputGroup';
 import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { PropTypes } from 'prop-types';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,8 +34,6 @@ const Search = ({
       content={value}
     />
   );
-
-  // useEffect(() => applyLighting(settings, 'Search'), []);
 
   const fireLightingEvents = () => {
     applyLighting(settings, 'Albums');

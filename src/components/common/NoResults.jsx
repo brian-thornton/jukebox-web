@@ -11,7 +11,7 @@ const propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-const NoResults = ({ text, title, controls }) => {
+const NoResults = ({ text, title, controls, marginTop }) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {
@@ -20,7 +20,7 @@ const NoResults = ({ text, title, controls }) => {
     height: '100%',
     borderColor: 'black',
     color: settings.styles.fontColor,
-    marginTop: '60px',
+    marginTop: marginTop ? marginTop : '0',
   };
 
   return (

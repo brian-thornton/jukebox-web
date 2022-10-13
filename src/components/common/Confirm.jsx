@@ -1,5 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import React, { useContext, useEffect }  from 'react';
+import React, { useContext }  from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -31,7 +31,7 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
         </div>
       </Card.Body>
     </Card>
-  )
+  );
 };
 
 export default Confirm;

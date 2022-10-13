@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { debounce } from 'lodash';
+import { useIdleTimer } from 'react-idle-timer'
+import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
 
 import './App.css';
@@ -34,8 +36,21 @@ function App() {
   const [background, setBackground] = useState();
   const [lastModule, setLastModule] = useState('albums');
   const [isLocked, setIsLocked] = useState();
+  const [startsWithFilter, setStartsWithFilter] = useState();
+  const navigate = useNavigate();
+
+  const onIdle = () => {
+    navigate(`/albums`);
+  };
+
+  const idleTimer = useIdleTimer({ onIdle, timeout: 1000 * 60 * 3 })
 
   useEffect(() => WebFont.load(supportedFonts), []);
+  useEffect(() => {
+    if (!search) {
+      setStartsWithFilter(null);
+    }
+  }, [search]);
 
   if (!isIntervalSet) {
     setIsIntervalSet(true);
@@ -142,8 +157,8 @@ function App() {
                 setIsPinOpen={setIsPinOpen}
               />
               <Routes>
-                <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} display={display} />)} />
-                <Route path="/albums" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} display={display} search={search} />)} />
+                <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} setStartsWithFilter={setStartsWithFilter} startsWithFilter={startsWithFilter} display={display} />)} />
+                <Route path="/albums" element={wrapWithKeyboard(<AlbumList setStartsWithFilter={setStartsWithFilter} startsWithFilter={startsWithFilter} selectedLibraries={selectedLibraries} display={display} search={search} />)} />
                 <Route path="/albums/:id" element={<AlbumDetail />} />
                 <Route path="/albums/categories/:id" element={<AlbumList />} search={search} display={display} />
                 <Route path="/filters" element={<Filters selectedLibraries={selectedLibraries} setSelectedLibraries={setSelectedLibraries} />} />
