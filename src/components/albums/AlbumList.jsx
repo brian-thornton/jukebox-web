@@ -18,6 +18,9 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import './AlbumList.scss';
 import { handlers } from '../../lib/gesture-helper';
 
+import { getCategories, getStations } from '../../lib/radio-client';
+import ContentWithControls from '../common/ContentWithControls';
+
 const propTypes = {
   search: PropTypes.string,
 };
@@ -33,6 +36,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
   const [realPageSize, setRealPageSize] = useState();
   const { state } = useLocation();
   const { startsWithLocation } = settings.preferences;
+  const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
 
@@ -50,6 +54,8 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
     const numberOfRows = Math.floor((window.innerHeight - 200) / (display === 'grid' ? 65 : 200));
     setRealPageSize(albumsPerRow * numberOfRows);
     applyLighting(settings, 'Albums');
+
+    getStations().then(c => console.log(c))
   }, []);
 
   const findAlbums = async (start, limit) => {
@@ -64,6 +70,8 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       window.scrollTo(0, 0);
       setIsLoading(false);
     }).catch((e) => {
+      // Something went wrong. Let's try that again.
+      setTimeout(() => findAlbums(start, limit), 3000)
       console.log(e);
     });
   };
@@ -133,38 +141,48 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       {isLoading && <Loading />}
       {!isLoading && !noResults && (
         <Container {...swipe} fluid className="albumListContainer">
-          <Row>
-            {startsWithLocation === 'left' && (
+          <Row style={{paddingTop: '20px'}}>
+            {startsWithLocation === 'left' && !isScreenSmall && (
               <Col lg="1" xl="1" md="1" sm="1">
                 <StartsWithFilter startsWithFilter={startsWithFilter} setStartsWithFilter={setStartsWithFilter} />
               </Col>
             )}
-            <Col lg={cols} xl={cols} md={cols} sm={cols} style={{ marginLeft: '0px', paddingLeft: '0px',  marginRight: '0px', paddingRight: '0px' }}>
+            <Col lg={cols} xl={cols} md={cols} sm={cols} style={{ marginLeft: '0px', paddingLeft: '0px', marginRight: '0px', paddingRight: '0px' }}>
               {display !== 'grid' && (
                 <Row className="albumRow">
                   {albums.map(album => <Album album={album} />)}
+                  {(totalAlbums > realPageSize) && startsWithLocation !== 'none' && (
+                    <Paginator
+                      onPageChange={onPageChange}
+                      selectedPage={selectedPage}
+                      totalItems={totalAlbums}
+                      pageSize={realPageSize}
+                    />
+                  )}
                 </Row>
               )}
               {display === 'grid' && <AlbumTable albums={albums} />}
             </Col>
-            {startsWithLocation === 'right' && (
+            {startsWithLocation === 'right' && !isScreenSmall && (
               <Col lg="1" xl="1" md="1" sm="1">
                 <StartsWithFilter startsWithFilter={startsWithFilter} setStartsWithFilter={setStartsWithFilter} />
               </Col>
             )}
           </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              {(totalAlbums > realPageSize) && (
-                <Paginator
-                  onPageChange={onPageChange}
-                  selectedPage={selectedPage}
-                  totalItems={totalAlbums}
-                  pageSize={realPageSize}
-                />
-              )}
-            </Col>
-          </Row>
+          {startsWithLocation === 'none' && (
+            <Row>
+              <Col lg="12" xl="12" md="12" sm="12">
+                {(totalAlbums > realPageSize) && (
+                  <Paginator
+                    onPageChange={onPageChange}
+                    selectedPage={selectedPage}
+                    totalItems={totalAlbums}
+                    pageSize={realPageSize}
+                  />
+                )}
+              </Col>
+            </Row>
+          )}
         </Container>
       )}
     </>

@@ -33,6 +33,9 @@ const Preferences = () => {
             <PreferenceRadioRow rowName="Starts with Filter" preferenceName="startsWithLocation" options={startsWithFilterOptions} />
             <PreferenceToggleRow name="showLibraryFilter" value={preferences.showLibraryFilter} />
             <PreferenceToggleRow name="showAlbumTable" value={preferences.showAlbumTable} />
+            <PreferenceTextRow rowName="vlcHost" value={preferences.vlcHost} />
+            <PreferenceTextRow rowName="vlcPort" value={preferences.vlcPort} />
+            <PreferenceTextRow rowName="vlcPassword" value={preferences.vlcPassword} />
           </ListGroup>
         </Col>
       </Row>

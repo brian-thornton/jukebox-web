@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { getCurrentState } from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { updateSettings } from '../../lib/settings-client';
 import Segments from './Segments';
 import './ControllerDetail.scss';
 

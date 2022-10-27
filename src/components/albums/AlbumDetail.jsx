@@ -10,8 +10,9 @@ import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
 import AlbumTracks from './AlbumTracks';
+import Confirm from '../common/Confirm';
 import CoverArtSearchModal from './CoverArtSearchModal';
-import { getAlbumTracks } from '../../lib/librarian-client';
+import { getAlbumTracks, removeCoverArt } from '../../lib/librarian-client';
 import './AlbumDetail.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 
@@ -27,6 +28,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
+  const [isConfirmRemoveCoverArtOpen, setIsConfirmRemoveCoverArtOpen] = useState(false);
   const [reload, setReload] = useState(false);
   const settings = useContext(SettingsContext);
 
@@ -58,7 +60,11 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
           clearCurrentAlbum={clearCurrentAlbum}
           tracks={tracks}
         />
-        <AlbumAdminButtons album={album} setIsCustomSearchOpen={setIsCustomSearchOpen} />
+        <AlbumAdminButtons
+          album={album}
+          setIsCustomSearchOpen={setIsCustomSearchOpen}
+          setIsConfirmRemoveCoverArtOpen={setIsConfirmRemoveCoverArtOpen}
+        />
       </>
     </Container>
   );
@@ -87,7 +93,18 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               </Container>
             </Col>
             <Col lg={9} xl={9}>
-              {!isCustomSearchOpen && <AlbumTracks tracks={tracks} />}
+              {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && <AlbumTracks tracks={tracks} />}
+              {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
+                <Confirm
+                  text="Are you sure that you want to remove the cover?"
+                  onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
+                  onConfirm={() => {
+                    removeCoverArt(album)
+                    setIsConfirmRemoveCoverArtOpen(false);
+                    window.location.reload();
+                  }}
+                />
+              )}
               {isCustomSearchOpen && (
                 <CoverArtSearchModal
                   album={album}

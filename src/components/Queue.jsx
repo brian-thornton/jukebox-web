@@ -25,44 +25,45 @@ import Paginator from './common/Paginator';
 import { SettingsContext } from './layout/SettingsProvider';
 import './Queue.scss';
 import { handlers } from '../lib/gesture-helper';
+import { pageSize } from '../lib/styleHelper';
 
 const Queue = () => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
   const [isEmpty, setIsEmpty] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
   const [clearConfirm, setClearConfirm] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  let renderTracks = [];
+  const itemsPerPage = pageSize('item', 200, 55);
 
   const loadQueue = () => {
-    if (realPageSize) {
-      const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+    const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
-      getQueue(realStart, (realStart + realPageSize)).then((data) => {
-        setTracks(data.tracks);
-        setTotalTracks(data.totalTracks);
-        if (data.tracks.length === 0) {
-          setIsEmpty(true);
-        }
-      });
-    }
+    getQueue(start, (start + itemsPerPage)).then((data) => {
+      setTracks(data.tracks);
+      setTotalTracks(data.totalTracks);
+      if (data.tracks.length === 0) {
+        setIsEmpty(true);
+      }
+    });
+  };
+
+  const monitorQueue = () => {
+    setTimeout(() => monitorQueue(), 3000)
+    loadQueue();
   };
 
   const clear = () => clearQueue().then(loadQueue());
 
   useEffect(() => {
-    const numberOfTracks = Math.floor((window.innerHeight - 200) / 55);
-    setRealPageSize(numberOfTracks);
     applyLighting(settings, 'Queue');
+    monitorQueue();
   }, []);
 
   useEffect(loadQueue, [selectedPage]);
-  useEffect(loadQueue, [realPageSize]);
 
   const confirm = (
     <Confirm
@@ -86,7 +87,19 @@ const Queue = () => {
           <Container {...swipe} fluid>
             <Row>
               <Col lg="12" xl="12" md="12" sm="12">
-                <Row>{renderTracks}</Row>
+                <Row>
+                  {tracks.map(track => (
+                    <Item
+                      text={track.name}
+                      buttons={(
+                        <>
+                          {settings.features.play && <PlayNowButton track={track} />}
+                          <Button onClick={() => remove(track)} icon={<TrashFill />} />
+                        </>
+                      )}
+                    />
+                  ))
+                  }</Row>
               </Col>
             </Row>
             <Row>
@@ -97,7 +110,7 @@ const Queue = () => {
                   className="queue"
                   selectedPage={selectedPage}
                   totalItems={totalTracks}
-                  pageSize={realPageSize}
+                  pageSize={itemsPerPage}
                 />
               </Col>
             </Row>
@@ -120,18 +133,6 @@ const Queue = () => {
     removeTracksFromQueue([track]);
     loadQueue();
   };
-
-  renderTracks = tracks.map(track => (
-    <Item
-      text={track.name}
-      buttons={(
-        <>
-          {settings.features.play && <PlayNowButton track={track} />}
-          <Button onClick={() => remove(track)} icon={<TrashFill />} />
-        </>
-      )}
-    />
-  ));
 
   const controls = () => (
     <>

@@ -11,15 +11,11 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    background: 'transparent',
-    minHeight: '200px',
-    height: '100%',
-    borderColor: 'black',
     color: settings.styles.fontColor,
   };
 
   return (
-    <Card style={confirmStyle}>
+    <Card className="confirmCard" style={confirmStyle}>
       <Card.Body>
         <Card.Title className="confirmTitle">Are you sure?</Card.Title>
         <Card.Text className="confirmText">

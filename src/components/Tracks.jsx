@@ -34,7 +34,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
 
   useEffect(() => {
-      const itemHeight = 55;
+      const itemHeight = 50;
       const viewPortHeight = Math.floor(window.innerHeight - 200);
       setRealPageSize(Math.floor(viewPortHeight / itemHeight));
       applyLighting(settings, 'Tracks');

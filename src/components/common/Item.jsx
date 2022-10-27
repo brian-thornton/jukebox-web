@@ -24,13 +24,6 @@ const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked, actio
 
   return (
     <ListGroupItem className="itemStyle" style={itemStyle} onClick={onClick}>
-      {/* <div className="itemText">
-        {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
-        {text}
-      </div>
-      <div className="itemButtons">
-        {buttons}
-      </div> */}
       <Container fluid>
         <Row>
           <Col lg={actionVisible ? "6" : "8"} xl={actionVisible ? "6" : "8"}  md="6">

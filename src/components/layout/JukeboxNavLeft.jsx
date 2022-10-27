@@ -42,6 +42,7 @@ const JukeboxNavLeft = ({ }) => {
           )}
           {features.tracks && <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/tracks">Tracks</Nav.Link>}
           {features.playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/playlists">Playlists</Nav.Link>}
+          {features.playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/radio">Radio</Nav.Link>}
           {features.queue && <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/queue">Queue</Nav.Link>}
           {features.settings && <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/settings">Settings</Nav.Link>}
           {features.albums && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/filters">Filters</Nav.Link>}
@@ -66,6 +67,7 @@ const JukeboxNavLeft = ({ }) => {
           )}
           {features.tracks && navButton('tracks')}
           {features.playlists && navButton('playlists')}
+          {features.playlists && navButton('radio')}
           {features.queue && navButton('queue')}
           {features.settings && navButton('settings')}
           {features.albums && isScreenSmall && navButton('filters')}

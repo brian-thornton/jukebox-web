@@ -31,6 +31,7 @@ const Track = ({
   trackAlbumsLoaded,
 }) => {
   const settings = useContext(SettingsContext);
+  const { features } = settings;
   const isScreenSmall = window.innerWidth < 700;
 
   const getAlbum = (albumTrack) => {
@@ -45,7 +46,7 @@ const Track = ({
     const ta = getAlbum(albumTrack);
 
     if (showAlbumCovers && ta) {
-      if (settings && settings.features) {
+      if (settings && features) {
         return (
           <TrackAlbum
             album={ta}
@@ -84,11 +85,11 @@ const Track = ({
             </div>
           </Col>
           <Col lg={3} md={3}>
-            {settings.features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
-            {settings.features.playlists && <AddToPlaylistButton track={track} />}
-            {settings.features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
-            {settings.features.queue && <EnqueueButton track={track} mode="Tracks" isScreenSmall={isScreenSmall} />}
-            {settings.features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
+            {features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
+            {features.playlists && <AddToPlaylistButton track={track} />}
+            {features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
+            {features.queue && <EnqueueButton track={track} mode="Tracks" isScreenSmall={isScreenSmall} />}
+            {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
           </Col>
         </Row>
       </Container>
