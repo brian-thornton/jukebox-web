@@ -27,6 +27,6 @@ export const enqueueTracksTop = (tracks) => {
 };
 
 export const removeTracksFromQueue = (tracks) => {
-  return post(`${path}/removeFromQueue`, tracks);
+  return post(`${path}/removeFromQueue`, { tracks });
 };
 

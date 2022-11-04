@@ -1,28 +1,47 @@
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
+import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 
 const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
+  const settings = useContext(SettingsContext);
+  const { styles, features } = settings;
+  const { startsWithLocation } = settings.preferences;
+  const availableHeight = window.innerHeight;
+  console.log(`working height: ${availableHeight}`);
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
     'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
+  const buttonStyle = {
+    marginTop: availableHeight < 700 ? '0px' : '5px',
+    marginBottom: availableHeight < 700 ? '0px' : '5px',
+  }
+
+  const filterStyle = {
+    paddingRight: startsWithLocation === 'left' ? '0px' : '0px',
+    marginRight: startsWithLocation === 'left' ? '0px' : '0px'
+  };
+
   return (
-    <Container fluid style={{paddingRight: '0px', marginRight: '0px'}}>
+    <Container fluid style={filterStyle}>
       <Row>
         {alphabet.map((letter) => (
           <Button
+            disabled={features.isLocked}
             onClick={() => setStartsWithFilter(letter)}
             isSelected={letter === startsWithFilter}
             width="40%"
             height="30"
+            style={buttonStyle}
             content={letter}
           />
         ))}
         <Button
+          disabled={features.isLocked}
           onClick={() => setStartsWithFilter(null)}
           width="86%"
           height="45"

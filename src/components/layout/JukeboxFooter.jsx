@@ -22,6 +22,8 @@ const JukeboxFooter = ({
   search,
   setSearch,
   nowPlaying,
+  mediaType,
+  setMediaType,
 }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
@@ -69,6 +71,8 @@ const JukeboxFooter = ({
     return (
       <Nav className="ml-auto">
         <ControlButtons
+          mediaType={mediaType}
+          setMediaType={setMediaType}
           isScreenSmall={isScreenSmall}
           setIsSmallSearchEnabled={setIsSmallSearchEnabled}
         />

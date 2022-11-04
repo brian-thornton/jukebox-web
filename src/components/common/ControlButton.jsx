@@ -25,7 +25,7 @@ const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelec
   return (
     <Button
       width={width}
-      height="75"
+      height={height}
       block
       disabled={disabled}
       variant="outline-light"

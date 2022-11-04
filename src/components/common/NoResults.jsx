@@ -15,16 +15,12 @@ const NoResults = ({ text, title, controls, marginTop }) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {
-    background: 'transparent',
-    minHeight: '200px',
-    height: '100%',
-    borderColor: 'black',
     color: settings.styles.fontColor,
     marginTop: marginTop ? marginTop : '0',
   };
 
   return (
-    <Card style={noResultsStyle}>
+    <Card className="no-results-card" style={noResultsStyle}>
       <Card.Body>
         <Card.Title className="no-results-title">{title}</Card.Title>
         <Card.Text className="no-results-text">

@@ -30,7 +30,7 @@ const AlbumButtons = ({ tracks }) => {
 
   const albumButton = (onClick, name, enabled = true) => (
     <Col lg="6" xl="6" sm="12" xs="12" className="albumButton">
-      <ControlButton disabled={!enabled} text={name} onClick={onClick} height={50} width="100%" />
+      <ControlButton disabled={!enabled} text={name} onClick={onClick} width="100%" />
     </Col>
   );
 

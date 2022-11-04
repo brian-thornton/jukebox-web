@@ -26,8 +26,8 @@ const Search = ({
   const [localSearch, setLocalSearch] = useState('');
   const inputButton = value => (
     <Button
-      width={isScreenSmall ? "50" : "55"}
-      height={isScreenSmall ? "50" : "55"}
+      width={isScreenSmall ? "50" : "75"}
+      height={isScreenSmall ? "50" : "75"}
       onClick={() => {
         setLocalSearch(`${localSearch}${value}`);
       }}
@@ -67,6 +67,7 @@ const Search = ({
       <Container className="searchContainer">
         <Row>
           <FormControl
+            style={{ marginTop: '20px' }}
             id="name"
             placeholder={localSearch || ''}
             aria-label="Name"
@@ -81,9 +82,9 @@ const Search = ({
             }}
           />
         </Row>
-        <Row styles={{ marginTop: '0px', paddingTop: '0px' }}>
-          <Container fluid className={`d-none d-sm-block`} styles={{ marginTop: '0px' }}>
-            <Row className="keyboardRow">
+        <Row>
+          <Container fluid className={`d-none d-sm-block`}>
+            <Row className="keyboardRow firstKeyboardRow">
               {inputButton(1, 60)}
               {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
             </Row>

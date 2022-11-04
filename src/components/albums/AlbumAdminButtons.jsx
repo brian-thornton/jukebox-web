@@ -12,7 +12,7 @@ const propTypes = {
   album: Album.isRequired,
 };
 
-const AlbumAdminButtons = ({ album, setIsCustomSearchOpen }) => {
+const AlbumAdminButtons = ({ album, setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction }) => {
   const settings = useContext(SettingsContext);
   const [coverArt, setCoverArt] = useState('');
   const isScreenSmall = window.innerWidth < 700;
@@ -26,7 +26,7 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen }) => {
 
   const albumButton = (onClick, name) => (
     <Col lg="6" xl="6" sm="12" xs="12" className="adminButton">
-      <ControlButton onClick={onClick} text={name} width="100%" height={50} />
+      <ControlButton onClick={onClick} text={name} width="100%" />
     </Col>
   );
 
@@ -37,7 +37,8 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen }) => {
           {!isScreenSmall && (
             <Row>
               {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
-              {albumButton(() => removeCoverArt(album), 'Remove Cover')}
+              {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), 'Remove Cover')}
+              {albumButton(() => setConfirmRestriction(true), 'Restrict Content')}
             </Row>
           )}
         </>

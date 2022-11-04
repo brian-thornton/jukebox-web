@@ -10,10 +10,12 @@ import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
 import AlbumTracks from './AlbumTracks';
+import Confirm from '../common/Confirm';
 import CoverArtSearchModal from './CoverArtSearchModal';
-import { getAlbumTracks } from '../../lib/librarian-client';
+import { getAlbumTracks, removeCoverArt } from '../../lib/librarian-client';
 import './AlbumDetail.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
+import RestrictionModes from '../settings/content/RestrictionModes';
 
 const propTypes = {
   album: Album.isRequired,
@@ -27,7 +29,9 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
   const [isCustomSearchOpen, setIsCustomSearchOpen] = useState(false);
+  const [isConfirmRemoveCoverArtOpen, setIsConfirmRemoveCoverArtOpen] = useState(false);
   const [reload, setReload] = useState(false);
+  const [confirmRestriction, setConfirmRestriction] = useState(false);
   const settings = useContext(SettingsContext);
 
   const loadTracks = () => {
@@ -58,7 +62,12 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
           clearCurrentAlbum={clearCurrentAlbum}
           tracks={tracks}
         />
-        <AlbumAdminButtons album={album} setIsCustomSearchOpen={setIsCustomSearchOpen} />
+        <AlbumAdminButtons
+          album={album}
+          setIsCustomSearchOpen={setIsCustomSearchOpen}
+          setIsConfirmRemoveCoverArtOpen={setIsConfirmRemoveCoverArtOpen}
+          setConfirmRestriction={setConfirmRestriction}
+        />
       </>
     </Container>
   );
@@ -87,7 +96,18 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               </Container>
             </Col>
             <Col lg={9} xl={9}>
-              {!isCustomSearchOpen && <AlbumTracks tracks={tracks} />}
+              {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && <AlbumTracks tracks={tracks} />}
+              {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
+                <Confirm
+                  text="Are you sure that you want to remove the cover?"
+                  onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
+                  onConfirm={() => {
+                    removeCoverArt(album)
+                    setIsConfirmRemoveCoverArtOpen(false);
+                    window.location.reload();
+                  }}
+                />
+              )}
               {isCustomSearchOpen && (
                 <CoverArtSearchModal
                   album={album}
@@ -106,6 +126,12 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   if (!areTracksLoaded) {
     loadTracks();
     window.scrollTo(0, 0);
+  }
+
+  if (confirmRestriction) {
+    return (
+      <RestrictionModes addMode={true} addComplete={() => setConfirmRestriction(false)} album={album} />
+    );
   }
 
   return largeAlbum();

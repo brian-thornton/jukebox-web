@@ -8,6 +8,7 @@ import Libraries from './libraries/Libraries';
 import Preferences from './preferences/Preferences';
 import SettingsEditor from './SettingsEditor';
 import { SettingsContext } from '../layout/SettingsProvider';
+import RestrictionModes from './content/RestrictionModes';
 import Skins from './skins/Skins';
 import PinEntry from '../common/PinEntry';
 import { applyLighting } from '../../lib/lightingHelper';
@@ -44,6 +45,7 @@ const Settings = () => {
           <ControlButton isSelected={mode === 'SETTINGS'} width="100%" onClick={() => setMode('SETTINGS')} text="Features" />
           <ControlButton isSelected={mode === 'PREFERENCES'} width="100%" onClick={() => setMode('PREFERENCES')} text="Preferences" />
           <ControlButton isSelected={mode === 'STYLE'} width="100%" onClick={() => setMode('STYLE')} text="Style" />
+          <ControlButton isSelected={mode === 'RESTRICTIONS'} width="100%" onClick={() => setMode('RESTRICTIONS')} text="Content Restrictions" />
           <ControlButton isSelected={mode === 'CABINET'} width="100%" onClick={() => setMode('CABINET')} text="Cabinet Config" />
         </>
       );
@@ -59,6 +61,7 @@ const Settings = () => {
           {mode === 'LIBRARY' && <Libraries />}
           {mode === 'SETTINGS' && <SettingsEditor />}
           {mode === 'PREFERENCES' && <Preferences />}
+          {mode === 'RESTRICTIONS' && <RestrictionModes />}
           {mode === 'CABINET' && <CabinetConfiguration />}
           {mode === 'STYLE' && (
             <Skins

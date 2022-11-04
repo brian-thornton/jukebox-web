@@ -94,12 +94,9 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const controls = <ControlButton text="Add" width="100%" onClick={handleShow} />;
 
   const content = () => {
-    if (isEmpty) {
-      return <NoResults title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />;
-    }
-
     return (
       <>
+        {!show && isEmpty && <NoResults title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
         {show && <AddNew onCancel={() => setShow(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
         {!show && (
           <Container {...swipe} id="albums" fluid style={playlistsMargin}>
@@ -117,15 +114,17 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
                 />
               ))}
             </Row>
-            <Row className="playlistsRow">
-              <Paginator
-                onPageChange={(page) => setSelectedPage(page)}
-                selectedPage={selectedPage}
-                totalItems={playlists.length}
-                pageSize={realPageSize}
-                disableRandom
-              />
-            </Row>
+            {!show && !isEmpty && (
+              <Row className="playlistsRow">
+                <Paginator
+                  onPageChange={(page) => setSelectedPage(page)}
+                  selectedPage={selectedPage}
+                  totalItems={playlists.length}
+                  pageSize={realPageSize}
+                  disableRandom
+                />
+              </Row>
+            )}
           </Container>
         )}
       </>

@@ -42,17 +42,19 @@ const Libraries = () => {
       categoryAlbums[c] = 0;
     });
 
-    data.forEach((lib) => {
-      if (lib.category) {
-        categoryAlbums[lib.category] += lib.albums.length;
-      } else {
-        totalTracks += lib.totalTracks;
-        totalAlbums += lib.albums.length;
-      }
-    });
-    getStatus().then((response) => {
-      updateStatus({ ...response, totalTracks, totalAlbums, categoryAlbums });
-    });
+    if (data) {
+      data.forEach((lib) => {
+        if (lib.category) {
+          categoryAlbums[lib.category] += lib.albums.length;
+        } else {
+          totalTracks += lib?.totalTracks;
+          totalAlbums += lib?.albums?.length;
+        }
+      });
+      getStatus().then((response) => {
+        updateStatus({ ...response, totalTracks, totalAlbums, categoryAlbums });
+      });
+    }
   };
 
   const loadLibraries = () => {

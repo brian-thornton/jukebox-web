@@ -10,6 +10,7 @@ import AlbumDetail from './components/albums/AlbumDetail';
 import AlbumList from './components/albums/AlbumList';
 import { getSettings } from './lib/settings-client';
 import { getStatus } from './lib/status-client';
+import { status } from './lib/radio-client';
 import Filters from './components/layout/Filters';
 import JukeboxFooter from './components/layout/JukeboxFooter';
 import JukeboxHeader from './components/layout/JukeboxHeader';
@@ -23,6 +24,7 @@ import { SettingsContext } from './components/layout/SettingsProvider'
 import WithKeyboardInput from './components/layout/WithKeyboardInput';
 import { supportedFonts } from './lib/styleHelper';
 import { updateSettings } from './lib/settings-client';
+import RadioList from './components/radio/RadioList';
 
 function App() {
   const [isPinOpen, setIsPinOpen] = useState(false);
@@ -32,6 +34,7 @@ function App() {
   const [display, setDisplay] = useState('covers');
   const [selectedLibraries, setSelectedLibraries] = useState([]);
   const [nowPlaying, setNowPlaying] = useState('');
+  const [mediaType, setMediaType] = useState('file');
   const [isIntervalSet, setIsIntervalSet] = useState(false);
   const [background, setBackground] = useState();
   const [lastModule, setLastModule] = useState('albums');
@@ -43,33 +46,68 @@ function App() {
     navigate(`/albums`);
   };
 
-  const idleTimer = useIdleTimer({ onIdle, timeout: 1000 * 60 * 3 })
+  // Monitor user idle to return to home screen.
+  const idleTimer = useIdleTimer({ onIdle, timeout: 1000 * 60 * 3 });
 
-  useEffect(() => WebFont.load(supportedFonts), []);
+  // Monitor for remote lock down.
+  const monitorLock = () => {
+    getSettings().then((data) => {
+      setSettings(data);
+
+      if (data) {
+        setIsLocked(data.features.isLocked);
+
+        if (data.features.isLocked && window.location.pathname !== '/albums') {
+          window.location.replace(`/albums`);
+        }
+      }
+
+      setTimeout(() => monitorLock(), 3000);
+    });
+  };
+
+  useEffect(() => {
+    WebFont.load(supportedFonts);
+    monitorLock();
+  }, []);
+
   useEffect(() => {
     if (!search) {
       setStartsWithFilter(null);
     }
   }, [search]);
 
-  if (!isIntervalSet) {
-    setIsIntervalSet(true);
-    setInterval(() => {
-      getStatus().then((data) => {
-        if (data?.nowPlaying && data?.nowPlaying?.name) {
-          setNowPlaying(data.nowPlaying.name);
-        } else {
-          setNowPlaying('');
-        }
-      });
-    }, 3000);
-  }
+  const startPlaybackWatchers = () => {
+    if (!isIntervalSet) {
+      setIsIntervalSet(true);
+      setInterval(() => {
+        getStatus().then((data) => {
+          if (data?.nowPlaying && data?.nowPlaying?.name) {
+            setNowPlaying(data.nowPlaying.name);
+          } else {
+            setNowPlaying('');
+          }
+        });
 
-  if (!settings) {
-    getSettings().then((data) => {
-      setSettings(data);
-    });
-  }
+        const { preferences } = settings;
+        const { vlcHost, vlcPort, vlcPassword } = preferences;
+        status(vlcHost, vlcPort, vlcPassword).then((radioData) => {
+          const isRadioPlaying = radioData?.state === 'playing';
+
+          if (isRadioPlaying) {
+            const metadata = radioData?.information?.category?.meta;
+            setNowPlaying(metadata?.now_playing || metadata?.filename);
+          }
+        }).catch(e => console.log(e));
+      }, 3000);
+    }
+  };
+
+  useEffect(() => {
+    if (settings) {
+      startPlaybackWatchers();
+    }
+  }, [settings]);
 
   const debouncedSearch = useCallback(
     debounce((updatedSearch) => {
@@ -108,19 +146,15 @@ function App() {
     }
   }, [settings])
 
-  const handlePinAction = (onAuthorized) => {
-    setIsPinOpen(true);
-  }
-
-  useEffect(() => {
-    //setIsPinOpen(true);
-  }, [isLocked])
-
-  const updateFeature = (name, value) => {
+  const updateFeature = (name, value, redirectTo) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.features[name] = value;
     updateSettings(deepClone).then(() => {
-      window.location.reload();
+      if (!redirectTo) {
+        window.location.reload();
+      } else {
+        navigate(redirectTo);
+      }
     });
   };
 
@@ -133,7 +167,12 @@ function App() {
             height: window.innerHeight - 60,
           }}>
             <PinEntry
-              onAuthorize={() => updateFeature('isLocked', isLocked)}
+              onAuthorize={() => {
+                getSettings().then((data) => {
+                  updateFeature('isLocked', !data.features.isLocked, '/albums');
+                  setIsPinOpen(false)
+                });
+              }}
               onCancel={() => setIsPinOpen(false)}
             />
           </div>
@@ -153,7 +192,10 @@ function App() {
                 setSearch={setSearch}
                 setLastModule={setLastModule}
                 lastModule={lastModule}
-                setIsLocked={setIsLocked}
+                setIsLocked={(value) => {
+                  setIsLocked(value);
+                  updateFeature('isLocked', value);
+                }}
                 setIsPinOpen={setIsPinOpen}
               />
               <Routes>
@@ -167,8 +209,11 @@ function App() {
                 <Route path="/search" element={<Search setSearchText={setSearch} />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/tracks" element={wrapWithKeyboard(<Tracks setSearch={setSearch} search={search} />)} />
+                <Route path="/radio" element={wrapWithKeyboard(<RadioList setMediaType={setMediaType} />)} />
               </Routes>
               <JukeboxFooter
+                mediaType={mediaType}
+                setMediaType={setMediaType}
                 search={search}
                 setSearch={setSearch}
                 nowPlaying={nowPlaying}

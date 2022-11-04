@@ -30,7 +30,7 @@
     "webfontloader": "^1.6.28"
   },
   "scripts": {
-    "start": "node check-version && concurrently \"react-scripts start\" & node ../jukebox-service/index.js",
+    "start": "node check-version && concurrently \"react-scripts start\" & node ../jukebox-service/index.js & /Applications/VLC.app/Contents/MacOS/VLC",
     "server": "node ../jukebox-service/index.js",
     "client": "react-scripts start",
     "build": "react-scripts build",

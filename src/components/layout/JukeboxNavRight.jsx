@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import './Jukebox.scss';
+import { getSettings } from '../../lib/settings-client';
 import { SettingsContext } from './SettingsProvider';
 
 const propTypes = {
@@ -28,6 +29,7 @@ const JukeboxNavRight = ({
   const { features, preferences } = settings;
   const isScreenSmall = window.innerWidth < 700;
   const navigate = useNavigate();
+  const { pathname } = window.location;
 
   const searchButtons = () => {
     const searchButton = (
@@ -74,14 +76,14 @@ const JukeboxNavRight = ({
     <Nav className="ml-auto">
       {search && !isScreenSmall && <div className="search-result">{`Search Results: ${search}`}</div>}
       {(features.albums || features.tracks) && searchButtons()}
-      {!isScreenSmall && features.albums && preferences.showLibraryFilter && (
+      {!isScreenSmall && features.albums && pathname.includes('/albums') && preferences.showLibraryFilter && (
         <Button
           disabled={features.isLocked}
           onClick={() => navigate('/filters', { state: { selectedLibraries } })}
           content={selectedLibraries?.length ? <FunnelFill /> : <Funnel />}
         />
       )}
-      {settings.features.albums && preferences.showAlbumTable && (
+      {settings.features.albums && pathname === '/albums' && preferences.showAlbumTable && (
         <Button
           disabled={features.isLocked}
           onClick={(() => setDisplay(display === 'grid' ? 'covers' : 'grid'))}
@@ -91,7 +93,6 @@ const JukeboxNavRight = ({
       <Button
         onClick={() => {
           setIsPinOpen(true);
-          setIsLocked(!features.isLocked);
         }}
         content={features.isLocked ? <LockFill /> : <UnlockFill />}
       />
