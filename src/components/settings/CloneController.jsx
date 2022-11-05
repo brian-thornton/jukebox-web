@@ -1,5 +1,7 @@
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import React, { useContext, useState } from 'react';
+import Row from 'react-bootstrap/Row';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -11,9 +13,24 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
   const [targetController, setTargetController] = useState();
 
   const targetControllers = (
-    <Form.Select onChange={(o) => setTargetController(o.target.value)}>
-      {networkControllers?.map((c) => <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>)}
-      {settings.controllers?.map((c) => <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>)}
+    <Form.Select onChange={(o) => {
+      if (o.target.value === 'select') {
+        setTargetController(null);
+      } else {
+        setTargetController(o.target.value);
+      }
+    }}>
+      <option value="select">Select...</option>
+      {networkControllers?.map((c) => {
+        if (c.ip !== cloneSource.ip) {
+          return <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>
+        }
+      })}
+      {settings.controllers?.map((c) => {
+        if (c.ip !== cloneSource.ip) {
+          return <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>
+        }
+      })}
     </Form.Select>
   );
 
@@ -34,10 +51,15 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
     const deepClone = JSON.parse(JSON.stringify(settings));
     const clonedController = deepClone.controllers?.find((c) => c.ip === cloneSource.ip);
 
-    deepClone.controllers.push({
-      ip: targetController,
-      segments: clonedController.segments
-    });
+    if (deepClone.controllers?.find((c) => c.ip === targetController.ip)) {
+      const updatedController = deepClone.controllers?.find((c) => c.ip === targetController.ip);
+      updatedController.segments = clonedController.segments;
+    } else {
+      deepClone.controllers.push({
+        ip: targetController,
+        segments: clonedController.segments
+      });
+    }
 
     await saveSettings(deepClone);
 
@@ -47,12 +69,25 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
       if (applicableController) {
         const clonedController = JSON.parse(JSON.stringify(applicableController));
 
-        if (s.lighting?.controllers) {
-          s.lighting.controllers.push({
-            ip: targetController,
-            segments: clonedController.segments,
-          })
+        let updatedControllers = s.lighting?.controllers.filter((ec) => ec !== cloneSource.ip);
+
+        if (!updatedControllers) {
+          updatedControllers = [];
         }
+
+        updatedControllers.push({
+          ip: targetController,
+          segments: clonedController.segments,
+        });
+
+        s.lighting.controllers = updatedControllers;
+
+        // if (s.lighting?.controllers) {
+        //   s.lighting.controllers.push({
+        //     ip: targetController,
+        //     segments: clonedController.segments,
+        //   })
+        // }
 
         updateSkin(s);
       }
@@ -63,21 +98,25 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
 
   return (
     <>
-      Clone To:
-      {targetControllers}
-      <Button
-        className="lighting-controller-button"
-        onClick={() => {
-          clone();
-          setCloneSource(null);
-        }}
-        content="Clone"
-      />
-      <Button
-        className="lighting-controller-button"
-        onClick={() => setCloneSource(null)}
-        content="Cancel"
-      />
+      <Container fluid>
+        <Row>
+          {targetControllers}
+          <Button
+            className="lighting-controller-button"
+            onClick={() => {
+              clone();
+              setCloneSource(null);
+            }}
+            content="Clone"
+            disabled={!targetController}
+          />
+          <Button
+            className="lighting-controller-button"
+            onClick={() => setCloneSource(null)}
+            content="Cancel"
+          />
+        </Row>
+      </Container>
     </>
   );
 };

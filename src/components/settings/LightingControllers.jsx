@@ -31,6 +31,16 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
   const discoverControllers = () => {
     setDiscoveryInProgress(true);
     discover().then((data) => {
+      console.log(data)
+      data.forEach((c) => {
+        const metaData = settings.controllers.find((m) => m.ip === c.ip);
+
+        if (metaData) {
+          c.segments = metaData.segments;
+        }
+      });
+
+      console.log(data);
       setNetworkControllers(data);
       setDiscoveryInProgress(false);
     });
@@ -85,6 +95,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
   };
 
   const pushSegmentsFromMetadata = async (controller) => {
+    console.log(controller);
     if (controller.segments) {
       for (const segment of controller.segments) {
         await createSegment(controller.ip, segment.start, segment.stop);
@@ -92,19 +103,14 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     }
   };
 
-  const targetControllers = (
-    <Form.Select>
-      {networkControllers?.map((c) => <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>)}
-      {settings.controllers?.map((c) => <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>)}
-    </Form.Select>
-  );
-
   const controllerRow = (controller) => {
+    const { online } = controller;
+
     return (
       <Item
         text={(
           <>
-            {controller.ip}
+            {`${controller.ip} (${online ? 'Online' : 'Offline'})`}
             {!allowName && <div>{controller.name}</div>}
             {allowName && <NameInput defaultValue={controller.name} onChange={(event) => setsUpdateControllerName(event.target.value)} />}
           </>
@@ -201,8 +207,16 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 {!discoveryInProgress && (
                   <Row>
                     <ListGroup className="styleEditorContent">
-                      {networkControllers?.map((controller) => controllerRow(controller))}
-                      {settings.controllers?.map((controller) => controllerRow(controller))}
+                      {networkControllers?.map((controller) => controllerRow({ ...controller, online: true}))}
+                      {settings.controllers?.map((controller) => {
+                        if (!networkControllers) {
+                          return controllerRow(controller)
+                        } else {
+                          if (!networkControllers.find((nc) => nc.ip === controller.ip)) {
+                            return controllerRow(controller)
+                          }
+                        }
+                      })}
                     </ListGroup>
                   </Row>
                 )}
