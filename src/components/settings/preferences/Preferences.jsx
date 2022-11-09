@@ -20,6 +20,12 @@ const Preferences = () => {
     {display: 'Right', value: 'right'},
   ];
 
+  const albumCoverSize = [
+    {display: 'Small', value: 'small'},
+    {display: 'Medium', value: 'medium'},
+    {display: 'Large', value: 'large'},
+  ]
+
   return (
     <Container fluid>
       <Row>
@@ -31,6 +37,7 @@ const Preferences = () => {
             <PreferenceToggleRow name="pinEnabled" value={preferences.pinEnabled} />
             <PreferenceTextRow rowName="pin" value={preferences.pin} />
             <PreferenceRadioRow rowName="Starts with Filter" preferenceName="startsWithLocation" options={startsWithFilterOptions} />
+            <PreferenceRadioRow rowName="Album Size" preferenceName="coverSize" options={albumCoverSize} />
             <PreferenceToggleRow name="showLibraryFilter" value={preferences.showLibraryFilter} />
             <PreferenceToggleRow name="showAlbumTable" value={preferences.showAlbumTable} />
             <PreferenceTextRow rowName="vlcHost" value={preferences.vlcHost} />

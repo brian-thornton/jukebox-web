@@ -27,7 +27,7 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
         }
       })}
       {settings.controllers?.map((c) => {
-        if (c.ip !== cloneSource.ip) {
+        if (!networkControllers.find((nc) => nc.ip === c.ip) && c.ip !== cloneSource.ip && c.online) {
           return <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>
         }
       })}
@@ -51,8 +51,8 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
     const deepClone = JSON.parse(JSON.stringify(settings));
     const clonedController = deepClone.controllers?.find((c) => c.ip === cloneSource.ip);
 
-    if (deepClone.controllers?.find((c) => c.ip === targetController.ip)) {
-      const updatedController = deepClone.controllers?.find((c) => c.ip === targetController.ip);
+    if (deepClone.controllers?.find((c) => c.ip === targetController)) {
+      const updatedController = deepClone.controllers?.find((c) => c.ip === targetController);
       updatedController.segments = clonedController.segments;
     } else {
       deepClone.controllers.push({

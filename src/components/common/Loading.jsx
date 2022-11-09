@@ -7,7 +7,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Loading.scss';
 
-const Loading = () => {
+const Loading = ({text = 'Loading...'}) => {
   const settings = useContext(SettingsContext);
 
   const loadingInProgressSkin = {
@@ -25,7 +25,7 @@ const Loading = () => {
             <Spinner animation="grow" variant="secondary" />
           </Row>
           <Row className="textRow">
-            Loading...
+            {text}
           </Row>
         </Container>
       </Card.Body>

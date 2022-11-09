@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { useSearchParams } from 'react-router-dom';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 import AddNew from '../../common/AddNew';
 import ControlButton from '../../common/ControlButton';
@@ -15,6 +17,7 @@ import SkinLights from './SkinLights';
 import './SkinDetail.scss';
 import SkinPreferences from './SkinPreferences';
 import { deleteSkin } from '../../../lib/style-client';
+import Button from '../../Button';
 
 const SkinDetail = ({
   skin,
@@ -34,19 +37,21 @@ const SkinDetail = ({
     }
   }, []);
 
-  const controls = () => (
-    <>
-      <ControlButton width="100%" onClick={goBackToThemeList} text="Back to Settings" />
-      <ControlButton width="100%" onClick={() => {
+  const controls = (
+    <Container fluid>
+      <Row>
+      <Button onClick={goBackToThemeList} content="Back to Settings"/>
+      <Button onClick={() => {
         goBackToThemeList(true);
-      }} text="Save and Apply" />
-      <ControlButton width="100%" onClick={() => setIsSaveAsModalOpen(true)} text="Save As" />
-      <ControlButton width="100%" onClick={() => setIsDeleteConfirmOpen(true)} text="Delete" />
-    </>
+      }} content="Save and Apply" />
+      <Button onClick={() => setIsSaveAsModalOpen(true)} content="Save As" />
+      <Button onClick={() => setIsDeleteConfirmOpen(true)} content="Delete" disabled={!skin.isEditable}  />
+      </Row>
+    </Container>
   );
 
   if (!isContextSet) {
-    setControls(controls());
+    setControls(controls);
     setIsContextSet(true);
   }
 
@@ -71,6 +76,7 @@ const SkinDetail = ({
 
   const content = () => (
     <>
+      {controls}
       {isSaveAsModalOpen && (
         <AddNew
           title={`Save ${skin.name} as...`}

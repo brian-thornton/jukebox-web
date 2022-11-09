@@ -14,6 +14,7 @@ const NameInput = ({
   onChange,
   placeholder,
   onEnter,
+  disabled,
 }) => (
   <InputGroup className="mb-3">
     <FormControl
@@ -23,6 +24,7 @@ const NameInput = ({
       defaultValue={defaultValue}
       aria-describedby="basic-addon1"
       onChange={onChange}
+      disabled={disabled}
       onKeyDown={(event) => {
         if (event.key === 'Enter') {
           onEnter();

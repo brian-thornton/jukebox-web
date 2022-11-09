@@ -18,6 +18,10 @@ export const powerOn = (ip) => {
   return getData(`${path}/powerOn?ip=${ip}`);
 };
 
+export const reset = (ip) => {
+  return getData(`${path}/reset?ip=${ip}`);
+};
+
 export const powerOff = (ip) => {
   return getData(`${path}/powerOff?ip=${ip}`);
 };

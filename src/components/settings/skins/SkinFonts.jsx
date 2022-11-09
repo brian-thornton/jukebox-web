@@ -44,6 +44,7 @@ const SkinFonts = ({ skin }) => {
         text={display}
         buttons={(
           <Button
+            disabled={!skin.isEditable}
             style={{ fontFamily: colors[name] }}
             onClick={() => {
               setEditFont(name);

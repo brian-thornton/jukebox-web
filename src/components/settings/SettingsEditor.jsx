@@ -5,7 +5,7 @@ import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { pageSize } from '../../lib/styleHelper'; 
+import { pageSize } from '../../lib/styleHelper';
 
 const SettingsEditor = () => {
   const [features, setFeatures] = useState();
@@ -32,8 +32,30 @@ const SettingsEditor = () => {
 
   useEffect(loadSettings, []);
 
+  const displayNames = [
+    { key: 'isLocked', value: 'Lock System' },
+    { key: 'albums', value: 'View Albums' },
+    { key: 'tracks', value: 'View Tracks' },
+    { key: 'playlists', value: 'View and run playlists' },
+    { key: 'radio', value: 'Play radio' },
+    { key: 'queue', value: 'View and update queue' },
+    { key: 'settings', value: 'View settings' },
+    { key: 'volume', value: 'Control volume' },
+    { key: 'next', value: 'Advance to next track in queue' },
+    { key: 'stop', value: 'Stop playback' },
+    { key: 'play', value: 'Start playback' },
+    { key: 'playNow', value: 'Override queue for immediate playback' },
+    { key: 'enqueue', value: 'Add items to the queue' },
+    { key: 'playAlbum', value: 'Play and entire album' },
+    { key: 'addToPlaylist', value: 'Add items to playlists' },
+    { key: 'deletePlaylist', value: 'Delete playlists' },
+    { key: 'admin', value: 'Access admin features' },
+    { key: 'downloadTrack', value: 'Download a track to a local folder' },
+  ];
+
   const settingRow = (name, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
+    const displayName = displayNames.find((entry) => entry.key === name);
 
     return (
       <Item
@@ -45,7 +67,7 @@ const SettingsEditor = () => {
             content={buttonText}
           />
         )}
-        text={name}
+        text={displayName?.value || name}
       />
     );
   };

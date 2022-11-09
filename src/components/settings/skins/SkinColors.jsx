@@ -79,6 +79,7 @@ const SkinColors = ({ skin }) => {
       buttons={(
         <>
           <Button
+            disabled={!skin.isEditable}
             style={{ float: 'right', width: '100px', background: colors[name] }}
             onClick={() => {
               setIsColorModalOpen(true);
@@ -95,6 +96,7 @@ const SkinColors = ({ skin }) => {
             content="Select Color"
           />
           <Button
+            disabled={!skin.isEditable}
             onClick={() => {
               setIsColorCopyOpen(true);
             }}

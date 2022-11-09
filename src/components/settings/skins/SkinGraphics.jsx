@@ -51,6 +51,7 @@ const SkinGraphics = ({ skin }) => {
       buttons={(
         <>
           <Button
+            disabled={!skin.isEditable}
             style={{ float: 'right', width: '100px' }}
             onClick={() => {
               setImageKey(name);
@@ -59,6 +60,7 @@ const SkinGraphics = ({ skin }) => {
             content="Select Image"
           />
           <Button
+            disabled={!skin.isEditable}
             onClick={() => {
               setImageKey(null);
               setIsFilePickerOpen(false);

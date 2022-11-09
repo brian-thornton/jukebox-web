@@ -72,7 +72,7 @@ const AlbumTable = ({ albums }) => {
   };
 
   return (
-    <Table size="sm" striped bordered variant='dark' style={{ marginBottom: '0', marginLeft: isScreenSmall ? '20px' : '0px' }}>
+    <Table size="sm" striped bordered variant='dark' style={{ marginBottom: '0', marginLeft: '20px', width: '98%'}}>
       <tbody>
         {table()}
       </tbody>

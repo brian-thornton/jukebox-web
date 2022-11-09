@@ -22,9 +22,9 @@ const SegmentRowInfo = ({ segment, controller, skin, event, onConfigure, isOnCon
 
   let effectName;
   if (skin) {
-    const skinController = skin.lighting.controllers.find((c) => c.ip === (controller.info?.ip || controller.ip));
-    const eventSegments = skinController.segments.filter((s) => s.event === event);
-    const skinSegment = eventSegments.find((s) => s.start.toString() === segment.start.toString() && s.stop.toString() === segment.stop.toString())
+    const skinController = skin.lighting?.controllers.find((c) => c.ip === (controller.info?.ip || controller.ip));
+    const eventSegments = skinController?.segments.filter((s) => s.event === event);
+    const skinSegment = eventSegments?.find((s) => s.start.toString() === segment.start.toString() && s.stop.toString() === segment.stop.toString())
     effectName = skinSegment?.effect;
   }
 

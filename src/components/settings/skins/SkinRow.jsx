@@ -9,7 +9,7 @@ const SkinRow = ({ skin, setEditSkin, setSelectedSkin }) => {
       text={skin.name}
       buttons={(
         <>
-          <Button onClick={() => setEditSkin(skin)} content="Edit" disabled={!skin.isEditable} />
+          <Button onClick={() => setEditSkin(skin)} content="Edit" />
           <Button onClick={() => setSelectedSkin(skin)} content="Use Skin" />
         </>
       )}

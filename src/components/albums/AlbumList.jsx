@@ -36,7 +36,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const { state } = useLocation();
-  const { startsWithLocation } = settings.preferences;
+  const { startsWithLocation, coverSize } = settings.preferences;
   const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
@@ -103,11 +103,28 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
 
   useEffect(() => {
     if (display !== 'covers') {
-      const itemsPerColumn = Math.floor((window.innerHeight - 200) / 33);
+      const itemsPerColumn = Math.floor((window.innerHeight - 200) / 40);
       setRealPageSize(itemsPerColumn * 3);
     } else {
-      const albumsPerRow = Math.floor(window.innerWidth / 225);
-      const numberOfRows = Math.floor((window.innerHeight - 250) / (display === 'grid' ? 65 : 200));
+      let coverWidth = 225;
+      let coverHeight = 200;
+      if (coverSize === 'small') {
+        coverWidth = 200;
+        coverHeight = 200;
+      }
+
+      if (coverSize === 'medium') {
+        coverWidth = 300;
+        coverWidth = 400;
+      }
+
+      if (coverSize === 'large') {
+        coverWidth = 400;
+        coverHeight = 400;
+      }
+
+      const albumsPerRow = Math.floor(window.innerWidth / coverWidth);
+      const numberOfRows = Math.floor((window.innerHeight - 250) / (display === 'grid' ? 65 : coverHeight));
       setRealPageSize(albumsPerRow * numberOfRows);
     }
   }, [display]);

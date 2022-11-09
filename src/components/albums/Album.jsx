@@ -17,6 +17,7 @@ const propTypes = {
 const Album = ({ album, coverArtOnly }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
+  const { coverSize } = settings.preferences;
   const [coverArt, setCoverArt] = useState(defaultCover);
 
   const loadCoverArt = () => {
@@ -38,13 +39,60 @@ const Album = ({ album, coverArtOnly }) => {
     fontFamily: settings.styles.buttonFont,
   };
 
+  const albumImageStyle = {
+    width: '200px',
+    height: '300px',
+    maxWidth: '200px',
+    maxHeight: '300px',
+  };
+
+  const albumCardStyle = {
+    width: '200px',
+    height: '300px',
+    maxWidth: '200px',
+    maxHeight: '300px',
+  }
+
+  if (coverSize === 'small') {
+    albumImageStyle.width = '200px';
+    albumImageStyle.height = '200px';
+    albumImageStyle.maxWidth = '200px';
+    albumImageStyle.maxHeight = '200px';
+    albumCardStyle.width = '203px';
+    albumCardStyle.height = '220px';
+    albumCardStyle.maxWidth = '203px';
+    albumCardStyle.maxHeight = '220px';
+  }
+
+  if (coverSize === 'medium') {
+    albumImageStyle.width = '300px';
+    albumImageStyle.height = '300px';
+    albumImageStyle.maxWidth = '300px';
+    albumImageStyle.maxHeight = '300px';
+    albumCardStyle.width = '303px';
+    albumCardStyle.height = '320px';
+    albumCardStyle.maxWidth = '303px';
+    albumCardStyle.maxHeight = '320px';
+  }
+
+  if (coverSize === 'large') {
+    albumImageStyle.width = '400px';
+    albumImageStyle.height = '400px';
+    albumImageStyle.maxWidth = '400px';
+    albumImageStyle.maxHeight = '400px';
+    albumCardStyle.width = '400px';
+    albumCardStyle.height = '420px';
+    albumCardStyle.maxWidth = '400px';
+    albumCardStyle.maxHeight = '420px';
+  }
+
   return (
-    <Card className="albumCard" onClick={() => {
+    <Card className="albumCard" style={albumCardStyle} onClick={() => {
       if (!settings.features.isLocked) {
         navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
       }
     }}>
-      <Card.Img className="albumImage" top src={coverArt} />
+      <Card.Img top src={coverArt} style={albumImageStyle} />
       {!coverArtOnly && (
         <Card.Body className="albumCardBody" style={albumNameStyle}>
           {settings.preferences.showAlbumName && album.name}

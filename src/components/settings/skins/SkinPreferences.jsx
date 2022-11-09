@@ -16,7 +16,7 @@ const SkinPreferences = ({ skin }) => {
   const [navButtonType, setNavButtonType] = useState('buttons');
   const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
-  
+
   const saveSkin = (newName = skin.name) => {
     deleteSkin(skin.name).then(() => {
       const { name, ...colors } = skin;
@@ -38,12 +38,13 @@ const SkinPreferences = ({ skin }) => {
             </Col>
             <Col lg="9" md="9" sm="9">
               <NameInput
+                disabled={!skin.isEditable}
                 defaultValue={skin.name}
                 onChange={e => setUpdatedName(e.target.value)}
               />
             </Col>
             <Col lg="1" md="1" sm="1">
-              <Button classNam="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} />
+              <Button classNam="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} disabled={!skin.isEditable} />
             </Col>
           </Row>
           <Row>
@@ -51,6 +52,7 @@ const SkinPreferences = ({ skin }) => {
               <div key={navButtonType} className="mb-3">
                 <Form.Check
                   inline
+                  disabled={!skin.isEditable}
                   label="Nav as Links"
                   name="group1"
                   type="radio"
@@ -59,6 +61,7 @@ const SkinPreferences = ({ skin }) => {
                 />
                 <Form.Check
                   inline
+                  disabled={!skin.isEditable}
                   label="Nav as Buttons"
                   name="group1"
                   type="radio"
