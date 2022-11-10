@@ -22,7 +22,9 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
   const updatePreference = (preferenceName, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.preferences[preferenceName] = value;
-    updateSettings(deepClone);
+    updateSettings(deepClone).then(() => {
+      window.location.replace('/settings?mode=preferences');
+    });
   };
 
   const itemStyle = {
@@ -49,6 +51,7 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
                     label={option.display}
                     name="group1"
                     type="radio"
+                    checked={settings.preferences[preferenceName] === option.value}
                     onChange={() => {
                       setRadioValue(option.value);
                       updatePreference(preferenceName, option.value);

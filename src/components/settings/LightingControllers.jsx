@@ -66,7 +66,11 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     });
   }
 
-  useEffect(discoverControllers, []);
+  useEffect(() => {
+    if (!skin) {
+      discoverControllers();
+    }
+  }, []);
 
   const saveSettings = (updatedSettings, preventReload) => {
     updateSettings(updatedSettings).then(() => {

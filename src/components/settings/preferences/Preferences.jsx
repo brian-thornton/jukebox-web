@@ -46,11 +46,6 @@ const Preferences = () => {
           </ListGroup>
         </Col>
       </Row>
-      <Row>
-        <Col>
-          <Button onClick={() => window.location.reload()} content="Save" />
-        </Col>
-      </Row>
     </Container>
   );
 };

@@ -40,7 +40,7 @@ const SkinDetail = ({
   const controls = (
     <Container fluid>
       <Row>
-      <Button onClick={goBackToThemeList} content="Back to Settings"/>
+      <Button onClick={goBackToThemeList} content="Back to Skins"/>
       <Button onClick={() => {
         goBackToThemeList(true);
       }} content="Save and Apply" />

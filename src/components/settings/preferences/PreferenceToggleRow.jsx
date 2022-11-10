@@ -18,8 +18,9 @@ const PreferenceToggleRow = ({ name, value }) => {
   const updatePreference = async (preferenceName, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.preferences[preferenceName] = value;
-    await updateSettings(deepClone);
-    window.location.reload();
+    updateSettings(deepClone).then(() => {
+      window.location.replace('/settings?mode=preferences');
+    });
   };
 
   const buttonText = value ? 'Enabled' : 'Disabled';
