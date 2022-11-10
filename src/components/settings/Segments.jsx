@@ -29,7 +29,7 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
     const deepClone = JSON.parse(JSON.stringify(settings));
     const updatedController = deepClone.controllers?.find((c) => c.ip === controller.info.ip);
 
-    if (!updatedController.segments?.length) {
+    if (!updatedController?.segments?.length) {
       // No segments exist for the controller. Add the first one.
       updatedController.segments = [{
         id: uuidv4(),
@@ -59,9 +59,11 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
 
     // Check if the segment is on the controller. If it is we need to
     // push out the update.
-    if (isSegmentOnController(oldData.start, oldData.stop)) {
-      await removeSegment(controller.info.ip, oldData.start, oldData.stop);
-      await createSegment(controller.info.ip, data.start, data.stop);
+    if (oldData) {
+      if (isSegmentOnController(oldData.start, oldData.stop)) {
+        await removeSegment(controller.info.ip, oldData.start, oldData.stop);
+        await createSegment(controller.info.ip, data.start, data.stop);
+      }
     }
 
     updateSettings(deepClone).then(() => {
@@ -89,7 +91,8 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
   }
 
   const onAddSegment = (fields) => {
-    onUpdateSegment(fields);
+    console.log(fields)
+    onUpdateSegment(null, fields);
   }
 
   return (

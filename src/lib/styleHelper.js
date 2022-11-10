@@ -169,6 +169,7 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.backgroundColor = selectedSkin.backgroundColor;
   deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
   deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
+  deepClone.styles.navButtonType = selectedSkin.navButtonType;
   deepClone.styles.activeButtonColor = selectedSkin.activeButtonColor;
   deepClone.styles.buttonFont = selectedSkin.buttonFont;
   deepClone.styles.controlButtonBackgroundColor = selectedSkin.controlButtonBackgroundColor;

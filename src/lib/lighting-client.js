@@ -30,8 +30,8 @@ export const setEffect = (ip, effect, palette, start, stop) => {
   return getData(`${path}/setEffect?ip=${ip}&effect=${effect}&palette=${palette}&start=${start}&stop=${stop}`);
 };
 
-export const demoEffect = (ip, effect, palette, start, stop, speed) => {
-  return getData(`${path}/demoEffect?ip=${ip}&effect=${effect}&palette=${palette}&start=${start}&stop=${stop}&speed=${speed}`);
+export const demoEffect = (ip, effect, palette, start, stop, speed, brightness) => {
+  return getData(`${path}/demoEffect?ip=${ip}&effect=${effect}&palette=${palette}&start=${start}&stop=${stop}&speed=${speed}&brightness=${brightness}`);
 };
 
 export const applyEventSegments = (ip, eventSegments) => {

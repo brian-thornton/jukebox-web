@@ -32,7 +32,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     setDiscoveryInProgress(true);
     discover().then((data) => {
       data.forEach((c) => {
-        const metaData = settings.controllers.find((m) => m.ip === c.ip);
+        const metaData = settings?.controllers?.find((m) => m.ip === c.ip);
 
         if (metaData) {
           c.segments = metaData.segments;
@@ -114,7 +114,15 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     const updatedController = deepClone.controllers?.find((c) => c.ip === controller.ip);
 
     if (!updatedController) {
-      //
+      if (!deepClone.controllers) {
+        deepClone.controllers = [
+          {
+            name: controller.name,
+            ip: controller.ip,
+            segments: [],
+          }
+        ];
+      }
     } else {
       updatedController.name = updatedControllerName;
     }

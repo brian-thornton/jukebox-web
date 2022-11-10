@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import Button from '../../Button';
 import { getCurrentState } from '../../../lib/lighting-client';
 import Segments from '../Segments';
 import SegmentColorSelection from '../SegmentColorSelection';
 import './SkinSegmentDetail.scss';
+import { SettingsContext } from '../../layout/SettingsProvider';
+
 
 const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
   const [controllerState, setControllerState] = useState();
   const [configSegment, setConfigSegment] = useState();
+  const settings = useContext(SettingsContext);
 
   const loadState = async () => {
     getCurrentState(controller.ip).then(data => setControllerState(data));
@@ -37,7 +40,7 @@ const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
           }}
         />
       )}
-      {`Skin Lighting for controller ${controller.ip} segment ${configSegment?.id} during event ${event}`}
+      <div style={{color: settings.styles.fontColor}}>{`Skin Lighting for controller ${controller.ip} segment ${configSegment?.id} during event ${event}`}</div>
       {configSegment && (
         <SegmentColorSelection
           event={event}
