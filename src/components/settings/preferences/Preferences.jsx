@@ -32,6 +32,7 @@ const Preferences = () => {
         <Col lg="12" md="12">
           <ListGroup>
             <PreferenceTextRow rowName="name" value={preferences.name} />
+            <PreferenceToggleRow name="useLightingControllers" value={preferences.useLightingControllers} />
             <PreferenceToggleRow name="showAlbumName" value={preferences.showAlbumName} />
             <PreferenceToggleRow name="showAlbumsWithoutCoverArt" value={preferences.showAlbumsWithoutCoverArt} />
             <PreferenceToggleRow name="pinEnabled" value={preferences.pinEnabled} />
