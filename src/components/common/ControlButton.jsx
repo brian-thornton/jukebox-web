@@ -10,7 +10,7 @@ const propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelected }) => {
+const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelected, style }) => {
   const settings = useContext(SettingsContext);
   const { styles } = settings;
 
@@ -19,7 +19,8 @@ const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelec
     color: styles.fontColor,
     minHeight: height ? `${height}px` : '65px',
     fontFamily: styles.buttonFont,
-    width: '100%'
+    width: '100%',
+    fontSize: style?.fontSize,
   };
 
   return (

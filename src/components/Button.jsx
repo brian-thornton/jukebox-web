@@ -37,6 +37,7 @@ const Button = ({
     marginTop: style?.marginTop,
     marginBottom: style?.marginBottom,
     background: style?.buttonBackgroundColor || settings.styles.buttonBackgroundColor,
+    fontSize: style?.fontSize,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,
     fontFamily: style?.fontFamily || settings.styles.buttonFont,

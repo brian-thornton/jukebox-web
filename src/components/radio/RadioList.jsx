@@ -12,6 +12,7 @@ import RadioCategories from './RadioCategories';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './RadioList.scss';
 import { handlers } from '../../lib/gesture-helper';
+import { topMargin } from '../../lib/styleHelper';
 
 const RadioList = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
@@ -41,7 +42,7 @@ const RadioList = ({ setMediaType }) => {
   }, [selectedCategory, selectedPage]);
 
   return (
-    <Container className="stationsContainer" fluid {...swipe}>
+    <Container className="stationsContainer" fluid {...swipe} style={{ marginTop: topMargin(settings) }}>
       <Row>
         <Col lg="1" xl="1" md="1" sm="1">
           <RadioCategories category={selectedCategory} setCategory={setSelectedCategory} />

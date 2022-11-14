@@ -29,8 +29,8 @@ const AlbumButtons = ({ tracks }) => {
   };
 
   const albumButton = (onClick, name, enabled = true) => (
-    <Col lg="6" xl="6" sm="12" xs="12" className="albumButton">
-      <ControlButton disabled={!enabled} text={name} onClick={onClick} width="100%" />
+    <Col lg="12" xl="12" sm="12" xs="12" className="albumButton">
+      <ControlButton disabled={!enabled} text={name} onClick={onClick} width="100%" height="50" style={{ fontSize: '25px' }} />
     </Col>
   );
 
@@ -55,7 +55,7 @@ const AlbumButtons = ({ tracks }) => {
               />
             )}
             {settings.features.queue && <Button icon={<ListOl />} onClick={() => enqueueTracks(tracks)} />}
-            {settings.features.playlists && <Button icon={<PlusSquare />} onClick={() => navigate('/playlists', { state: { tracks }})} />}
+            {settings.features.playlists && <Button icon={<PlusSquare />} onClick={() => navigate('/playlists', { state: { tracks } })} />}
           </Row>
         </>
       )}

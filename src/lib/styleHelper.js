@@ -71,6 +71,51 @@ const supportedFonts = {
   },
 };
 
+const topMargin = (settings) => {
+  if (settings) {
+    const { navButtonSize } = settings.styles;
+
+    let headerReserve = 65;
+
+    if (navButtonSize === 'medium') {
+      headerReserve = 105;
+    }
+
+    if (navButtonSize === 'large') {
+      headerReserve = 120;
+    }
+
+    return headerReserve;
+  }
+
+  return 60;
+};
+
+const headerFooterReserve = (settings) => {
+  const { navButtonSize, controlButtonSize } = settings.styles;
+
+  let headerReserve = 65;
+  let footerReserve = 65;
+
+  if (navButtonSize === 'medium') {
+    headerReserve = 100;
+  }
+
+  if (navButtonSize === 'large') {
+    headerReserve = 120;
+  }
+
+  if (controlButtonSize === 'medium') {
+    footerReserve = 100;
+  }
+
+  if (controlButtonSize === 'large') {
+    footerReserve = 120;
+  }
+
+  return headerReserve + footerReserve + 100;
+};
+
 const buttonProps = (settings) => {
   return {
     style: {
@@ -170,6 +215,8 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
   deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
   deepClone.styles.navButtonType = selectedSkin.navButtonType;
+  deepClone.styles.navButtonSize = selectedSkin.navButtonSize;
+  deepClone.styles.controlButtonSize = selectedSkin.controlButtonSize;
   deepClone.styles.activeButtonColor = selectedSkin.activeButtonColor;
   deepClone.styles.buttonFont = selectedSkin.buttonFont;
   deepClone.styles.controlButtonBackgroundColor = selectedSkin.controlButtonBackgroundColor;
@@ -182,6 +229,8 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.defaultAlbumCover = selectedSkin.defaultAlbumCover;
   deepClone.styles.wallpaper = selectedSkin.wallpaper;
   deepClone.styles.navButtonType = selectedSkin.navButtonType;
+  deepClone.styles.navButtonSize = selectedSkin.navButtonSize;
+  deepClone.styles.controlButtonSize = selectedSkin.controlButtonSize;
   return deepClone;
 }
 
@@ -205,4 +254,6 @@ export {
   modalTitleStyle,
   supportedFonts,
   pageSize,
+  headerFooterReserve,
+  topMargin,
 }

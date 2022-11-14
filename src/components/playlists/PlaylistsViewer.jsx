@@ -20,6 +20,8 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import './PlaylistsViewer.scss';
 import AddNew from '../common/AddNew';
 import { handlers } from '../../lib/gesture-helper';
+import { headerFooterReserve } from '../../lib/styleHelper';
+import { topMargin } from '../../lib/styleHelper';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -46,7 +48,8 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
 
   useEffect(() => {
     const itemHeight = 55;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    const reserve = headerFooterReserve(settings);
+    const viewPortHeight = Math.floor(window.innerHeight - reserve);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
     applyLighting(settings, 'Playlists');
   }, []);
@@ -91,7 +94,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     loadPlaylists();
   };
 
-  const controls = <ControlButton text="Add" width="100%" onClick={handleShow} />;
+  const controls = <ControlButton text="Add" width="100%" onClick={handleShow} height="50" style={{ fontSize: '25px' }}/>;
 
   const content = () => {
     return (
@@ -99,7 +102,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
         {!show && isEmpty && <NoResults title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
         {show && <AddNew onCancel={() => setShow(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
         {!show && (
-          <Container {...swipe} id="albums" fluid style={playlistsMargin}>
+          <Container {...swipe} id="albums" fluid>
             <Row>
               {playlists.map(playlist => (
                 <PlaylistRow

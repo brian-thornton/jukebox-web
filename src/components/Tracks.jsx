@@ -15,6 +15,7 @@ import Loading from './common/Loading';
 import './Tracks.scss';
 import { applyLighting } from '../lib/lightingHelper';
 import { handlers } from '../lib/gesture-helper';
+import { headerFooterReserve } from '../lib/styleHelper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -34,8 +35,9 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
 
   useEffect(() => {
+      const reserve = headerFooterReserve(settings);
       const itemHeight = 50;
-      const viewPortHeight = Math.floor(window.innerHeight - 200);
+      const viewPortHeight = Math.floor(window.innerHeight - reserve);
       setRealPageSize(Math.floor(viewPortHeight / itemHeight));
       applyLighting(settings, 'Tracks');
   }, []);

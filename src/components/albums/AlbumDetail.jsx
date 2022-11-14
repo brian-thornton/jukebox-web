@@ -16,6 +16,7 @@ import { getAlbumTracks, removeCoverArt } from '../../lib/librarian-client';
 import './AlbumDetail.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import RestrictionModes from '../settings/content/RestrictionModes';
+import { topMargin } from '../../lib/styleHelper';
 
 const propTypes = {
   album: Album.isRequired,
@@ -81,7 +82,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     if (album) {
       return (
         <>
-          <Row className="coverRow">
+          <Row className="coverRow" style={{ marginTop: topMargin(settings) }}>
             <Col lg={3} xl={3}>
               <Container className="albumContainer">
                 <>

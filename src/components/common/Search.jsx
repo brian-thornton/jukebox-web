@@ -5,11 +5,13 @@ import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
+import { BackspaceFill } from 'react-bootstrap-icons';
 
 import Button from '../Button';
 import './Search.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
+import { topMargin } from '../../lib/styleHelper';
 
 const propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -26,12 +28,25 @@ const Search = ({
   const [localSearch, setLocalSearch] = useState('');
   const inputButton = value => (
     <Button
+      style={{fontSize: '40px'}}
       width={isScreenSmall ? "50" : "75"}
       height={isScreenSmall ? "50" : "75"}
       onClick={() => {
         setLocalSearch(`${localSearch}${value}`);
       }}
       content={value}
+    />
+  );
+
+  const backspace = () => (
+    <Button
+      style={{fontSize: '40px'}}
+      width={isScreenSmall ? "50" : "75"}
+      height={isScreenSmall ? "50" : "75"}
+      onClick={() => {
+        setLocalSearch(`${localSearch.slice(0, -1)}`);
+      }}
+      content={<BackspaceFill />}
     />
   );
 
@@ -64,7 +79,7 @@ const Search = ({
         }}
       />
 
-      <Container className="searchContainer">
+      <Container style={{marginTop: topMargin(settings)}}>
         <Row>
           <FormControl
             style={{ marginTop: '20px' }}
@@ -86,7 +101,8 @@ const Search = ({
           <Container fluid className={`d-none d-sm-block`}>
             <Row className="keyboardRow firstKeyboardRow">
               {inputButton(1, 60)}
-              {row([2, 3, 4, 5, 6, 7, 8, 9, 0])}
+              {row([2, 3, 4, 5, 6, 7, 8, 9, "0"])}
+              {backspace(<BackspaceFill />)}
             </Row>
             <Row className="keyboardRow">
               {inputButton('Q', 60)}
@@ -101,21 +117,21 @@ const Search = ({
               {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
             <Row className="keyboardRow">
-              <Button hideOnSmall width="150" height="55" onClick={() => {
+              <Button hideOnSmall style={{fontSize: '40px'}} width="500" height="55" onClick={() => {
                 setLocalSearch(`${localSearch} `);
               }} content="Space" />
-              <Button hideOnSmall width="150" height="55" onClick={() => {
+              <Button hideOnSmall style={{fontSize: '40px'}} width="150" height="55" onClick={() => {
                 setSearchText('');
               }} content="Clear" />
             </Row>
           </Container>
         </Row>
         <Row className="keyboardRow">
-          <Button className="keyboardRow" width="150" height="55" onClick={() => {
+          <Button className="keyboardRow" style={{fontSize: '40px'}} width="300" height="55" onClick={() => {
             setSearchText(localSearch);
             navigate('/albums');
           }} content="Search Albums" />
-          <Button className="keyboardRow" width="150" height="55" onClick={() => {
+          <Button className="keyboardRow" style={{fontSize: '40px'}} width="300" height="55" onClick={() => {
             setSearchText(localSearch);
             navigate('/tracks');
           }} content="Search Tracks" />

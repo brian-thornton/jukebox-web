@@ -25,13 +25,18 @@ const JukeboxHeader = ({
 }) => {
   const settings = useContext(SettingsContext);
 
+  const { navButtonSize } = settings.styles;
+  const showBrand = (navButtonSize !== 'large' && navButtonSize !== 'medium')
+
   return (
     <Navbar style={{ marginBottom: '0px', background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
-        <Navbar.Brand
-          style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}
-          href="#home">{settings.preferences.name}
-        </Navbar.Brand>
+        {showBrand && (
+          <Navbar.Brand
+            style={{ color: settings.styles.fontColor, fontFamily: settings.styles.headerFont }}
+            href="#home">{settings.preferences.name}
+          </Navbar.Brand>
+        )}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <JukeboxNavLeft />

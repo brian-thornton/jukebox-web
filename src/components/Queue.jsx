@@ -136,11 +136,11 @@ const Queue = () => {
 
   const controls = () => (
     <>
-      <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" />
-      <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" />
+      <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" height="50" style={{ fontSize: '25px' }} />
+      <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" height="50" style={{ fontSize: '25px' }} />
       {settings.features.playlists && <ControlButton width="100%" onClick={() => {
         navigate('/playlists', { state: { tracks } })
-      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" />}
+      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" height="50" style={{ fontSize: '25px' }}/>}
     </>
   );
 

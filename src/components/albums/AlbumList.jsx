@@ -18,9 +18,11 @@ import StartsWithFilter from './StartsWithFilter';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './AlbumList.scss';
 import { handlers } from '../../lib/gesture-helper';
+import { headerFooterReserve } from '../../lib/styleHelper';
 
 import { getCategories, getStations } from '../../lib/radio-client';
 import ContentWithControls from '../common/ContentWithControls';
+import { head } from 'lodash';
 
 const propTypes = {
   search: PropTypes.string,
@@ -106,6 +108,8 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       const itemsPerColumn = Math.floor((window.innerHeight - 200) / 40);
       setRealPageSize(itemsPerColumn * 3);
     } else {
+      let reserve = headerFooterReserve(settings);
+
       let coverWidth = 225;
       let coverHeight = 200;
       if (coverSize === 'small') {
@@ -124,7 +128,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       }
 
       const albumsPerRow = Math.floor(window.innerWidth / coverWidth);
-      const numberOfRows = Math.floor((window.innerHeight - 250) / (display === 'grid' ? 65 : coverHeight));
+      const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : coverHeight));
       setRealPageSize(albumsPerRow * numberOfRows);
     }
   }, [display]);

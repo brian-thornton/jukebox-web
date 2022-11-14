@@ -12,12 +12,27 @@ const JukeboxNavLeft = ({ }) => {
   const { styles, features } = settings;
   const isScreenSmall = window.innerWidth < 700;
 
+  const { navButtonSize } = settings.styles;
+  let height = '35';
+  let fontSize = '';
+
+  if (navButtonSize === 'large') {
+    height = '100';
+    fontSize = '40px';
+  }
+
+  if (navButtonSize === 'medium') {
+    height = '80'
+    fontSize = '40px';
+  }
+
   const navButton = (feature) => {
     return (
       <>
         {features[feature] && (
           <Button
-            style={{ fontFamily: settings.buttonFont, marginTop: '0', marginBottom: '0' }}
+            height={height}
+            style={{ fontSize: fontSize, fontFamily: settings.buttonFont, marginTop: '0', marginBottom: '0' }}
             isSelected={location.pathname === `/${feature}`}
             disabled={features.isLocked}
             content={feature.charAt(0).toUpperCase() + feature.slice(1)}
