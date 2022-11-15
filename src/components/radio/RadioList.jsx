@@ -27,7 +27,6 @@ const RadioList = ({ setMediaType }) => {
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
     const stations = await getStations(selectedCategory, realStart, realPageSize);
-    console.log(stations);
     setStations(stations);
   };
 

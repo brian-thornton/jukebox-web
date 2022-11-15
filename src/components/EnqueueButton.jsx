@@ -14,9 +14,22 @@ const propTypes = {
 
 const EnqueueButton = ({ track, mode }) => {
   const settings = useContext(SettingsContext);
+  const { controlButtonSize } = settings.styles;
+
+  let heightAndWidth = '';
+
+  if (controlButtonSize === 'large') {
+    heightAndWidth = '60';
+  }
+
+  if (controlButtonSize === 'medium') {
+    heightAndWidth = '60';
+  }
 
   return (
     <Button
+      width={heightAndWidth}
+      height={heightAndWidth}
       onClick={() => {
         applyLighting(settings, 'Enqueue');
         enqueue(track);

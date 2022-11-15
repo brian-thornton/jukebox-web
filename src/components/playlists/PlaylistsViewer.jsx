@@ -94,7 +94,10 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     loadPlaylists();
   };
 
-  const controls = <ControlButton text="Add" width="100%" onClick={handleShow} height="50" style={{ fontSize: '25px' }}/>;
+  const { controlButtonSize } = settings.styles;
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const controls = <ControlButton text="Add" width="100%" onClick={handleShow} height={buttonHeight} style={{ fontSize }}/>;
 
   const content = () => {
     return (

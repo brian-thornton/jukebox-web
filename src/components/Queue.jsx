@@ -37,7 +37,13 @@ const Queue = () => {
   const [clearConfirm, setClearConfirm] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  const itemsPerPage = pageSize('item', 200, 55);
+  const { controlButtonSize } = settings.styles;
+  const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
+  const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
+  const itemsPerPage = pageSize('item', reserve, trackHeight);
+  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 60;
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
   const loadQueue = () => {
     const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
@@ -94,7 +100,7 @@ const Queue = () => {
                       buttons={(
                         <>
                           {settings.features.play && <PlayNowButton track={track} />}
-                          <Button onClick={() => remove(track)} icon={<TrashFill />} />
+                          <Button width={buttonWidth} height={buttonHeight} onClick={() => remove(track)} icon={<TrashFill />} />
                         </>
                       )}
                     />
@@ -136,11 +142,11 @@ const Queue = () => {
 
   const controls = () => (
     <>
-      <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" height="50" style={{ fontSize: '25px' }} />
-      <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" height="50" style={{ fontSize: '25px' }} />
+      <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" height={buttonHeight} style={{ fontSize }} />
+      <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" height={buttonHeight} style={{ fontSize }} />
       {settings.features.playlists && <ControlButton width="100%" onClick={() => {
         navigate('/playlists', { state: { tracks } })
-      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" height="50" style={{ fontSize: '25px' }}/>}
+      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" height={buttonHeight} style={{ fontSize }}/>}
     </>
   );
 

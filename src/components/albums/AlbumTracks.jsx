@@ -32,9 +32,21 @@ const TrackList = ({ tracks }) => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let content = [];
 
-  useEffect(() => setRealPageSize(pageSize('item', 200, 60)), []);
+  const { controlButtonSize } = settings.styles;
+  const trackHeight = controlButtonSize === 'small' ? 50 : 80;
+  const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
+
+  useEffect(() => setRealPageSize(pageSize('item', reserve, trackHeight)), []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+
+  const albumModeButtons = (track) => (
+    <>
+      {features.play && <PlayNowButton track={track} />}
+      {features.queue && <EnqueueButton mode="Albums" track={track} />}
+      {features.playlists && <AddToPlaylistButton track={track} />}
+    </>
+  );
 
   content = tracks.slice(realStart, (realStart + realPageSize)).map(track => (
     <Item
@@ -60,9 +72,7 @@ const TrackList = ({ tracks }) => {
                 text={track.name}
                 buttons={(
                   <>
-                    {features.play && <PlayNowButton track={track} />}
-                    {features.queue && <EnqueueButton mode="Albums" track={track} />}
-                    {features.playlists && <AddToPlaylistButton track={track} />}
+                    {albumModeButtons(track)}
                     {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
                   </>
                 )}
@@ -73,13 +83,7 @@ const TrackList = ({ tracks }) => {
             {tracks.map(track => (
               <Item
                 text={track.name}
-                buttons={(
-                  <>
-                    {features.play && <PlayNowButton track={track} />}
-                    {features.queue && <EnqueueButton mode="Albums" track={track} />}
-                    {features.playlists && <AddToPlaylistButton track={track} />}
-                  </>
-                )}
+                buttons={albumModeButtons(track)}
               />
             ))}
           </Row>

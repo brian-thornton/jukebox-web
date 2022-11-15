@@ -15,7 +15,7 @@ import Loading from './common/Loading';
 import './Tracks.scss';
 import { applyLighting } from '../lib/lightingHelper';
 import { handlers } from '../lib/gesture-helper';
-import { headerFooterReserve } from '../lib/styleHelper';
+import { headerFooterReserve, topMargin } from '../lib/styleHelper';
 
 const propTypes = {
   search: PropTypes.string,
@@ -24,6 +24,7 @@ const propTypes = {
 
 const Tracks = ({ search, setCurrentAlbum }) => {
   const settings = useContext(SettingsContext);
+  const { controlButtonSize } = settings.styles;
   const [addTracks, setAddTracks] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
@@ -33,13 +34,14 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
+  const trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
 
   useEffect(() => {
-      const reserve = headerFooterReserve(settings);
-      const itemHeight = 50;
-      const viewPortHeight = Math.floor(window.innerHeight - reserve);
-      setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-      applyLighting(settings, 'Tracks');
+    const reserve = headerFooterReserve(settings);
+    const itemHeight = trackHeight;
+    const viewPortHeight = Math.floor(window.innerHeight - reserve);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+    applyLighting(settings, 'Tracks');
   }, []);
 
   const findTracks = async (start, limit) => {
@@ -88,7 +90,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const trackList = () => {
     if (realPageSize && totalTracks) {
       return (
-        <Container className="tracksContainer" {...swipe} fluid>
+        <Container className="tracksContainer" {...swipe} fluid style={{ marginTop: topMargin(settings) }}>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>{content}</Row>

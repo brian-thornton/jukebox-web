@@ -5,7 +5,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
-import { useCallback } from "react";
 
 import { applyLighting } from '../../lib/lightingHelper';
 import Album from './Album';
@@ -19,10 +18,6 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import './AlbumList.scss';
 import { handlers } from '../../lib/gesture-helper';
 import { headerFooterReserve } from '../../lib/styleHelper';
-
-import { getCategories, getStations } from '../../lib/radio-client';
-import ContentWithControls from '../common/ContentWithControls';
-import { head } from 'lodash';
 
 const propTypes = {
   search: PropTypes.string,
@@ -57,8 +52,6 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
     const numberOfRows = Math.floor((window.innerHeight - 200) / (display === 'grid' ? 65 : 200));
     setRealPageSize(albumsPerRow * numberOfRows);
     applyLighting(settings, 'Albums');
-
-    getStations().then(c => console.log(c))
   }, []);
 
   const findAlbums = async (start, limit) => {
@@ -156,6 +149,15 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
   const noResults = search && !albums.length && !isLoading;
   const cols = startsWithLocation === 'none' ? "12" : "11";
 
+  const paginator = (
+    <Paginator
+      onPageChange={onPageChange}
+      selectedPage={selectedPage}
+      totalItems={totalAlbums}
+      pageSize={realPageSize}
+    />
+  );
+
   return (
     <>
       {loadComplete && totalAlbums === 0 && <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />}
@@ -173,14 +175,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
               {display !== 'grid' && (
                 <Row className="albumRow">
                   {albums.map(album => <Album album={album} />)}
-                  {(totalAlbums > realPageSize) && startsWithLocation !== 'none' && !search && (
-                    <Paginator
-                      onPageChange={onPageChange}
-                      selectedPage={selectedPage}
-                      totalItems={totalAlbums}
-                      pageSize={realPageSize}
-                    />
-                  )}
+                  {(totalAlbums > realPageSize) && startsWithLocation !== 'none' && !search && paginator}
                 </Row>
               )}
               {display === 'grid' && <AlbumTable albums={albums} />}
@@ -194,14 +189,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
           {(startsWithLocation === 'none' || search) && (
             <Row>
               <Col lg="12" xl="12" md="12" sm="12">
-                {(totalAlbums > realPageSize) && (
-                  <Paginator
-                    onPageChange={onPageChange}
-                    selectedPage={selectedPage}
-                    totalItems={totalAlbums}
-                    pageSize={realPageSize}
-                  />
-                )}
+                {(totalAlbums > realPageSize) && paginator}
               </Col>
             </Row>
           )}

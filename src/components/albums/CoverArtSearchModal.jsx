@@ -27,7 +27,6 @@ const CoverArtSearchModal = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState();
-  const title = 'Custom Cover Art Search';
   const [query, setQuery] = useState(album.name);
   const saveCoverArtToLibrary = () => saveCoverArt({ album, url: results });
   const settings = useContext(SettingsContext);

@@ -10,8 +10,11 @@ import Button from '../Button';
 const RadioCategories = ({ category, setCategory }) => {
   const settings = useContext(SettingsContext);
   const { features } = settings;
+  const { controlButtonSize } = settings.styles;
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+
   const categories = [
-    'Rock', 'Classic Rock', 'Pop', 'Charts', 'Hits', '70s', '80s', '90s', 'Oldies', 'Country', 'Alternative', 'Rap', 'Dance'
+    'Rock', 'Pop', 'Charts', 'Hits', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance'
   ];
 
   return (
@@ -23,7 +26,7 @@ const RadioCategories = ({ category, setCategory }) => {
             onClick={() => setCategory(c)}
             isSelected={c === category}
             width="100%"
-            height="30"
+            height={buttonHeight}
             content={c}
           />
         ))}

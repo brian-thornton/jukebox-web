@@ -28,8 +28,8 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
   }
 
   if (controlButtonSize === 'medium') {
-    height = '80'
-    fontSize = '40px';
+    height = '70'
+    fontSize = '30px';
   }
 
   const stopAll = () => {

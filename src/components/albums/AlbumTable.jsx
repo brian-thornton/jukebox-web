@@ -16,7 +16,6 @@ const AlbumTable = ({ albums }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
   const [hoverAlbum, setHoverAlbum] = useState();
-  const isScreenSmall = window.innerWidth < 700;
 
   let columnCount = Math.floor((window.innerWidth / 500));
   const columnVolume = Math.floor((window.innerHeight - 200) / 32);

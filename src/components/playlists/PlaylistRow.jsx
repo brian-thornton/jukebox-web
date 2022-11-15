@@ -1,10 +1,11 @@
 import { PropTypes } from 'prop-types';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import Button from '../Button';
 import Item from '../common/Item';
 import { Tracks } from '../shapes';
 import './PlaylistsViewer.scss';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -12,6 +13,10 @@ const propTypes = {
 };
 
 const PlaylistRow = ({ playlist, addMode, onAdd, onSelect }) => {
+  const settings = useContext(SettingsContext);
+  const { controlButtonSize } = settings.styles;
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+
   return (
     <Item
       onClick={() => onSelect(playlist.name)}
@@ -20,12 +25,14 @@ const PlaylistRow = ({ playlist, addMode, onAdd, onSelect }) => {
         <>
           {addMode && (
             <Button
+              height={buttonHeight}
               onClick={() => onAdd(playlist.name)}
               content="Add"
             />
           )}
           {!addMode && (
             <Button
+              height={buttonHeight}
               onClick={() => onSelect(playlist.name)}
               content="Edit"
             />

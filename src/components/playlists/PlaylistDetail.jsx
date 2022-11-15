@@ -40,8 +40,11 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   let renderTracks = [];
   const isScreenSmall = window.innerWidth < 700;
 
+  const { controlButtonSize } = settings.styles;
+  const trackHeight = controlButtonSize === 'small' ? 50 : 80;
+
   useEffect(() => {
-    const itemHeight = isScreenSmall ? 90 : 55;
+    const itemHeight = isScreenSmall ? 90 : trackHeight;
     const viewPortHeight = Math.floor(window.innerHeight - 200);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);

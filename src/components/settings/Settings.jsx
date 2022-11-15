@@ -22,6 +22,11 @@ const Settings = () => {
   const [modalClosed, setModalClosed] = useState(false);
   const [controls, setControls] = useState(null);
   const [searchParams] = useSearchParams();
+  const { controlButtonSize } = settings.styles;
+  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+
 
   useEffect(() => {
     if (searchParams.get('mode')) {
@@ -41,12 +46,12 @@ const Settings = () => {
     if ((settings.preferences.pinEnabled && isAuthorized) || !settings.preferences.pinEnabled) {
       return (
         <>
-          <ControlButton isSelected={mode === 'LIBRARY'} width="100%" onClick={() => setMode('LIBRARY')} text="Library" height="50" style={{ fontSize: '25px' }} />
-          <ControlButton isSelected={mode === 'SETTINGS'} width="100%" onClick={() => setMode('SETTINGS')} text="Features" height="50" style={{ fontSize: '25px' }} />
-          <ControlButton isSelected={mode === 'PREFERENCES'} width="100%" onClick={() => setMode('PREFERENCES')} text="Preferences" height="50" style={{ fontSize: '25px' }} />
-          <ControlButton isSelected={mode === 'STYLE'} width="100%" onClick={() => setMode('STYLE')} text="Style" height="50" style={{ fontSize: '25px' }} />
-          <ControlButton isSelected={mode === 'RESTRICTIONS'} width="100%" onClick={() => setMode('RESTRICTIONS')} text="Restrictions" height="50" style={{ fontSize: '25px' }} />
-          <ControlButton isSelected={mode === 'CABINET'} width="100%" onClick={() => setMode('CABINET')} text="Cabinet" height="50" style={{ fontSize: '25px' }} />
+          <ControlButton isSelected={mode === 'LIBRARY'} width="100%" onClick={() => setMode('LIBRARY')} text="Library" height={buttonHeight} style={{ fontSize }} />
+          <ControlButton isSelected={mode === 'SETTINGS'} width="100%" onClick={() => setMode('SETTINGS')} text="Features" height={buttonHeight} style={{ fontSize }} />
+          <ControlButton isSelected={mode === 'PREFERENCES'} width="100%" onClick={() => setMode('PREFERENCES')} text="Preferences" height={buttonHeight} style={{ fontSize }} />
+          <ControlButton isSelected={mode === 'STYLE'} width="100%" onClick={() => setMode('STYLE')} text="Style" height={buttonHeight} style={{ fontSize }} />
+          <ControlButton isSelected={mode === 'RESTRICTIONS'} width="100%" onClick={() => setMode('RESTRICTIONS')} text="Restrictions" height={buttonHeight} style={{ fontSize }} />
+          <ControlButton isSelected={mode === 'CABINET'} width="100%" onClick={() => setMode('CABINET')} text="Cabinet" height={buttonHeight} style={{ fontSize }} />
         </>
       );
     }

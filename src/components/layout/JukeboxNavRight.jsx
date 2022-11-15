@@ -43,8 +43,8 @@ const JukeboxNavRight = ({
   }
 
   if (navButtonSize === 'medium') {
-    height = '80';
-    fontSize = '40px';
+    height = '70';
+    fontSize = '30px';
   }
 
   const searchButtons = () => {
@@ -98,7 +98,7 @@ const JukeboxNavRight = ({
     <Nav className="ml-auto">
       {!applyWidth && search && !isScreenSmall && <div className="search-result">{`Search Results: ${search}`}</div>}
       {(features.albums || features.tracks) && searchButtons()}
-      {!isScreenSmall && !search && features.albums && pathname.includes('/albums') && preferences.showLibraryFilter && (
+      {!isScreenSmall && !search && !applyWidth && features.albums && pathname.includes('/albums') && preferences.showLibraryFilter && (
         <Button
           width={applyWidth ? height : ''}
           height={height}
@@ -107,7 +107,7 @@ const JukeboxNavRight = ({
           content={selectedLibraries?.length ? <FunnelFill style={{ fontSize }} /> : <Funnel style={{ fontSize }} />}
         />
       )}
-      {settings.features.albums && !search && pathname === '/albums' && preferences.showAlbumTable && (
+      {settings.features.albums && !applyWidth && !search && pathname === '/albums' && preferences.showAlbumTable && (
         <Button
           width={applyWidth ? height : ''}
           height={height}

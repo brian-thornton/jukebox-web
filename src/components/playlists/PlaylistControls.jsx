@@ -20,6 +20,10 @@ const PlaylistControls = ({ name, tracks, handleBackToPlaylists, setIsSaveAsOpen
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
+  const { controlButtonSize } = settings.styles;
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+
   const runPlaylist = () => {
     enqueueTracksTop(tracks);
     play();
@@ -44,12 +48,12 @@ const PlaylistControls = ({ name, tracks, handleBackToPlaylists, setIsSaveAsOpen
     <>
       {!isScreenSmall && (
         <>
-          <ControlButton width="100%" disabled={showDeleteModal} onClick={handleBackToPlaylists} text="Back to Playlists" />
-          {settings.features.play && <ControlButton width="100%" disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run Playlist" />}
-          {settings.features.queue && <ControlButton width="100%" disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue Playlist" />}
-          <ControlButton width="100%" disabled={showDeleteModal || isEmpty} onClick={shuffle} text="Shuffle Playlist" />
-          <ControlButton width="100%" disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} text="Save As..." />
-          {settings.features.deletePlaylist && <ControlButton width="100%" disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete Playlist" />}
+          <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal} onClick={handleBackToPlaylists} text="Go Back" />
+          {settings.features.play && <ControlButton style={{ fontSize }}  height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run" />}
+          {settings.features.queue && <ControlButton style={{ fontSize }}  height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue" />}
+          <ControlButton style={{ fontSize }}  height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={shuffle} text="Shuffle" />
+          <ControlButton style={{ fontSize }}  height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} text="Save As..." />
+          {settings.features.deletePlaylist && <ControlButton style={{ fontSize }}  height={buttonHeight} width="100%" disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete" />}
         </>
       )}
       {isScreenSmall && (

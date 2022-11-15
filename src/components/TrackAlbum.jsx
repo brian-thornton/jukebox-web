@@ -16,6 +16,18 @@ const TrackAlbum = ({ album }) => {
   const navigate = useNavigate();
   const [coverArt, setCoverArt] = useState();
 
+  const { controlButtonSize } = settings.styles;
+
+  let heightAndWidth = '';
+
+  if (controlButtonSize === 'large') {
+    heightAndWidth = '60px';
+  }
+
+  if (controlButtonSize === 'medium') {
+    heightAndWidth = '50px';
+  }
+
   const loadCoverArt = () => {
     coverArtUrl(album).then(data => setCoverArt(data.url));
   };
@@ -33,7 +45,7 @@ const TrackAlbum = ({ album }) => {
             }}
           }
         >
-          <Card.Img top src={coverArt} />
+          <Card.Img top src={coverArt} style={{height: heightAndWidth, width: heightAndWidth}}/>
         </Card>
       )}
     </>

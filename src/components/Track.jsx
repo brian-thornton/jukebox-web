@@ -34,6 +34,18 @@ const Track = ({
   const { features } = settings;
   const isScreenSmall = window.innerWidth < 700;
 
+  const { controlButtonSize } = settings.styles;
+
+  let fontSize = '';
+
+  if (controlButtonSize === 'large') {
+    fontSize = '25px';
+  }
+
+  if (controlButtonSize === 'medium') {
+    fontSize = '25px';
+  }
+
   const getAlbum = (albumTrack) => {
     if (trackAlbumsLoaded) {
       return trackAlbums.find(trackAlbum => trackAlbum.path === albumTrack.path.substr(0, albumTrack.path.lastIndexOf('/')));
@@ -66,6 +78,7 @@ const Track = ({
 
   const trackNameSkin = {
     fontFamily: settings.styles.listFont,
+    fontSize,
   };
 
   // TODO: Make this work with \
