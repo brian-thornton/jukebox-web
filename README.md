@@ -2,6 +2,8 @@
 
 Jukebox is a server / browser based music player that is intended for use in home touch screen jukeboxes. 
 
+![Overview](./doc/jukebox_cabinet.jpg)
+
 ## Overview
 
 The motivation for this project is to create a fast, intuitive, visually appealing touch screen jukebox frontend for home use. This frontend is intended for use in DIY jukebox cabinets.
@@ -13,7 +15,7 @@ The Jukebox project is composed of the following three components:
 - [Jukebox Service](https://github.com/brian-thornton/jukebox-service): This service is responsible for playing music on a machine that is hooked up to speakers.
 - [Jukebox Utils](https://github.com/brian-thornton/jukebox-utils): A utility library which does the work of playing music, storing playlists, managing the queue etc.
 
-![Overview](https://github.com/brian-thornton/jukebox-web/blob/master/doc/Jukebox.jpg)
+![Overview](./doc/Jukebox.jpg)
 
 ## Getting Started
 
