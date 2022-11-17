@@ -8,6 +8,10 @@ import './Confirm.scss';
 const Confirm = ({ onConfirm, onCancel, text }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
+  const { controlButtonSize } = settings.styles;
+  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '20px';
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
@@ -22,8 +26,8 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
           {text}
         </Card.Text>
         <div className="confirmText">
-          <Button onClick={onCancel} content="No" />
-          <Button onClick={onConfirm} content="Yes" />
+          <Button height={buttonWidth} width={buttonHeight} style={{ fontSize }} onClick={onCancel} content="No" />
+          <Button height={buttonWidth} width={buttonHeight} style={{ fontSize }} onClick={onConfirm} content="Yes" />
         </div>
       </Card.Body>
     </Card>

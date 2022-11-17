@@ -84,7 +84,7 @@ const Queue = () => {
 
   const content = () => {
     if (isEmpty) {
-      return <NoResults title="Queue Empty" text="The queue is empty. Enqueue tracks from the albums, tracks or playlist sections and your tracks will play next!" />;
+      return <NoResults applyMargin={false} title="Queue Empty" text="The queue is empty. Enqueue tracks from the albums, tracks or playlist sections and your tracks will play next!" />;
     }
 
     return (

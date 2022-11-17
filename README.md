@@ -6,6 +6,8 @@ Jukebox is a server / browser based music player that is intended for use in hom
 
 The motivation for this project is to create a fast, intuitive, visually appealing touch screen jukebox frontend for home use. This frontend is intended for use in DIY jukebox cabinets.
 
+## Architecture
+
 The Jukebox project is composed of the following three components:
 - [Jukebox Web](https://github.com/brian-thornton/jukebox-web): This is the React JS based web frontend for the Jukebox.
 - [Jukebox Service](https://github.com/brian-thornton/jukebox-service): This service is responsible for playing music on a machine that is hooked up to speakers.

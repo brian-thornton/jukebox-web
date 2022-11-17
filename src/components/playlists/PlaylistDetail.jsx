@@ -129,7 +129,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
   const content = () => {
     if (isEmpty) {
-      return <NoResults title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
+      return <NoResults applyMargin={false} title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
     }
 
     return (

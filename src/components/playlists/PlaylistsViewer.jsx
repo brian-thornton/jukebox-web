@@ -102,7 +102,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const content = () => {
     return (
       <>
-        {!show && isEmpty && <NoResults title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
+        {!show && isEmpty && <NoResults applyMargin={false} title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
         {show && <AddNew onCancel={() => setShow(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
         {!show && (
           <Container {...swipe} id="albums" fluid>

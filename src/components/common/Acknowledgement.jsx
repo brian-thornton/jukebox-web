@@ -1,5 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import React, { useContext, useEffect }  from 'react';
+import React, { useContext }  from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -8,6 +8,9 @@ import './Confirm.scss';
 const Acknowledgement = ({ onGoToTargetClick, onStayOnPageClick, text }) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
+  const { controlButtonSize } = settings.styles;
+  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 60;
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
@@ -26,8 +29,8 @@ const Acknowledgement = ({ onGoToTargetClick, onStayOnPageClick, text }) => {
           {text}
         </Card.Text>
         <div className="confirmText">
-          <Button onClick={onGoToTargetClick} content="No" />
-          <Button onClick={onStayOnPageClick} content="Yes" />
+          <Button height={buttonWidth} width={buttonHeight} onClick={onGoToTargetClick} content="No" />
+          <Button height={buttonWidth} width={buttonHeight} onClick={onStayOnPageClick} content="Yes" />
         </div>
       </Card.Body>
     </Card>

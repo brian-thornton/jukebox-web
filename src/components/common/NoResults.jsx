@@ -4,6 +4,7 @@ import React, { useContext } from 'react';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import './NoResults.scss';
+import { topMargin } from '../../lib/styleHelper';
 
 const propTypes = {
   controls: PropTypes.node,
@@ -11,12 +12,12 @@ const propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-const NoResults = ({ text, title, controls, marginTop }) => {
+const NoResults = ({ text, title, controls, applyMargin = true }) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {
     color: settings.styles.fontColor,
-    marginTop: marginTop ? marginTop : '0',
+    marginTop: applyMargin ? topMargin(settings) : '',
   };
 
   return (
