@@ -13,6 +13,8 @@ The Jukebox project is composed of the following three components:
 - [Jukebox Service](https://github.com/brian-thornton/jukebox-service): This service is responsible for playing music on a machine that is hooked up to speakers.
 - [Jukebox Utils](https://github.com/brian-thornton/jukebox-utils): A utility library which does the work of playing music, storing playlists, managing the queue etc.
 
+![Overview](https://github.com/brian-thornton/jukebox-web/blob/master/doc/Jukebox.jpg)
+
 ## Getting Started
 
 Follow these steps to run Jukebox.  At this time, the jukebox service and music player have only been tested on on MacOS. 
