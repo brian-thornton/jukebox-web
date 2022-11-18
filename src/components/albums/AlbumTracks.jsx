@@ -33,7 +33,7 @@ const TrackList = ({ tracks }) => {
   let content = [];
 
   const { controlButtonSize } = settings.styles;
-  const trackHeight = controlButtonSize === 'small' ? 50 : 80;
+  const trackHeight = (controlButtonSize === 'small') ? 50 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
 
   useEffect(() => setRealPageSize(pageSize('item', reserve, trackHeight)), []);
@@ -63,7 +63,7 @@ const TrackList = ({ tracks }) => {
   ));
 
   return (
-    <Container {...swipe} fluid>
+    <Container {...swipe} fluid style={{marginBottom: isScreenSmall ? '90px' : ''}}>
       <Row>
         <Col lg="12" xl="12" md="12" sm="12">
           <Row className="d-none d-md-block d-lg-block">

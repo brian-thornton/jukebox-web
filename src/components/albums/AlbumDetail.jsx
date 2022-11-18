@@ -34,6 +34,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [reload, setReload] = useState(false);
   const [confirmRestriction, setConfirmRestriction] = useState(false);
   const settings = useContext(SettingsContext);
+  const isScreenSmall = window.innerWidth < 700;
 
   const loadTracks = () => {
     if (!areTracksLoading) {
@@ -82,7 +83,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     if (album) {
       return (
         <>
-          <Row className="coverRow" style={{ marginTop: topMargin(settings) }}>
+          <Row className="coverRow" style={{ marginTop: isScreenSmall ? '40px' : topMargin(settings)}}>
             <Col lg={3} xl={3}>
               <Container className="albumContainer">
                 <>

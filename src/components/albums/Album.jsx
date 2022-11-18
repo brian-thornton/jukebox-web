@@ -15,7 +15,7 @@ const propTypes = {
 };
 
 const Album = ({ album, coverArtOnly }) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const settings = useContext(SettingsContext);
   const { coverSize } = settings.preferences;
   const [coverArt, setCoverArt] = useState(defaultCover);
@@ -27,7 +27,7 @@ const Album = ({ album, coverArtOnly }) => {
 
         if (!data.isLocal && !data.isDefault) {
           saveCoverArt({ album, url: data.url });
-        }
+        }i
       });
     }
   };

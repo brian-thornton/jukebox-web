@@ -1,3 +1,19 @@
+.accordionHeader {
+  margin-bottom: '200px' !important;
+  width: 100% !important;
+  border-color: #708090 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  text-align: left !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+  table-layout: fixed !important;
+  font-size: 20px !important;
+}
+
 .itemStyle {
   margin-bottom: '200px' !important;
   width: 100% !important;

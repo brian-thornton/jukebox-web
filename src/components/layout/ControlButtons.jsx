@@ -18,16 +18,17 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
   const { preferences } = settings;
   const { vlcHost, vlcPort, vlcPassword } = preferences;
   const { controlButtonSize } = settings.styles;
+  const isScreenSmall = window.innerWidth < 700;
 
   let height;
   let fontSize = '';
 
-  if (controlButtonSize === 'large') {
+  if (!isScreenSmall && controlButtonSize === 'large') {
     height = '100';
     fontSize = '40px';
   }
 
-  if (controlButtonSize === 'medium') {
+  if (!isScreenSmall && controlButtonSize === 'medium') {
     height = '70'
     fontSize = '30px';
   }
