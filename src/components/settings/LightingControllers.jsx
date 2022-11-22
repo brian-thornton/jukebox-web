@@ -1,22 +1,22 @@
 import { TrashFill, PencilSquare, PlusSquare } from 'react-bootstrap-icons';
-import React, { useContext, useEffect, useState } from 'react';
-import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
+import React, { useContext, useEffect, useState } from 'react';
+import Row from 'react-bootstrap/Row';
 
-
-import Button from '../Button';
-import ControllerDetail from './ControllerDetail';
-import Item from '../common/Item';
-import { SettingsContext } from '../layout/SettingsProvider';
-import AddNew from '../common/AddNew';
-import { updateSettings } from '../../lib/settings-client';
 import './LightingControllers.scss';
 import { discover, createSegment, reset } from '../../lib/lighting-client';
+import { SettingsContext } from '../layout/SettingsProvider';
+import { updateSettings } from '../../lib/settings-client';
+import AddNew from '../common/AddNew';
+import Button from '../Button';
+import CloneController from './CloneController';
+import ControllerDetail from './ControllerDetail';
+import Item from '../common/Item';
 import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
-import CloneController from './CloneController';
+import Presets from './Presets';
 
 const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = true, allowConfigure = true, buttons, skin, onConfigure = () => { } }) => {
   const settings = useContext(SettingsContext);
@@ -26,6 +26,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
   const [discoveryInProgress, setDiscoveryInProgress] = useState(false);
   const [networkControllers, setNetworkControllers] = useState();
   const [updatedControllerName, setsUpdateControllerName] = useState();
+  const [isPresetsOpen, setIsPresetsOpen] = useState(false);
   const [cloneSource, setCloneSource] = useState();
 
   const discoverControllers = () => {
@@ -57,6 +58,8 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
             deepClone.controllers.push({ ...c, online: true });
           }
         })
+      } else {
+        deepClone.controllers = data;
       }
 
       updateSettings(deepClone, true);
@@ -68,7 +71,11 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
 
   useEffect(() => {
     if (!skin) {
-      discoverControllers();
+      if (settings && !settings.controllers) {
+        discoverControllers();
+      } else {
+
+      }
     }
   }, []);
 
@@ -131,7 +138,6 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
   };
 
   const pushSegmentsFromMetadata = async (controller) => {
-    console.log(controller);
     if (controller.segments) {
       for (const segment of controller.segments) {
         await createSegment(controller.ip, segment.start, segment.stop);
@@ -217,6 +223,17 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                         disabled={!controller.online}
                         className="lighting-controller-button"
                         onClick={() => {
+                          setIsPresetsOpen(true);
+                          setSelectedController(controller);
+                        }}
+                        content="Presets"
+                      />
+                    )}
+                    {!skin && (
+                      <Button
+                        disabled={!controller.online}
+                        className="lighting-controller-button"
+                        onClick={() => {
                           reset(controller.ip);
                         }}
                         content="Reset"
@@ -235,7 +252,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
 
   return (
     <>
-      {!isConfigureOpen && !isAddOpen && (
+      {!isPresetsOpen && !isConfigureOpen && !isAddOpen && (
         <>
           {allowAdd && (
             <>
@@ -282,7 +299,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
           </Container>
         </>
       )}
-      {!discoveryInProgress && !isConfigureOpen && isAddOpen && (
+      {!isPresetsOpen && !discoveryInProgress && !isConfigureOpen && isAddOpen && (
         <>
           <AddNew
             title="Add New Lighting Controller"
@@ -293,8 +310,11 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
           />
         </>
       )}
-      {!discoveryInProgress && isConfigureOpen && (
+      {!isPresetsOpen && !discoveryInProgress && isConfigureOpen && (
         <ControllerDetail controller={selectedController} />
+      )}
+      {isPresetsOpen && (
+        <Presets controller={selectedController} />
       )}
     </>
   );

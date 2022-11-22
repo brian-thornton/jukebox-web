@@ -27,7 +27,7 @@ const Album = ({ album, coverArtOnly }) => {
 
         if (!data.isLocal && !data.isDefault) {
           saveCoverArt({ album, url: data.url });
-        }i
+        }
       });
     }
   };

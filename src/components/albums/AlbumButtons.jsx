@@ -26,6 +26,7 @@ const AlbumButtons = ({ tracks }) => {
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
 
   const playAlbum = () => {
     enqueueTracksTop(tracks);
@@ -33,7 +34,7 @@ const AlbumButtons = ({ tracks }) => {
   };
 
   const albumButton = (onClick, name, enabled = true) => (
-    <Col lg="12" xl="12" sm="12" xs="12" className="albumButton">
+    <Col lg={colLayout ? "6" : "12"} xl={colLayout ? "6" : "12"} sm="12" xs="12" className="albumButton">
       <ControlButton disabled={!enabled} text={name} onClick={onClick} width="100%" height={buttonHeight} style={{ fontSize }} />
     </Col>
   );

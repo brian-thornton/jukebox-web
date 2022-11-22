@@ -19,6 +19,7 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen, setIsConfirmRemoveCov
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
 
   const saveCoverArtToLibrary = () => {
     saveCoverArt({ album, url: coverArt });
@@ -29,7 +30,7 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen, setIsConfirmRemoveCov
   }, []);
 
   const albumButton = (onClick, name) => (
-    <Col lg="12" xl="12" sm="12" xs="12" className="adminButton">
+    <Col lg={colLayout ? "6" : "12"} xl={colLayout ? "6" : "12"} sm="12" xs="12" className="adminButton">
       <ControlButton onClick={onClick} text={name} width="100%" height={buttonHeight} style={{ fontSize }} />
     </Col>
   );
@@ -38,7 +39,18 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen, setIsConfirmRemoveCov
     <>
       {settings.features.admin && (
         <>
-          {!isScreenSmall && (
+          {colLayout && (
+            <>
+              <Row>
+                {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
+                {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), 'Remove Cover')}
+              </Row>
+              <Row>
+                {albumButton(() => setConfirmRestriction(true), 'Restrict Content')}
+              </Row>
+            </>
+          )}
+          {!colLayout && (
             <Row>
               {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
               {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), 'Remove Cover')}

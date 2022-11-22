@@ -6,6 +6,14 @@ export const getCurrentState = (ip) => {
   return getData(`${path}/currentState?ip=${ip}`);
 };
 
+export const getPresets = (ip) => {
+  return getData(`${path}/presets?ip=${ip}`);
+};
+
+export const applyPreset = (ip, name) => {
+  return getData(`${path}/applyPreset?ip=${ip}&name=${name}`);
+};
+
 export const createSegment = (ip, start, stop) => {
   return getData(`${path}/createSegment?ip=${ip}&start=${start}&stop=${stop}`);
 };

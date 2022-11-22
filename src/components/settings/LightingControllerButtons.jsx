@@ -5,7 +5,7 @@ import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
 import './LightingControllers.scss';
-import { createSegment, reset } from '../../lib/lighting-client';
+import { createSegment, reset, getPresets } from '../../lib/lighting-client';
 import CloneController from './CloneController';
 
 const LightingControllerButtons = ({ allowAdd = true, allowName = true, allowRemove = true, allowConfigure = true, buttons, skin, onConfigure = () => { } }) => {
@@ -49,6 +49,10 @@ const LightingControllerButtons = ({ allowAdd = true, allowName = true, allowRem
         await createSegment(controller.ip, segment.start, segment.stop);
       }
     }
+  };
+
+  const loadPresets = async (controller) => {
+    console.log(await getPresets())
   };
 
   return (
@@ -104,6 +108,16 @@ const LightingControllerButtons = ({ allowAdd = true, allowName = true, allowRem
                     pushSegmentsFromMetadata(controller);
                   }}
                   content="Push Segments"
+                />
+              )}
+              {!skin && (
+                <Button
+                  disabled={!controller.online}
+                  className="lighting-controller-button"
+                  onClick={() => {
+                    loadPresets(controller);
+                  }}
+                  content="Load Presets"
                 />
               )}
               {!skin && (
