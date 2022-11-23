@@ -1,4 +1,4 @@
-import { TrashFill, PencilSquare, PlusSquare } from 'react-bootstrap-icons';
+import { TrashFill, PencilSquare, PlusSquare, Power } from 'react-bootstrap-icons';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import './LightingControllers.scss';
-import { discover, createSegment, reset } from '../../lib/lighting-client';
+import { discover, createSegment, reset, powerOff } from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
 import AddNew from '../common/AddNew';
@@ -73,8 +73,6 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     if (!skin) {
       if (settings && !settings.controllers) {
         discoverControllers();
-      } else {
-
       }
     }
   }, []);
@@ -89,21 +87,14 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
 
   const onControllerAdd = async (name, ip) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
+    const controllerToAdd = { name, ip };
 
     if (deepClone.controllers) {
       if (!deepClone.controllers.find((c) => c.ip === ip)) {
-        deepClone.controllers.push({
-          name,
-          ip
-        })
+        deepClone.controllers.push(controllerToAdd);
       }
     } else {
-      deepClone.controllers = [
-        {
-          name,
-          ip
-        }
-      ];
+      deepClone.controllers = [controllerToAdd];
     }
 
     saveSettings(deepClone);
@@ -112,7 +103,6 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
   const onControllerRemove = (ip) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.controllers = deepClone.controllers.filter((f) => f.ip !== ip);
-
     saveSettings(deepClone);
   };
 
@@ -190,54 +180,56 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                       icon={<PencilSquare />}
                     />
                     {!skin && (
-                      <Button
-                        className="lighting-controller-button"
-                        onClick={() => {
-                          setCloneSource(controller);
-                        }}
-                        content="Clone"
-                      />
-                    )}
-                    {!skin && (
-                      <Button
-                        disabled={!controller.online}
-                        className="lighting-controller-button"
-                        onClick={() => {
-                          onSetName(controller);
-                        }}
-                        content="Save"
-                      />
-                    )}
-                    {!skin && (
-                      <Button
-                        disabled={!controller.online}
-                        className="lighting-controller-button"
-                        onClick={() => {
-                          pushSegmentsFromMetadata(controller);
-                        }}
-                        content="Push Segments"
-                      />
-                    )}
-                    {!skin && (
-                      <Button
-                        disabled={!controller.online}
-                        className="lighting-controller-button"
-                        onClick={() => {
-                          setIsPresetsOpen(true);
-                          setSelectedController(controller);
-                        }}
-                        content="Presets"
-                      />
-                    )}
-                    {!skin && (
-                      <Button
-                        disabled={!controller.online}
-                        className="lighting-controller-button"
-                        onClick={() => {
-                          reset(controller.ip);
-                        }}
-                        content="Reset"
-                      />
+                      <>
+                        <Button
+                          className="lighting-controller-button"
+                          onClick={() => {
+                            setCloneSource(controller);
+                          }}
+                          content="Clone"
+                        />
+                        <Button
+                          disabled={!controller.online}
+                          className="lighting-controller-button"
+                          onClick={() => {
+                            onSetName(controller);
+                          }}
+                          content="Save"
+                        />
+                        <Button
+                          disabled={!controller.online}
+                          className="lighting-controller-button"
+                          onClick={() => {
+                            pushSegmentsFromMetadata(controller);
+                          }}
+                          content="Push Segments"
+                        />
+                        <Button
+                          disabled={!controller.online}
+                          className="lighting-controller-button"
+                          onClick={() => {
+                            powerOff(controller.ip);
+                          }}
+                          content={<Power />}
+                        />
+                        <Button
+                          disabled={!controller.online}
+                          className="lighting-controller-button"
+                          onClick={() => {
+                            setIsPresetsOpen(true);
+                            setSelectedController(controller);
+                          }}
+                          content="Presets"
+                        />
+                        <Button
+                          disabled={!controller.online}
+                          className="lighting-controller-button"
+                          onClick={() => {
+                            reset(controller.ip);
+                          }}
+                          content="Reset"
+                        />
+                      </>
                     )}
                   </>
                 )}
