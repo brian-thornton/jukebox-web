@@ -9,6 +9,7 @@ import AddToPlaylistButton from './common/AddToPlaylistButton';
 import TrackAlbum from './TrackAlbum';
 import { Track as TrackShape } from './shapes';
 import DownloadButton from './DownloadButton';
+import ExpandRow from './common/ExpandRow';
 import GoToAlbumButton from './GoToAlbumButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
@@ -85,6 +86,22 @@ const Track = ({
   const pathParts = track.path.split('/');
   const albumFolder = pathParts[pathParts.length - 2];
 
+  const buttons = (
+    <>
+      {features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
+      {features.playlists && <AddToPlaylistButton track={track} />}
+      {features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
+      {features.queue && <EnqueueButton track={track} mode="Tracks" isScreenSmall={isScreenSmall} />}
+      {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
+    </>
+  );
+
+  if (isScreenSmall) {
+    return (
+      <ExpandRow text={`${albumFolder} - ${track.name}`} buttons={buttons} />
+    );
+  }
+
   return (
     <Card className="trackCard" style={trackCardSkin}>
       <Container className="trackContainer" fluid>
@@ -98,11 +115,7 @@ const Track = ({
             </div>
           </Col>
           <Col lg={3} md={3}>
-            {features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
-            {features.playlists && <AddToPlaylistButton track={track} />}
-            {features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
-            {features.queue && <EnqueueButton track={track} mode="Tracks" isScreenSmall={isScreenSmall} />}
-            {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
+            {buttons}
           </Col>
         </Row>
       </Container>

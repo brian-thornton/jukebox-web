@@ -33,8 +33,10 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
+  const isScreenSmall = window.innerWidth < 700;
   const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
-  const trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
+  let trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
+  trackHeight = isScreenSmall ? 35 : trackHeight;
 
   useEffect(() => {
     const reserve = headerFooterReserve(settings);

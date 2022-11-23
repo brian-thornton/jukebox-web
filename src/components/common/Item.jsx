@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import { Accordion, Container, Row, Col } from 'react-bootstrap';
-import { useAccordionButton } from 'react-bootstrap/AccordionButton';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import CheckToggle from '../common/CheckToggle';
+import ExpandRow from './ExpandRow';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Item.scss';
 
@@ -18,46 +18,14 @@ const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked, actio
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
-
-  function CustomToggle({ children, eventKey }) {
-    const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log('totally custom!'),
-    );
-
   const itemStyle = {
     color: settings.styles.fontColor,
     background: settings.styles.trackBackgroundColor,
     fontFamily: settings.styles.listFont,
   };
-
-    return (
-      <button
-        className="accordionHeader" style={itemStyle}
-        type="button"
-        onClick={decoratedOnClick}
-      >
-        {children}
-      </button>
-    );
-  }
-
-  const itemStyle = {
-    color: settings.styles.fontColor,
-    background: settings.styles.trackBackgroundColor,
-    fontFamily: settings.styles.listFont,
-  };
-
-  const smallRow = () => (
-    <Accordion>
-      <CustomToggle eventKey="0">{text}</CustomToggle>
-      <Accordion.Collapse eventKey="0">
-        {buttons}
-      </Accordion.Collapse>
-    </Accordion>
-  );
 
   if (isScreenSmall) {
-    return smallRow();
+    return <ExpandRow text={text} buttons={buttons} />;
   }
 
   return (

@@ -21,6 +21,7 @@ const RadioList = ({ setMediaType }) => {
   const [stations, setStations] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   const loadStations = async () => {
@@ -31,7 +32,7 @@ const RadioList = ({ setMediaType }) => {
   };
 
   useState(() => {
-    const itemHeight = 60;
+    const itemHeight = isScreenSmall ? 45 : 60;
     const viewPortHeight = Math.floor(window.innerHeight - 200);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);

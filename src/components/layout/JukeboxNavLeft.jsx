@@ -45,7 +45,7 @@ const JukeboxNavLeft = ({ }) => {
 
   return (
     <>
-      {(styles.navButtonType !== "buttons") || isScreenSmall && (
+      {(!styles || !styles.navButtonType || styles.navButtonType !== "buttons" || isScreenSmall) && (
         <Nav className="me-auto">
           {features.albums && (
             <>

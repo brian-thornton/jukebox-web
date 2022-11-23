@@ -28,15 +28,18 @@ const TrackList = ({ tracks }) => {
   const { features } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const [totalPages, setTotalPages] = useState();
   const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let content = [];
 
   const { controlButtonSize } = settings.styles;
-  const trackHeight = (controlButtonSize === 'small') ? 50 : 80;
+  const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 53 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
 
-  useEffect(() => setRealPageSize(pageSize('item', reserve, trackHeight)), []);
+  useEffect(() => {
+    setRealPageSize(pageSize('item', reserve, trackHeight));
+  }, []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
@@ -63,7 +66,7 @@ const TrackList = ({ tracks }) => {
   ));
 
   return (
-    <Container {...swipe} fluid style={{marginBottom: isScreenSmall ? '90px' : ''}}>
+    <Container {...swipe} fluid style={{ marginBottom: isScreenSmall ? '90px' : '' }}>
       <Row>
         <Col lg="12" xl="12" md="12" sm="12">
           <Row className="d-none d-md-block d-lg-block">
@@ -89,17 +92,19 @@ const TrackList = ({ tracks }) => {
           </Row>
         </Col>
       </Row>
-      <Row className="d-none d-md-block d-lg-block album-tracks-paginator">
-        <Col lg="12" xl="12" md="12" sm="12">
-          <Paginator
-            disableRandom
-            onPageChange={(page) => setSelectedPage(page)}
-            selectedPage={selectedPage}
-            totalItems={tracks.length}
-            pageSize={realPageSize}
-          />
-        </Col>
-      </Row>
+      {tracks.length > realPageSize && (
+        <Row className="d-none d-md-block d-lg-block album-tracks-paginator">
+          <Col lg="12" xl="12" md="12" sm="12">
+            <Paginator
+              disableRandom
+              onPageChange={(page) => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={tracks.length}
+              pageSize={realPageSize}
+            />
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 }

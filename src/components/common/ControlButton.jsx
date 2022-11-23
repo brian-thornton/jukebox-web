@@ -21,6 +21,8 @@ const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelec
     fontFamily: styles.buttonFont,
     width: '100%',
     fontSize: style?.fontSize,
+    marginTop: style?.marginTop,
+    marginBottom: style?.marginBottom,
   };
 
   return (
