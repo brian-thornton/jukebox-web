@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Accordion } from 'react-bootstrap';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
@@ -12,19 +12,23 @@ const propTypes = {
   text: PropTypes.string,
 };
 
-const ExpandRow = ({ buttons, onClick, text }) => {
+const ExpandRow = ({ buttons, text, isExpanded, setIsExpanded }) => {
   const settings = useContext(SettingsContext);
+  const [activeKey, setActiveKey] = useState(isExpanded ? '0' : null);
 
-  function CustomToggle({ children, eventKey }) {
-    const decoratedOnClick = useAccordionButton(eventKey, () =>
-      console.log('totally custom!'),
-    );
+  function CustomToggle({ children, eventKey, setIsExpanded }) {
+    const decoratedOnClick = useAccordionButton(eventKey, () => {
+      setActiveKey(activeKey ? null : eventKey);
+      if (setIsExpanded) {
+        setIsExpanded(true);
+      }
+    });
 
-  const itemStyle = {
-    color: settings.styles.fontColor,
-    background: settings.styles.trackBackgroundColor,
-    fontFamily: settings.styles.listFont,
-  };
+    const itemStyle = {
+      color: settings.styles.fontColor,
+      background: settings.styles.trackBackgroundColor,
+      fontFamily: settings.styles.listFont,
+    };
 
     return (
       <button
@@ -38,10 +42,12 @@ const ExpandRow = ({ buttons, onClick, text }) => {
   }
 
   return (
-    <Accordion>
-      <CustomToggle eventKey="0">{text}</CustomToggle>
+    <Accordion activeKey={activeKey} style={{ width: '100%' }}>
+      <CustomToggle eventKey="0" setIsExpanded={setIsExpanded}>{text}</CustomToggle>
       <Accordion.Collapse eventKey="0">
-        {buttons}
+        <div onClick={() => setActiveKey(null)}>
+          {buttons}
+        </div>
       </Accordion.Collapse>
     </Accordion>
   );
@@ -49,7 +55,6 @@ const ExpandRow = ({ buttons, onClick, text }) => {
 
 ExpandRow.defaultProps = {
   buttons: null,
-  onClick: null,
   text: '',
 };
 

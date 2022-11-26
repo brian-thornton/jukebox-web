@@ -14,6 +14,7 @@ import { useSwipeable } from 'react-swipeable';
 import { handlers } from '../../../lib/gesture-helper';
 import { pageSize } from '../../../lib/styleHelper';
 import Item from '../../common/Item';
+import RestrictionModeDetail from './RestrictionModeDetail';
 import { createRestrictionGroup, getRestrictionGroups, updateRestrictionGroup } from '../../../lib/settings-client';
 
 const RestrictionModes = ({ addMode, addComplete, album }) => {
@@ -60,14 +61,20 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
 
   return (
     <>
-      {isAddOpen && (
+      {selectedRestrictionMode && (
+        <RestrictionModeDetail
+          onClose={() => setSelectedRestrictionMode(null)}
+          restrictionMode={selectedRestrictionMode}
+        />
+      )}
+      {!selectedRestrictionMode && isAddOpen && (
         <AddNew
           title="Add Restriction Group"
           onConfirm={onAddRestrictionGroup}
           onCancel={() => setIsAddOpen(false)}
         />
       )}
-      {!isAddOpen && restrictionGroups?.length > 0 && (
+      {!selectedRestrictionMode && !isAddOpen && restrictionGroups?.length > 0 && (
         <Container fluid style={{ width: '100%' }}>
           <Row>
             <Button content="Add" onClick={() => setIsAddOpen(true)} />

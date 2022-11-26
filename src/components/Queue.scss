@@ -1,3 +1,10 @@
 .queue {
   margin-top: 0px !important;
 }
+
+.trackName {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap;
+  width: 100% !important;
+}

@@ -1,5 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import React, { useContext }  from 'react';
+import React, { useContext } from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -26,8 +26,20 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
           {text}
         </Card.Text>
         <div className="confirmText">
-          <Button height={buttonWidth} width={buttonHeight} style={{ fontSize }} onClick={onCancel} content="No" />
-          <Button height={buttonWidth} width={buttonHeight} style={{ fontSize }} onClick={onConfirm} content="Yes" />
+          <Button
+            height={buttonWidth}
+            width={buttonHeight}
+            style={{ fontSize }}
+            onClick={onCancel}
+            content="No"
+          />
+          <Button
+            height={buttonWidth}
+            width={buttonHeight}
+            style={{ fontSize }}
+            onClick={onConfirm}
+            content="Yes"
+          />
         </div>
       </Card.Body>
     </Card>

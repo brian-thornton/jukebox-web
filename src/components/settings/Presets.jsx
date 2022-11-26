@@ -12,26 +12,26 @@ import Item from "../common/Item";
 
 import { applyPreset, getPresets } from "../../lib/lighting-client";
 
-const Presets = ({ controller }) => {
+const Presets = ({ controller, onClose }) => {
   const [presets, setPresets] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
-  const loadPresets = async () => {
+  const loadPresets = () => {
     setRealPageSize(pageSize('item', 300));
-    const data = await getPresets(controller.ip);
-    setPresets(Object.keys(data).map((key) => data[key]).filter((p) => p.n));
+    getPresets(controller.ip).then((data) => {
+      setPresets(Object.keys(data).map((key) => data[key]).filter((p) => p.n));
+    });
   };
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   useEffect(loadPresets, []);
 
-  useEffect(() => console.log(presets), [presets]);
-
   return (
     <>
+      <Button content="Back to Controllers" onClick={onClose} />
       {presets?.length > 0 && (
         <Container fluid>
           <Row>

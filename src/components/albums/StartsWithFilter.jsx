@@ -12,7 +12,6 @@ const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
   const { styles, features } = settings;
   const { startsWithLocation } = settings.preferences;
   const availableHeight = window.innerHeight;
-  console.log(`working height: ${availableHeight}`);
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
     'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 

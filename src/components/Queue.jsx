@@ -18,6 +18,7 @@ import {
   removeTracksFromQueue,
 } from '../lib/queue-client';
 import ContentWithControls from './common/ContentWithControls';
+import ExpandRow from './common/ExpandRow';
 import PlayNowButton from './PlayNowButton';
 import Item from './common/Item';
 import NoResults from './common/NoResults';
@@ -39,7 +40,7 @@ const Queue = () => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const { controlButtonSize } = settings.styles;
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
-  const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
+  const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 300 : 250;
   const itemsPerPage = pageSize('item', reserve, trackHeight);
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 60;
@@ -82,6 +83,15 @@ const Queue = () => {
     />
   );
 
+  const buttons = (track) => {
+    return (
+      <>
+        {settings.features.play && <PlayNowButton track={track} />}
+        <Button width={buttonWidth} height={buttonHeight} onClick={() => remove(track)} icon={<TrashFill />} />
+      </>
+    )
+  };
+
   const content = () => {
     if (isEmpty) {
       return <NoResults applyMargin={false} title="Queue Empty" text="The queue is empty. Enqueue tracks from the albums, tracks or playlist sections and your tracks will play next!" />;
@@ -91,21 +101,22 @@ const Queue = () => {
       <>
         {!clearConfirm && (
           <Container {...swipe} fluid>
-            <Row>
+            <Row >
               <Col lg="12" xl="12" md="12" sm="12">
                 <Row>
                   {tracks.map(track => (
-                    <Item
-                      text={track.name}
-                      buttons={(
-                        <>
-                          {settings.features.play && <PlayNowButton track={track} />}
-                          <Button width={buttonWidth} height={buttonHeight} onClick={() => remove(track)} icon={<TrashFill />} />
-                        </>
+                    <>
+                      {isScreenSmall && <ExpandRow text={track.name} buttons={buttons(track)}/>}
+                      {!isScreenSmall && (
+                        <Item
+                          text={track.name}
+                          buttons={buttons(track)}
+                        />
                       )}
-                    />
+                    </>
                   ))
-                  }</Row>
+                  }
+                </Row>
               </Col>
             </Row>
             <Row>
@@ -146,7 +157,7 @@ const Queue = () => {
       <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" height={buttonHeight} style={{ fontSize }} />
       {settings.features.playlists && <ControlButton width="100%" onClick={() => {
         navigate('/playlists', { state: { tracks } })
-      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" height={buttonHeight} style={{ fontSize }}/>}
+      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" height={buttonHeight} style={{ fontSize }} />}
     </>
   );
 
@@ -154,18 +165,20 @@ const Queue = () => {
     <>
       {!isScreenSmall && <ContentWithControls controls={controls()} content={content()} />}
       {isScreenSmall && (
-        <>
-          <Container>
-            {!clearConfirm && (
-              <Row>
+        <Container fluid style={{ marginTop: '60px', paddingRight: '0px' }}>
+          {!clearConfirm && (
+            <Row className="trackName">
+              <Col lg="12" xl="12" md="12" sm="12">
                 <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
-              </Row>
-            )}
-            <Row>
-              {content()}
+              </Col>
             </Row>
-          </Container>
-        </>
+          )}
+          <Row className="trackName">
+            <Col lg="12" xl="12" md="12" sm="12">
+              {content()}
+            </Col>
+          </Row>
+        </Container>
       )}
     </>
   );

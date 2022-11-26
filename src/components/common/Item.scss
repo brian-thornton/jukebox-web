@@ -17,6 +17,7 @@
 }
 
 .itemText {
+  width: 100% !important;
   max-width: 100% !important;
   float: left !important; 
   margin-top: 10px;
@@ -24,3 +25,4 @@
   white-space: nowrap !important;
   text-overflow: ellipsis !important;
 }
+

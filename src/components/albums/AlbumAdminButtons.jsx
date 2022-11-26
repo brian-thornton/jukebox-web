@@ -30,8 +30,14 @@ const AlbumAdminButtons = ({ album, setIsCustomSearchOpen, setIsConfirmRemoveCov
   }, []);
 
   const albumButton = (onClick, name) => (
-    <Col lg={colLayout ? "6" : "12"} xl={colLayout ? "6" : "12"} sm="12" xs="12" className="adminButton">
-      <ControlButton onClick={onClick} text={name} width="100%" height={buttonHeight} style={{ fontSize, marginTop: '0px', marginBottom: '0px' }} />
+    <Col lg={colLayout ? "6" : "12"} xl={colLayout ? "6" : "12"} sm="12" xs="12" className="adminRow">
+      <ControlButton
+        onClick={onClick}
+        text={name}
+        width="100%"
+        height={buttonHeight}
+        style={{ fontSize, marginTop: '0px', marginBottom: '0px' }}
+      />
     </Col>
   );
 

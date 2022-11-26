@@ -1,7 +1,7 @@
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -11,6 +11,7 @@ import ExpandRow from '../common/ExpandRow';
 const RadioCategories = ({ category, setCategory }) => {
   const settings = useContext(SettingsContext);
   const { features } = settings;
+  const [isExpanded, setIsExpanded] = useState(false);
   const { controlButtonSize } = settings.styles;
   const isScreenSmall = window.innerWidth < 700;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
@@ -24,7 +25,10 @@ const RadioCategories = ({ category, setCategory }) => {
       {categories.map((c) => (
         <Button
           disabled={features.isLocked}
-          onClick={() => setCategory(c)}
+          onClick={() => {
+            setCategory(c);
+            setIsExpanded(false);
+          }}
           isSelected={c === category}
           width="100%"
           height={buttonHeight}
@@ -35,7 +39,14 @@ const RadioCategories = ({ category, setCategory }) => {
   );
 
   if (isScreenSmall) {
-    return <ExpandRow text="Categories" buttons={buttons} />;
+    return (
+      <ExpandRow
+        buttons={buttons}
+        isExpanded={isExpanded}
+        setIsExpanded={setIsExpanded}
+        text="Categories"
+      />
+    );
   }
 
   return (

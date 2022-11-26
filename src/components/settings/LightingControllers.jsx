@@ -306,7 +306,11 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
         <ControllerDetail controller={selectedController} />
       )}
       {isPresetsOpen && (
-        <Presets controller={selectedController} />
+        <Presets controller={selectedController} onClose={() => {
+          setSelectedController(null);
+          setIsPresetsOpen(false);
+        }}
+        />
       )}
     </>
   );
