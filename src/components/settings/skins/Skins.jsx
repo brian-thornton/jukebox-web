@@ -3,9 +3,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import AddNew from '../../common/AddNew';
-import { createSkin } from '../../../lib/style-client';
+import { createSkin, getSkins } from '../../../lib/style-client';
 import { updateSettings } from '../../../lib/settings-client';
-import { getSkins } from '../../../lib/style-client';
 import SkinDetail from './SkinDetail';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { deepCloneSkin } from '../../../lib/styleHelper';
@@ -38,7 +37,7 @@ const Skins = ({ resetControls, setControls }) => {
       setSkins(data);
 
       if (searchParams.get('skin')) {
-        setEditSkin(data.find((s) => s.name === searchParams.get('skin')));
+        setEditSkin(data.find(s => s.name === searchParams.get('skin')));
       }
     });
   };
@@ -106,7 +105,7 @@ const Skins = ({ resetControls, setControls }) => {
       skin: {
         name: data.name,
         isEditable: true,
-        ...colors
+        ...colors,
       },
     }).then(() => {
       setIsSaveAsOpen(false);
@@ -114,7 +113,7 @@ const Skins = ({ resetControls, setControls }) => {
     });
   };
 
-  if (skins?.length) {
+  if (skins && skins.length > 0) {
     return (
       <>
         {!isSaveAsOpen && (
@@ -132,7 +131,7 @@ const Skins = ({ resetControls, setControls }) => {
             defaultValue={`${copySkinBase.name} Copy`}
             fields={{ name: 'Name' }}
             onCancel={() => setIsSaveAsOpen(false)}
-            onConfirm={(data) => handleSkinSaveAs(data)}
+            onConfirm={data => handleSkinSaveAs(data)}
           />
         )}
       </>
@@ -140,7 +139,7 @@ const Skins = ({ resetControls, setControls }) => {
   }
 
   return <></>;
-}
+};
 
 Skins.propTypes = propTypes;
 

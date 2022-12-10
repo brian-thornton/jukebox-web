@@ -2,29 +2,54 @@ import React, { useContext, useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
+import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import Item from '../common/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
+import {
+  Event,
+  LightingController,
+  Segment,
+  Skin,
+} from '../shapes';
 
-const SegmentRowEdit = ({ segment, onSave, controller, skin, event, setSegment, onCancel }) => {
-  const [editSegment, setEditSegment] = useState({ id: segment.id, start: segment.start, stop: segment.stop });
+const propTypes = {
+  controller: LightingController.isRequired,
+  segment: Segment.isRequired,
+  skin: Skin,
+  onSave: PropTypes.func.isRequired,
+  event: Event.isRequired,
+  onCancel: PropTypes.func.isRequired,
+};
+
+const SegmentRowEdit = ({
+  segment,
+  onSave,
+  controller,
+  skin,
+  event,
+  onCancel,
+}) => {
+  const [editSegment, setEditSegment] = useState({
+    id: segment.id,
+    start: segment.start,
+    stop: segment.stop,
+  });
   const settings = useContext(SettingsContext);
-  const controllerMetadata = settings.controllers?.find((c) => c.ip === controller.info?.ip || controller.ip);
-  const segmentMetadata = controllerMetadata?.segments.find((s) => s.start === segment.start.toString() && s.stop === segment.stop.toString());
+  const controllers = { settings };
+  const controllerMetadata = controllers?.find(c => c.ip === controller.info?.ip || controller.ip);
+  const { start, stop } = segment;
+  const segmentMetadata = controllerMetadata?.segments.find(s => s.start === start.toString()
+    && s.stop === stop.toString());
 
-  useEffect(() => setEditSegment({ ...editSegment, name: segmentMetadata.name }), [])
+  useEffect(() => setEditSegment({ ...editSegment, name: segmentMetadata.name }), []);
 
-  
-  let effectName;
   if (skin) {
-    const skinController = skin.lighting.controllers.find((c) => c.ip === (controller.info?.ip || controller.ip));
-    const eventSegments = skinController.segments.filter((s) => s.event === event);
-    const skinSegment = eventSegments.find((s) => s.start.toString() === segment.start.toString() && s.stop.toString() === segment.stop.toString())
-    effectName = skinSegment?.effect;
+    const skinController = skin.lighting.controllers.find(c => (
+      c.ip === (controller.info?.ip || controller.ip)));
+    const eventSegments = skinController.segments.filter(s => s.event === event);
   }
-
-  useEffect(() => console.log(editSegment), [editSegment])
 
   return (
     <Item
@@ -32,13 +57,22 @@ const SegmentRowEdit = ({ segment, onSave, controller, skin, event, setSegment, 
         <Form>
           <Row>
             <Col>
-              <Form.Control placeholder={editSegment.name} onChange={(event) => setEditSegment({ ...editSegment, name: event.target.value })} />
+              <Form.Control
+                placeholder={editSegment.name}
+                onChange={e => setEditSegment({ ...editSegment, name: e.target.value })}
+              />
             </Col>
             <Col>
-              <Form.Control placeholder={editSegment.start} onChange={(event) => setEditSegment({ ...editSegment, start: event.target.value })} />
+              <Form.Control
+                placeholder={editSegment.start}
+                onChange={e => setEditSegment({ ...editSegment, start: e.target.value })}
+              />
             </Col>
             <Col>
-              <Form.Control placeholder={editSegment.stop} onChange={(event) => setEditSegment({ ...editSegment, stop: event.target.value })} />
+              <Form.Control
+                placeholder={editSegment.stop}
+                onChange={e => setEditSegment({ ...editSegment, stop: e.target.value })}
+              />
             </Col>
           </Row>
         </Form>
@@ -50,7 +84,13 @@ const SegmentRowEdit = ({ segment, onSave, controller, skin, event, setSegment, 
         </>
       )}
     />
-  )
+  );
 };
+
+SegmentRowEdit.defaultProps = {
+  skin: null,
+};
+
+SegmentRowEdit.propTypes = propTypes;
 
 export default SegmentRowEdit;

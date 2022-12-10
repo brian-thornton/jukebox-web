@@ -16,6 +16,7 @@ import { stop as radioStop } from '../../lib/radio-client';
 const ControlButtons = ({ mediaType, setMediaType }) => {
   const settings = useContext(SettingsContext);
   const { preferences } = settings;
+  const { features } = settings;
   const { vlcHost, vlcPort, vlcPassword } = preferences;
   const { controlButtonSize } = settings.styles;
   const isScreenSmall = window.innerWidth < 700;
@@ -29,7 +30,7 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
   }
 
   if (!isScreenSmall && controlButtonSize === 'medium') {
-    height = '70'
+    height = '70';
     fontSize = '30px';
   }
 
@@ -41,13 +42,53 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
 
   return (
     <>
-      {settings.features.play && <Button height={height} width={height} disabled={settings.features.isLocked || mediaType !== 'file'} onClick={next} content={<Play style={{ fontSize }} className="volume-icon" />} />}
-      {settings.features.next && <Button height={height} width={height} disabled={settings.features.isLocked || mediaType !== 'file'} onClick={next} content={<ChevronDoubleRight style={{ fontSize }} className="volume-icon" />} />}
-      {settings.features.stop && <Button height={height} width={height} disabled={settings.features.isLocked} onClick={stopAll} content={<StopFill style={{ fontSize }} className="volume-icon" />} />}
-      {settings.features.volume && <Button height={height} width={height} disabled={settings.features.isLocked} onClick={up} content={<VolumeUp style={{ fontSize }} className="volume-icon" />} />}
-      {settings.features.volume && <Button height={height} width={height} disabled={settings.features.isLocked} onClick={down} content={<VolumeDown style={{ fontSize }} className="volume-icon" />} />}
+      {features.play && (
+        <Button
+          height={height}
+          width={height}
+          disabled={features.isLocked || mediaType !== 'file'}
+          onClick={next}
+          content={<Play style={{ fontSize }} className="volume-icon" />}
+        />
+      )}
+      {features.next && (
+        <Button
+          height={height}
+          width={height}
+          disabled={features.isLocked || mediaType !== 'file'}
+          onClick={next}
+          content={<ChevronDoubleRight style={{ fontSize }} className="volume-icon" />}
+        />
+      )}
+      {features.stop && (
+        <Button
+          height={height}
+          width={height}
+          disabled={features.isLocked}
+          onClick={stopAll}
+          content={<StopFill style={{ fontSize }} className="volume-icon" />}
+        />
+      )}
+      {features.volume && (
+        <Button
+          height={height}
+          width={height}
+          disabled={features.isLocked}
+          onClick={up}
+          content={<VolumeUp style={{ fontSize }} className="volume-icon" />}
+        />
+      )}
+      {features.volume && (
+        <Button
+          height={height}
+          width={height}
+          disabled={features.isLocked}
+          onClick={down}
+          content={<VolumeDown style={{ fontSize }} className="volume-icon" />}
+        />
+      )}
     </>
-  )
-}
+  );
+};
 
 export default ControlButtons;

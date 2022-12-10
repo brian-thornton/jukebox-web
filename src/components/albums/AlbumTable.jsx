@@ -1,15 +1,14 @@
-import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 
-import { Album as albumShape } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Album.scss';
+import { Albums } from '../shapes';
 
 const propTypes = {
-  album: albumShape.isRequired,
-  coverArtOnly: PropTypes.bool,
+  albums: Albums.isRequired,
 };
 
 const AlbumTable = ({ albums }) => {
@@ -26,25 +25,27 @@ const AlbumTable = ({ albums }) => {
 
   const table = () => {
     let counter = 0;
-    let tableRows = [];
+    const tableRows = [];
     let rowAlbums = [];
 
-    const albumTableData = (album) => {
-      return (
-        <td
-          onMouseEnter={() => setHoverAlbum(album)}
-          onMouseLeave={() => setHoverAlbum(null)}
-          style={{ background: hoverAlbum === album ? settings.styles.activeButtonColor : '' }}
-          onClick={() => {
-            navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
-          }}>
+    const goToAlbum = (album) => {
+      navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
+    };
+
+    const albumTableData = album => (
+      <td
+        onMouseEnter={() => setHoverAlbum(album)}
+        onMouseLeave={() => setHoverAlbum(null)}
+        style={{ background: hoverAlbum === album ? settings.styles.activeButtonColor : '' }}
+      >
+        <Button variant="link" onClick={() => goToAlbum(album)}>
           {album.name}
-        </td>
-      );
-    }
+        </Button>
+      </td>
+    );
 
     if (columnCount === 1 || albums.length <= columnVolume) {
-      albums.map((a) => tableRows.push((
+      albums.map(a => tableRows.push((
         <tr>
           {albumTableData(a)}
         </tr>
@@ -56,31 +57,23 @@ const AlbumTable = ({ albums }) => {
         if (counter < columnCount - 1) {
           counter += 1;
         } else {
-          tableRows.push(<tr>
-            {rowAlbums}
-          </tr>);
+          tableRows.push(<tr>{rowAlbums}</tr>);
           counter = 0;
           rowAlbums = [];
         }
       }
     }
-    tableRows.push(<tr>
-      {rowAlbums}
-    </tr>);
+    tableRows.push(<tr>{rowAlbums}</tr>);
     return tableRows;
   };
 
   return (
-    <Table size="sm" striped bordered variant='dark' style={{ marginBottom: '0', marginLeft: '20px', width: '98%'}}>
+    <Table size="sm" striped bordered variant="dark" style={{ marginBottom: '0', marginLeft: '20px', width: '98%' }}>
       <tbody>
         {table()}
       </tbody>
     </Table>
   );
-}
-
-AlbumTable.defaultProps = {
-  coverArtOnly: false,
 };
 
 AlbumTable.propTypes = propTypes;

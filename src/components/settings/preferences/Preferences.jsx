@@ -4,7 +4,6 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import PreferenceRadioRow from './PreferenceRadioRow';
 import PreferenceTextRow from './PreferenceTextRow';
@@ -15,16 +14,16 @@ const Preferences = () => {
   const { preferences } = settings;
 
   const startsWithFilterOptions = [
-    {display: 'None', value: 'none'},
-    {display: 'Left', value: 'left'},
-    {display: 'Right', value: 'right'},
+    { display: 'None', value: 'none' },
+    { display: 'Left', value: 'left' },
+    { display: 'Right', value: 'right' },
   ];
 
   const albumCoverSize = [
-    {display: 'Small', value: 'small'},
-    {display: 'Medium', value: 'medium'},
-    {display: 'Large', value: 'large'},
-  ]
+    { display: 'Small', value: 'small' },
+    { display: 'Medium', value: 'medium' },
+    { display: 'Large', value: 'large' },
+  ];
 
   return (
     <Container fluid>

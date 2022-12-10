@@ -10,11 +10,13 @@ import DownloadCoverArtPicker from './DownloadCoverArtPreference';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './LibraryAdd.scss';
+import { Library } from '../../shapes';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleHide: PropTypes.func.isRequired,
+  setShow: PropTypes.func,
+  setSelectedLibrary: PropTypes.func,
   handleSave: PropTypes.func.isRequired,
+  library: Library,
 };
 
 const LibraryAdd = ({
@@ -48,21 +50,33 @@ const LibraryAdd = ({
             <NameInput placeholder={library?.path} />
           </Row>
           <Row>
-            <CategoryPicker onSelectCategory={(category) => setSelectedCategory(category)} category={selectedCategory} />
+            <CategoryPicker
+              onSelectCategory={category => setSelectedCategory(category)}
+              category={selectedCategory}
+            />
           </Row>
           <Row>
             <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
           </Row>
         </Container>
-        <Button content="Cancel" onClick={() => {
-          setShow(false);
-          setSelectedLibrary(null);
-        }} />
+        <Button
+          content="Cancel"
+          onClick={() => {
+            setShow(false);
+            setSelectedLibrary(null);
+          }}
+        />
         <Button content="Save" disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
       </Card.Body>
     </Card>
   );
-}
+};
+
+LibraryAdd.defaultProps = {
+  setShow: null,
+  setSelectedLibrary: null,
+  library: null,
+};
 
 LibraryAdd.propTypes = propTypes;
 

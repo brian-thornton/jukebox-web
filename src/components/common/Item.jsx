@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import CheckToggle from '../common/CheckToggle';
+import CheckToggle from './CheckToggle';
 import ExpandRow from './ExpandRow';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Item.scss';
@@ -12,16 +12,30 @@ const propTypes = {
   buttons: PropTypes.node,
   onClick: PropTypes.func,
   text: PropTypes.string,
+  includeCheckbox: PropTypes.bool,
+  onCheck: PropTypes.func,
+  checked: PropTypes.bool,
+  actionVisible: PropTypes.bool,
+  font: PropTypes.string,
 };
 
-const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked, actionVisible }) => {
+const Item = ({
+  buttons,
+  onClick,
+  text,
+  includeCheckbox,
+  onCheck,
+  checked,
+  actionVisible,
+  font,
+}) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
   const itemStyle = {
     color: settings.styles.fontColor,
     background: settings.styles.trackBackgroundColor,
-    fontFamily: settings.styles.listFont,
+    fontFamily: font || settings.styles.listFont,
   };
 
   if (isScreenSmall) {
@@ -32,7 +46,7 @@ const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked, actio
     <ListGroupItem className="itemStyle" style={itemStyle} onClick={onClick}>
       <Container fluid>
         <Row>
-          <Col lg={actionVisible ? "6" : "8"} xl={actionVisible ? "6" : "8"} md="6">
+          <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">
             <div className="itemText">
               {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
               {text}
@@ -47,12 +61,17 @@ const Item = ({ buttons, onClick, text, includeCheckbox, onCheck, checked, actio
       </Container>
     </ListGroupItem>
   );
-}
+};
 
 Item.defaultProps = {
   buttons: null,
   onClick: null,
   text: '',
+  includeCheckbox: false,
+  onCheck: null,
+  checked: false,
+  actionVisible: false,
+  font: '',
 };
 
 

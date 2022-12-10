@@ -5,7 +5,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
 
-import { Album } from '../shapes';
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
 import AlbumCover from './AlbumCover';
@@ -19,7 +18,6 @@ import RestrictionModes from '../settings/content/RestrictionModes';
 import { topMargin } from '../../lib/styleHelper';
 
 const propTypes = {
-  album: Album.isRequired,
   clearCurrentAlbum: PropTypes.func.isRequired,
 };
 
@@ -54,7 +52,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     if (!isCustomSearchOpen && reload) {
       window.location.reload();
     }
-  }, [isCustomSearchOpen])
+  }, [isCustomSearchOpen]);
 
   const albumButtons = (
     <Container className="buttonContainer">
@@ -83,7 +81,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     if (album) {
       return (
         <>
-          <Row className="coverRow" style={{ marginTop: isScreenSmall ? '40px' : topMargin(settings)}}>
+          <Row className="coverRow" style={{ marginTop: isScreenSmall ? '40px' : topMargin(settings) }}>
             <Col lg={3} xl={3}>
               <Container className="albumContainer">
                 <>
@@ -98,13 +96,15 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               </Container>
             </Col>
             <Col lg={9} xl={9}>
-              {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && <AlbumTracks tracks={tracks} />}
+              {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
+                <AlbumTracks tracks={tracks} />
+              )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
                 <Confirm
                   text="Are you sure that you want to remove the cover?"
                   onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
                   onConfirm={() => {
-                    removeCoverArt(album)
+                    removeCoverArt(album);
                     setIsConfirmRemoveCoverArtOpen(false);
                     window.location.reload();
                   }}
@@ -122,6 +122,8 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
         </>
       );
     }
+
+    return <></>;
   };
 
 
@@ -132,12 +134,16 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
 
   if (confirmRestriction) {
     return (
-      <RestrictionModes addMode={true} addComplete={() => setConfirmRestriction(false)} album={album} />
+      <RestrictionModes
+        addMode
+        addComplete={() => setConfirmRestriction(false)}
+        album={album}
+      />
     );
   }
 
   return largeAlbum();
-}
+};
 
 AlbumDetail.propTypes = propTypes;
 

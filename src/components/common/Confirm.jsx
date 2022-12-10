@@ -1,9 +1,16 @@
 import Card from 'react-bootstrap/Card';
 import React, { useContext } from 'react';
+import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Confirm.scss';
+
+const propTypes = {
+  onConfirm: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
 const Confirm = ({ onConfirm, onCancel, text }) => {
   const settings = useContext(SettingsContext);
@@ -45,5 +52,7 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
     </Card>
   );
 };
+
+Confirm.propTypes = propTypes;
 
 export default Confirm;

@@ -1,4 +1,5 @@
 import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
+import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
 import PlayNowButton from '../PlayNowButton';
@@ -8,27 +9,40 @@ import {
 } from '../../lib/playlist-client';
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
+import { Track } from '../shapes';
 
-const PlaylistButtons = ({ name, track, index, reloadTracks }) => {
+const propTypes = {
+  name: PropTypes.string.isRequired,
+  track: Track,
+  index: PropTypes.number.isRequired,
+  reloadTracks: PropTypes.func.isRequired,
+};
+
+const PlaylistButtons = ({
+  name,
+  track,
+  index,
+  reloadTracks,
+}) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
 
-  const deleteTrack = (trackName, track) => {
-    removeTracksFromPlaylist(trackName, [track]);
+  const deleteTrack = (trackName, trackToDelete) => {
+    removeTracksFromPlaylist(trackName, [trackToDelete]);
     reloadTracks(name);
   };
 
-  const onMoveTrackUp = (trackToMove, index) => {
+  const onMoveTrackUp = (trackToMove, trackIndex) => {
     removeTracksFromPlaylist(name, [trackToMove]);
-    addTrackAtPosition(name, trackToMove, index - 1);
+    addTrackAtPosition(name, trackToMove, trackIndex - 1);
     reloadTracks(name);
   };
 
-  const onMoveTrackDown = (trackToMove, index) => {
+  const onMoveTrackDown = (trackToMove, trackIndex) => {
     removeTracksFromPlaylist(name, [trackToMove]).then(() => {
-      addTrackAtPosition(name, trackToMove, index + 1);
+      addTrackAtPosition(name, trackToMove, trackIndex + 1);
       reloadTracks(name);
     });
   };
@@ -36,11 +50,32 @@ const PlaylistButtons = ({ name, track, index, reloadTracks }) => {
   return (
     <>
       <PlayNowButton track={track} />
-      <Button height={buttonHeight} width={buttonWidth} onClick={() => deleteTrack(name, track)} icon={<TrashFill />} />
-      <Button height={buttonHeight} width={buttonWidth} icon={<CaretUpFill />} onClick={() => onMoveTrackUp(track, index)} />
-      <Button height={buttonHeight} width={buttonWidth} icon={<CaretDownFill />} onClick={() => onMoveTrackDown(track, index)} />
+      <Button
+        height={buttonHeight}
+        width={buttonWidth}
+        onClick={() => deleteTrack(name, track)}
+        icon={<TrashFill />}
+      />
+      <Button
+        height={buttonHeight}
+        width={buttonWidth}
+        icon={<CaretUpFill />}
+        onClick={() => onMoveTrackUp(track, index)}
+      />
+      <Button
+        height={buttonHeight}
+        width={buttonWidth}
+        icon={<CaretDownFill />}
+        onClick={() => onMoveTrackDown(track, index)}
+      />
     </>
-  )
+  );
 };
+
+PlaylistButtons.defaultProps = {
+  track: null,
+};
+
+PlaylistButtons.propTypes = propTypes;
 
 export default PlaylistButtons;

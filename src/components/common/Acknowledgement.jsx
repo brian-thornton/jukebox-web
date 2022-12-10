@@ -1,9 +1,16 @@
 import Card from 'react-bootstrap/Card';
-import React, { useContext }  from 'react';
+import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Confirm.scss';
+
+const propTypes = {
+  onGoToTargetClick: PropTypes.func.isRequired,
+  onStayOnPageClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
+};
 
 const Acknowledgement = ({ onGoToTargetClick, onStayOnPageClick, text }) => {
   const settings = useContext(SettingsContext);
@@ -34,7 +41,9 @@ const Acknowledgement = ({ onGoToTargetClick, onStayOnPageClick, text }) => {
         </div>
       </Card.Body>
     </Card>
-  )
+  );
 };
+
+Acknowledgement.propTypes = propTypes;
 
 export default Acknowledgement;

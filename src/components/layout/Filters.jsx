@@ -13,10 +13,11 @@ import Paginator from '../common/Paginator';
 import Button from '../Button';
 import './Filters.scss';
 import { handlers } from '../../lib/gesture-helper';
+import { Libraries } from '../shapes';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  selectedLibraries: Libraries.isRequired,
+  setSelectedLibraries: PropTypes.func.isRequired,
 };
 
 const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
@@ -57,27 +58,30 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
         <Container {...swipe} fluid className="filter-container">
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Row className="filterRow">{libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
-                const checked = selectedLibraries.find((lib) => lib.path === library.path);
-                
-                return (
-                  <Item
-                    checked={checked}
-                    includeCheckbox
-                    onCheck={() => {
-                      setFilters(checked ? filters.filter(f => f.path !== library.path) : oldArray => [...oldArray, library]);
-                    }}
-                    text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
-                  />
-                )
-              })}</Row>
+              <Row className="filterRow">
+                {libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
+                  const checked = selectedLibraries.find(lib => lib.path === library.path);
+
+                  return (
+                    <Item
+                      checked={checked}
+                      includeCheckbox
+                      onCheck={() => {
+                        setFilters(checked ? filters.filter(f => f.path !== library.path)
+                          : oldArray => [...oldArray, library]);
+                      }}
+                      text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
+                    />
+                  );
+                })}
+              </Row>
             </Col>
           </Row>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Paginator
                 disableRandom
-                onPageChange={(page) => setSelectedPage(page)}
+                onPageChange={page => setSelectedPage(page)}
                 selectedPage={selectedPage}
                 totalItems={libraries.length}
                 pageSize={realPageSize}
@@ -106,7 +110,7 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
       )}
     </>
   );
-}
+};
 
 Filters.propTypes = propTypes;
 

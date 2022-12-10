@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import {
   Trash,
@@ -9,13 +10,18 @@ import Button from '../../Button';
 import Item from '../../common/Item';
 import { updateSettings } from '../../../lib/settings-client';
 
+const propTypes = {
+  category: PropTypes.string.isRequired,
+};
+
+
 const CategoryRow = ({ category }) => {
   const settings = useContext(SettingsContext);
   const [deleteConfirmCategory, setDeleteConfirmCategory] = useState();
 
-  const removeCategory = async (category) => {
+  const removeCategory = async (categoryToRemove) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.categories = deepClone.categories.filter((c) => c !== category);
+    deepClone.categories = deepClone.categories.filter(c => c !== categoryToRemove);
     await updateSettings(deepClone);
     window.location.reload();
   };
@@ -44,7 +50,9 @@ const CategoryRow = ({ category }) => {
         </>
       )}
     />
-  )
-}
+  );
+};
+
+CategoryRow.propTypes = propTypes;
 
 export default CategoryRow;

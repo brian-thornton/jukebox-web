@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { Container, Row } from 'react-bootstrap';
-import ListGroup from 'react-bootstrap/ListGroup';
-
-import Button from "../Button";
-import Paginator from '../common/Paginator';
-import { useSwipeable } from 'react-swipeable';
-import { handlers } from '../../lib/gesture-helper';
+import Button from '../Button';
 import { pageSize } from '../../lib/styleHelper';
-import Item from "../common/Item";
+import Item from '../common/Item';
+import { applyPreset, getPresets } from '../../lib/lighting-client';
+import PaginatedList from '../common/PaginatedList';
+import { Controller } from '../shapes';
 
-import { applyPreset, getPresets } from "../../lib/lighting-client";
+const propTypes = {
+  controller: Controller.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 const Presets = ({ controller, onClose }) => {
   const [presets, setPresets] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   const loadPresets = () => {
     setRealPageSize(pageSize('item', 300));
     getPresets(controller.ip).then((data) => {
-      setPresets(Object.keys(data).map((key) => data[key]).filter((p) => p.n));
+      setPresets(Object.keys(data).map(key => data[key]).filter(p => p.n));
     });
   };
 
@@ -29,42 +29,35 @@ const Presets = ({ controller, onClose }) => {
 
   useEffect(loadPresets, []);
 
+  const items = () => presets.slice(realStart, (realStart + realPageSize)).map(preset => (
+    <Item
+      text={preset.n}
+      buttons={(
+        <>
+          <Button
+            onClick={() => applyPreset(controller.ip, preset.n)}
+            content="Enable"
+          />
+        </>
+      )}
+    />
+  ));
+
   return (
     <>
-      <Button content="Back to Controllers" onClick={onClose} />
       {presets?.length > 0 && (
-        <Container fluid>
-          <Row>
-            <ListGroup {...swipe} style={{ width: '100%' }}>
-              {presets.slice(realStart, (realStart + realPageSize)).map((preset) => (
-                <Item
-                  text={preset.n}
-                  buttons={(
-                    <>
-                      <Button
-                        onClick={() => applyPreset(controller.ip, preset.n)}
-                        content="Enable"
-                      />
-                    </>
-                  )}
-                />
-              )
-              )}
-            </ListGroup>
-          </Row>
-          <Row>
-            <Paginator
-              disableRandom
-              onPageChange={(page) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={presets.length}
-              pageSize={realPageSize}
-            />
-          </Row>
-        </Container>
+        <PaginatedList
+          topLevelControls={<Button content="Back to Controllers" onClick={onClose} />}
+          items={items()}
+          selectedPage={selectedPage}
+          setSelectedPage={setSelectedPage}
+          pageSize={realPageSize}
+        />
       )}
     </>
-  )
+  );
 };
+
+Presets.propTypes = propTypes;
 
 export default Presets;

@@ -13,16 +13,16 @@ export const add = (library) => post(`${path}/add`, library);
 export const saveCoverArt = (cover) => post(`${path}/saveCoverArt`, cover);
 export const removeCoverArt = (album) => post(`${path}/removeCoverArt`, album);
 
-export const getAlbums = (start, limit, category, selectedLibraries) => {
+export const getAlbums = (start, limit, category, selectedLibraries, restriction) => {
   if (category) {
-    return getData(`${path}/albums?${page(start, limit)}&category=${category}`);
+    return getData(`${path}/albums?${page(start, limit)}&category=${category}&restriction=${restriction}`);
   };
 
   if (selectedLibraries?.length) {
     return getData(`${path}/albums?${page(start, limit)}&filters=${selectedLibraries.map((lib) => lib.path)}`);
   }
 
-  return getData(`${path}/albums?${page(start, limit)}`);
+  return getData(`${path}/albums?${page(start, limit)}&restriction=${restriction}`);
 };
 
 export const getTrackAlbum = async (track) => {

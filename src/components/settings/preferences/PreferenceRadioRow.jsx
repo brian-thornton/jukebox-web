@@ -4,27 +4,27 @@ import Form from 'react-bootstrap/Form';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { updateSettings } from '../../../lib/settings-client';
 import './PreferenceTextRow.scss';
+import { updatePreference } from '../../../lib/preferenceHelper';
+import { Options } from '../../shapes';
+
+const propTypes = {
+  rowName: PropTypes.string.isRequired,
+  preferenceName: PropTypes.string.isRequired,
+  options: Options.isRequired,
+};
 
 const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
   const settings = useContext(SettingsContext);
   const [radioValue, setRadioValue] = useState(options[0]?.value || '');
 
   const rowLabel = (value) => {
-    const result = value.replace(/([A-Z])/g, " $1");
+    const result = value.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
-  }
-
-  const updatePreference = (preferenceName, value) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.preferences[preferenceName] = value;
-    updateSettings(deepClone).then(() => {
-      window.location.replace('/settings?mode=preferences');
-    });
   };
 
   const itemStyle = {
@@ -45,7 +45,7 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
           <Col lg="8">
             <Form>
               <div key={radioValue} className="mb-3">
-                {options.map((option) => (
+                {options.map(option => (
                   <Form.Check
                     inline
                     label={option.display}
@@ -54,7 +54,7 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
                     checked={settings.preferences[preferenceName] === option.value}
                     onChange={() => {
                       setRadioValue(option.value);
-                      updatePreference(preferenceName, option.value);
+                      updatePreference(settings, preferenceName, option.value, '/settings?mode=preferences');
                     }}
                   />
                 ))}
@@ -66,5 +66,7 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
     </ListGroupItem>
   );
 };
+
+PreferenceRadioRow.propTypes = propTypes;
 
 export default PreferenceRadioRow;

@@ -1,11 +1,11 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useContext, useEffect, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 
 import Paginator from '../../common/Paginator';
 import CategoryRow from './CategoryRow';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { pageSize } from '../../../lib/styleHelper';
-import { useSwipeable } from 'react-swipeable';
 import { handlers } from '../../../lib/gesture-helper';
 
 const Categories = () => {
@@ -19,19 +19,19 @@ const Categories = () => {
   return (
     <>
       <ListGroup {...swipe}>
-        {settings.categories.slice(start, (start + itemsPerPage)).map((category) => (
+        {settings.categories.slice(start, (start + itemsPerPage)).map(category => (
           <CategoryRow category={category} />
         ))}
       </ListGroup>
       <Paginator
         disableRandom
-        onPageChange={(page) => setSelectedPage(page)}
+        onPageChange={page => setSelectedPage(page)}
         selectedPage={selectedPage}
         totalItems={settings.categories.length}
         pageSize={itemsPerPage}
       />
     </>
   );
-}
+};
 
 export default Categories;

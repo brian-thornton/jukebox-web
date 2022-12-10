@@ -8,6 +8,7 @@ const propTypes = {
   debouncedSearch: PropTypes.func.isRequired,
   tempSearch: PropTypes.string.isRequired,
   setTempSearch: PropTypes.func.isRequired,
+  setIsSearchOpen: PropTypes.func.isRequired,
 };
 
 const WithKeyboardInput = ({
@@ -18,15 +19,13 @@ const WithKeyboardInput = ({
   setIsSearchOpen,
 }) => {
   function handlePaste(e) {
-    var clipboardData, pastedData;
-
     // Stop data actually being pasted into div
     e.stopPropagation();
     e.preventDefault();
 
     // Get pasted data via clipboard API
-    clipboardData = e.clipboardData || window.clipboardData;
-    pastedData = clipboardData.getData('Text');
+    const clipboardData = e.clipboardData || window.clipboardData;
+    const pastedData = clipboardData.getData('Text');
 
     // Do whatever with pasteddata
     debouncedSearch(pastedData);
@@ -49,8 +48,7 @@ const WithKeyboardInput = ({
           } else if (key === 'cmd+f') {
             setIsSearchOpen(true);
             e.preventDefault();
-          }
-          else {
+          } else {
             newSearch = `${tempSearch}${key}`;
             setTempSearch(`${tempSearch}${key}`);
           }
@@ -61,7 +59,7 @@ const WithKeyboardInput = ({
       {component}
     </>
   );
-}
+};
 
 WithKeyboardInput.propTypes = propTypes;
 

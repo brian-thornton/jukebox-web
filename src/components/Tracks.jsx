@@ -25,7 +25,6 @@ const propTypes = {
 const Tracks = ({ search, setCurrentAlbum }) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
-  const [addTracks, setAddTracks] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
   const [totalTracks, setTotalTracks] = useState();
@@ -85,7 +84,6 @@ const Tracks = ({ search, setCurrentAlbum }) => {
       tracks={tracks}
       showAlbumCovers
       setCurrentAlbum={setCurrentAlbum}
-      setAddTracks={setAddTracks}
     />
   );
 
@@ -101,7 +99,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
               <Paginator
-                onPageChange={(page) => setSelectedPage(page)}
+                onPageChange={page => setSelectedPage(page)}
                 selectedPage={selectedPage}
                 totalItems={totalTracks}
                 pageSize={realPageSize}
@@ -111,6 +109,8 @@ const Tracks = ({ search, setCurrentAlbum }) => {
         </Container>
       );
     }
+
+    return <></>;
   };
 
   const noResults = search && !tracks.length;
@@ -131,7 +131,7 @@ const Tracks = ({ search, setCurrentAlbum }) => {
       )}
     </>
   );
-}
+};
 
 Tracks.propTypes = propTypes;
 Tracks.defaultProps = {

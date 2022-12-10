@@ -2,15 +2,20 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import NameInput from '../../common/NameInput';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
+import { Skin } from '../../shapes';
 
 import './SkinPreferences.scss';
+
+const propTypes = {
+  skin: Skin.isRequired,
+};
 
 const SkinPreferences = ({ skin }) => {
   const [navButtonType, setNavButtonType] = useState(skin.navButtonType || 'buttons');
@@ -18,14 +23,20 @@ const SkinPreferences = ({ skin }) => {
   const [controlButtonSize, setControlButtonSize] = useState(skin.controlButtonSize || 'small');
   const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
-  
+
   const saveSkin = (newName = skin.name) => {
     deleteSkin(skin.name).then(() => {
       const { name, ...colors } = skin;
 
       const updatedSkin = {
         name: newName,
-        skin: { ...colors, name: newName, navButtonType, navButtonSize, controlButtonSize },
+        skin: {
+          ...colors,
+          name: newName,
+          navButtonType,
+          navButtonSize,
+          controlButtonSize,
+        },
       };
 
       createSkin(updatedSkin).then(() => { });
@@ -64,7 +75,7 @@ const SkinPreferences = ({ skin }) => {
                     id="links"
                     value="links"
                     checked={navButtonType === 'links'}
-                    onChange={() => setNavButtonType("links")}
+                    onChange={() => setNavButtonType('links')}
                   />
                   <Form.Check
                     inline
@@ -75,7 +86,7 @@ const SkinPreferences = ({ skin }) => {
                     id="buttons"
                     value="buttons"
                     checked={navButtonType === 'buttons'}
-                    onChange={() => setNavButtonType("buttons")}
+                    onChange={() => setNavButtonType('buttons')}
                   />
                 </div>
               </Form.Group>
@@ -94,7 +105,7 @@ const SkinPreferences = ({ skin }) => {
                     id="smallNavButtons"
                     value="small"
                     checked={navButtonSize === 'small'}
-                    onChange={() => setNavButtonSize("small")}
+                    onChange={() => setNavButtonSize('small')}
                   />
                   <Form.Check
                     inline
@@ -105,7 +116,7 @@ const SkinPreferences = ({ skin }) => {
                     id="mediumNavButtons"
                     value="medium"
                     checked={navButtonSize === 'medium'}
-                    onChange={() => setNavButtonSize("medium")}
+                    onChange={() => setNavButtonSize('medium')}
                   />
                   <Form.Check
                     inline
@@ -116,7 +127,7 @@ const SkinPreferences = ({ skin }) => {
                     id="largeNavButtons"
                     value="large"
                     checked={navButtonSize === 'large'}
-                    onChange={() => setNavButtonSize("large")}
+                    onChange={() => setNavButtonSize('large')}
                   />
                 </div>
               </Form.Group>
@@ -135,7 +146,7 @@ const SkinPreferences = ({ skin }) => {
                     id="smallControlButtons"
                     value="small"
                     checked={controlButtonSize === 'small'}
-                    onChange={() => setControlButtonSize("small")}
+                    onChange={() => setControlButtonSize('small')}
                   />
                   <Form.Check
                     inline
@@ -146,7 +157,7 @@ const SkinPreferences = ({ skin }) => {
                     id="mediumControlButtons"
                     value="medium"
                     checked={controlButtonSize === 'medium'}
-                    onChange={() => setControlButtonSize("medium")}
+                    onChange={() => setControlButtonSize('medium')}
                   />
                   <Form.Check
                     inline
@@ -157,7 +168,7 @@ const SkinPreferences = ({ skin }) => {
                     id="largeControlButtons"
                     value="large"
                     checked={controlButtonSize === 'large'}
-                    onChange={() => setControlButtonSize("large")}
+                    onChange={() => setControlButtonSize('large')}
                   />
                 </div>
               </Form.Group>
@@ -168,5 +179,7 @@ const SkinPreferences = ({ skin }) => {
     </Card>
   );
 };
+
+SkinPreferences.propTypes = propTypes;
 
 export default SkinPreferences;

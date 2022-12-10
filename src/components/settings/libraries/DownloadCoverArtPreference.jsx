@@ -7,41 +7,35 @@ import Row from 'react-bootstrap/Row';
 import './LibraryAdd.scss';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleHide: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };
 
-const DownloadCoverArtPicker = ({
-  onSelect,
-}) => {
-  return (
-    <Container fluid>
-      <Row>
-        <Form>
-          <div className="mb-3">
-            <Form.Check
-              inline
-              label="Do NOT automatically download cover art"
-              name="group1"
-              type="radio"
-              id="no"
-              onChange={() => onSelect(false)}
-            />
-            <Form.Check
-              inline
-              label="Automatically download cover art"
-              name="group1"
-              type="radio"
-              id="yes"
-              onChange={() => onSelect(true)}
-            />
-          </div>
-        </Form>
-      </Row>
-    </Container>
-  );
-}
+const DownloadCoverArtPicker = ({ onSelect }) => (
+  <Container fluid>
+    <Row>
+      <Form>
+        <div className="mb-3">
+          <Form.Check
+            inline
+            label="Do NOT automatically download cover art"
+            name="group1"
+            type="radio"
+            id="no"
+            onChange={() => onSelect(false)}
+          />
+          <Form.Check
+            inline
+            label="Automatically download cover art"
+            name="group1"
+            type="radio"
+            id="yes"
+            onChange={() => onSelect(true)}
+          />
+        </div>
+      </Form>
+    </Row>
+  </Container>
+);
 
 DownloadCoverArtPicker.propTypes = propTypes;
 

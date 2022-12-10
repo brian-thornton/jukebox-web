@@ -38,9 +38,7 @@ const Libraries = () => {
     let totalAlbums = 0;
 
     const categoryAlbums = {};
-    settings.categories.map((c) => {
-      categoryAlbums[c] = 0;
-    });
+    settings.categories.map(c => categoryAlbums[c] = 0);
 
     if (data) {
       data.forEach((lib) => {
@@ -52,7 +50,12 @@ const Libraries = () => {
         }
       });
       getStatus().then((response) => {
-        updateStatus({ ...response, totalTracks, totalAlbums, categoryAlbums });
+        updateStatus({
+          ...response,
+          totalTracks,
+          totalAlbums,
+          categoryAlbums,
+        });
       });
     }
   };
@@ -80,7 +83,6 @@ const Libraries = () => {
   };
 
   const handleCloseDiscover = (path, category, downloadCoverArt) => {
-    console.log(path)
     if (path) {
       discover(path).then((libs) => {
         libs.forEach((lib) => {
@@ -115,7 +117,7 @@ const Libraries = () => {
     setIsScanning(false);
     setCurrentScan(null);
     loadLibraries();
-  }
+  };
 
   const onDeleteAll = async () => {
     setIsScanning(true);
@@ -126,7 +128,7 @@ const Libraries = () => {
     setIsScanning(false);
     setCurrentScan(null);
     loadLibraries();
-  }
+  };
 
   const noResultsButtons = (
     <>
@@ -135,10 +137,12 @@ const Libraries = () => {
     </>
   );
 
+  const noPrompts = !showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen;
+
   return (
     <>
-      {!showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen && isLoading && <Loading />}
-      {!showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen && !isLoading && !libraries.length && (
+      {noPrompts && isLoading && <Loading />}
+      {noPrompts && !isLoading && !libraries.length && (
         <NoResults
           className="fullWidth"
           title="No Libraries"
@@ -146,7 +150,7 @@ const Libraries = () => {
           controls={noResultsButtons}
         />
       )}
-      {!showDiscover && !(show || selectedLibrary) && !isCategoryConfigOpen && !isLoading && libraries.length && (
+      {noPrompts && !isLoading && libraries.length && (
         <>
           <LibraryInfoAndGlobalControls
             onScanAll={onScanAll}
@@ -184,6 +188,6 @@ const Libraries = () => {
       {isCategoryConfigOpen && <Categories />}
     </>
   );
-}
+};
 
 export default Libraries;

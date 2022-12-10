@@ -1,7 +1,7 @@
 import { PlusSquare } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SettingsContext } from '../../components/layout/SettingsProvider';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 import Button from '../Button';
 import { Track } from '../shapes';
@@ -31,13 +31,13 @@ const AddToPlaylistButton = ({ track }) => {
         width={heightAndWidth}
         height={heightAndWidth}
         onClick={() => {
-          navigate('/playlists', { state: { tracks: [track] } })
+          navigate('/playlists', { state: { tracks: [track] } });
         }}
         icon={<PlusSquare />}
       />
     </>
   );
-}
+};
 
 AddToPlaylistButton.propTypes = propTypes;
 

@@ -7,16 +7,14 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 import AddNew from '../../common/AddNew';
-import ControlButton from '../../common/ControlButton';
 import Confirm from '../../common/Confirm';
-import { createSkin } from '../../../lib/style-client';
+import { createSkin, deleteSkin } from '../../../lib/style-client';
 import SkinColors from './SkinColors';
 import SkinFonts from './SkinFonts';
 import SkinGraphics from './SkinGraphics';
 import SkinLights from './SkinLights';
 import './SkinDetail.scss';
 import SkinPreferences from './SkinPreferences';
-import { deleteSkin } from '../../../lib/style-client';
 import Button from '../../Button';
 
 const SkinDetail = ({
@@ -40,12 +38,10 @@ const SkinDetail = ({
   const controls = (
     <Container fluid>
       <Row>
-      <Button onClick={goBackToThemeList} content="Back to Skins"/>
-      <Button onClick={() => {
-        goBackToThemeList(true);
-      }} content="Save and Apply" />
-      <Button onClick={() => setIsSaveAsModalOpen(true)} content="Save As" />
-      <Button onClick={() => setIsDeleteConfirmOpen(true)} content="Delete" disabled={!skin.isEditable}  />
+        <Button onClick={goBackToThemeList} content="Back to Skins" />
+        <Button onClick={() => goBackToThemeList(true)} content="Save and Apply" />
+        <Button onClick={() => setIsSaveAsModalOpen(true)} content="Save As" />
+        <Button onClick={() => setIsDeleteConfirmOpen(true)} content="Delete" disabled={!skin.isEditable} />
       </Row>
     </Container>
   );
@@ -63,7 +59,7 @@ const SkinDetail = ({
       skin: {
         name: data.name,
         isEditable: true,
-        ...colors
+        ...colors,
       },
     }).then(() => setIsSaveAsModalOpen(false));
   };
@@ -83,7 +79,7 @@ const SkinDetail = ({
           defaultValue={`${skin.name} Copy`}
           fields={{ name: 'Name' }}
           onCancel={() => setIsSaveAsModalOpen(false)}
-          onConfirm={(data) => handleSkinSaveAs(data)}
+          onConfirm={data => handleSkinSaveAs(data)}
         />
       )}
       {isDeleteConfirmOpen && (
@@ -95,7 +91,7 @@ const SkinDetail = ({
       )}
       {!isDeleteConfirmOpen && !isSaveAsModalOpen && (
         <Card className="skin-detail-card">
-          <Tabs activeKey={activeKey} onSelect={(k) => setActiveKey(k)}>
+          <Tabs activeKey={activeKey} onSelect={k => setActiveKey(k)}>
             <Tab eventKey="preferences" title="Skin Preferences">
               <SkinPreferences skin={skin} />
             </Tab>
@@ -118,5 +114,6 @@ const SkinDetail = ({
   );
 
   return content();
-}
+};
+
 export default SkinDetail;

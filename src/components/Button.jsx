@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import { Button as ReactButton } from 'react-bootstrap';
 
 import { SettingsContext } from './layout/SettingsProvider';
+import { Style } from './shapes';
 
 const propTypes = {
   onClick: PropTypes.func.isRequired,
@@ -11,8 +12,12 @@ const propTypes = {
   disabled: PropTypes.bool,
   isToggle: PropTypes.bool,
   isToggled: PropTypes.bool,
+  isSelected: PropTypes.bool,
   height: PropTypes.string,
   width: PropTypes.string,
+  id: PropTypes.string,
+  style: Style,
+  hideOnSmall: PropTypes.bool,
 };
 
 const Button = ({
@@ -28,19 +33,25 @@ const Button = ({
   style,
   id,
   hideOnSmall,
-  hideOnLarge,
 }) => {
   const settings = useContext(SettingsContext);
   const [isHover, setIsHover] = useState(false);
+  const {
+    marginTop,
+    marginBottom,
+    buttonBackgroundColor,
+    fontSize,
+    fontFamily,
+  } = style;
 
   const buttonStyle = {
-    marginTop: style?.marginTop,
-    marginBottom: style?.marginBottom,
-    background: style?.buttonBackgroundColor || settings.styles.buttonBackgroundColor,
-    fontSize: style?.fontSize,
+    marginTop,
+    marginBottom,
+    background: buttonBackgroundColor || settings.styles.buttonBackgroundColor,
+    fontSize,
     fontWeight: settings.styles.buttonFontWeight,
     color: settings.styles.buttonFontColor,
-    fontFamily: style?.fontFamily || settings.styles.buttonFont,
+    fontFamily: fontFamily || settings.styles.buttonFont,
     float: 'right',
   };
 
@@ -55,9 +66,9 @@ const Button = ({
     buttonStyle.background = settings.styles.buttonBackgroundColor;
   }
 
-  if (width === "100%") {
-    buttonStyle.minWidth = "100%";
-    buttonStyle.maxWidth = "100%";
+  if (width === '100%') {
+    buttonStyle.minWidth = '100%';
+    buttonStyle.maxWidth = '100%';
     buttonStyle.overflow = 'hidden';
     buttonStyle.whiteSpace = 'nowrap';
     buttonStyle.textOverflow = 'ellipsis';
@@ -85,7 +96,7 @@ const Button = ({
   }
 
   return <ReactButton onMouseLeave={() => setIsHover(false)} onMouseEnter={() => setIsHover(true)} id={id} disabled={disabled} style={buttonStyle} className={`button ${dynamicClasses}`} variant="outline-light" onClick={onClick}>{content || icon}</ReactButton>;
-}
+};
 
 Button.propTypes = propTypes;
 
@@ -95,8 +106,12 @@ Button.defaultProps = {
   disabled: false,
   isToggle: false,
   isToggled: false,
+  isSelected: false,
   height: '',
   width: '',
+  style: {},
+  id: '',
+  hideOnSmall: false,
 };
 
 export default Button;

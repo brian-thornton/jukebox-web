@@ -1,23 +1,29 @@
 import { PropTypes } from 'prop-types';
-import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable'; 
 
-import Paginator from '../../common/Paginator';
 import SkinRow from './SkinRow';
-import { handlers } from '../../../lib/gesture-helper';
 import './SkinList.scss';
+import PaginatedList from '../../common/PaginatedList';
+import { Skins } from '../../shapes';
 
 const propTypes = {
-  resetControls: PropTypes.func.isRequired,
-  setControls: PropTypes.func.isRequired,
+  skins: Skins.isRequired,
+  reloadSkins: PropTypes.func.isRequired,
+  onCopy: PropTypes.func.isRequired,
+  setEditSkin: PropTypes.func.isRequired,
+  setSelectedSkin: PropTypes.func.isRequired,
 };
 
-const SkinList = ({ skins, reloadSkins, onCopy, setEditSkin, setSelectedSkin }) => {
+const SkinList = ({
+  skins,
+  reloadSkins,
+  onCopy,
+  setEditSkin,
+  setSelectedSkin,
+}) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   useEffect(() => {
     const itemHeight = 55;
@@ -41,25 +47,19 @@ const SkinList = ({ skins, reloadSkins, onCopy, setEditSkin, setSelectedSkin }) 
     return <></>;
   };
 
-  if (skins?.length) {
+  if (skins && skins.length > 0) {
     return (
-      <>
-        <ListGroup className="skin-list-group" {...swipe}>
-          {skinRows()}
-        </ListGroup>
-        <Paginator
-          disableRandom
-          onPageChange={(page) => setSelectedPage(page)}
-          selectedPage={selectedPage}
-          totalItems={skins.length}
-          pageSize={realPageSize}
-        />
-      </>
+      <PaginatedList
+        items={skinRows()}
+        selectedPage={selectedPage}
+        setSelectedPage={setSelectedPage}
+        pageSize={realPageSize}
+      />
     );
   }
 
   return <></>;
-}
+};
 
 SkinList.propTypes = propTypes;
 

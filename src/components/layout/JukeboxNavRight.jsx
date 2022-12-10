@@ -1,18 +1,31 @@
 import Nav from 'react-bootstrap/Nav';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
-import { ArrowClockwise, Funnel, FunnelFill, Grid, Grid3x3, LockFill, UnlockFill, Search } from 'react-bootstrap-icons';
+import {
+  ArrowClockwise,
+  Funnel,
+  FunnelFill,
+  Grid,
+  Grid3x3,
+  LockFill,
+  UnlockFill,
+  Search,
+} from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 
 import Button from '../Button';
 import './Jukebox.scss';
-import { getSettings } from '../../lib/settings-client';
 import { SettingsContext } from './SettingsProvider';
+import { Libraries } from '../shapes';
 
 const propTypes = {
   search: PropTypes.string,
   setSearch: PropTypes.func.isRequired,
-  setTempSearch: PropTypes.func.isRequired,
+  display: PropTypes.string.isRequired,
+  setDisplay: PropTypes.func.isRequired,
+  setIsPinOpen: PropTypes.func.isRequired,
+  lastModule: PropTypes.string.isRequired,
+  selectedLibraries: Libraries,
 };
 
 const JukeboxNavRight = ({
@@ -20,7 +33,6 @@ const JukeboxNavRight = ({
   setSearch,
   selectedLibraries,
   lastModule,
-  setIsLocked,
   setIsPinOpen,
   display,
   setDisplay,
@@ -75,17 +87,17 @@ const JukeboxNavRight = ({
               } else if (lastModule === 'Tracks') {
                 navigate('/tracks');
               }
-
             }}
             content={<ArrowClockwise style={{ fontSize }} />}
           />
-          {!search && (<Button
-            width={applyWidth ? height : ''}
-            height={height}
-            disabled={features.isLocked}
-            onClick={() => setSearch('')}
-            content="Search"
-          />
+          {!search && (
+            <Button
+              width={applyWidth ? height : ''}
+              height={height}
+              disabled={features.isLocked}
+              onClick={() => setSearch('')}
+              content="Search"
+            />
           )}
         </>
       );
@@ -93,6 +105,11 @@ const JukeboxNavRight = ({
 
     return searchButton;
   };
+
+  const locked = <LockFill style={{ fontSize }} />;
+  const unlocked = <UnlockFill style={{ fontSize }} />;
+  const funnelFill = <FunnelFill style={{ fontSize }} />;
+  const funnel = <Funnel style={{ fontSize }} />;
 
   return (
     <Nav className="ml-auto">
@@ -104,7 +121,7 @@ const JukeboxNavRight = ({
           height={height}
           disabled={features.isLocked}
           onClick={() => navigate('/filters', { state: { selectedLibraries } })}
-          content={selectedLibraries?.length ? <FunnelFill style={{ fontSize }} /> : <Funnel style={{ fontSize }} />}
+          content={selectedLibraries?.length ? funnelFill : funnel}
         />
       )}
       {settings.features.albums && !applyWidth && !search && pathname === '/albums' && preferences.showAlbumTable && (
@@ -122,14 +139,15 @@ const JukeboxNavRight = ({
         onClick={() => {
           setIsPinOpen(true);
         }}
-        content={features.isLocked ? <LockFill style={{ fontSize }} /> : <UnlockFill style={{ fontSize }} />}
+        content={features.isLocked ? locked : unlocked}
       />
     </Nav>
   );
-}
+};
 
 JukeboxNavRight.defaultProps = {
   search: '',
+  selectedLibraries: [],
 };
 
 JukeboxNavRight.propTypes = propTypes;

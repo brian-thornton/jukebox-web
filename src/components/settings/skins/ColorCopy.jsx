@@ -2,25 +2,19 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import { PropTypes } from 'prop-types';
 import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { deleteSkin, createSkin } from '../../../lib/style-client';
-import { Colors } from '../../shapes';
 import Button from '../../Button';
 import './ColorCopy.scss';
+import { Skin } from '../../shapes';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleHide: PropTypes.func.isRequired,
-  colors: Colors.isRequired,
-  handleCopyColor: PropTypes.func.isRequired,
+  skin: Skin.isRequired,
 };
 
-const ColorCopy = ({
-  skin
-}) => {
+const ColorCopy = ({ skin }) => {
   const [selectedColor, setSelectedColor] = useState();
   const [target, setTarget] = useState();
 
@@ -54,31 +48,35 @@ const ColorCopy = ({
     }
 
     return style;
-  }
+  };
 
   const saveSkin = (name = skin.name) => {
     skin[target] = skin[selectedColor];
 
     deleteSkin(skin.name).then(() => {
       createSkin({
-        name: name,
-        skin: { isEditable: skin.isEditable, name: name, ...skin },
+        name,
+        skin: { isEditable: skin.isEditable, name, ...skin },
       }).then(() => { });
     });
   };
 
   const toWords = (text) => {
-    const result = text.replace(/([A-Z])/g, " $1");
+    const result = text.replace(/([A-Z])/g, ' $1');
     return result.charAt(0).toUpperCase() + result.slice(1);
   };
 
-  const sourceColor = (name) => {
-    return <ListGroupItem onClick={() => setSelectedColor(name)} style={sourceStyle(name)}>{toWords(name)}</ListGroupItem>
-  };
+  const sourceColor = name => (
+    <ListGroupItem onClick={() => setSelectedColor(name)} style={sourceStyle(name)}>
+      {toWords(name)}
+    </ListGroupItem>
+  );
 
-  const targetColor = (name) => {
-    return <ListGroupItem onClick={() => setTarget(name)} style={targetStyle(name)}>{toWords(name)}</ListGroupItem>
-  };
+  const targetColor = name => (
+    <ListGroupItem onClick={() => setTarget(name)} style={targetStyle(name)}>
+      {toWords(name)}
+    </ListGroupItem>
+  );
 
   const colors = ['headerColor', 'footerColor', 'fontColor', 'backgroundColor', 'buttonBackgroundColor', 'buttonFontColor',
     'controlButtonBackgroundColor', 'controlButtonFontColor', 'trackBackgroundColor'];
@@ -88,12 +86,12 @@ const ColorCopy = ({
       <Row>
         <Col>
           <ListGroup>
-            {colors.map((c) => sourceColor(c))}
+            {colors.map(c => sourceColor(c))}
           </ListGroup>
         </Col>
         <Col>
           <ListGroup>
-            {colors.map((c) => targetColor(c))}
+            {colors.map(c => targetColor(c))}
           </ListGroup>
         </Col>
       </Row>
@@ -102,7 +100,7 @@ const ColorCopy = ({
       </Row>
     </Container>
   );
-}
+};
 
 ColorCopy.propTypes = propTypes;
 

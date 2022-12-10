@@ -121,7 +121,7 @@ const Track = ({
       </Container>
     </Card>
   );
-}
+};
 
 Track.defaultProps = {
   setCurrentAlbum: null,

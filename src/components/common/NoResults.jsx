@@ -10,9 +10,15 @@ const propTypes = {
   controls: PropTypes.node,
   text: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
+  applyMargin: PropTypes.bool,
 };
 
-const NoResults = ({ text, title, controls, applyMargin = true }) => {
+const NoResults = ({
+  text,
+  title,
+  controls,
+  applyMargin,
+}) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {
@@ -33,10 +39,11 @@ const NoResults = ({ text, title, controls, applyMargin = true }) => {
       </Card.Body>
     </Card>
   );
-}
+};
 
 NoResults.defaultProps = {
   controls: null,
+  applyMargin: true,
 };
 
 NoResults.propTypes = propTypes;

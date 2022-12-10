@@ -1,10 +1,17 @@
 import { ListGroup } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
+import { PropTypes } from 'prop-types';
+import { useSwipeable } from 'react-swipeable';
 
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
-import { useSwipeable } from 'react-swipeable';
 import { handlers } from '../../lib/gesture-helper';
+import { ControllerState } from '../shapes';
+
+const propTypes = {
+  controllerState: ControllerState.isRequired,
+  onSelect: PropTypes.func.isRequired,
+};
 
 const ControllerEffects = ({ controllerState, onSelect }) => {
   const [selectedPage, setSelectedPage] = useState(1);
@@ -30,18 +37,20 @@ const ControllerEffects = ({ controllerState, onSelect }) => {
               text={`${effect} ${effectType}`}
               onClick={() => onSelect(effect)}
             />
-          )
+          );
         })}
       </ListGroup>
       <Paginator
         disableRandom
-        onPageChange={(page) => setSelectedPage(page)}
+        onPageChange={page => setSelectedPage(page)}
         selectedPage={selectedPage}
         totalItems={controllerState?.effects.length}
         pageSize={realPageSize}
       />
     </>
   );
-}
+};
+
+ControllerEffects.propTypes = propTypes;
 
 export default ControllerEffects;

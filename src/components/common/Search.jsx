@@ -14,12 +14,11 @@ import { applyLighting } from '../../lib/lightingHelper';
 import { topMargin } from '../../lib/styleHelper';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
+  setSearchText: PropTypes.func.isRequired,
 };
 
 const Search = ({
-  setIsSearchOpen, setSearchText, searchText = 'Enter Search',
+  setSearchText,
 }) => {
   const [lightingApplied, setLightingApplied] = useState(false);
   const settings = useContext(SettingsContext);
@@ -28,9 +27,9 @@ const Search = ({
   const [localSearch, setLocalSearch] = useState('');
   const inputButton = value => (
     <Button
-      style={{fontSize: '40px'}}
-      width={isScreenSmall ? "50" : "75"}
-      height={isScreenSmall ? "50" : "75"}
+      style={{ fontSize: '40px' }}
+      width={isScreenSmall ? '50' : '75'}
+      height={isScreenSmall ? '50' : '75'}
       onClick={() => {
         setLocalSearch(`${localSearch}${value}`);
       }}
@@ -40,9 +39,9 @@ const Search = ({
 
   const backspace = () => (
     <Button
-      style={{fontSize: '40px'}}
-      width={isScreenSmall ? "50" : "75"}
-      height={isScreenSmall ? "50" : "75"}
+      style={{ fontSize: '40px' }}
+      width={isScreenSmall ? '50' : '75'}
+      height={isScreenSmall ? '50' : '75'}
       onClick={() => {
         setLocalSearch(`${localSearch.slice(0, -1)}`);
       }}
@@ -57,7 +56,7 @@ const Search = ({
 
   if (!lightingApplied) {
     fireLightingEvents();
-  };
+  }
 
   const row = content => content.map(char => inputButton(char));
 
@@ -79,7 +78,7 @@ const Search = ({
         }}
       />
 
-      <Container style={{marginTop: topMargin(settings)}}>
+      <Container style={{ marginTop: topMargin(settings) }}>
         <Row>
           <FormControl
             style={{ marginTop: '20px' }}
@@ -88,7 +87,7 @@ const Search = ({
             aria-label="Name"
             defaultValue={localSearch}
             aria-describedby="basic-addon1"
-            onChange={(event) => setLocalSearch(event.target.value)}
+            onChange={event => setLocalSearch(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === 'Enter') {
                 setSearchText(localSearch);
@@ -98,10 +97,10 @@ const Search = ({
           />
         </Row>
         <Row>
-          <Container fluid className={`d-none d-sm-block`}>
+          <Container fluid className="d-none d-sm-block">
             <Row className="keyboardRow firstKeyboardRow">
               {inputButton(1, 60)}
-              {row([2, 3, 4, 5, 6, 7, 8, 9, "0"])}
+              {row([2, 3, 4, 5, 6, 7, 8, 9, '0'])}
               {backspace(<BackspaceFill />)}
             </Row>
             <Row className="keyboardRow">
@@ -117,29 +116,55 @@ const Search = ({
               {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
             <Row className="keyboardRow">
-              <Button hideOnSmall style={{fontSize: '40px'}} width="500" height="55" onClick={() => {
-                setLocalSearch(`${localSearch} `);
-              }} content="Space" />
-              <Button hideOnSmall style={{fontSize: '40px'}} width="150" height="55" onClick={() => {
-                setSearchText('');
-              }} content="Clear" />
+              <Button
+                hideOnSmall
+                style={{ fontSize: '40px' }}
+                width="500"
+                height="55"
+                onClick={() => setLocalSearch(`${localSearch} `)}
+                content="Space"
+              />
+              <Button
+                hideOnSmall
+                style={{ fontSize: '40px' }}
+                width="150"
+                height="55"
+                onClick={() => {
+                  setSearchText('');
+                }}
+                content="Clear"
+              />
             </Row>
           </Container>
         </Row>
         <Row className="keyboardRow">
-          <Button className="keyboardRow" style={{fontSize: '40px'}} width="300" height="55" onClick={() => {
-            setSearchText(localSearch);
-            navigate('/albums');
-          }} content="Search Albums" />
-          <Button className="keyboardRow" style={{fontSize: '40px'}} width="300" height="55" onClick={() => {
-            setSearchText(localSearch);
-            navigate('/tracks');
-          }} content="Search Tracks" />
+          <Button
+            className="keyboardRow"
+            style={{ fontSize: '40px' }}
+            width="300"
+            height="55"
+            onClick={() => {
+              setSearchText(localSearch);
+              navigate('/albums');
+            }}
+            content="Search Albums"
+          />
+          <Button
+            className="keyboardRow"
+            style={{ fontSize: '40px' }}
+            width="300"
+            height="55"
+            onClick={() => {
+              setSearchText(localSearch);
+              navigate('/tracks');
+            }}
+            content="Search Tracks"
+          />
         </Row>
       </Container>
     </>
   );
-}
+};
 
 Search.propTypes = propTypes;
 

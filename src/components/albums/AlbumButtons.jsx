@@ -1,6 +1,5 @@
 import Col from 'react-bootstrap/Col';
 import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
@@ -14,7 +13,6 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
 
 const propTypes = {
-  clearCurrentAlbum: PropTypes.func.isRequired,
   tracks: Tracks.isRequired,
 };
 
@@ -34,7 +32,7 @@ const AlbumButtons = ({ tracks }) => {
   };
 
   const albumButton = (onClick, name, enabled = true) => (
-    <Col lg={colLayout ? "6" : "12"} xl={colLayout ? "6" : "12"} sm="12" xs="12" className="albumButton">
+    <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className="albumButton">
       <ControlButton disabled={!enabled} text={name} onClick={onClick} width="100%" height={buttonHeight} style={{ fontSize, marginTop: '0px', marginBottom: '0px' }} />
     </Col>
   );
@@ -46,7 +44,7 @@ const AlbumButtons = ({ tracks }) => {
     }
 
     return text;
-  }
+  };
 
   return (
     <>
@@ -59,7 +57,12 @@ const AlbumButtons = ({ tracks }) => {
                 onClick={playAlbum}
               />
             )}
-            {settings.features.queue && <Button icon={<ListOl />} onClick={() => enqueueTracks(tracks)} />}
+            {settings.features.queue && (
+              <Button
+                icon={<ListOl />}
+                onClick={() => enqueueTracks(tracks)}
+              />
+            )}
             {settings.features.playlists && <Button icon={<PlusSquare />} onClick={() => navigate('/playlists', { state: { tracks } })} />}
           </Row>
         </>
@@ -77,14 +80,14 @@ const AlbumButtons = ({ tracks }) => {
               setTimeout(() => applyLighting(settings, 'Albums'), 700);
             }, 'Enqueue Album', settings.features.queue)}
             {albumButton(() => {
-              navigate('/playlists', { state: { tracks } })
+              navigate('/playlists', { state: { tracks } });
             }, 'Add to Playlist', settings.features.playlists)}
           </Row>
         </>
       )}
     </>
   );
-}
+};
 
 AlbumButtons.propTypes = propTypes;
 

@@ -1,23 +1,19 @@
 import React from 'react';
 import './AnimatedMeter.scss';
 
-const AnimatedMeter = ({ }) => {
-  return (
-    <>
-      <div id="bars">
-        <div className="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-        <div class="bar"></div>
-      </div>
-    </>
-  );
-};
+const AnimatedMeter = () => (
+  <div id="bars">
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+    <div className="bar" />
+  </div>
+);
 
 export default AnimatedMeter;

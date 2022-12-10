@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import { Container, Row, ListGroup } from 'react-bootstrap';
-import { useSwipeable } from 'react-swipeable';
 
 import Confirm from '../common/Confirm';
-import Paginator from '../common/Paginator';
 import {
   getPlaylist,
   deletePlaylist,
@@ -12,14 +9,13 @@ import {
 } from '../../lib/playlist-client';
 import ContentWithControls from '../common/ContentWithControls';
 import NoResults from '../common/NoResults';
-import Item from '../common/Item';
 import AddNew from '../common/AddNew';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
 import PlaylistControls from './PlaylistControls';
 import PlaylistButtons from './PlaylistButtons';
-import { handlers } from '../../lib/gesture-helper';
 import './PlaylistDetail.scss';
+import PaginatedList from '../common/PaginatedList';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -35,11 +31,9 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [selectedPlaylist, setSelectedPlaylist] = useState();
-  const [show, setShow] = useState(false);
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let renderTracks = [];
   const isScreenSmall = window.innerWidth < 700;
-
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   const { controlButtonSize } = settings.styles;
   const trackHeight = controlButtonSize === 'small' ? 50 : 80;
 
@@ -71,7 +65,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     await add({
       name: data.name,
       tracks,
-    })
+    });
     setIsSaveAsOpen(false);
     handleBackToPlaylists();
   };
@@ -80,17 +74,16 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     loadTracks(name);
   }
 
-  const buttons = (track, index) => (
+  const itemButtons = (track, index) => (
     <PlaylistButtons name={name} track={track} index={index} reloadTracks={loadTracks} />
   );
 
-  if (tracks) {
-    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-
-    renderTracks = tracks.slice(realStart, (realStart + realPageSize)).map((track, index) => (
-      <Item text={track.name} buttons={buttons(track, index)} />
-    ));
-  }
+  const items = () => tracks.slice(realStart, (realStart + realPageSize)).map((track, index) => (
+    {
+      text: track.name,
+      buttons: itemButtons(track, index),
+    }
+  ));
 
   const handleDelete = () => {
     deletePlaylist(name).then(() => {
@@ -112,21 +105,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     />
   );
 
-  const playlistTracks = (
-    <>
-      <ListGroup {...swipe}>
-        {renderTracks}
-      </ListGroup>
-      <Paginator
-        disableRandom
-        onPageChange={(page) => setSelectedPage(page)}
-        selectedPage={selectedPage}
-        totalItems={tracks.length}
-        pageSize={realPageSize}
-      />
-    </>
-  );
-
   const content = () => {
     if (isEmpty) {
       return <NoResults applyMargin={false} title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
@@ -138,10 +116,18 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
           <AddNew
             fields={{ name: 'Name' }}
             onCancel={() => setIsSaveAsOpen(false)}
-            onConfirm={(data) => handleSave(data)}
+            onConfirm={data => handleSave(data)}
           />
         )}
-        {!isSaveAsOpen && playlistTracks}
+        {!isSaveAsOpen && (
+          <PaginatedList
+            items={items()}
+            selectedPage={selectedPage}
+            setSelectedPage={setSelectedPage}
+            pageSize={realPageSize}
+            totalItems={tracks.length}
+          />
+        )}
       </>
     );
   };
@@ -165,12 +151,15 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
             />
           )}
           {isScreenSmall && (
-            <Container className="playlist-detail-container">
-              <Row>
-                {controls}
-              </Row>
-              {playlistTracks}
-            </Container>
+            <PaginatedList
+              applyTopMargin
+              topLevelControls={controls}
+              items={items()}
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+              pageSize={realPageSize}
+              totalItems={tracks.length}
+            />
           )}
         </>
       )}
@@ -187,7 +176,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
       )}
     </>
   );
-}
+};
 
 PlaylistDetail.propTypes = propTypes;
 

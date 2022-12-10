@@ -3,11 +3,16 @@ import Container from 'react-bootstrap/Container';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
+import PropTypes from 'prop-types';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Loading.scss';
 
-const Loading = ({text = 'Loading...'}) => {
+const propTypes = {
+  text: PropTypes.string,
+};
+
+const Loading = ({ text }) => {
   const settings = useContext(SettingsContext);
 
   const loadingInProgressSkin = {
@@ -32,5 +37,11 @@ const Loading = ({text = 'Loading...'}) => {
     </Card>
   );
 };
+
+Loading.defaultProps = {
+  text: 'Loading...',
+};
+
+Loading.propTypes = propTypes;
 
 export default Loading;

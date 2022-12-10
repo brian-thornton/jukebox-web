@@ -11,6 +11,7 @@ import './TrackList.scss';
 const propTypes = {
   tracks: PropTypes.arrayOf(TrackShape),
   showAlbumCovers: PropTypes.bool,
+  setAddTracks: PropTypes.func,
 };
 
 const TrackList = ({
@@ -22,7 +23,7 @@ const TrackList = ({
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
   const [trackAlbums, setTrackAlbums] = useState([]);
-  const isMp3 = (track) => track.path.split('.').pop().toLowerCase() === 'mp3';
+  const isMp3 = track => track.path.split('.').pop().toLowerCase() === 'mp3';
 
   const getTrackCoverArt = async (pageTracks) => {
     setTrackAlbumsLoading(true);
@@ -52,22 +53,25 @@ const TrackList = ({
                     showAlbumCovers={showAlbumCovers}
                     setAddTracks={setAddTracks}
                   />
-                )
+                );
               }
+
+              return <></>;
             })}
           </Container>
         )}
       </>
-    )
+    );
   }
 
   return <></>;
-}
+};
 
 TrackList.propTypes = propTypes;
 TrackList.defaultProps = {
   showAlbumCovers: false,
   tracks: [],
+  setAddTracks: null,
 };
 
 export default TrackList;

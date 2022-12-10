@@ -4,27 +4,25 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import React, { useCallback, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { debounce } from 'lodash';
+import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { updateSettings } from '../../../lib/settings-client';
 import NameInput from '../../common/NameInput';
 import './PreferenceTextRow.scss';
+import { updatePreference } from '../../../lib/preferenceHelper';
+
+const propTypes = {
+  rowName: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 const PreferenceTextRow = ({ rowName, value }) => {
   const settings = useContext(SettingsContext);
 
-  const rowLabel = (value) => {
-    const result = value.replace(/([A-Z])/g, " $1");
+  const rowLabel = (labelText) => {
+    const result = labelText.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
-  }
-
-  const updatePreference = (preferenceName, value) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.preferences[preferenceName] = value;
-    updateSettings(deepClone).then(() => {
-      window.location.replace('/settings?mode=preferences');
-    });
   };
 
   const itemStyle = {
@@ -37,7 +35,7 @@ const PreferenceTextRow = ({ rowName, value }) => {
 
   const debouncedUpdate = useCallback(
     debounce((event) => {
-      updatePreference(rowName, event.target.value)
+      updatePreference(settings, rowName, event.target.value, '/settings?mode=preferences');
     }, 1000), [],
   );
 
@@ -59,5 +57,7 @@ const PreferenceTextRow = ({ rowName, value }) => {
     </ListGroupItem>
   );
 };
+
+PreferenceTextRow.propTypes = propTypes;
 
 export default PreferenceTextRow;

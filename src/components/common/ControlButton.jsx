@@ -3,14 +3,27 @@ import React, { useContext } from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
+import { Style } from '../shapes';
 
 const propTypes = {
   disabled: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
+  height: PropTypes.string,
+  width: PropTypes.string,
+  isSelected: PropTypes.bool,
+  style: Style,
 };
 
-const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelected, style }) => {
+const ControlButton = ({
+  disabled,
+  height,
+  width = '275',
+  onClick,
+  text,
+  isSelected,
+  style,
+}) => {
   const settings = useContext(SettingsContext);
   const { styles } = settings;
 
@@ -38,10 +51,14 @@ const ControlButton = ({ disabled, height, width = "275", onClick, text, isSelec
       isSelected={isSelected}
     />
   );
-}
+};
 
 ControlButton.defaultProps = {
   disabled: false,
+  height: null,
+  width: null,
+  isSelected: null,
+  style: null,
 };
 
 ControlButton.propTypes = propTypes;

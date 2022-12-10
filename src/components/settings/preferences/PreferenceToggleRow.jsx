@@ -1,26 +1,24 @@
+import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { updateSettings } from '../../../lib/settings-client';
 import './PreferenceToggleRow.scss';
+import { updatePreference } from '../../../lib/preferenceHelper';
+
+const propTypes = {
+  name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 const PreferenceToggleRow = ({ name, value }) => {
   const settings = useContext(SettingsContext);
 
-  const rowLabel = (value) => {
-    const result = value.replace(/([A-Z])/g, " $1");
+  const rowLabel = (labelText) => {
+    const result = labelText.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
-  }
-
-  const updatePreference = async (preferenceName, value) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.preferences[preferenceName] = value;
-    updateSettings(deepClone).then(() => {
-      window.location.replace('/settings?mode=preferences');
-    });
   };
 
   const buttonText = value ? 'Enabled' : 'Disabled';
@@ -30,7 +28,9 @@ const PreferenceToggleRow = ({ name, value }) => {
       className="preference-toggle-row"
       buttons={(
         <Button
-          onClick={() => updatePreference(name, !value)}
+          onClick={() => {
+            updatePreference(settings, name, !value, '/settings?mode=preferences');
+          }}
           isToggle
           isToggled={value}
           content={buttonText}
@@ -40,5 +40,7 @@ const PreferenceToggleRow = ({ name, value }) => {
     />
   );
 };
+
+PreferenceToggleRow.propTypes = propTypes;
 
 export default PreferenceToggleRow;

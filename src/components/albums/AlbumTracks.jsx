@@ -43,7 +43,7 @@ const TrackList = ({ tracks }) => {
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
-  const albumModeButtons = (track) => (
+  const albumModeButtons = track => (
     <>
       {features.play && <PlayNowButton track={track} />}
       {features.queue && <EnqueueButton mode="Albums" track={track} />}
@@ -76,7 +76,9 @@ const TrackList = ({ tracks }) => {
                 buttons={(
                   <>
                     {albumModeButtons(track)}
-                    {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
+                    {features.downloadTrack && (
+                      <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+                    )}
                   </>
                 )}
               />
@@ -97,7 +99,7 @@ const TrackList = ({ tracks }) => {
           <Col lg="12" xl="12" md="12" sm="12">
             <Paginator
               disableRandom
-              onPageChange={(page) => setSelectedPage(page)}
+              onPageChange={page => setSelectedPage(page)}
               selectedPage={selectedPage}
               totalItems={tracks.length}
               pageSize={realPageSize}
@@ -107,7 +109,7 @@ const TrackList = ({ tracks }) => {
       )}
     </Container>
   );
-}
+};
 
 TrackList.propTypes = propTypes;
 TrackList.defaultProps = {

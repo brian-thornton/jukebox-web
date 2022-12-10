@@ -12,7 +12,6 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import './LibraryAdd.scss';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   handleSave: PropTypes.func.isRequired,
 };
@@ -46,7 +45,10 @@ const Discover = ({
             <NameInput placeholder="Path" />
           </Row>
           <Row>
-            <CategoryPicker onSelectCategory={(category) => setSelectedCategory(category)} category={selectedCategory} />
+            <CategoryPicker
+              onSelectCategory={category => setSelectedCategory(category)}
+              category={selectedCategory}
+            />
           </Row>
           <Row>
             <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
@@ -59,7 +61,7 @@ const Discover = ({
       </Card.Body>
     </Card>
   );
-}
+};
 
 Discover.propTypes = propTypes;
 

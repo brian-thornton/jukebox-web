@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuidv4 } from 'uuid';
+import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -14,20 +15,38 @@ import './Segments.scss';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
 import SegmentRowEdit from './SegmentRowEdit';
 import SegmentRowInfo from './SegmentRowInfo';
+import { Event, LightingController, Segments as SegmentsShape, Skin } from '../shapes';
 
-const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, onConfigure, skin, event }) => {
+const propTypes = {
+  controller: LightingController.isRequired,
+  segments: SegmentsShape.isRequired,
+  allowAdd: PropTypes.bool,
+  onConfigure: PropTypes.func.isRequired,
+  skin: Skin,
+  event: Event.isRequired,
+};
+
+export const Segments = ({
+  controller,
+  segments,
+  allowAdd,
+  onConfigure,
+  skin,
+  event,
+}) => {
   const settings = useContext(SettingsContext);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [segment, setSegment] = useState();
   const [configureSegment, setConfigureSegment] = useState();
 
-  const isSegmentOnController = (start, stop) => {
-    return segments.filter((s) => s.start.toString() === start.toString() && s.stop.toString() === stop.toString()).length >= 1;
-  }
+  const isSegmentOnController = (start, stop) => (
+    segments.filter(s => s.start.toString() === start.toString()
+      && s.stop.toString() === stop.toString()).length >= 1
+  );
 
   const onUpdateSegment = async (oldData, data) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    const updatedController = deepClone.controllers?.find((c) => c.ip === controller.info.ip);
+    const updatedController = deepClone.controllers?.find(c => c.ip === controller.info.ip);
 
     if (!updatedController?.segments?.length) {
       // No segments exist for the controller. Add the first one.
@@ -39,7 +58,7 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
       }];
     } else {
       // Check if we are updating an existing segment.
-      const updatedSegment = updatedController.segments.find((s) => s.id === data.id);
+      const updatedSegment = updatedController.segments.find(s => s.id === data.id);
 
       if (updatedSegment) {
         // An existing segment was found. Update it.
@@ -71,29 +90,52 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
     });
   };
 
-  const segmentRow = (segment, isOnController) => {
-    const segmentInConfigurationMode = configureSegment && segment.id === configureSegment.id && segment.start === configureSegment.start && segment.stop === configureSegment.stop;
+  const segmentRow = (seg, isOnController) => {
+    const segmentInConfigurationMode = configureSegment && seg.id === configureSegment.id
+      && seg.start === configureSegment.start && seg.stop === configureSegment.stop;
 
     return (
       <>
-        {!segmentInConfigurationMode && <SegmentRowInfo isOnController={isOnController} onConfigure={(segment) => {
-          setConfigureSegment(segment);
+        {!segmentInConfigurationMode && (
+          <SegmentRowInfo
+            isOnController={isOnController}
+            onConfigure={(s) => {
+              setConfigureSegment(s);
 
-          // If we have an onConfigure function we are configuring skin colors.
-          // If not, we are setting up cabinet segments.
-          if (onConfigure) {
-            onConfigure(segment);
-          }
-        }} event={event} segment={segment} skin={skin} controller={controller} />}
-        {segmentInConfigurationMode && !skin && (<SegmentRowEdit onSave={onUpdateSegment} onCancel={() => setConfigureSegment(null)} setSegment={setSegment} event={event} segment={segment} skin={skin} controller={controller} />)}
+              // If we have an onConfigure function we are configuring skin colors.
+              // If not, we are setting up cabinet segments.
+              if (onConfigure) {
+                onConfigure(s);
+              }
+            }}
+            event={event}
+            segment={seg}
+            skin={skin}
+            controller={controller}
+          />
+        )}
+        {segmentInConfigurationMode && !skin && (
+          <SegmentRowEdit
+            onSave={onUpdateSegment}
+            onCancel={() => setConfigureSegment(null)}
+            setSegment={setSegment}
+            event={event}
+            segment={seg}
+            skin={skin}
+            controller={controller}
+          />
+        )}
       </>
-    )
-  }
+    );
+  };
 
-  const onAddSegment = (fields) => {
-    console.log(fields)
-    onUpdateSegment(null, fields);
-  }
+  const onAddSegment = fields => onUpdateSegment(null, fields);
+  const displayRow = () => (
+    !settings.controllers?.find(c => (
+      c.ip === (controller.info?.ip || controller.ip)).segments.find(s => (
+        s.start.toString() === segment.start.toString()
+        && s.stop.toString() === segment.stop.toString())))
+  );
 
   return (
     <>
@@ -123,11 +165,16 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
             <Col lg="12" xl="12" md="12" sm="12">
               <Row>
                 <ListGroup className="styleEditorContent">
-                  {settings.controllers?.find((c) => c.ip === (controller.info?.ip || controller.ip)).segments.map((s) => segmentRow(s, isSegmentOnController(s.start, s.stop)))}
-                  {segments?.map((segment) => {
-                    if (!settings.controllers?.find((c) => c.ip === (controller.info?.ip || controller.ip)).segments.find((s) => s.start.toString() === segment.start.toString() && s.stop.toString() === segment.stop.toString())) {
-                      segmentRow(segment, true);
+                  {settings.controllers?.find(c => (
+                    c.ip === (controller.info?.ip || controller.ip)).segments.map(s => (
+                      segmentRow(s, isSegmentOnController(s.start, s.stop)))))
+                  }
+                  {segments?.map((s) => {
+                    if (displayRow()) {
+                      segmentRow(s, true);
                     }
+
+                    return <></>;
                   })}
                 </ListGroup>
               </Row>
@@ -138,5 +185,12 @@ const Segments = ({ controller, segments, allowRemove = true, allowAdd = true, o
     </>
   );
 };
+
+Segments.defaultProps = {
+  allowAdd: true,
+  skin: null,
+};
+
+Segments.propTypes = propTypes;
 
 export default Segments;

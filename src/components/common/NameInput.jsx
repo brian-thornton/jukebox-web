@@ -7,6 +7,8 @@ const propTypes = {
   onChange: PropTypes.func,
   defaultValue: PropTypes.string,
   placeholder: PropTypes.string,
+  onEnter: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 const NameInput = ({
@@ -19,7 +21,7 @@ const NameInput = ({
   <InputGroup className="mb-3">
     <FormControl
       id="name"
-      placeholder={placeholder || "Name"}
+      placeholder={placeholder || 'Name'}
       aria-label="Name"
       defaultValue={defaultValue}
       aria-describedby="basic-addon1"
@@ -38,6 +40,8 @@ NameInput.defaultProps = {
   defaultValue: '',
   onChange: null,
   placeholder: null,
+  onEnter: null,
+  disabled: false,
 };
 
 NameInput.propTypes = propTypes;

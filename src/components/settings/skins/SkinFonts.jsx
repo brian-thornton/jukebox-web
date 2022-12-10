@@ -1,5 +1,6 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable';
 
 import Item from '../../common/Item';
 import FontPicker from './FontPicker';
@@ -7,15 +8,18 @@ import Button from '../../Button';
 import Paginator from '../../common/Paginator';
 import './SkinDetail.scss';
 import { pageSize } from '../../../lib/styleHelper';
-import { useSwipeable } from 'react-swipeable'; 
 import { handlers } from '../../../lib/gesture-helper';
+import { Skin } from '../../shapes';
+
+const propTypes = {
+  skin: Skin.isRequired,
+};
 
 const SkinFonts = ({ skin }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   const [isFontModalOpen, setIsFontModalOpen] = useState(false);
   const [editFont, setEditFont] = useState();
-  const [editProperty, setEditProperty] = useState();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const [colors, setColors] = useState({
     headerColor: skin.headerColor,
@@ -38,25 +42,22 @@ const SkinFonts = ({ skin }) => {
   useEffect(() => setItemsPerPage(pageSize('item', 250, 70)), []);
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
-  const fontRow = (name, display) => {
-    return (
-      <Item
-        text={display}
-        buttons={(
-          <Button
-            disabled={!skin.isEditable}
-            style={{ fontFamily: colors[name] }}
-            onClick={() => {
-              setEditFont(name);
-              setIsFontModalOpen(true);
-              setEditProperty(name);
-            }}
-            content={colors[name] ? colors[name] : name}
-          />
-        )}
-      />
-    );
-  };
+  const fontRow = (name, display) => (
+    <Item
+      text={display}
+      buttons={(
+        <Button
+          disabled={!skin.isEditable}
+          style={{ fontFamily: colors[name] }}
+          onClick={() => {
+            setEditFont(name);
+            setIsFontModalOpen(true);
+          }}
+          content={colors[name] ? colors[name] : name}
+        />
+      )}
+    />
+  );
 
   const rows = [
     fontRow('listFont', 'List Font'),
@@ -84,7 +85,7 @@ const SkinFonts = ({ skin }) => {
           </ListGroup>
           <Paginator
             disableRandom
-            onPageChange={(page) => setSelectedPage(page)}
+            onPageChange={page => setSelectedPage(page)}
             selectedPage={selectedPage}
             totalItems={12}
             pageSize={itemsPerPage}
@@ -94,5 +95,7 @@ const SkinFonts = ({ skin }) => {
     </>
   );
 };
+
+SkinFonts.propTypes = propTypes;
 
 export default SkinFonts;

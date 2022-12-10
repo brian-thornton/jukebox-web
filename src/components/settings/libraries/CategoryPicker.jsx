@@ -11,14 +11,13 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import { updateSettings } from '../../../lib/settings-client';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
-  handleHide: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+  selectedCategory: PropTypes.string,
+  onSelectCategory: PropTypes.func.isRequired,
 };
 
 const CategoryPicker = ({
   selectedCategory,
-  onSelectCategory
+  onSelectCategory,
 }) => {
   const settings = useContext(SettingsContext);
   const [newCategory, setNewCategory] = useState();
@@ -44,8 +43,8 @@ const CategoryPicker = ({
               Category:
             </Form.Label>
             <Col sm="10">
-              <Form.Control as="select" value={selectedCategory} onChange={(e) => onSelectCategory(e.target.value)}>
-                {categories.map((category) => <option>{category}</option>)}
+              <Form.Control as="select" value={selectedCategory} onChange={e => onSelectCategory(e.target.value)}>
+                {categories.map(category => <option>{category}</option>)}
               </Form.Control>
             </Col>
           </Form.Group>
@@ -66,7 +65,7 @@ const CategoryPicker = ({
                   aria-label="Name"
                   defaultValue={newCategory}
                   aria-describedby="basic-addon1"
-                  onChange={(event) => setNewCategory(event.target.value)}
+                  onChange={event => setNewCategory(event.target.value)}
                 />
               </Col>
               <Col sm="3">
@@ -79,7 +78,11 @@ const CategoryPicker = ({
       )}
     </Container>
   );
-}
+};
+
+CategoryPicker.defaultProps = {
+  selectedCategory: '',
+};
 
 CategoryPicker.propTypes = propTypes;
 

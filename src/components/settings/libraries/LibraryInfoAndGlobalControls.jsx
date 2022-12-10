@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
@@ -9,7 +10,27 @@ import Confirm from '../../common/Confirm';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './Libraries.scss';
 
-const LibraryInfoAndGlobalControls = ({ setIsCategoryConfigOpen, onScanAll, onDeleteAll, handleDiscover, handleShow, currentScan, totalTracks, isScanning }) => {
+const propTypes = {
+  setIsCategoryConfigOpen: PropTypes.func.isRequired,
+  onScanAll: PropTypes.func.isRequired,
+  onDeleteAll: PropTypes.func.isRequired,
+  handleDiscover: PropTypes.func.isRequired,
+  handleShow: PropTypes.func.isRequired,
+  currentScan: PropTypes.string,
+  totalTracks: PropTypes.number,
+  isScanning: PropTypes.bool,
+};
+
+const LibraryInfoAndGlobalControls = ({
+  setIsCategoryConfigOpen,
+  onScanAll,
+  onDeleteAll,
+  handleDiscover,
+  handleShow,
+  currentScan,
+  totalTracks,
+  isScanning,
+}) => {
   const [isDeleteAllConfirmOpen, setIsDeleteAllConfirmOpen] = useState(false);
   const settings = useContext(SettingsContext);
 
@@ -65,5 +86,13 @@ const LibraryInfoAndGlobalControls = ({ setIsCategoryConfigOpen, onScanAll, onDe
     </>
   );
 };
+
+LibraryInfoAndGlobalControls.defaultProps = {
+  currentScan: '',
+  totalTracks: 0,
+  isScanning: false,
+};
+
+LibraryInfoAndGlobalControls.propTypes = propTypes;
 
 export default LibraryInfoAndGlobalControls;

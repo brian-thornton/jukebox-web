@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -8,41 +9,39 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
+import { getBase64 } from '../../../lib/localStorageHelper';
+
+const propTypes = {
+  name: PropTypes.string.isRequired,
+};
 
 const PreferenceFileRow = ({ name }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
 
   const rowLabel = (value) => {
-    const result = value.replace(/([A-Z])/g, " $1");
+    const result = value.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
-  }
+  };
 
   const imageUpload = (e) => {
     const file = e.target.files[0];
-    getBase64(file).then(base64 => {
+    getBase64(file).then((base64) => {
       localStorage[name] = base64;
       navigate('/albums');
     });
   };
 
-  const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-      reader.readAsDataURL(file);
-    });
-  }
-
   return (
-    <ListGroupItem style={{
-      color: settings.styles.fontColor,
-      background: settings.styles.trackBackgroundColor,
-      fontFamily: settings.styles.listFont,
-      height: '60px',
-    }}>
+    <ListGroupItem
+      style={{
+        color: settings.styles.fontColor,
+        background: settings.styles.trackBackgroundColor,
+        fontFamily: settings.styles.listFont,
+        height: '60px',
+      }}
+    >
       <Container fluid style={{ marginBottom: '0px' }}>
         <Row>
           <Col lg="2">
@@ -67,5 +66,7 @@ const PreferenceFileRow = ({ name }) => {
     </ListGroupItem>
   );
 };
+
+PreferenceFileRow.propTypes = propTypes;
 
 export default PreferenceFileRow;

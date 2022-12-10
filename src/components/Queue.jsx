@@ -1,7 +1,5 @@
-import { TrashFill } from 'react-bootstrap-icons';
+import { TrashFill, XLg } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { useSwipeable } from 'react-swipeable';
-import { XLg } from 'react-bootstrap-icons';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useEffect, useState } from 'react';
@@ -18,15 +16,12 @@ import {
   removeTracksFromQueue,
 } from '../lib/queue-client';
 import ContentWithControls from './common/ContentWithControls';
-import ExpandRow from './common/ExpandRow';
 import PlayNowButton from './PlayNowButton';
-import Item from './common/Item';
 import NoResults from './common/NoResults';
-import Paginator from './common/Paginator';
 import { SettingsContext } from './layout/SettingsProvider';
 import './Queue.scss';
-import { handlers } from '../lib/gesture-helper';
 import { pageSize } from '../lib/styleHelper';
+import PaginatedList from './common/PaginatedList';
 
 const Queue = () => {
   const settings = useContext(SettingsContext);
@@ -37,7 +32,6 @@ const Queue = () => {
   const [totalTracks, setTotalTracks] = useState();
   const [clearConfirm, setClearConfirm] = useState(false);
   const isScreenSmall = window.innerWidth < 700;
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const { controlButtonSize } = settings.styles;
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 300 : 250;
@@ -59,7 +53,7 @@ const Queue = () => {
   };
 
   const monitorQueue = () => {
-    setTimeout(() => monitorQueue(), 3000)
+    setTimeout(() => monitorQueue(), 3000);
     loadQueue();
   };
 
@@ -72,6 +66,11 @@ const Queue = () => {
 
   useEffect(loadQueue, [selectedPage]);
 
+  const remove = (track) => {
+    removeTracksFromQueue([track]);
+    loadQueue();
+  };
+
   const confirm = (
     <Confirm
       text="Are you sure you want to clear all tracks in the queue?"
@@ -83,14 +82,26 @@ const Queue = () => {
     />
   );
 
-  const buttons = (track) => {
-    return (
-      <>
-        {settings.features.play && <PlayNowButton track={track} />}
-        <Button width={buttonWidth} height={buttonHeight} onClick={() => remove(track)} icon={<TrashFill />} />
-      </>
-    )
-  };
+  const itemButtons = track => (
+    <>
+      {settings.features.play && <PlayNowButton track={track} />}
+      <Button
+        width={buttonWidth}
+        height={buttonHeight}
+        onClick={() => remove(track)}
+        icon={<TrashFill />}
+      />
+    </>
+  );
+
+  const items = () => (
+    tracks.map(track => (
+      {
+        text: track.name,
+        buttons: itemButtons(track),
+      }
+    ))
+  );
 
   const content = () => {
     if (isEmpty) {
@@ -100,42 +111,17 @@ const Queue = () => {
     return (
       <>
         {!clearConfirm && (
-          <Container {...swipe} fluid>
-            <Row >
-              <Col lg="12" xl="12" md="12" sm="12">
-                <Row>
-                  {tracks.map(track => (
-                    <>
-                      {isScreenSmall && <ExpandRow text={track.name} buttons={buttons(track)}/>}
-                      {!isScreenSmall && (
-                        <Item
-                          text={track.name}
-                          buttons={buttons(track)}
-                        />
-                      )}
-                    </>
-                  ))
-                  }
-                </Row>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg="12" xl="12" md="12" sm="12">
-                <Paginator
-                  disableRandom
-                  onPageChange={(page) => setSelectedPage(page)}
-                  className="queue"
-                  selectedPage={selectedPage}
-                  totalItems={totalTracks}
-                  pageSize={itemsPerPage}
-                />
-              </Col>
-            </Row>
-          </Container>
+          <PaginatedList
+            items={items()}
+            selectedPage={selectedPage}
+            setSelectedPage={setSelectedPage}
+            pageSize={itemsPerPage}
+            totalItems={totalTracks}
+          />
         )}
         {clearConfirm && confirm}
       </>
-    )
+    );
   };
 
   const shuffle = () => {
@@ -146,18 +132,22 @@ const Queue = () => {
     });
   };
 
-  const remove = (track) => {
-    removeTracksFromQueue([track]);
-    loadQueue();
-  };
-
   const controls = () => (
     <>
       <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" height={buttonHeight} style={{ fontSize }} />
       <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" height={buttonHeight} style={{ fontSize }} />
-      {settings.features.playlists && <ControlButton width="100%" onClick={() => {
-        navigate('/playlists', { state: { tracks } })
-      }} disabled={isEmpty || clearConfirm} text="Save to Playlist" height={buttonHeight} style={{ fontSize }} />}
+      {settings.features.playlists && (
+        <ControlButton
+          width="100%"
+          onClick={() => {
+            navigate('/playlists', { state: { tracks } });
+          }}
+          disabled={isEmpty || clearConfirm}
+          text="Save to Playlist"
+          height={buttonHeight}
+          style={{ fontSize }}
+        />
+      )}
     </>
   );
 
@@ -182,6 +172,20 @@ const Queue = () => {
       )}
     </>
   );
-}
+};
+
+Button.defaultProps = {
+  content: '',
+  icon: <></>,
+  disabled: false,
+  isToggle: false,
+  isToggled: false,
+  isSelected: false,
+  height: '',
+  width: '',
+  style: {},
+  id: '',
+  hideOnSmall: false,
+};
 
 export default Queue;

@@ -1,14 +1,21 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './PinEntry.scss';
 
-const PinEntry = ({ onAuthorize, onCancel, title = 'Enter Pin' }) => {
+const propTypes = {
+  onAuthorize: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  title: PropTypes.string,
+};
+
+const PinEntry = ({ onAuthorize, onCancel, title }) => {
   const settings = useContext(SettingsContext);
   const [pin, setPin] = useState('');
   const isScreenSmall = window.innerWidth < 700;
@@ -38,13 +45,13 @@ const PinEntry = ({ onAuthorize, onCancel, title = 'Enter Pin' }) => {
         <Card className="pinCard" style={pinStyle}>
           <Card.Body>
             <Card.Title className="pinTitle">{title}</Card.Title>
-            <Card.Text className="pinText">{pin.split('').map((p) => '*')}</Card.Text>
+            <Card.Text className="pinText">{pin.split('').map(() => '*')}</Card.Text>
             <Container fluid>
               <Row className="pinText">{row([1, 2, 3])}</Row>
               <Row className="pinText">{row([4, 5, 6])}</Row>
               <Row className="pinText">{row([7, 8, 9])}</Row>
               <Row className="pinText">
-                {numberButton("0")}
+                {numberButton('0')}
                 <Col lg="1" md="1" sm="3" xs="3">
                   <Button height="75" width="75" onClick={() => setPin('')} content="Clear" />
                 </Col>
@@ -59,5 +66,11 @@ const PinEntry = ({ onAuthorize, onCancel, title = 'Enter Pin' }) => {
     </>
   );
 };
+
+PinEntry.defaultProps = {
+  title: 'Enter Pin',
+};
+
+PinEntry.propTypes = propTypes;
 
 export default PinEntry;

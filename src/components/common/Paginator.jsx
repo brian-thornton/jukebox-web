@@ -1,4 +1,3 @@
-import Button from '../Button';
 import {
   ChevronDoubleRight,
   ChevronDoubleLeft,
@@ -6,26 +5,39 @@ import {
   ChevronLeft,
 } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
+import { PropTypes } from 'prop-types';
 
+import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Paginator.scss';
 
-const Paginator = ({ onPageChange, selectedPage, totalItems, pageSize, disableRandom }) => {
+const propTypes = {
+  onPageChange: PropTypes.func.isRequired,
+  selectedPage: PropTypes.number.isRequired,
+  totalItems: PropTypes.number,
+  pageSize: PropTypes.number.isRequired,
+  disableRandom: PropTypes.bool,
+};
+
+const Paginator = ({
+  onPageChange,
+  selectedPage,
+  totalItems,
+  pageSize,
+  disableRandom,
+}) => {
   const settings = useContext(SettingsContext);
-  let pages = Math.floor(totalItems / pageSize);
+  const pages = Math.floor(totalItems / pageSize);
   const { controlButtonSize } = settings.styles;
 
   let height;
-  let fontSize = '';
 
   if (controlButtonSize === 'large') {
     height = '100';
-    fontSize = '40px';
   }
 
   if (controlButtonSize === 'medium') {
-    height = '70'
-    fontSize = '30px';
+    height = '70';
   }
 
   return (
@@ -50,10 +62,12 @@ const Paginator = ({ onPageChange, selectedPage, totalItems, pageSize, disableRa
       {!disableRandom && (
         <Button
           height={height}
-          hideOnSmall disabled={settings.features.isLocked}
+          hideOnSmall
+          disabled={settings.features.isLocked}
           className="paginatorButton"
           onClick={() => onPageChange(Math.floor(Math.random() * pages))}
-          content={`Page ${selectedPage} of ${pages}`} />
+          content={`Page ${selectedPage} of ${pages}`}
+        />
       )}
       <Button
         height={height}
@@ -75,6 +89,13 @@ const Paginator = ({ onPageChange, selectedPage, totalItems, pageSize, disableRa
       )}
     </div>
   );
-}
+};
+
+Paginator.defaultProps = {
+  disableRandom: true,
+  totalItems: null,
+};
+
+Paginator.propTypes = propTypes;
 
 export default Paginator;

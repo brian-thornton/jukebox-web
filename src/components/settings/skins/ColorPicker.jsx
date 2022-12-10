@@ -13,16 +13,17 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import './ColorPicker.scss';
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
+  onChange: PropTypes.func.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   setColor: PropTypes.func.isRequired,
+  solidOnly: PropTypes.bool,
 };
 
 const ColorPicker = ({
   setIsOpen,
   setColor,
   onChange,
-  solidOnly = false,
+  solidOnly,
 }) => {
   const settings = useContext(SettingsContext);
   const [colorType, setColorType] = useState('solid');
@@ -32,7 +33,7 @@ const ColorPicker = ({
   const [solidColor, setSolidColor] = useState();
 
   const picker = (color, width, handler) => (
-    <div style={{ width: width, display: 'inline-block' }}>
+    <div style={{ width, display: 'inline-block' }}>
       <ChromePicker color={color} onChangeComplete={handler} />
     </div>
   );
@@ -41,7 +42,7 @@ const ColorPicker = ({
     if (solidColor) {
       onChange(solidColor);
     }
-  }, [solidColor])
+  }, [solidColor]);
 
   const formatColor = () => {
     if (colorType === 'transparent') {
@@ -64,7 +65,7 @@ const ColorPicker = ({
 
   const transparentCardSkin = {
     color: settings.styles.fontColor,
-  }
+  };
 
   return (
     <>
@@ -110,18 +111,28 @@ const ColorPicker = ({
                 </Card>
               </Tab>
             </Tabs>
-            <Button onClick={() => setIsOpen(false)} content="Cancel" />
-            <Button onClick={() => {
-              formatColor();
-              setIsOpen(false);
-            }} content="Save" />
+            <Button
+              onClick={() => setIsOpen(false)}
+              content="Cancel"
+            />
+            <Button
+              onClick={() => {
+                formatColor();
+                setIsOpen(false);
+              }}
+              content="Save"
+            />
           </Card.Body>
         </Card>
       )}
       {solidOnly && picker(solidColor, '100%', colorData => setSolidColor(colorData))}
     </>
   );
-}
+};
+
+ColorPicker.defaultProps = {
+  solidOnly: false,
+};
 
 ColorPicker.propTypes = propTypes;
 

@@ -28,7 +28,7 @@ const SettingsEditor = () => {
   const loadSettings = () => {
     const data = Object.keys(settings.features);
     setFeatures(data);
-  }
+  };
 
   useEffect(loadSettings, []);
 
@@ -55,7 +55,7 @@ const SettingsEditor = () => {
 
   const settingRow = (name, value) => {
     const buttonText = value ? 'Enabled' : 'Disabled';
-    const displayName = displayNames.find((entry) => entry.key === name);
+    const displayName = displayNames.find(entry => entry.key === name);
 
     return (
       <Item
@@ -75,10 +75,11 @@ const SettingsEditor = () => {
   if (features) {
     return (
       <>
-        {features.slice(realStart, (realStart + realPageSize)).map(key => settingRow(key, settings.features[key]))}
+        {features.slice(realStart, (realStart + realPageSize)).map(key => (
+          settingRow(key, settings.features[key])))}
         <Paginator
           disableRandom
-          onPageChange={(page) => setSelectedPage(page)}
+          onPageChange={page => setSelectedPage(page)}
           selectedPage={selectedPage}
           totalItems={features.length}
           pageSize={realPageSize}
@@ -88,6 +89,6 @@ const SettingsEditor = () => {
   }
 
   return <></>;
+};
 
-}
 export default SettingsEditor;

@@ -87,7 +87,7 @@ const JukeboxFooter = ({
       {footerContent()}
     </Navbar>
   );
-}
+};
 
 JukeboxFooter.defaultProps = {
   nowPlaying: '',

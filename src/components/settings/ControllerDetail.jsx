@@ -3,17 +3,21 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { getCurrentState } from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
-import Segments from './Segments';
+import { Segments } from './Segments';
 import './ControllerDetail.scss';
+import { Controller } from '../shapes';
+
+const propTypes = {
+  controller: Controller.isRequired,
+};
 
 const ControllerDetail = ({ controller }) => {
   const settings = useContext(SettingsContext);
   const [controllerState, setControllerState] = useState();
 
-
   const loadState = async () => {
-    getCurrentState(controller.ip).then(data => {
-      setControllerState(data)
+    getCurrentState(controller.ip).then((data) => {
+      setControllerState(data);
     });
   };
 
@@ -25,14 +29,21 @@ const ControllerDetail = ({ controller }) => {
     <>
       <Card className="controller-card">
         <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
-          Segments for IP: {controller.ip}
+          {`Segments for IP: ${controller.ip}`}
         </Card.Title>
         <Card.Body>
-          {controllerState?.state && <Segments controller={controllerState} segments={controllerState.state.seg} />}
+          {controllerState?.state && (
+            <Segments
+              controller={controllerState}
+              segments={controllerState.state.seg}
+            />
+          )}
         </Card.Body>
       </Card>
     </>
   );
 };
+
+ControllerDetail.propTypes = propTypes;
 
 export default ControllerDetail;

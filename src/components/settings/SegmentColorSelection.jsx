@@ -1,7 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Col, Container, Form, Row } from 'react-bootstrap';
+import {
+  Col,
+  Container,
+  Form,
+  Row,
+} from 'react-bootstrap';
+import { PropTypes } from 'prop-types';
 
-import { getCurrentState, powerOff, setEffect, setSolidColor, demoEffect } from '../../lib/lighting-client';
+import {
+  getCurrentState,
+  powerOff,
+  setSolidColor,
+  demoEffect,
+} from '../../lib/lighting-client';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import Button from '../Button';
 import ColorPicker from './skins/ColorPicker';
@@ -9,9 +20,30 @@ import ControllerEffects from './ControllerEffects';
 import ControllerPalettes from './ControllerPalettes';
 import './SegmentColorSelection.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
+import {
+  Event,
+  LightingController,
+  Segment,
+  Skin,
+} from '../shapes';
 
-const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplete }) => {
-  const segmentEventConfig = skin.lighting?.controllers?.find((c) => c.ip === controller.ip).segments.find((s) => s.id === segment.id && s.event === event);
+const propTypes = {
+  controller: LightingController.isRequired,
+  segment: Segment.isRequired,
+  skin: Skin,
+  event: Event.isRequired,
+  onSaveComplete: PropTypes.func.isRequired,
+};
+
+const SegmentColorSelection = ({
+  skin,
+  controller,
+  segment,
+  event,
+  onSaveComplete,
+}) => {
+  const segmentEventConfig = skin.lighting?.controllers?.find(c => c.ip === controller.ip).segments.find(s => s.id === segment.id
+    && s.event === event);
   const [controllerState, setControllerState] = useState();
   const [selectedColor, setSelectedColor] = useState();
   const [mode, setMode] = useState();
@@ -20,7 +52,7 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
   const [selectedEffect, setSelectedEffect] = useState(segmentEventConfig?.effect || 'Solid');
   const [selectedPalette, setSelectedPalette] = useState();
   const palletEffects = ['Palette', 'Colorwaves', 'BPM', 'Lake', 'Pacifica', 'Noise Pal', 'Flow', 'Blends', 'Dynamic Smooth'];
-  const size = (palletEffects.includes(selectedEffect) || selectedEffect === "Solid") ? "6" : "12"
+  const size = (palletEffects.includes(selectedEffect) || selectedEffect === 'Solid') ? '6' : '12';
   const settings = useContext(SettingsContext);
 
   const loadState = async () => {
@@ -28,48 +60,50 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
   };
 
   const initState = () => {
-    loadState()
+    loadState();
   };
 
   useEffect(initState, []);
 
   const saveSkin = () => {
     deleteSkin(skin.name).then(() => {
-      let { lighting, ...colors } = skin;
+      const { lighting, ...colors } = skin;
 
       const segmentEvent = {
         id: segment.id,
         event,
         mode,
-        effect: selectedEffect ? selectedEffect : '',
-        color: selectedColor ? selectedColor : '',
-        palette: selectedPalette ? selectedPalette : '',
+        effect: selectedEffect || '',
+        color: selectedColor || '',
+        palette: selectedPalette || '',
         start: segment.start,
         stop: segment.stop,
         effectSpeed,
         effectBrightness,
-      }
+      };
 
       if (!lighting) {
         lighting = {
           controllers: [{
             ip: controller.ip,
-            segments: [segmentEvent]
+            segments: [segmentEvent],
           }],
-        }
+        };
       } else {
-        const updatedController = lighting.controllers.find((c) => c.ip === controller.ip);
-        const updatedSegment = updatedController.segments.find((s) => s.id === segment.id && s.event === event && segment.start.toString() === s.start.toString() && segment.stop.toString() === s.stop.toString());
+        const updatedController = lighting.controllers.find(c => c.ip === controller.ip);
+        const updatedSegment = updatedController.segments.find(s => s.id === segment.id
+          && s.event === event && segment.start.toString() === s.start.toString()
+          && segment.stop.toString() === s.stop.toString());
 
         if (updatedSegment) {
           updatedSegment.mode = mode;
-          updatedSegment.effect = selectedEffect ? selectedEffect : '';
-          updatedSegment.color = selectedColor ? selectedColor : '';
-          updatedSegment.palette = selectedPalette ? selectedPalette : '';
-          updatedSegment.effectSpeed = effectSpeed ? effectSpeed : '';
-          updatedSegment.effectBrightness = effectBrightness ? effectBrightness : '';
+          updatedSegment.effect = selectedEffect || '';
+          updatedSegment.color = selectedColor || '';
+          updatedSegment.palette = selectedPalette || '';
+          updatedSegment.effectSpeed = effectSpeed || '';
+          updatedSegment.effectBrightness = effectBrightness || '';
         } else {
-          updatedController.segments.push(segmentEvent)
+          updatedController.segments.push(segmentEvent);
         }
       }
 
@@ -89,14 +123,16 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
   const onSelectSpeed = (speed) => {
     const percent = `.${speed}` * 255;
     setEffectSpeed(percent);
-    demoEffect(controller.ip, selectedEffect, selectedPalette, segment.start, segment.stop, percent, effectBrightness);
+    demoEffect(controller.ip, selectedEffect, selectedPalette, segment.start, segment.stop,
+      percent, effectBrightness);
     setMode('effect');
   };
 
   const onSelectBrightness = (brightness) => {
     const percent = `.${brightness}` * 255;
     setEffectBrightness(percent);
-    demoEffect(controller.ip, selectedEffect, selectedPalette, segment.start, segment.stop, effectSpeed, percent);
+    demoEffect(controller.ip, selectedEffect, selectedPalette, segment.start, segment.stop,
+      effectSpeed, percent);
     setMode('effect');
   };
 
@@ -105,22 +141,41 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
     demoEffect(controller.ip, selectedEffect, selectedPalette, segment.start, segment.stop);
     setSelectedEffect(selectedEffect);
     setMode('effect');
-  }
+  };
 
   const onSelectColor = (color) => {
-    setSolidColor(controller.ip, [color.rgb.r, color.rgb.g, color.rgb.b], segment.start, segment.stop);
+    setSolidColor(controller.ip, [color.rgb.r, color.rgb.g, color.rgb.b],
+      segment.start, segment.stop);
     setSelectedColor([color.rgb.r, color.rgb.g, color.rgb.b]);
-  }
+  };
 
   return (
     <>
       {controllerState && (
         <Container fluid className="segment-color-container">
           <Row>
-            <Form.Label style={{ color: settings.styles.fontColor, paddingTop: '5px', marginLeft: '10px', marginRight: '10px' }}>Effect Speed</Form.Label>
-            <Form.Range onChange={(event) => onSelectSpeed(event.target.value)} />
-            <Form.Label style={{ color: settings.styles.fontColor, paddingTop: '5px', marginLeft: '50px', marginRight: '10px' }}>Effect Brightness</Form.Label>
-            <Form.Range onChange={(event) => onSelectBrightness(event.target.value)} />
+            <Form.Label
+              style={{
+                color: settings.styles.fontColor,
+                paddingTop: '5px',
+                marginLeft: '10px',
+                marginRight: '10px',
+              }}
+            >
+              Effect Speed
+            </Form.Label>
+            <Form.Range onChange={e => onSelectSpeed(e.target.value)} />
+            <Form.Label
+              style={{
+                color: settings.styles.fontColor,
+                paddingTop: '5px',
+                marginLeft: '50px',
+                marginRight: '10px',
+              }}
+            >
+              Effect Brightness
+            </Form.Label>
+            <Form.Range onChange={e => onSelectBrightness(e.target.value)} />
           </Row>
           <Row className="segment-effects-row">
             <Col lg={size} md={size}>
@@ -137,7 +192,7 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
                 />
               </Col>
             )}
-            {selectedEffect === "Solid" && (
+            {selectedEffect === 'Solid' && (
               <Col lg={size} md={size}>
                 <ColorPicker onChange={onSelectColor} solidOnly={true} />
               </Col>
@@ -145,18 +200,30 @@ const SegmentColorSelection = ({ skin, controller, segment, event, onSaveComplet
           </Row>
           <Row>
             <Col lg="12" md="12">
-              <Button onClick={() => saveSkin()} content="Save" />
-              <Button onClick={() => {
-                powerOff(controller.ip);
-                setSelectedEffect('Off')
-                setSelectedPalette('');
-              }} content={`Disable Lights for ${event}`} />
+              <Button
+                onClick={() => saveSkin()}
+                content="Save"
+              />
+              <Button
+                onClick={() => {
+                  powerOff(controller.ip);
+                  setSelectedEffect('Off');
+                  setSelectedPalette('');
+                }}
+                content={`Disable Lights for ${event}`}
+              />
             </Col>
           </Row>
         </Container>
       )}
     </>
   );
-}
+};
+
+SegmentColorSelection.defaultProps = {
+  skin: null,
+};
+
+SegmentColorSelection.propTypes = propTypes;
 
 export default SegmentColorSelection;

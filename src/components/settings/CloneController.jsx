@@ -2,34 +2,50 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
 import { createSkin, deleteSkin, getSkins } from '../../lib/style-client';
+import { LightingController } from '../shapes';
+
+const propTypes = {
+  cloneSource: LightingController.isRequired,
+  setCloneSource: PropTypes.func.isRequired,
+  networkControllers: PropTypes.arrayOf(LightingController),
+};
 
 const CloneController = ({ cloneSource, setCloneSource, networkControllers }) => {
   const settings = useContext(SettingsContext);
   const [targetController, setTargetController] = useState();
 
   const targetControllers = (
-    <Form.Select onChange={(o) => {
-      if (o.target.value === 'select') {
-        setTargetController(null);
-      } else {
-        setTargetController(o.target.value);
-      }
-    }}>
+    <Form.Select
+      onChange={(o) => {
+        if (o.target.value === 'select') {
+          setTargetController(null);
+        } else {
+          setTargetController(o.target.value);
+        }
+      }}
+    >
       <option value="select">Select...</option>
       {networkControllers?.map((c) => {
+        let option = <></>;
         if (c.ip !== cloneSource.ip) {
-          return <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>
+          option = <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>;
         }
+
+        return option;
       })}
       {settings.controllers?.map((c) => {
-        if (!networkControllers.find((nc) => nc.ip === c.ip) && c.ip !== cloneSource.ip && c.online) {
-          return <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>
+        let option = <></>;
+        if (!networkControllers.find(nc => nc.ip === c.ip) && c.ip !== cloneSource.ip && c.online) {
+          option = <option value={c.ip}>{`${c.ip} - ${c.name}`}</option>;
         }
+
+        return option;
       })}
     </Form.Select>
   );
@@ -38,7 +54,7 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
     deleteSkin(skin.name).then(() => {
       createSkin({
         name: skin.name,
-        skin: skin,
+        skin,
       }).then(() => { });
     });
   };
@@ -49,15 +65,15 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
 
   const clone = async () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    const clonedController = deepClone.controllers?.find((c) => c.ip === cloneSource.ip);
+    const clonedController = deepClone.controllers?.find(c => c.ip === cloneSource.ip);
 
-    if (deepClone.controllers?.find((c) => c.ip === targetController)) {
-      const updatedController = deepClone.controllers?.find((c) => c.ip === targetController);
+    if (deepClone.controllers?.find(c => c.ip === targetController)) {
+      const updatedController = deepClone.controllers?.find(c => c.ip === targetController);
       updatedController.segments = clonedController.segments;
     } else {
       deepClone.controllers.push({
         ip: targetController,
-        segments: clonedController.segments
+        segments: clonedController.segments,
       });
     }
 
@@ -65,11 +81,11 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
 
     const skins = await getSkins();
     skins.map((s) => {
-      const applicableController = s.lighting?.controllers.find((c) => c.ip === cloneSource.ip);
+      const applicableController = s.lighting?.controllers.find(c => c.ip === cloneSource.ip);
       if (applicableController) {
-        const clonedController = JSON.parse(JSON.stringify(applicableController));
+        const controller = JSON.parse(JSON.stringify(applicableController));
 
-        let updatedControllers = s.lighting?.controllers.filter((ec) => ec !== cloneSource.ip);
+        let updatedControllers = s.lighting?.controllers.filter(ec => ec !== cloneSource.ip);
 
         if (!updatedControllers) {
           updatedControllers = [];
@@ -77,7 +93,7 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
 
         updatedControllers.push({
           ip: targetController,
-          segments: clonedController.segments,
+          segments: controller.segments,
         });
 
         s.lighting.controllers = updatedControllers;
@@ -120,5 +136,11 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
     </>
   );
 };
+
+CloneController.defaultProps = {
+  networkControllers: null,
+};
+
+CloneController.propTypes = propTypes;
 
 export default CloneController;

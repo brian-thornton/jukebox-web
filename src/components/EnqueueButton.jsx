@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 import { ListOl } from 'react-bootstrap-icons';
 
@@ -9,6 +10,7 @@ import { applyLighting } from '../lib/lightingHelper';
 import { SettingsContext } from './layout/SettingsProvider';
 
 const propTypes = {
+  mode: PropTypes.string,
   track: Track.isRequired,
 };
 
@@ -35,8 +37,13 @@ const EnqueueButton = ({ track, mode }) => {
         enqueue(track);
         setTimeout(() => applyLighting(settings, mode), 700);
       }}
-      content={<ListOl />} />
+      content={<ListOl />}
+    />
   );
+};
+
+EnqueueButton.defaultProps = {
+  mode: '',
 };
 
 EnqueueButton.propTypes = propTypes;

@@ -1,32 +1,46 @@
-import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect } from 'react';
 import { TrashFill } from 'react-bootstrap-icons';
+import { PropTypes } from 'prop-types';
 
 import Button from '../../Button';
-import Paginator from '../../common/Paginator';
-import { useSwipeable } from 'react-swipeable';
-import { handlers } from '../../../lib/gesture-helper';
+import PaginatedList from '../../common/PaginatedList';
 import { pageSize } from '../../../lib/styleHelper';
-import Item from '../../common/Item';
 import NoResults from '../../common/NoResults';
-import { createRestrictionGroup, getRestrictionGroups, updateRestrictionGroup } from '../../../lib/settings-client';
+import { updateRestrictionGroup } from '../../../lib/settings-client';
+import { RestrictionMode } from '../../shapes';
+
+const propTypes = {
+  restrictionMode: RestrictionMode.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-
-  useEffect(() => {
-    setRealPageSize(pageSize('item', 300));
-  }, []);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  useEffect(() => setRealPageSize(pageSize('item', 300)), []);
 
   const removeRestriction = (path) => {
     const deepClone = JSON.parse(JSON.stringify(restrictionMode));
-    deepClone.content = deepClone.content.filter((p) => p !== path);
+    deepClone.content = deepClone.content.filter(p => p !== path);
     updateRestrictionGroup(deepClone);
   };
 
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const items = () => (
+    restrictionMode.content?.slice(realStart, (realStart + realPageSize)).map(albumPath => (
+      {
+        text: albumPath,
+        buttons: (
+          <>
+            <Button
+              content={<TrashFill />}
+              onClick={() => removeRestriction(albumPath)}
+            />
+          </>
+        ),
+      }
+    ))
+  );
 
   return (
     <>
@@ -38,35 +52,18 @@ const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
         />
       )}
       {restrictionMode.content?.length > 0 && (
-        <>
-          <Button content="Back to Restriction Groups" onClick={onClose} />
-          <ListGroup {...swipe}>
-            {restrictionMode.content?.slice(realStart, (realStart + realPageSize)).map((albumPath) => (
-              <Item
-                text={albumPath}
-                buttons={(
-                  <>
-                    <Button
-                      content={<TrashFill />}
-                      onClick={() => removeRestriction(albumPath)}
-                    />
-                  </>
-                )}
-              />
-            )
-            )}
-          </ListGroup>
-          <Paginator
-            disableRandom
-            onPageChange={(page) => setSelectedPage(page)}
-            selectedPage={selectedPage}
-            totalItems={restrictionMode.content.length}
-            pageSize={realPageSize}
-          />
-        </>
+        <PaginatedList
+          topLevelControls={<Button content="Back to Restriction Groups" onClick={onClose} />}
+          items={items()}
+          selectedPage={selectedPage}
+          setSelectedPage={setSelectedPage}
+          pageSize={realPageSize}
+        />
       )}
     </>
-  )
+  );
 };
+
+RestrictionModeDetail.propTypes = propTypes;
 
 export default RestrictionModeDetail;

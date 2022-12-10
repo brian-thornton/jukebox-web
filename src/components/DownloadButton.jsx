@@ -26,11 +26,11 @@ const DownloadButton = ({ track }) => {
   };
 
   if (settings.features.admin && settings.features.downloadTrack) {
-    return <Button onClick={() => handleDownload()} content={<Download />} />
+    return <Button onClick={() => handleDownload()} content={<Download />} />;
   }
 
   return <></>;
-}
+};
 
 DownloadButton.propTypes = propTypes;
 

@@ -1,30 +1,32 @@
-import { Container, Row } from 'react-bootstrap';
-import ListGroup from 'react-bootstrap/ListGroup';
-import React, { useEffect, useState } from 'react';
-import {
-  PencilSquare,
-  Search,
-  Trash,
-} from 'react-bootstrap-icons';
+import React, { useContext, useEffect, useState } from 'react';
+import { PencilSquare } from 'react-bootstrap-icons';
+import PropTypes from 'prop-types';
 
 import AddNew from '../../common/AddNew';
 import Button from '../../Button';
-import Paginator from '../../common/Paginator';
-import { useSwipeable } from 'react-swipeable';
-import { handlers } from '../../../lib/gesture-helper';
 import { pageSize } from '../../../lib/styleHelper';
-import Item from '../../common/Item';
 import RestrictionModeDetail from './RestrictionModeDetail';
+import { SettingsContext } from '../../layout/SettingsProvider';
 import { createRestrictionGroup, getRestrictionGroups, updateRestrictionGroup } from '../../../lib/settings-client';
+import { updatePreference } from '../../../lib/preferenceHelper';
+import PaginatedList from '../../common/PaginatedList';
+import { Album } from '../../shapes';
+
+const propTypes = {
+  addMode: PropTypes.bool,
+  addComplete: PropTypes.func,
+  album: Album,
+};
 
 const RestrictionModes = ({ addMode, addComplete, album }) => {
+  const settings = useContext(SettingsContext);
+  const { preferences } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const [isAddOpen, setIsAddOpen] = useState();
   const [selectedRestrictionMode, setSelectedRestrictionMode] = useState();
-  const restrictionModes = ['Unrestricted', 'Kids Party', 'Mixed Company'];
   const [restrictionGroups, setRestrictionGroups] = useState();
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   const loadRestrictionGroups = async () => {
     const data = await getRestrictionGroups();
@@ -35,8 +37,6 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
     setRealPageSize(pageSize('item', 300));
     loadRestrictionGroups();
   }, []);
-
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
   const addAlbumToRestrictedList = (album, restrictionGroup) => {
     if (!restrictionGroup.content.includes(album.path)) {
@@ -59,6 +59,42 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
     setIsAddOpen(false);
   };
 
+  const itemButtons = restrictionGroup => (
+    <>
+      {!addMode && (
+        <>
+          <Button
+            onClick={() => setSelectedRestrictionMode(restrictionGroup)}
+            content={<PencilSquare />}
+          />
+          <Button
+            isSelected={settings.preferences.restrictionGroup === restrictionGroup.name}
+            onClick={() => {
+              const isSet = preferences.restrictionGroup === restrictionGroup.name;
+              updatePreference(settings, 'restrictionGroup', isSet ? '' : restrictionGroup.name);
+            }}
+            content="Enable"
+          />
+        </>
+      )}
+      {addMode && (
+        <Button
+          onClick={() => addAlbumToRestrictedList(album, restrictionGroup)}
+          content="Add"
+        />
+      )}
+    </>
+  );
+
+  const items = () => (
+    restrictionGroups.slice(realStart, (realStart + realPageSize)).map(restrictionGroup => (
+       {
+        text: `${restrictionGroup.name} (${restrictionGroup.type})`,
+        buttons: itemButtons(restrictionGroup),
+      }
+    ))
+  );
+
   return (
     <>
       {selectedRestrictionMode && (
@@ -75,49 +111,23 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
         />
       )}
       {!selectedRestrictionMode && !isAddOpen && restrictionGroups?.length > 0 && (
-        <Container fluid style={{ width: '100%' }}>
-          <Row>
-            <Button content="Add" onClick={() => setIsAddOpen(true)} />
-          </Row>
-          <Row>
-            <ListGroup {...swipe} style={{ width: '100%' }}>
-              {restrictionGroups.slice(realStart, (realStart + realPageSize)).map((restrictionGroup) => (
-                <Item
-                  text={`${restrictionGroup.name} (${restrictionGroup.type})`}
-                  buttons={(
-                    <>
-                      {!addMode && (
-                        <Button
-                          onClick={() => setSelectedRestrictionMode(restrictionGroup)}
-                          content={<PencilSquare />}
-                        />
-                      )}
-                      {addMode && (
-                        <Button
-                          onClick={() => addAlbumToRestrictedList(album, restrictionGroup)}
-                          content="Add"
-                        />
-                      )}
-                    </>
-                  )}
-                />
-              )
-              )}
-            </ListGroup>
-          </Row>
-          <Row>
-            <Paginator
-              disableRandom
-              onPageChange={(page) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={restrictionModes.length}
-              pageSize={realPageSize}
-            />
-          </Row>
-        </Container>
+        <PaginatedList
+          items={items()}
+          selectedPage={selectedPage}
+          setSelectedPage={setSelectedPage}
+          pageSize={realPageSize}
+        />
       )}
     </>
   );
-}
+};
+
+RestrictionModes.defaultProps = {
+  addMode: false,
+  addComplete: null,
+  album: null,
+};
+
+RestrictionModes.propTypes = propTypes;
 
 export default RestrictionModes;

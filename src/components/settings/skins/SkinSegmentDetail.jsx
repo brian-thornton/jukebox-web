@@ -1,14 +1,27 @@
+import { PropTypes } from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 
 import Button from '../../Button';
 import { getCurrentState } from '../../../lib/lighting-client';
-import Segments from '../Segments';
+import { Segments } from '../Segments';
 import SegmentColorSelection from '../SegmentColorSelection';
 import './SkinSegmentDetail.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
+import { Controller, Event, Skin } from '../../shapes';
 
+const propTypes = {
+  controller: Controller.isRequired,
+  skin: Skin.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  event: Event.isRequired,
+};
 
-const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
+const SkinSegmentDetail = ({
+  controller,
+  skin,
+  event,
+  onCancel,
+}) => {
   const [controllerState, setControllerState] = useState();
   const [configSegment, setConfigSegment] = useState();
   const settings = useContext(SettingsContext);
@@ -27,7 +40,7 @@ const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
 
   return (
     <>
-      {!configSegment && controllerState?.state && (
+      {!configSegment && controllerState && controllerState.state && (
         <Segments
           skin={skin}
           event={event}
@@ -35,12 +48,10 @@ const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
           segments={controllerState.state.seg}
           allowAdd={false}
           allowRemove={false}
-          onConfigure={(segment) => {
-            setConfigSegment(segment)
-          }}
+          onConfigure={segment => setConfigSegment(segment)}
         />
       )}
-      <div style={{color: settings.styles.fontColor}}>{`Skin Lighting for controller ${controller.ip} segment ${configSegment?.id} during event ${event}`}</div>
+      <div style={{ color: settings.styles.fontColor }}>{`Skin Lighting for controller ${controller.ip} segment ${configSegment.id} during event ${event}`}</div>
       {configSegment && (
         <SegmentColorSelection
           event={event}
@@ -58,5 +69,7 @@ const SkinSegmentDetail = ({ controller, skin, event, onCancel }) => {
     </>
   );
 };
+
+SkinSegmentDetail.propTypes = propTypes;
 
 export default SkinSegmentDetail;

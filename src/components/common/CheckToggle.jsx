@@ -1,8 +1,14 @@
 import Button from 'react-bootstrap/Button';
 import { CheckSquare, Square } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
+import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../layout/SettingsProvider';
+
+const propTypes = {
+  isChecked: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
+};
 
 const CheckToggle = ({ isChecked, onClick }) => {
   const settings = useContext(SettingsContext);
@@ -25,5 +31,11 @@ const CheckToggle = ({ isChecked, onClick }) => {
     </>
   );
 };
+
+CheckToggle.defaultProps = {
+  isChecked: false,
+};
+
+CheckToggle.propTypes = propTypes;
 
 export default CheckToggle;

@@ -1,3 +1,4 @@
+import { PropTypes } from 'prop-types';
 import React, { useState } from 'react';
 import {
   PencilSquare,
@@ -13,19 +14,32 @@ import {
 
 import Button from '../../Button';
 import Item from '../../common/Item';
+import { Library } from '../../shapes';
 
-const LibraryRow = ({ library, reloadLibraries, setCurrentScan, setSelectedLibrary }) => {
+const propTypes = {
+  library: Library.isRequired,
+  reloadLibraries: PropTypes.func.isRequired,
+  setCurrentScan: PropTypes.func.isRequired,
+  setSelectedLibrary: PropTypes.func.isRequired,
+};
+
+const LibraryRow = ({
+  library,
+  reloadLibraries,
+  setCurrentScan,
+  setSelectedLibrary,
+}) => {
   const [isScanning, setIsScanning] = useState(false);
   const [deleteConfirmLibrary, setDeleteConfirmLibrary] = useState();
 
   const removeLibrary = (name) => {
-    deleteLibrary(name).then(reloadLibraries)
+    deleteLibrary(name).then(reloadLibraries);
   };
 
-  const onScan = (library) => {
+  const onScan = (libraryToScan) => {
     setIsScanning(true);
-    setCurrentScan(library.path);
-    scan(library).then(() => {
+    setCurrentScan(libraryToScan.path);
+    scan(libraryToScan).then(() => {
       setIsScanning(false);
       reloadLibraries();
       setCurrentScan(null);
@@ -76,7 +90,9 @@ const LibraryRow = ({ library, reloadLibraries, setCurrentScan, setSelectedLibra
         </>
       )}
     />
-  )
-}
+  );
+};
+
+LibraryRow.propTypes = propTypes;
 
 export default LibraryRow;

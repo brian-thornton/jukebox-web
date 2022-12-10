@@ -29,8 +29,15 @@ const PlayNowButton = ({ track }) => {
     next();
   };
 
-  return <Button height={heightAndWidth} width={heightAndWidth} icon={<PlayFill />} onClick={() => playNow()} />;
-}
+  return (
+    <Button
+      height={heightAndWidth}
+      width={heightAndWidth}
+      icon={<PlayFill />}
+      onClick={() => playNow()}
+    />
+  );
+};
 
 PlayNowButton.propTypes = propTypes;
 

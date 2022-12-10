@@ -1,4 +1,3 @@
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
@@ -7,6 +6,11 @@ import Row from 'react-bootstrap/Row';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 import ExpandRow from '../common/ExpandRow';
+
+const propTypes = {
+  category: PropTypes.string,
+  setCategory: PropTypes.func.isRequired,
+};
 
 const RadioCategories = ({ category, setCategory }) => {
   const settings = useContext(SettingsContext);
@@ -17,12 +21,12 @@ const RadioCategories = ({ category, setCategory }) => {
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
 
   const categories = [
-    'Rock', 'Pop', 'Charts', 'Hits', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance'
+    'Rock', 'Pop', 'Charts', 'Hits', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance',
   ];
 
   const buttons = (
     <>
-      {categories.map((c) => (
+      {categories.map(c => (
         <Button
           disabled={features.isLocked}
           onClick={() => {
@@ -57,5 +61,11 @@ const RadioCategories = ({ category, setCategory }) => {
     </Container>
   );
 };
+
+RadioCategories.defaultProps = {
+  category: '',
+};
+
+RadioCategories.propTypes = propTypes;
 
 export default RadioCategories;

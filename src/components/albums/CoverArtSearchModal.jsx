@@ -3,25 +3,23 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import React, { useContext, useState } from 'react';
 import { PropTypes } from 'prop-types';
+import { Container } from 'react-bootstrap';
 
 import { Album } from '../shapes';
 import Button from '../Button';
 import NameInput from '../common/NameInput';
 import { saveCoverArt } from '../../lib/librarian-client';
 import './CoverArtSearchModal.scss';
-import { Container } from 'react-bootstrap';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const albumArt = require('album-art');
 
 const propTypes = {
-  isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   album: Album.isRequired,
 };
 
 const CoverArtSearchModal = ({
-  isOpen,
   handleClose,
   album,
 }) => {
@@ -42,12 +40,12 @@ const CoverArtSearchModal = ({
     setIsLoading(true);
     if (query.includes('-')) {
       const nameArray = query.split('-');
-      albumArt(nameArray[0], { album: nameArray[1] }).then(data => {
+      albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
         handleResult(data);
         setIsLoading(false);
       });
     } else {
-      albumArt(query).then(data => {
+      albumArt(query).then((data) => {
         handleResult(data);
         setIsLoading(false);
       });
@@ -87,7 +85,7 @@ const CoverArtSearchModal = ({
       </Container>
     </div>
   );
-}
+};
 
 CoverArtSearchModal.propTypes = propTypes;
 

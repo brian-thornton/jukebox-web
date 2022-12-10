@@ -8,15 +8,26 @@ import './ExpandRow.scss';
 
 const propTypes = {
   buttons: PropTypes.node,
-  onClick: PropTypes.func,
   text: PropTypes.string,
+  isExpanded: PropTypes.bool,
+  setIsExpanded: PropTypes.func,
 };
 
-const ExpandRow = ({ buttons, text, isExpanded, setIsExpanded }) => {
+const ExpandRow = ({
+  buttons,
+  text,
+  isExpanded,
+  setIsExpanded,
+}) => {
   const settings = useContext(SettingsContext);
   const [activeKey, setActiveKey] = useState(isExpanded ? '0' : null);
 
-  function CustomToggle({ children, eventKey, setIsExpanded }) {
+  const togglePropTypes = {
+    children: PropTypes.node.isRequired,
+    eventKey: PropTypes.string.isRequired,
+  };
+
+  function CustomToggle({ children, eventKey }) {
     const decoratedOnClick = useAccordionButton(eventKey, () => {
       setActiveKey(activeKey ? null : eventKey);
       if (setIsExpanded) {
@@ -32,7 +43,8 @@ const ExpandRow = ({ buttons, text, isExpanded, setIsExpanded }) => {
 
     return (
       <button
-        className="accordionHeader" style={itemStyle}
+        className="accordionHeader"
+        style={itemStyle}
         type="button"
         onClick={decoratedOnClick}
       >
@@ -40,6 +52,8 @@ const ExpandRow = ({ buttons, text, isExpanded, setIsExpanded }) => {
       </button>
     );
   }
+
+  CustomToggle.propTypes = togglePropTypes;
 
   return (
     <Accordion activeKey={activeKey} style={{ width: '100%' }}>
@@ -51,11 +65,13 @@ const ExpandRow = ({ buttons, text, isExpanded, setIsExpanded }) => {
       </Accordion.Collapse>
     </Accordion>
   );
-}
+};
 
 ExpandRow.defaultProps = {
   buttons: null,
   text: '',
+  isExpanded: false,
+  setIsExpanded: null,
 };
 
 

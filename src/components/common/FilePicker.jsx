@@ -1,12 +1,29 @@
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './FilePicker.scss';
 
-const FilePicker = ({ onConfirm, defaultValue, onSelectFile, onCancel, title = 'Add', confirmText = 'Save', cancelText = 'Cancel' }) => {
+const propTypes = {
+  onConfirm: PropTypes.func.isRequired,
+  onSelectFile: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  confirmText: PropTypes.string,
+  cancelText: PropTypes.string,
+};
+
+const FilePicker = ({
+  onConfirm,
+  onSelectFile,
+  onCancel,
+  title,
+  confirmText,
+  cancelText,
+}) => {
   const settings = useContext(SettingsContext);
   const isScreenSmall = window.innerWidth < 700;
 
@@ -33,7 +50,15 @@ const FilePicker = ({ onConfirm, defaultValue, onSelectFile, onCancel, title = '
         </div>
       </Card.Body>
     </Card>
-  )
+  );
 };
+
+FilePicker.defaultProps = {
+  title: '',
+  confirmText: '',
+  cancelText: '',
+};
+
+FilePicker.propTypes = propTypes;
 
 export default FilePicker;

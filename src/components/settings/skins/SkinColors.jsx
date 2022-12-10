@@ -14,6 +14,11 @@ import Paginator from '../../common/Paginator';
 import './SkinDetail.scss';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import { handlers } from '../../../lib/gesture-helper';
+import { Skin } from '../../shapes';
+
+const propTypes = {
+  skin: Skin.isRequired,
+};
 
 const SkinColors = ({ skin }) => {
   const [isColorCopyOpen, setIsColorCopyOpen] = useState(false);
@@ -146,7 +151,7 @@ const SkinColors = ({ skin }) => {
             <Col lg="12" xl="12" md="12" sm="12">
               <Paginator
                 disableRandom
-                onPageChange={(page) => setSelectedPage(page)}
+                onPageChange={page => setSelectedPage(page)}
                 selectedPage={selectedPage}
                 totalItems={rows.length}
                 pageSize={realPageSize}
@@ -158,5 +163,7 @@ const SkinColors = ({ skin }) => {
     </>
   );
 };
+
+SkinColors.propTypes = propTypes;
 
 export default SkinColors;

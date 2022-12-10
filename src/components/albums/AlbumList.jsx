@@ -18,12 +18,23 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import './AlbumList.scss';
 import { handlers } from '../../lib/gesture-helper';
 import { headerFooterReserve } from '../../lib/styleHelper';
+import { Libraries } from '../shapes';
 
 const propTypes = {
   search: PropTypes.string,
+  selectedLibraries: Libraries,
+  display: PropTypes.string.isRequired,
+  startsWithFilter: PropTypes.string,
+  setStartsWithFilter: PropTypes.func,
 };
 
-const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setStartsWithFilter }) => {
+const AlbumList = ({
+  search,
+  selectedLibraries,
+  display,
+  startsWithFilter,
+  setStartsWithFilter,
+}) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,14 +48,20 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
   const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
+  const centerColStyle = {
+    marginLeft: '0px',
+    paddingLeft: '0px',
+    marginRight: '0px',
+    paddingRight: '0px',
+  };
 
   const onPageChange = (page) => {
     setSelectedPage(page);
-  }
+  };
 
   const { pathname } = window.location;
   if (!category && pathname.includes('/categories')) {
-    category = pathname.slice(window.location.pathname.lastIndexOf("/") + 1, pathname.length);
+    category = pathname.slice(window.location.pathname.lastIndexOf('/') + 1, pathname.length);
   }
 
   useEffect(() => {
@@ -65,10 +82,9 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       }
       window.scrollTo(0, 0);
       setIsLoading(false);
-    }).catch((e) => {
+    }).catch(() => {
       // Something went wrong. Let's try that again.
-      setTimeout(() => findAlbums(start, limit), 3000)
-      console.log(e);
+      setTimeout(() => findAlbums(start, limit), 3000);
     });
   };
 
@@ -77,6 +93,8 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
     // 2: 2 * 12 == 24 - 12 = 12
     // 3: 3 * 12 == 36 - 12 = 24
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+    const end = realStart + realPageSize;
+    const { preferences } = settings;
 
     if (selectedPage && realPageSize) {
       setAlbums([]);
@@ -85,13 +103,14 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       } else {
         const musicCategory = category === 'Albums' ? null : category;
 
-        getAlbums(realStart, (realStart + realPageSize), musicCategory, selectedLibraries).then((data) => {
-          setTotalAlbums(data.totalAlbums);
-          setAlbums(data.albums);
-          window.scrollTo(0, 0);
-          setIsLoading(false);
-          setLoadComplete(true);
-        });
+        getAlbums(realStart, end, musicCategory, selectedLibraries, preferences.restrictionGroup)
+          .then((data) => {
+            setTotalAlbums(data.totalAlbums);
+            setAlbums(data.albums);
+            window.scrollTo(0, 0);
+            setIsLoading(false);
+            setLoadComplete(true);
+          });
       }
     }
   };
@@ -101,7 +120,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       const itemsPerColumn = Math.floor((window.innerHeight - 200) / 40);
       setRealPageSize(itemsPerColumn * 3);
     } else {
-      let reserve = headerFooterReserve(settings);
+      const reserve = headerFooterReserve(settings);
 
       let coverWidth = 225;
       let coverHeight = 200;
@@ -141,13 +160,12 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
     if (selectedPage === 1) {
       loadAlbums();
     } else {
-
       setSelectedPage(1);
     }
   }, [search, startsWithFilter]);
 
   const noResults = search && !albums.length && !isLoading;
-  const cols = startsWithLocation === 'none' ? "12" : "11";
+  const cols = startsWithLocation === 'none' ? '12' : '11';
 
   const paginator = (
     <Paginator
@@ -155,6 +173,7 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={realPageSize}
+      disableRandom={false}
     />
   );
 
@@ -168,10 +187,13 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
           <Row style={{ paddingTop: '20px' }}>
             {startsWithLocation === 'left' && !isScreenSmall && !search && (
               <Col lg="1" xl="1" md="1" sm="1">
-                <StartsWithFilter startsWithFilter={startsWithFilter} setStartsWithFilter={setStartsWithFilter} />
+                <StartsWithFilter
+                  startsWithFilter={startsWithFilter}
+                  setStartsWithFilter={setStartsWithFilter}
+                />
               </Col>
             )}
-            <Col lg={cols} xl={cols} md={cols} sm={cols} style={{ marginLeft: '0px', paddingLeft: '0px', marginRight: '0px', paddingRight: '0px' }}>
+            <Col lg={cols} xl={cols} md={cols} sm={cols} style={centerColStyle}>
               {display !== 'grid' && (
                 <Row className="albumRow">
                   {albums.map(album => <Album album={album} />)}
@@ -182,7 +204,10 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
             </Col>
             {startsWithLocation === 'right' && !isScreenSmall && !search && (
               <Col lg="1" xl="1" md="1" sm="1">
-                <StartsWithFilter startsWithFilter={startsWithFilter} setStartsWithFilter={setStartsWithFilter} />
+                <StartsWithFilter
+                  startsWithFilter={startsWithFilter}
+                  setStartsWithFilter={setStartsWithFilter}
+                />
               </Col>
             )}
           </Row>
@@ -197,12 +222,15 @@ const AlbumList = ({ search, selectedLibraries, display, startsWithFilter, setSt
       )}
     </>
   );
-}
+};
 
 AlbumList.propTypes = propTypes;
 
 AlbumList.defaultProps = {
   search: '',
+  selectedLibraries: null,
+  startsWithFilter: null,
+  setStartsWithFilter: null,
 };
 
 export default AlbumList;

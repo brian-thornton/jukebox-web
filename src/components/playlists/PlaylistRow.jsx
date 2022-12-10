@@ -3,16 +3,23 @@ import React, { useContext } from 'react';
 
 import Button from '../Button';
 import Item from '../common/Item';
-import { Tracks } from '../shapes';
+import { Playlist } from '../shapes';
 import './PlaylistsViewer.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
-  currentPlaylist: PropTypes.string,
-  tracks: Tracks.isRequired,
+  playlist: Playlist.isRequired,
+  addMode: PropTypes.bool,
+  onAdd: PropTypes.func,
+  onSelect: PropTypes.func,
 };
 
-const PlaylistRow = ({ playlist, addMode, onAdd, onSelect }) => {
+const PlaylistRow = ({
+  playlist,
+  addMode,
+  onAdd,
+  onSelect,
+}) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
@@ -41,7 +48,14 @@ const PlaylistRow = ({ playlist, addMode, onAdd, onSelect }) => {
       )}
     />
   );
-}
+};
+
+
+PlaylistRow.defaultProps = {
+  addMode: false,
+  onAdd: () => {},
+  onSelect: () => {},
+};
 
 PlaylistRow.propTypes = propTypes;
 

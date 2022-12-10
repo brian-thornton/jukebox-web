@@ -1,12 +1,23 @@
-import { TrashFill, PencilSquare, PlusSquare, Power } from 'react-bootstrap-icons';
+import {
+  TrashFill,
+  PencilSquare,
+  PlusSquare,
+  Power,
+} from 'react-bootstrap-icons';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { PropTypes } from 'prop-types';
 
 import './LightingControllers.scss';
-import { discover, createSegment, reset, powerOff } from '../../lib/lighting-client';
+import {
+  discover,
+  createSegment,
+  reset,
+  powerOff,
+} from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
 import AddNew from '../common/AddNew';
@@ -17,8 +28,27 @@ import Item from '../common/Item';
 import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
 import Presets from './Presets';
+import { Skin } from '../shapes';
 
-const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = true, allowConfigure = true, buttons, skin, onConfigure = () => { } }) => {
+const propTypes = {
+  allowAdd: PropTypes.bool,
+  allowName: PropTypes.bool,
+  allowRemove: PropTypes.bool,
+  allowConfigure: PropTypes.bool,
+  buttons: PropTypes.arrayOf(PropTypes.node),
+  skin: Skin,
+  onConfigure: PropTypes.func,
+};
+
+export const LightingControllers = ({
+  allowAdd = true,
+  allowName = true,
+  allowRemove = true,
+  allowConfigure = true,
+  buttons,
+  skin,
+  onConfigure = () => { },
+}) => {
   const settings = useContext(SettingsContext);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isConfigureOpen, setIsConfigureOpen] = useState(false);
@@ -33,7 +63,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     setDiscoveryInProgress(true);
     discover().then((data) => {
       data.forEach((c) => {
-        const metaData = settings?.controllers?.find((m) => m.ip === c.ip);
+        const metaData = settings?.controllers?.find(m => m.ip === c.ip);
 
         if (metaData) {
           c.segments = metaData.segments;
@@ -44,7 +74,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
 
       if (deepClone.controllers) {
         deepClone.controllers.forEach((controller) => {
-          const onlineController = data.find((c) => c.ip === controller.ip);
+          const onlineController = data.find(c => c.ip === controller.ip);
           if (onlineController) {
             controller.online = true;
           } else {
@@ -53,11 +83,11 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
         });
 
         data.forEach((c) => {
-          const knownController = deepClone.controllers?.find((kc) => c.ip === kc.ip);
+          const knownController = deepClone.controllers?.find(kc => c.ip === kc.ip);
           if (!knownController) {
             deepClone.controllers.push({ ...c, online: true });
           }
-        })
+        });
       } else {
         deepClone.controllers = data;
       }
@@ -67,7 +97,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
       setNetworkControllers(data);
       setDiscoveryInProgress(false);
     });
-  }
+  };
 
   useEffect(() => {
     if (!skin) {
@@ -90,7 +120,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
     const controllerToAdd = { name, ip };
 
     if (deepClone.controllers) {
-      if (!deepClone.controllers.find((c) => c.ip === ip)) {
+      if (!deepClone.controllers.find(c => c.ip === ip)) {
         deepClone.controllers.push(controllerToAdd);
       }
     } else {
@@ -102,13 +132,13 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
 
   const onControllerRemove = (ip) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.controllers = deepClone.controllers.filter((f) => f.ip !== ip);
+    deepClone.controllers = deepClone.controllers.filter(f => f.ip !== ip);
     saveSettings(deepClone);
   };
 
   const onSetName = async (controller) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    const updatedController = deepClone.controllers?.find((c) => c.ip === controller.ip);
+    const updatedController = deepClone.controllers?.find(c => c.ip === controller.ip);
 
     if (!updatedController) {
       if (!deepClone.controllers) {
@@ -117,7 +147,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
             name: controller.name,
             ip: controller.ip,
             segments: [],
-          }
+          },
         ];
       }
     } else {
@@ -148,7 +178,12 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 {!allowName && <div>{controller.name}</div>}
               </Col>
               <Col>
-                {allowName && <NameInput defaultValue={controller.name} onChange={(event) => setsUpdateControllerName(event.target.value)} />}
+                {allowName && (
+                  <NameInput
+                    defaultValue={controller.name}
+                    onChange={event => setsUpdateControllerName(event.target.value)}
+                  />
+                )}
               </Col>
             </Row>
           </Container>
@@ -156,7 +191,11 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
         buttons={(
           <>
             {!skin && controller.ip === cloneSource?.ip && (
-              <CloneController cloneSource={cloneSource} setCloneSource={setCloneSource} networkControllers={networkControllers} />
+              <CloneController
+                cloneSource={cloneSource}
+                setCloneSource={setCloneSource}
+                networkControllers={networkControllers}
+              />
             )}
             {controller.ip !== cloneSource?.ip && (
               <>
@@ -235,12 +274,12 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 )}
               </>
             )}
-            {buttons?.length && buttons.map((b) => b)}
+            {buttons?.length && buttons.map(b => b)}
           </>
         )}
       />
     );
-  }
+  };
 
   return (
     <>
@@ -268,15 +307,17 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
                 {!discoveryInProgress && (
                   <Row>
                     <ListGroup className="styleEditorContent">
-                      {networkControllers?.map((controller) => controllerRow({ ...controller, online: true }))}
+                      {networkControllers?.map(c => controllerRow({ ...c, online: true }))}
                       {settings.controllers?.map((controller) => {
                         if (!networkControllers) {
-                          return controllerRow(controller)
-                        } else {
-                          if (!networkControllers.find((nc) => nc.ip === controller.ip)) {
-                            return controllerRow(controller)
-                          }
+                          return controllerRow(controller);
                         }
+
+                        if (!networkControllers.find(nc => nc.ip === controller.ip)) {
+                          return controllerRow(controller);
+                        }
+
+                        return <></>;
                       })}
                     </ListGroup>
                   </Row>
@@ -298,7 +339,7 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
             defaultValue="IP Address"
             onCancel={() => setIsAddOpen(false)}
             fields={{ name: 'Name', ip: 'ip' }}
-            onConfirm={(data) => onControllerAdd(data.name, data.ip)}
+            onConfirm={data => onControllerAdd(data.name, data.ip)}
           />
         </>
       )}
@@ -306,14 +347,28 @@ const LightingControllers = ({ allowAdd = true, allowName = true, allowRemove = 
         <ControllerDetail controller={selectedController} />
       )}
       {isPresetsOpen && (
-        <Presets controller={selectedController} onClose={() => {
-          setSelectedController(null);
-          setIsPresetsOpen(false);
-        }}
+        <Presets
+          controller={selectedController}
+          onClose={() => {
+            setSelectedController(null);
+            setIsPresetsOpen(false);
+          }}
         />
       )}
     </>
   );
 };
+
+LightingControllers.defaultProps = {
+  allowAdd: true,
+  allowName: true,
+  allowRemove: true,
+  allowConfigure: true,
+  buttons: null,
+  skin: null,
+  onConfigure: null,
+};
+
+LightingControllers.propTypes = propTypes;
 
 export default LightingControllers;

@@ -1,14 +1,39 @@
 import React, { useContext } from 'react';
-import Button from '../Button';
+import { PropTypes } from 'prop-types';
 
+import Button from '../Button';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
 import Item from '../common/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
+import {
+  Event,
+  LightingController,
+  Segment,
+  Skin,
+} from '../shapes';
 
-const SegmentRowInfo = ({ segment, controller, skin, event, onConfigure, isOnController }) => {
+const propTypes = {
+  segment: Segment.isRequired,
+  controller: LightingController.isRequired,
+  skin: Skin,
+  event: Event,
+  onConfigure: PropTypes.func.isRequired,
+  isOnController: PropTypes.bool,
+};
+
+const SegmentRowInfo = ({
+  segment,
+  controller,
+  skin,
+  event,
+  onConfigure,
+  isOnController,
+}) => {
   const settings = useContext(SettingsContext);
-  const controllerMetadata = settings.controllers?.find((c) => c.ip === controller.info?.ip || controller.ip);
-  const segmentMetadata = controllerMetadata?.segments.find((s) => s.start === segment.start.toString() && s.stop === segment.stop.toString());
+  const controllerMetadata = settings.controllers?.find(c => (
+    c.ip === controller.info?.ip || controller.ip));
+  const segmentMetadata = controllerMetadata?.segments.find(s => (
+    s.start === segment.start.toString() && s.stop === segment.stop.toString()));
 
   const pushSegment = async (data) => {
     await createSegment(controller.info.ip, data.start, data.stop);
@@ -22,9 +47,11 @@ const SegmentRowInfo = ({ segment, controller, skin, event, onConfigure, isOnCon
 
   let effectName;
   if (skin) {
-    const skinController = skin.lighting?.controllers.find((c) => c.ip === (controller.info?.ip || controller.ip));
-    const eventSegments = skinController?.segments.filter((s) => s.event === event);
-    const skinSegment = eventSegments?.find((s) => s.start.toString() === segment.start.toString() && s.stop.toString() === segment.stop.toString())
+    const skinController = skin.lighting?.controllers.find(c => (
+      c.ip === (controller.info?.ip || controller.ip)));
+    const eventSegments = skinController?.segments.filter(s => s.event === event);
+    const skinSegment = eventSegments?.find(s => s.start.toString() === segment.start.toString()
+      && s.stop.toString() === segment.stop.toString());
     effectName = skinSegment?.effect;
   }
 
@@ -34,15 +61,23 @@ const SegmentRowInfo = ({ segment, controller, skin, event, onConfigure, isOnCon
   return (
     <Item
       text={`${nameText}Start: ${segment.start} Stop: ${segment.stop} ${effectText}`}
-      buttons={
+      buttons={(
         <>
           <Button content="Configure" onClick={() => onConfigure(segment)} />
-          {!isOnController && <Button content="Push to Controller" onClick={() => pushSegment(segment) } />}
+          {!isOnController && <Button content="Push to Controller" onClick={() => pushSegment(segment)} />}
           {isOnController && !onConfigure && <Button content="Remove from Controller" onClick={() => removeRemoteSegment(segment)} />}
         </>
-      }
+      )}
     />
-  )
+  );
 };
+
+SegmentRowInfo.defaultProps = {
+  skin: null,
+  event: null,
+  isOnController: false,
+};
+
+SegmentRowInfo.propTypes = propTypes;
 
 export default SegmentRowInfo;

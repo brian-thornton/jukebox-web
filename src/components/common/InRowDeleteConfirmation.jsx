@@ -1,7 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '../Button';
 import './InRowDeleteConfirmation.scss';
+
+const propTypes = {
+  onCancel: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+};
 
 const InRowDeleteConfirmation = ({ onCancel, onConfirm }) => (
   <>
@@ -10,5 +16,7 @@ const InRowDeleteConfirmation = ({ onCancel, onConfirm }) => (
     <Button onClick={onConfirm} content="Delete" />
   </>
 );
+
+InRowDeleteConfirmation.propTypes = propTypes;
 
 export default InRowDeleteConfirmation;

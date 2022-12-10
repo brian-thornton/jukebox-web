@@ -15,7 +15,7 @@ const propTypes = {
 };
 
 const Album = ({ album, coverArtOnly }) => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const settings = useContext(SettingsContext);
   const { coverSize } = settings.preferences;
   const [coverArt, setCoverArt] = useState(defaultCover);
@@ -23,7 +23,7 @@ const Album = ({ album, coverArtOnly }) => {
   const loadCoverArt = () => {
     if (album.coverArtExists || settings.features.admin) {
       coverArtUrl(album, settings.styles.defaultAlbumCover).then((data) => {
-        setCoverArt(data.url)
+        setCoverArt(data.url);
 
         if (!data.isLocal && !data.isDefault) {
           saveCoverArt({ album, url: data.url });
@@ -51,7 +51,7 @@ const Album = ({ album, coverArtOnly }) => {
     height: '300px',
     maxWidth: '200px',
     maxHeight: '300px',
-  }
+  };
 
   if (coverSize === 'small') {
     albumImageStyle.width = '200px';
@@ -87,11 +87,15 @@ const Album = ({ album, coverArtOnly }) => {
   }
 
   return (
-    <Card className="albumCard" style={albumCardStyle} onClick={() => {
-      if (!settings.features.isLocked) {
-        navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
-      }
-    }}>
+    <Card
+      className="albumCard"
+      style={albumCardStyle}
+      onClick={() => {
+        if (!settings.features.isLocked) {
+          navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
+        }
+      }}
+    >
       <Card.Img top src={coverArt} style={albumImageStyle} />
       {!coverArtOnly && (
         <Card.Body className="albumCardBody" style={albumNameStyle}>
@@ -100,7 +104,7 @@ const Album = ({ album, coverArtOnly }) => {
       )}
     </Card>
   );
-}
+};
 
 Album.defaultProps = {
   coverArtOnly: false,

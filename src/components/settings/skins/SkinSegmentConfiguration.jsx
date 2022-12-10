@@ -1,14 +1,20 @@
 import ListGroup from 'react-bootstrap/ListGroup';
-import Paginator from '../../common/Paginator';
 import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
 import './SkinSegmentConfiguration.scss';
+import Paginator from '../../common/Paginator';
 import SkinSegmentDetail from './SkinSegmentDetail';
 import { pageSize } from '../../../lib/styleHelper';
 import { handlers } from '../../../lib/gesture-helper';
+import { Controller, Skin } from '../../shapes';
+
+const propTypes = {
+  controller: Controller.isRequired,
+  skin: Skin.isRequired,
+};
 
 const SkinSegmentConfiguration = ({ skin, controller }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -22,36 +28,34 @@ const SkinSegmentConfiguration = ({ skin, controller }) => {
   const lightingEvents = ['Albums', 'Category', 'Tracks', 'Playlists',
     'Queue', 'Settings', 'Delete', 'Enqueue', 'Loading', 'Search', 'Lock'];
 
-  const eventRow = (event) => {
-    return (
-      <Item
-        text={event}
-        buttons={(
-          <>
-            <Button
-              className="skin-segment-configure-button"
-              onClick={() => {
-                setSelectedEvent(event);
-                setIsDetailOpen(true);
-              }}
-              content="Configure"
-            />
-          </>
-        )}
-      />
-    );
-  }
+  const eventRow = event => (
+    <Item
+      text={event}
+      buttons={(
+        <>
+          <Button
+            className="skin-segment-configure-button"
+            onClick={() => {
+              setSelectedEvent(event);
+              setIsDetailOpen(true);
+            }}
+            content="Configure"
+          />
+        </>
+      )}
+    />
+  );
 
   return (
     <>
       {!isDetailOpen && (
         <>
           <ListGroup className="styleEditorContent" {...swipe}>
-            {lightingEvents.slice(start, (start + itemsPerPage)).map((le) => eventRow(le))}
+            {lightingEvents.slice(start, (start + itemsPerPage)).map(le => eventRow(le))}
           </ListGroup>
           <Paginator
             disableRandom
-            onPageChange={(page) => setSelectedPage(page)}
+            onPageChange={page => setSelectedPage(page)}
             selectedPage={selectedPage}
             totalItems={lightingEvents.length}
             pageSize={itemsPerPage}
@@ -69,5 +73,7 @@ const SkinSegmentConfiguration = ({ skin, controller }) => {
     </>
   );
 };
+
+SkinSegmentConfiguration.propTypes = propTypes;
 
 export default SkinSegmentConfiguration;

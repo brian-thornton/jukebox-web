@@ -10,26 +10,22 @@ import Button from '../../Button';
 import './SkinDetail.scss';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import FilePicker from '../../common/FilePicker';
+import { Skin } from '../../shapes';
+
+const propTypes = {
+  skin: Skin.isRequired,
+};
 
 const SkinGraphics = ({ skin }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState();
   const [imageKey, setImageKey] = useState();
 
-  const imageUpload = (e) => {
-    const file = e.target.files[0];
-    getBase64(file).then(base64 => {
-      updateSkin(skin, imageKey, base64);
-    });
-  };
-
-  const getBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-      reader.readAsDataURL(file);
-    });
-  }
+  const getBase64 = file => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+    reader.readAsDataURL(file);
+  });
 
   const updateSkin = (updatedSkin, key, value) => {
     deleteSkin(updatedSkin.name).then(() => {
@@ -42,6 +38,13 @@ const SkinGraphics = ({ skin }) => {
         name: newObject.name,
         skin: newObject,
       });
+    });
+  };
+
+  const imageUpload = (e) => {
+    const file = e.target.files[0];
+    getBase64(file).then((base64) => {
+      updateSkin(skin, imageKey, base64);
     });
   };
 
@@ -80,12 +83,12 @@ const SkinGraphics = ({ skin }) => {
   const onImageSelectCancel = () => {
     setImageKey(null);
     setIsFilePickerOpen(false);
-  }
+  };
 
   return (
     <>
       {isFilePickerOpen && (
-        <FilePicker 
+        <FilePicker
           title={`Select image for ${imageKey}`}
           onCancel={onImageSelectCancel}
           onSelectFile={imageUpload}
@@ -106,6 +109,8 @@ const SkinGraphics = ({ skin }) => {
       )}
     </>
   );
-}
+};
+
+SkinGraphics.propTypes = propTypes;
 
 export default SkinGraphics;
