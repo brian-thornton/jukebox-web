@@ -33,6 +33,7 @@ const Preferences = () => {
     <PreferenceToggleRow name="showAlbumName" value={preferences.showAlbumName} />,
     <PreferenceToggleRow name="showAlbumsWithoutCoverArt" value={preferences.showAlbumsWithoutCoverArt} />,
     <PreferenceToggleRow name="pinEnabled" value={preferences.pinEnabled} />,
+    <PreferenceToggleRow name="experimentalMode" value={preferences.experimentalMode} />,
     <PreferenceTextRow rowName="pin" value={preferences.pin} />,
     <PreferenceRadioRow rowName="Starts with Filter" preferenceName="startsWithLocation" options={startsWithFilterOptions} />,
     <PreferenceRadioRow rowName="Album Size" preferenceName="coverSize" options={albumCoverSize} />,
@@ -49,7 +50,7 @@ const Preferences = () => {
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
       pageSize={itemsPerPage}
-      totalItems={13}
+      totalItems={14}
     />
   )
 };

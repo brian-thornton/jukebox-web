@@ -50,6 +50,8 @@ export const LightingControllers = ({
   onConfigure = () => { },
 }) => {
   const settings = useContext(SettingsContext);
+  const { preferences } = settings;
+  const { experimentalMode } = preferences;
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isConfigureOpen, setIsConfigureOpen] = useState(false);
   const [selectedController, setSelectedController] = useState();
@@ -199,7 +201,7 @@ export const LightingControllers = ({
             )}
             {controller.ip !== cloneSource?.ip && (
               <>
-                {allowRemove && (
+                {allowRemove && experimentalMode && (
                   <Button
                     className="lighting-controller-button"
                     onClick={() => onControllerRemove(controller.ip)}
@@ -208,41 +210,49 @@ export const LightingControllers = ({
                 )}
                 {allowConfigure && (
                   <>
-                    <Button
-                      disabled={!controller.online}
-                      className="lighting-controller-button"
-                      onClick={() => {
-                        setIsConfigureOpen(true);
-                        setSelectedController(controller);
-                        onConfigure(controller);
-                      }}
-                      icon={<PencilSquare />}
-                    />
+                    {experimentalMode && (
+                      <Button
+                        disabled={!controller.online}
+                        className="lighting-controller-button"
+                        onClick={() => {
+                          setIsConfigureOpen(true);
+                          setSelectedController(controller);
+                          onConfigure(controller);
+                        }}
+                        icon={<PencilSquare />}
+                      />
+                    )}
                     {!skin && (
                       <>
-                        <Button
-                          className="lighting-controller-button"
-                          onClick={() => {
-                            setCloneSource(controller);
-                          }}
-                          content="Clone"
-                        />
-                        <Button
-                          disabled={!controller.online}
-                          className="lighting-controller-button"
-                          onClick={() => {
-                            onSetName(controller);
-                          }}
-                          content="Save"
-                        />
-                        <Button
-                          disabled={!controller.online}
-                          className="lighting-controller-button"
-                          onClick={() => {
-                            pushSegmentsFromMetadata(controller);
-                          }}
-                          content="Push Segments"
-                        />
+                        {experimentalMode && (
+                          <Button
+                            className="lighting-controller-button"
+                            onClick={() => {
+                              setCloneSource(controller);
+                            }}
+                            content="Clone"
+                          />
+                        )}
+                        {experimentalMode && (
+                          <Button
+                            disabled={!controller.online}
+                            className="lighting-controller-button"
+                            onClick={() => {
+                              onSetName(controller);
+                            }}
+                            content="Save"
+                          />
+                        )}
+                        {experimentalMode && (
+                          <Button
+                            disabled={!controller.online}
+                            className="lighting-controller-button"
+                            onClick={() => {
+                              pushSegmentsFromMetadata(controller);
+                            }}
+                            content="Push Segments"
+                          />
+                        )}
                         <Button
                           disabled={!controller.online}
                           className="lighting-controller-button"
@@ -260,14 +270,16 @@ export const LightingControllers = ({
                           }}
                           content="Presets"
                         />
-                        <Button
-                          disabled={!controller.online}
-                          className="lighting-controller-button"
-                          onClick={() => {
-                            reset(controller.ip);
-                          }}
-                          content="Reset"
-                        />
+                        {experimentalMode && (
+                          <Button
+                            disabled={!controller.online}
+                            className="lighting-controller-button"
+                            onClick={() => {
+                              reset(controller.ip);
+                            }}
+                            content="Reset"
+                          />
+                        )}
                       </>
                     )}
                   </>

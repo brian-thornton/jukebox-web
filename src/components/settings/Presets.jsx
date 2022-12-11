@@ -19,7 +19,7 @@ const Presets = ({ controller, onClose }) => {
   const [realPageSize, setRealPageSize] = useState();
 
   const loadPresets = () => {
-    setRealPageSize(pageSize('item', 300));
+    setRealPageSize(pageSize('item', 350));
     getPresets(controller.ip).then((data) => {
       setPresets(Object.keys(data).map(key => data[key]).filter(p => p.n));
     });
@@ -52,6 +52,7 @@ const Presets = ({ controller, onClose }) => {
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
           pageSize={realPageSize}
+          totalItems={presets.length}
         />
       )}
     </>
