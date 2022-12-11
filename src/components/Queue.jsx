@@ -53,7 +53,7 @@ const Queue = () => {
   };
 
   const monitorQueue = () => {
-    setTimeout(() => monitorQueue(), 3000);
+    setTimeout(() => monitorQueue(), 10000);
     loadQueue();
   };
 
