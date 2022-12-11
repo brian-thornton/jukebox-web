@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 
 import { SettingsContext } from '../layout/SettingsProvider';
-import './Album.scss';
+import './AlbumTable.scss';
 import { Albums } from '../shapes';
 
 const propTypes = {
@@ -68,7 +68,7 @@ const AlbumTable = ({ albums }) => {
   };
 
   return (
-    <Table size="sm" striped bordered variant="dark" style={{ marginBottom: '0', marginLeft: '20px', width: '98%' }}>
+    <Table size="sm" striped bordered variant="dark" className="albumTable">
       <tbody>
         {table()}
       </tbody>

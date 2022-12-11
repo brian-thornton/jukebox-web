@@ -35,7 +35,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const isScreenSmall = window.innerWidth < 700;
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   const { controlButtonSize } = settings.styles;
-  const trackHeight = controlButtonSize === 'small' ? 50 : 80;
+  const trackHeight = controlButtonSize === 'small' ? 55 : 85;
 
   useEffect(() => {
     const itemHeight = isScreenSmall ? 90 : trackHeight;

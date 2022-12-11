@@ -56,7 +56,7 @@ const ExpandRow = ({
   CustomToggle.propTypes = togglePropTypes;
 
   return (
-    <Accordion activeKey={activeKey} style={{ width: '100%' }}>
+    <Accordion activeKey={activeKey} className="accordion">
       <CustomToggle eventKey="0" setIsExpanded={setIsExpanded}>{text}</CustomToggle>
       <Accordion.Collapse eventKey="0">
         <div onClick={() => setActiveKey(null)}>

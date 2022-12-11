@@ -48,12 +48,6 @@ const AlbumList = ({
   const isScreenSmall = window.innerWidth < 700;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
-  const centerColStyle = {
-    marginLeft: '0px',
-    paddingLeft: '0px',
-    marginRight: '0px',
-    paddingRight: '0px',
-  };
 
   const onPageChange = (page) => {
     setSelectedPage(page);
@@ -184,7 +178,7 @@ const AlbumList = ({
       {isLoading && <Loading />}
       {!isLoading && !noResults && (
         <Container {...swipe} fluid className="albumListContainer">
-          <Row style={{ paddingTop: '20px' }}>
+          <Row className="containerRow">
             {startsWithLocation === 'left' && !isScreenSmall && !search && (
               <Col lg="1" xl="1" md="1" sm="1">
                 <StartsWithFilter
@@ -193,7 +187,7 @@ const AlbumList = ({
                 />
               </Col>
             )}
-            <Col lg={cols} xl={cols} md={cols} sm={cols} style={centerColStyle}>
+            <Col lg={cols} xl={cols} md={cols} sm={cols} className="centerCol">
               {display !== 'grid' && (
                 <Row className="albumRow">
                   {albums.map(album => <Album album={album} />)}

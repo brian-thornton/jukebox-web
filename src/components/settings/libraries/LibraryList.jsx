@@ -41,6 +41,7 @@ const LibraryList = ({
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
       pageSize={realPageSize}
+      totalItems={libraries.length}
     />
   );
 };

@@ -30,7 +30,7 @@ const TrackList = ({ tracks }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [totalPages, setTotalPages] = useState();
   const isScreenSmall = window.innerWidth < 700;
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / realPageSize)));
   let content = [];
 
   const { controlButtonSize } = settings.styles;

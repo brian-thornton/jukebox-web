@@ -86,7 +86,12 @@ const JukeboxNavLeft = () => {
                 <>
                   {c !== 'Albums' && (
                     <Button
-                      style={{ marginTop: '0', marginBottom: '0' }}
+                      style={{
+                        fontSize,
+                        fontFamily: settings.buttonFont,
+                        marginTop: '0',
+                        marginBottom: '0',
+                      }}
                       disabled={features.isLocked}
                       content={c}
                       onClick={() => window.location.replace(`/albums/categories/${c.replace(' ', '%20')}`)}

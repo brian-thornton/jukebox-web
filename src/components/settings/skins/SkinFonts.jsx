@@ -87,7 +87,7 @@ const SkinFonts = ({ skin }) => {
             disableRandom
             onPageChange={page => setSelectedPage(page)}
             selectedPage={selectedPage}
-            totalItems={12}
+            totalItems={4}
             pageSize={itemsPerPage}
           />
         </>

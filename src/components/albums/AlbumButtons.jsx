@@ -33,7 +33,14 @@ const AlbumButtons = ({ tracks }) => {
 
   const albumButton = (onClick, name, enabled = true) => (
     <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className="albumButton">
-      <ControlButton disabled={!enabled} text={name} onClick={onClick} width="100%" height={buttonHeight} style={{ fontSize, marginTop: '0px', marginBottom: '0px' }} />
+      <ControlButton
+        disabled={!enabled}
+        text={name}
+        onClick={onClick}
+        width="100%"
+        height={buttonHeight}
+        style={{ fontSize, marginTop: '0px', marginBottom: '0px' }}
+      />
     </Col>
   );
 
@@ -50,7 +57,7 @@ const AlbumButtons = ({ tracks }) => {
     <>
       {isScreenSmall && (
         <>
-          <Row style={{ marginBottom: '0px', marginTop: '0px', paddingBottom: '0px' }}>
+          <Row className="buttonRow">
             {settings.features.play && (
               <Button
                 icon={<PlayFill />}
@@ -63,17 +70,22 @@ const AlbumButtons = ({ tracks }) => {
                 onClick={() => enqueueTracks(tracks)}
               />
             )}
-            {settings.features.playlists && <Button icon={<PlusSquare />} onClick={() => navigate('/playlists', { state: { tracks } })} />}
+            {settings.features.playlists && (
+              <Button
+                icon={<PlusSquare />}
+                onClick={() => navigate('/playlists', { state: { tracks } })}
+              />
+            )}
           </Row>
         </>
       )}
       {!isScreenSmall && (
         <>
-          <Row style={{ marginBottom: '0px', marginTop: '0px', paddingBottom: '0px' }}>
+          <Row className="buttonRow">
             {albumButton(() => navigate(-1), backText())}
             {albumButton(playAlbum, 'Play Album', settings.features.play)}
           </Row>
-          <Row style={{ marginBottom: '0px', marginTop: '0px', paddingBottom: '0px' }}>
+          <Row className="buttonRow">
             {albumButton(() => {
               applyLighting(settings, 'Enqueue');
               enqueueTracks(tracks);

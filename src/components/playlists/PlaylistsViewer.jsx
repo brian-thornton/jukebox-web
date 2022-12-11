@@ -35,9 +35,10 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const selectPlaylist = playlistName => setName(playlistName);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const [totalPlaylists, setTotalPlaylists] = useState(0);
 
   useEffect(() => {
-    const itemHeight = 55;
+    const itemHeight = 70;
     const reserve = headerFooterReserve(settings);
     const viewPortHeight = Math.floor(window.innerHeight - reserve);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
@@ -49,6 +50,8 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
 
     getPlaylists(realStart, (realStart + realPageSize)).then((data) => {
       setPlaylists(data.playlists);
+      setTotalPlaylists(data.totalPlaylists)
+
       if (data.playlists.length === 0) {
         setIsEmpty(true);
       } else {
@@ -112,6 +115,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
           pageSize={realPageSize}
+          totalItems={totalPlaylists}
         />
       )}
     </>

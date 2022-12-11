@@ -35,7 +35,7 @@ const PaginatedList = ({
   pageSize,
   applyTopMargin = false,
 }) => {
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)));
   const isScreenSmall = window.innerWidth < 700;
   const standardItems = items && items.length > 0 && items[0].text;
   const settings = useContext(SettingsContext);
@@ -73,13 +73,15 @@ const PaginatedList = ({
           </Row>
           <Row>
             <Col lg="12" xl="12" md="12" sm="12">
-              <Paginator
-                disableRandom
-                onPageChange={page => setSelectedPage(page)}
-                selectedPage={selectedPage}
-                totalItems={totalItems || items.length}
-                pageSize={pageSize}
-              />
+              {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
+                <Paginator
+                  disableRandom
+                  onPageChange={page => setSelectedPage(page)}
+                  selectedPage={selectedPage}
+                  totalItems={totalItems || items.length}
+                  pageSize={pageSize}
+                />
+              )}
             </Col>
           </Row>
         </>

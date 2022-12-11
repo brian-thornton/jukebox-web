@@ -29,20 +29,15 @@ const FilePicker = ({
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    background: 'transparent',
-    minHeight: '200px',
-    height: '100%',
-    borderColor: 'black',
     color: settings.styles.fontColor,
-    swidth: '18rem',
   };
 
   return (
-    <Card style={confirmStyle}>
+    <Card style={confirmStyle} className="addNewCard">
       <Card.Body>
         <Card.Title className="addNewTitle">{title}</Card.Title>
         <Card.Text className="addNewText">
-          <Form.Control style={{ marginBottom: '0px' }} type="file" onChange={onSelectFile} />
+          <Form.Control className="fileControl" type="file" onChange={onSelectFile} />
         </Card.Text>
         <div className="addNewText">
           <Button onClick={onCancel} content={cancelText} />
