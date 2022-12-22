@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '../Button';
 import { pageSize } from '../../lib/styleHelper';
 import Item from '../common/Item';
-import { applyPreset, getPresets } from '../../lib/lighting-client';
+import { applyPreset, getPresets, getCurrentState } from '../../lib/lighting-client';
 import PaginatedList from '../common/PaginatedList';
 import { Controller } from '../shapes';
 
@@ -13,13 +13,16 @@ const propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-const Presets = ({ controller, onClose }) => {
+const Presets = ({ controller, onClose, onSelect }) => {
   const [presets, setPresets] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
 
   const loadPresets = () => {
     setRealPageSize(pageSize('item', 350));
+
+    getCurrentState(controller.ip);
+
     getPresets(controller.ip).then((data) => {
       setPresets(Object.keys(data).map(key => data[key]).filter(p => p.n));
     });
@@ -35,7 +38,10 @@ const Presets = ({ controller, onClose }) => {
       buttons={(
         <>
           <Button
-            onClick={() => applyPreset(controller.ip, preset.n)}
+            onClick={() => {
+              applyPreset(controller.ip, preset.n);
+              onSelect(preset);
+            }}
             content="Enable"
           />
         </>
@@ -57,6 +63,10 @@ const Presets = ({ controller, onClose }) => {
       )}
     </>
   );
+};
+
+Presets.defaultProps = {
+  onSelect: () => { },
 };
 
 Presets.propTypes = propTypes;

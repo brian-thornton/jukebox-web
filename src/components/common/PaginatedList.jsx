@@ -24,6 +24,7 @@ const propTypes = {
   setSelectedPage: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
   applyTopMargin: PropTypes.bool,
+  onItemClick: PropTypes.func,
 };
 
 const PaginatedList = ({
@@ -34,6 +35,7 @@ const PaginatedList = ({
   setSelectedPage,
   pageSize,
   applyTopMargin = false,
+  onItemClick,
 }) => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)));
   const isScreenSmall = window.innerWidth < 700;
@@ -60,7 +62,8 @@ const PaginatedList = ({
                         {!isScreenSmall && (
                           <Item
                             text={item.text}
-                            buttons={item.buttons}
+                            buttons={item.buttons || <></>}
+                            onClick={() => onItemClick(item)}
                           />
                         )}
                       </>
@@ -97,6 +100,7 @@ PaginatedList.defaultProps = {
   totalItems: null,
   pageSize: null,
   applyTopMargin: null,
+  onItemClick: () => { },
 };
 
 PaginatedList.propTypes = propTypes;

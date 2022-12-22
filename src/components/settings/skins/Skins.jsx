@@ -48,22 +48,26 @@ const Skins = ({ resetControls, setControls }) => {
     }
   }, [skinsLoading]);
 
-  useEffect(() => {
-    if (selectedSkin) {
-      const deepClone = deepCloneSkin(settings, selectedSkin);
+  const promoteSkin = (s) => {
+    if (selectedSkin || s) {
+      const deepClone = deepCloneSkin(settings, (selectedSkin || s));
 
       updateSettings(deepClone).then(() => {
         window.location.reload();
       });
     }
-  }, [selectedSkin]);
+  };
+
+  useEffect(promoteSkin, [selectedSkin]);
 
   const goBackToThemeList = (applySkin) => {
     if (applySkin) {
+      promoteSkin();
       getSkins().then((updatedSkins) => {
         updatedSkins.forEach((skin) => {
           if (skin.name === editSkin.name) {
             setSelectedSkin(skin);
+            promoteSkin(skin);
           }
         });
 

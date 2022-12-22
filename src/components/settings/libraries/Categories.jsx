@@ -1,37 +1,32 @@
-import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useContext, useEffect, useState } from 'react';
-import { useSwipeable } from 'react-swipeable';
 
-import Paginator from '../../common/Paginator';
 import CategoryRow from './CategoryRow';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { pageSize } from '../../../lib/styleHelper';
-import { handlers } from '../../../lib/gesture-helper';
+import PaginatedList from '../../common/PaginatedList';
+import Button from '../../Button';
 
-const Categories = () => {
+const Categories = ({ onClose }) => {
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   useEffect(() => setItemsPerPage(pageSize('item')), []);
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
+  const items = settings.categories.slice(start, (start + itemsPerPage)).map(category => (
+    <CategoryRow category={category} />
+  ));
+
   return (
-    <>
-      <ListGroup {...swipe}>
-        {settings.categories.slice(start, (start + itemsPerPage)).map(category => (
-          <CategoryRow category={category} />
-        ))}
-      </ListGroup>
-      <Paginator
-        disableRandom
-        onPageChange={page => setSelectedPage(page)}
-        selectedPage={selectedPage}
-        totalItems={settings.categories.length}
-        pageSize={itemsPerPage}
-      />
-    </>
-  );
+    <PaginatedList
+      topLevelControls={<Button content="Back to Libraries" onClick={onClose} />}
+      items={items}
+      selectedPage={selectedPage}
+      setSelectedPage={setSelectedPage}
+      totalItems={settings.categories.length}
+      itemsPerPage={itemsPerPage}
+    />
+  )
 };
 
 export default Categories;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import LightingControllers from '../LightingControllers';
 import SkinSegmentConfiguration from './SkinSegmentConfiguration';
@@ -6,9 +7,10 @@ import { Skin } from '../../shapes';
 
 const propTypes = {
   skin: Skin.isRequired,
+  loadSkins: PropTypes.func.isRequired,
 };
 
-const SkinLights = ({ skin }) => {
+const SkinLights = ({ skin, loadSkins }) => {
   const [selectedController, setSelectedController] = useState();
 
   const onConfigure = (controller) => {
@@ -30,6 +32,7 @@ const SkinLights = ({ skin }) => {
         <SkinSegmentConfiguration
           controller={selectedController}
           skin={skin}
+          loadSkins={loadSkins}
         />
       )}
     </>

@@ -105,7 +105,7 @@ const SkinDetail = ({
               <SkinGraphics skin={skin} />
             </Tab>
             <Tab eventKey="lights" title="Skin Lighting">
-              <SkinLights skin={skin} />
+              <SkinLights skin={skin} loadSkins={loadSkins} />
             </Tab>
           </Tabs>
         </Card>

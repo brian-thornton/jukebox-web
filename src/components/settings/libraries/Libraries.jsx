@@ -185,7 +185,7 @@ const Libraries = () => {
           handleSave={(category, downloadCoverArt) => handleCloseDiscover(document.getElementById('name').value, category, downloadCoverArt)}
         />
       )}
-      {isCategoryConfigOpen && <Categories />}
+      {isCategoryConfigOpen && <Categories onClose={() => setIsCategoryConfigOpen(false)}/>}
     </>
   );
 };

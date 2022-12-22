@@ -13,6 +13,8 @@ import Skins from './skins/Skins';
 import PinEntry from '../common/PinEntry';
 import { applyLighting } from '../../lib/lightingHelper';
 import './Settings.scss';
+import LogList from './logs/LogList';
+import Metadata from './metadata/Metadata';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -23,10 +25,8 @@ const Settings = () => {
   const [controls, setControls] = useState(null);
   const [searchParams] = useSearchParams();
   const { controlButtonSize } = settings.styles;
-  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
-
 
   useEffect(() => {
     if (searchParams.get('mode')) {
@@ -42,18 +42,26 @@ const Settings = () => {
     }
   }
 
+  const controlButton = (buttonMode) => (
+    <ControlButton
+      isSelected={mode === buttonMode}
+      width="100%"
+      onClick={() => {
+        setMode(buttonMode);
+        window.location.replace(`/settings?mode=${buttonMode}`);
+      }}
+      text={buttonMode}
+      height={buttonHeight}
+      style={{ fontSize }}
+    />
+  );
+
+  const modes = ['LIBRARY', 'PREFERENCES', 'ACCESS', 'STYLE', 'RESTRICTIONS',
+    'CABINET', 'LOGS', 'METADATA'];
+
   const leftControls = () => {
     if ((settings.preferences.pinEnabled && isAuthorized) || !settings.preferences.pinEnabled) {
-      return (
-        <>
-          <ControlButton isSelected={mode === 'LIBRARY'} width="100%" onClick={() => setMode('LIBRARY')} text="Library" height={buttonHeight} style={{ fontSize }} />
-          <ControlButton isSelected={mode === 'SETTINGS'} width="100%" onClick={() => setMode('SETTINGS')} text="Features" height={buttonHeight} style={{ fontSize }} />
-          <ControlButton isSelected={mode === 'PREFERENCES'} width="100%" onClick={() => setMode('PREFERENCES')} text="Preferences" height={buttonHeight} style={{ fontSize }} />
-          <ControlButton isSelected={mode === 'STYLE'} width="100%" onClick={() => setMode('STYLE')} text="Style" height={buttonHeight} style={{ fontSize }} />
-          <ControlButton isSelected={mode === 'RESTRICTIONS'} width="100%" onClick={() => setMode('RESTRICTIONS')} text="Restrictions" height={buttonHeight} style={{ fontSize }} />
-          <ControlButton isSelected={mode === 'CABINET'} width="100%" onClick={() => setMode('CABINET')} text="Cabinet" height={buttonHeight} style={{ fontSize }} />
-        </>
-      );
+      return modes.map(m => controlButton(m)) 
     }
 
     return <></>;
@@ -64,10 +72,12 @@ const Settings = () => {
       return (
         <>
           {mode === 'LIBRARY' && <Libraries />}
-          {mode === 'SETTINGS' && <SettingsEditor />}
+          {mode === 'ACCESS' && <SettingsEditor />}
           {mode === 'PREFERENCES' && <Preferences />}
           {mode === 'RESTRICTIONS' && <RestrictionModes />}
           {mode === 'CABINET' && <CabinetConfiguration />}
+          {mode === 'LOGS' && <LogList />}
+          {mode === 'METADATA' && <Metadata />}
           {mode === 'STYLE' && (
             <Skins
               resetControls={() => setControls(leftControls())}

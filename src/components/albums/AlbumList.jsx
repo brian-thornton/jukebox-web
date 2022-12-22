@@ -49,19 +49,12 @@ const AlbumList = ({
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let category = state?.category;
 
-  const onPageChange = (page) => {
-    setSelectedPage(page);
-  };
-
   const { pathname } = window.location;
   if (!category && pathname.includes('/categories')) {
     category = pathname.slice(window.location.pathname.lastIndexOf('/') + 1, pathname.length);
   }
 
   useEffect(() => {
-    const albumsPerRow = Math.floor(window.innerWidth / 225);
-    const numberOfRows = Math.floor((window.innerHeight - 200) / (display === 'grid' ? 65 : 200));
-    setRealPageSize(albumsPerRow * numberOfRows);
     applyLighting(settings, 'Albums');
   }, []);
 
@@ -115,6 +108,7 @@ const AlbumList = ({
       setRealPageSize(itemsPerColumn * 3);
     } else {
       const reserve = headerFooterReserve(settings);
+      const startsWithReserve = ['left', 'right'].includes(startsWithLocation) ? 25 : 0;
 
       let coverWidth = 225;
       let coverHeight = 200;
@@ -133,7 +127,7 @@ const AlbumList = ({
         coverHeight = 400;
       }
 
-      const albumsPerRow = Math.floor(window.innerWidth / coverWidth);
+      const albumsPerRow = Math.floor(window.innerWidth / (coverWidth + startsWithReserve));
       const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : coverHeight));
       setRealPageSize(albumsPerRow * numberOfRows);
     }
@@ -163,11 +157,11 @@ const AlbumList = ({
 
   const paginator = (
     <Paginator
-      onPageChange={onPageChange}
+      onPageChange={(page) => setSelectedPage(page)}
       selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={realPageSize}
-      disableRandom={false}
+      disableRandom={search?.length > 0}
     />
   );
 
@@ -189,10 +183,14 @@ const AlbumList = ({
             )}
             <Col lg={cols} xl={cols} md={cols} sm={cols} className="centerCol">
               {display !== 'grid' && (
-                <Row className="albumRow">
-                  {albums.map(album => <Album album={album} />)}
-                  {(totalAlbums > realPageSize) && startsWithLocation !== 'none' && !search && paginator}
-                </Row>
+                <Container fluid>
+                  <Row className="albumRow">
+                    {albums.map(album => <Album album={album} />)}
+                  </Row>
+                  <Row className="albumRow">
+                    {(totalAlbums > realPageSize) && startsWithLocation !== 'none' && !search && paginator}
+                  </Row>
+                </Container>
               )}
               {display === 'grid' && <AlbumTable albums={albums} />}
             </Col>

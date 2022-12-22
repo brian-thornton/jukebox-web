@@ -49,6 +49,8 @@ const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
           applyMargin={false}
           title="No Restrictions"
           text="No restrictions have been set for this group."
+          goBackText="Go Back"
+          onGoBack={onClose}
         />
       )}
       {restrictionMode.content?.length > 0 && (

@@ -38,7 +38,7 @@ const AlbumTable = ({ albums }) => {
         onMouseLeave={() => setHoverAlbum(null)}
         style={{ background: hoverAlbum === album ? settings.styles.activeButtonColor : '' }}
       >
-        <Button variant="link" onClick={() => goToAlbum(album)}>
+        <Button variant="link" onClick={() => goToAlbum(album)} className="albumButton">
           {album.name}
         </Button>
       </td>
