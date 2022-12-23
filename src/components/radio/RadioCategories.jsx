@@ -14,10 +14,9 @@ const propTypes = {
 
 const RadioCategories = ({ category, setCategory }) => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
+  const { features, isScreenSmall } = settings;
   const [isExpanded, setIsExpanded] = useState(false);
   const { controlButtonSize } = settings.styles;
-  const isScreenSmall = window.innerWidth < 700;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
 
   const categories = [

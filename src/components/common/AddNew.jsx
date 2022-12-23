@@ -1,31 +1,31 @@
-import Card from 'react-bootstrap/Card';
 import { PropTypes } from 'prop-types';
+import Card from 'react-bootstrap/Card';
 import React, { useContext, useState } from 'react';
 
+import './AddNew.scss';
+import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 import NameInput from './NameInput';
-import { SettingsContext } from '../layout/SettingsProvider';
-import './AddNew.scss';
 
 const propTypes = {
-  onConfirm: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  confirmText: PropTypes.string,
   cancelText: PropTypes.string,
+  confirmText: PropTypes.string,
   fields: PropTypes.shape({ name: PropTypes.string }),
+  onCancel: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  title: PropTypes.string,
 };
 
 const AddNew = ({
-  onConfirm,
-  onCancel,
-  title,
-  confirmText,
   cancelText,
+  confirmText,
   fields,
+  onCancel,
+  onConfirm,
+  title,
 }) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
   const [fieldValues, setFieldValues] = useState(fields);
 
   const confirmStyle = {
@@ -61,10 +61,10 @@ const AddNew = ({
 };
 
 AddNew.defaultProps = {
-  title: 'Add',
-  confirmText: 'Save',
   cancelText: 'Cancel',
+  confirmText: 'Save',
   fields: { name: 'Name' },
+  title: 'Add',
 };
 
 AddNew.propTypes = propTypes;

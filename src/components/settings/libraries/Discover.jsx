@@ -24,7 +24,7 @@ const Discover = ({
   const [selectedCategory, setSelectedCategory] = useState(false);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState();
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',

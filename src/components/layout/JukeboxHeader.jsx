@@ -9,28 +9,24 @@ import { SettingsContext } from './SettingsProvider';
 import { Libraries } from '../shapes';
 
 const propTypes = {
-  search: PropTypes.string,
   setSearch: PropTypes.func.isRequired,
   selectedLibraries: Libraries,
   lastModule: PropTypes.string,
   setIsLocked: PropTypes.func,
   setIsPinOpen: PropTypes.func,
-  display: PropTypes.string,
   setDisplay: PropTypes.func,
 };
 
 const JukeboxHeader = ({
-  search,
   setSearch,
   selectedLibraries,
   lastModule,
   setIsLocked,
   setIsPinOpen,
-  display,
   setDisplay,
 }) => {
   const settings = useContext(SettingsContext);
-
+  const { search, display } = settings;
   const { navButtonSize } = settings.styles;
   const showBrand = (navButtonSize !== 'large' && navButtonSize !== 'medium');
 

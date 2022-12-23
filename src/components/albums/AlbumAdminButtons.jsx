@@ -19,7 +19,7 @@ const AlbumAdminButtons = ({
   setConfirmRestriction,
 }) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';

@@ -14,19 +14,17 @@ import './Jukebox.scss';
 
 const propTypes = {
   nowPlaying: PropTypes.string,
-  search: PropTypes.string,
   setSearch: PropTypes.func,
 };
 
 const JukeboxFooter = ({
-  search,
   setSearch,
   nowPlaying,
   mediaType,
   setMediaType,
 }) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall, search } = settings;
   const [isSmallSearchEnabled, setIsSmallSearchEnabled] = useState(false);
 
   const debouncedSearch = useCallback(
@@ -73,7 +71,6 @@ const JukeboxFooter = ({
         <ControlButtons
           mediaType={mediaType}
           setMediaType={setMediaType}
-          isScreenSmall={isScreenSmall}
           setIsSmallSearchEnabled={setIsSmallSearchEnabled}
         />
       </Nav>

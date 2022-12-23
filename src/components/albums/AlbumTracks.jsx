@@ -1,21 +1,21 @@
+import { PropTypes } from 'prop-types';
+import { useSwipeable } from 'react-swipeable';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
 import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
-import { useSwipeable } from 'react-swipeable';
 
+import './AlbumTracks.scss';
+import { handlers } from '../../lib/gesture-helper';
+import { calculatePageSize } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/SettingsProvider';
+import { Track } from '../shapes';
 import AddToPlaylistButton from '../common/AddToPlaylistButton';
 import DownloadButton from '../DownloadButton';
 import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
-import { SettingsContext } from '../layout/SettingsProvider';
-import { Track } from '../shapes';
-import { handlers } from '../../lib/gesture-helper';
-import './AlbumTracks.scss';
-import { pageSize } from '../../lib/styleHelper';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
@@ -25,12 +25,10 @@ const propTypes = {
 
 const TrackList = ({ tracks }) => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
+  const { features, isScreenSmall } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
-  const [totalPages, setTotalPages] = useState();
-  const isScreenSmall = window.innerWidth < 700;
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / realPageSize)));
+  const [pageSize, setPageSize] = useState();
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / pageSize)));
   let content = [];
 
   const { controlButtonSize } = settings.styles;
@@ -38,10 +36,10 @@ const TrackList = ({ tracks }) => {
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
 
   useEffect(() => {
-    setRealPageSize(pageSize('item', reserve, trackHeight));
+    setPageSize(calculatePageSize('item', reserve, trackHeight));
   }, []);
 
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
 
   const albumModeButtons = track => (
     <>
@@ -51,7 +49,7 @@ const TrackList = ({ tracks }) => {
     </>
   );
 
-  content = tracks.slice(realStart, (realStart + realPageSize)).map(track => (
+  content = tracks.slice(realStart, (realStart + pageSize)).map(track => (
     <Item
       text={track.name}
       buttons={(
@@ -59,7 +57,7 @@ const TrackList = ({ tracks }) => {
           {features.play && <PlayNowButton track={track} />}
           {features.queue && <EnqueueButton track={track} />}
           {features.playlists && <AddToPlaylistButton track={track} />}
-          {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
+          {features.downloadTrack && <DownloadButton track={track} />}
         </>
       )}
     />
@@ -70,14 +68,14 @@ const TrackList = ({ tracks }) => {
       <Row>
         <Col lg="12" xl="12" md="12" sm="12">
           <Row className="d-none d-md-block d-lg-block">
-            {tracks.slice(realStart, (realStart + realPageSize)).map(track => (
+            {tracks.slice(realStart, (realStart + pageSize)).map(track => (
               <Item
                 text={track.name}
                 buttons={(
                   <>
                     {albumModeButtons(track)}
                     {features.downloadTrack && (
-                      <DownloadButton track={track} isScreenSmall={isScreenSmall} />
+                      <DownloadButton track={track} />
                     )}
                   </>
                 )}
@@ -94,7 +92,7 @@ const TrackList = ({ tracks }) => {
           </Row>
         </Col>
       </Row>
-      {tracks.length > realPageSize && (
+      {tracks.length > pageSize && (
         <Row className="d-none d-md-block d-lg-block album-tracks-paginator">
           <Col lg="12" xl="12" md="12" sm="12">
             <Paginator
@@ -102,7 +100,7 @@ const TrackList = ({ tracks }) => {
               onPageChange={page => setSelectedPage(page)}
               selectedPage={selectedPage}
               totalItems={tracks.length}
-              pageSize={realPageSize}
+              pageSize={pageSize}
             />
           </Col>
         </Row>

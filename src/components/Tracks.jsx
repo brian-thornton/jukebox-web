@@ -18,12 +18,12 @@ import { handlers } from '../lib/gesture-helper';
 import { headerFooterReserve, topMargin } from '../lib/styleHelper';
 
 const propTypes = {
-  search: PropTypes.string,
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-const Tracks = ({ search, setCurrentAlbum }) => {
+const Tracks = ({ setCurrentAlbum }) => {
   const settings = useContext(SettingsContext);
+  const { isScreenSmall, search } = settings;
   const { controlButtonSize } = settings.styles;
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
@@ -32,7 +32,6 @@ const Tracks = ({ search, setCurrentAlbum }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  const isScreenSmall = window.innerWidth < 700;
   const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
   let trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
   trackHeight = isScreenSmall ? 35 : trackHeight;

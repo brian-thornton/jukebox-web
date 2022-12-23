@@ -23,7 +23,7 @@ const Search = ({
   const [lightingApplied, setLightingApplied] = useState(false);
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
   const [localSearch, setLocalSearch] = useState('');
   const inputButton = value => (
     <Button

@@ -1,11 +1,11 @@
+import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 import React, { useContext, useState } from 'react';
 import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import { useNavigate } from 'react-router-dom';
 
-import { SettingsContext } from '../layout/SettingsProvider';
 import './AlbumTable.scss';
 import { Albums } from '../shapes';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   albums: Albums.isRequired,

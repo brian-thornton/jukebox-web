@@ -41,9 +41,7 @@ const PlaylistControls = ({
   tracks,
 }) => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
-  const isScreenSmall = window.innerWidth < 700;
-
+  const { features, isScreenSmall } = settings;
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';

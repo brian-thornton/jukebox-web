@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
 import Item from '../../common/Item';
-import { pageSize, supportedFonts } from '../../../lib/styleHelper';
+import { calculatePageSize, supportedFonts } from '../../../lib/styleHelper';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import PaginatedList from '../../common/PaginatedList';
 import { Skin } from '../../shapes';
@@ -19,7 +19,7 @@ const FontPicker = ({ editFont, skin, onComplete }) => {
   const availableFonts = supportedFonts.google.families;
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
-  useEffect(() => setItemsPerPage(pageSize('item', 350)), []);
+  useEffect(() => setItemsPerPage(calculatePageSize('item', 350)), []);
 
   const updateFont = (fontName) => {
     deleteSkin(skin.name).then(() => {

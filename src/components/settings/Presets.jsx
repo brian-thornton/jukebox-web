@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '../Button';
-import { pageSize } from '../../lib/styleHelper';
+import { calculatePageSize } from '../../lib/styleHelper';
 import Item from '../common/Item';
 import { applyPreset, getPresets, getCurrentState } from '../../lib/lighting-client';
 import PaginatedList from '../common/PaginatedList';
@@ -19,7 +19,7 @@ const Presets = ({ controller, onClose, onSelect }) => {
   const [realPageSize, setRealPageSize] = useState();
 
   const loadPresets = () => {
-    setRealPageSize(pageSize('item', 350));
+    setRealPageSize(calculatePageSize('item', 350));
 
     getCurrentState(controller.ip);
 

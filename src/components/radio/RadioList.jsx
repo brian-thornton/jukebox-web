@@ -17,12 +17,11 @@ const propTypes = {
 
 const RadioList = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
-  const { preferences } = settings;
+  const { isScreenSmall, preferences } = settings;
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [stations, setStations] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-  const isScreenSmall = window.innerWidth < 700;
 
   const loadStations = async () => {
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);

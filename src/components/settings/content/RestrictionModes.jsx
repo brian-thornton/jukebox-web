@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import AddNew from '../../common/AddNew';
 import Button from '../../Button';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import RestrictionModeDetail from './RestrictionModeDetail';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { createRestrictionGroup, getRestrictionGroups, updateRestrictionGroup } from '../../../lib/settings-client';
@@ -34,7 +34,7 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
   };
 
   useEffect(() => {
-    setRealPageSize(pageSize('item', 300));
+    setRealPageSize(calculatePageSize('item', 300));
     loadRestrictionGroups();
   }, []);
 

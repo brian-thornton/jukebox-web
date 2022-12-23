@@ -234,7 +234,7 @@ const deepCloneSkin = (settings, selectedSkin) => {
   return deepClone;
 }
 
-const pageSize = (type, reservedHeight = 200, itemHeight = 55) => {
+const calculatePageSize = (type, reservedHeight = 200, itemHeight = 55) => {
   if (type === 'item') {
     const viewPortHeight = Math.floor(window.innerHeight - reservedHeight);
     return Math.floor(viewPortHeight / itemHeight);
@@ -253,7 +253,7 @@ export {
   modalHeaderStyle,
   modalTitleStyle,
   supportedFonts,
-  pageSize,
+  calculatePageSize,
   headerFooterReserve,
   topMargin,
 }

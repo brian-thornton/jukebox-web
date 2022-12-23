@@ -1,13 +1,13 @@
-import Card from 'react-bootstrap/Card';
 import { PropTypes } from 'prop-types';
-import React, { useEffect, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
+import React, { useEffect, useContext, useState } from 'react';
 
+import './Album.scss';
 import { Album as albumShape } from '../shapes';
 import { coverArtUrl, saveCoverArt } from '../../lib/librarian-client';
-import defaultCover from './default_album.jpg';
 import { SettingsContext } from '../layout/SettingsProvider';
-import './Album.scss';
+import defaultCover from './default_album.jpg';
 
 const propTypes = {
   album: albumShape.isRequired,
@@ -41,28 +41,17 @@ const Album = ({ album, coverArtOnly }) => {
 
   const albumImageStyle = {
     width: '200px',
-    height: '300px',
+    height: '200px',
     maxWidth: '200px',
-    maxHeight: '300px',
+    maxHeight: '200px',
   };
 
   const albumCardStyle = {
-    width: '200px',
-    height: '300px',
-    maxWidth: '200px',
-    maxHeight: '300px',
+    width: '203px',
+    height: '220px',
+    maxWidth: '203px',
+    maxHeight: '220px',
   };
-
-  if (coverSize === 'small') {
-    albumImageStyle.width = '200px';
-    albumImageStyle.height = '200px';
-    albumImageStyle.maxWidth = '200px';
-    albumImageStyle.maxHeight = '200px';
-    albumCardStyle.width = '203px';
-    albumCardStyle.height = '220px';
-    albumCardStyle.maxWidth = '203px';
-    albumCardStyle.maxHeight = '220px';
-  }
 
   if (coverSize === 'medium') {
     albumImageStyle.width = '300px';

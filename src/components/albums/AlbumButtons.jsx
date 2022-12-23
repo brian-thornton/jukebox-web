@@ -17,8 +17,8 @@ const propTypes = {
 };
 
 const AlbumButtons = ({ tracks }) => {
-  const isScreenSmall = window.innerWidth < 700;
   const settings = useContext(SettingsContext);
+  const { isScreenSmall } = settings;
   const { state } = useLocation();
   const navigate = useNavigate();
   const { controlButtonSize } = settings.styles;

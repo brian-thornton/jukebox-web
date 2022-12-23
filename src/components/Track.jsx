@@ -32,9 +32,7 @@ const Track = ({
   trackAlbumsLoaded,
 }) => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
-  const isScreenSmall = window.innerWidth < 700;
-
+  const { features, isScreenSmall } = settings;
   const { controlButtonSize } = settings.styles;
 
   let fontSize = '';
@@ -90,9 +88,9 @@ const Track = ({
     <>
       {features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
       {features.playlists && <AddToPlaylistButton track={track} />}
-      {features.play && <PlayNowButton track={track} isScreenSmall={isScreenSmall} />}
-      {features.queue && <EnqueueButton track={track} mode="Tracks" isScreenSmall={isScreenSmall} />}
-      {features.downloadTrack && <DownloadButton track={track} isScreenSmall={isScreenSmall} />}
+      {features.play && <PlayNowButton track={track} />}
+      {features.queue && <EnqueueButton track={track} mode="Tracks" />}
+      {features.downloadTrack && <DownloadButton track={track} />}
     </>
   );
 

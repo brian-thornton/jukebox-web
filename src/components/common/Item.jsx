@@ -30,7 +30,7 @@ const Item = ({
   font,
 }) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   const itemStyle = {
     color: settings.styles.fontColor,

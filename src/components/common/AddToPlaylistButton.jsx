@@ -1,7 +1,7 @@
 import { PlusSquare } from 'react-bootstrap-icons';
-import React, { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { SettingsContext } from '../layout/SettingsProvider';
+import { useNavigate } from 'react-router-dom';
+import React, { useContext } from 'react';
 
 import Button from '../Button';
 import { Track } from '../shapes';

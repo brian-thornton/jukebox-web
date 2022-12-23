@@ -32,7 +32,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [reload, setReload] = useState(false);
   const [confirmRestriction, setConfirmRestriction] = useState(false);
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   const loadTracks = () => {
     if (!areTracksLoading) {

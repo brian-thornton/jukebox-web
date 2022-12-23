@@ -25,7 +25,7 @@ const FilePicker = ({
   cancelText,
 }) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',

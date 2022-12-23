@@ -28,7 +28,7 @@ const CoverArtSearchModal = ({
   const [query, setQuery] = useState(album.name);
   const saveCoverArtToLibrary = () => saveCoverArt({ album, url: results });
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   const handleResult = (data) => {
     if (data.toString().includes('http')) {

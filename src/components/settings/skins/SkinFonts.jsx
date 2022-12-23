@@ -7,7 +7,7 @@ import FontPicker from './FontPicker';
 import Button from '../../Button';
 import Paginator from '../../common/Paginator';
 import './SkinDetail.scss';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import { handlers } from '../../../lib/gesture-helper';
 import { Skin } from '../../shapes';
 
@@ -39,7 +39,7 @@ const SkinFonts = ({ skin }) => {
     listFont: skin.listFont,
   });
 
-  useEffect(() => setItemsPerPage(pageSize('item', 250, 70)), []);
+  useEffect(() => setItemsPerPage(calculatePageSize('item', 250, 70)), []);
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
   const fontRow = (name, display) => (

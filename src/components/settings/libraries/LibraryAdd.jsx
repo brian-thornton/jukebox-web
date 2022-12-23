@@ -29,7 +29,7 @@ const LibraryAdd = ({
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(false);
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',

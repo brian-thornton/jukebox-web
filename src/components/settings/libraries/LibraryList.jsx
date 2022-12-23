@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 
 import LibraryRow from './LibraryRow';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 import { Libraries } from '../../shapes';
 
@@ -22,7 +22,7 @@ const LibraryList = ({
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-  useEffect(() => setRealPageSize(pageSize('item', 300)), []);
+  useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
   const items = () => (
     libraries.slice(realStart, (realStart + realPageSize)).map(library => (

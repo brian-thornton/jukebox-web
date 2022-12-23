@@ -5,7 +5,7 @@ import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { pageSize } from '../../lib/styleHelper';
+import { calculatePageSize } from '../../lib/styleHelper';
 
 const SettingsEditor = () => {
   const [features, setFeatures] = useState();
@@ -13,7 +13,7 @@ const SettingsEditor = () => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
 
-  useEffect(() => setRealPageSize(pageSize('item', 300)), []);
+  useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 

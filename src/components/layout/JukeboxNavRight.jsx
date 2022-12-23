@@ -19,9 +19,7 @@ import { SettingsContext } from './SettingsProvider';
 import { Libraries } from '../shapes';
 
 const propTypes = {
-  search: PropTypes.string,
   setSearch: PropTypes.func.isRequired,
-  display: PropTypes.string.isRequired,
   setDisplay: PropTypes.func.isRequired,
   setIsPinOpen: PropTypes.func.isRequired,
   lastModule: PropTypes.string.isRequired,
@@ -29,23 +27,18 @@ const propTypes = {
 };
 
 const JukeboxNavRight = ({
-  search,
   setSearch,
   selectedLibraries,
   lastModule,
   setIsPinOpen,
-  display,
   setDisplay,
 }) => {
   const settings = useContext(SettingsContext);
-  const { features, preferences } = settings;
-  const isScreenSmall = window.innerWidth < 700;
+  const { features, isScreenSmall, preferences, search, display } = settings;
   const navigate = useNavigate();
   const { pathname } = window.location;
-
   const { navButtonSize } = settings.styles;
   const applyWidth = (navButtonSize === 'large' || navButtonSize === 'medium');
-
   let height = '35';
   let fontSize = '';
 

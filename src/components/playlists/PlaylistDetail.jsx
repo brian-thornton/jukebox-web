@@ -32,7 +32,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [selectedPlaylist, setSelectedPlaylist] = useState();
   let renderTracks = [];
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   const { controlButtonSize } = settings.styles;
   const trackHeight = controlButtonSize === 'small' ? 55 : 85;

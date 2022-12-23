@@ -8,9 +8,7 @@ import Button from '../Button';
 const JukeboxNavLeft = () => {
   const location = useLocation();
   const settings = useContext(SettingsContext);
-  const { styles, features } = settings;
-  const isScreenSmall = window.innerWidth < 700;
-
+  const { isScreenSmall, styles, features } = settings;
   const { navButtonSize } = settings.styles;
   let height = '35';
   let fontSize = '';

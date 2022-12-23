@@ -7,7 +7,7 @@ import Item from '../../common/Item';
 import './SkinSegmentConfiguration.scss';
 import Paginator from '../../common/Paginator';
 import SkinSegmentDetail from './SkinSegmentDetail';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import { handlers } from '../../../lib/gesture-helper';
 import { Controller, Skin } from '../../shapes';
 import Presets from '../Presets';
@@ -23,7 +23,7 @@ const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
   const [selectedEvent, setSelectedEvent] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
-  useEffect(() => setItemsPerPage(pageSize('item', 250)), []);
+  useEffect(() => setItemsPerPage(calculatePageSize('item', 250)), []);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
@@ -35,7 +35,6 @@ const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
 
     if (!deepClone.lighting) {
       // Lighting has never been defined for the skin. We need define it here.
-      console.log('bad');
       deepClone.lighting = {
         controllers: [
           {

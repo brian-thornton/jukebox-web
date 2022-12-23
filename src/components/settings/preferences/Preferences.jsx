@@ -4,7 +4,7 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import PreferenceRadioRow from './PreferenceRadioRow';
 import PreferenceTextRow from './PreferenceTextRow';
 import PreferenceToggleRow from './PreferenceToggleRow';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 
 const Preferences = () => {
@@ -12,7 +12,7 @@ const Preferences = () => {
   const { preferences } = settings;
   const [itemsPerPage, setItemsPerPage] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
-  useEffect(() => setItemsPerPage(pageSize('item', 250, 60)), []);
+  useEffect(() => setItemsPerPage(calculatePageSize('item', 250, 60)), []);
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
   const startsWithFilterOptions = [

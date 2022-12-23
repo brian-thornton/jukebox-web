@@ -4,7 +4,7 @@ import { PropTypes } from 'prop-types';
 
 import Button from '../../Button';
 import PaginatedList from '../../common/PaginatedList';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import NoResults from '../../common/NoResults';
 import { updateRestrictionGroup } from '../../../lib/settings-client';
 import { RestrictionMode } from '../../shapes';
@@ -18,7 +18,7 @@ const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-  useEffect(() => setRealPageSize(pageSize('item', 300)), []);
+  useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
   const removeRestriction = (path) => {
     const deepClone = JSON.parse(JSON.stringify(restrictionMode));

@@ -38,9 +38,9 @@ const PaginatedList = ({
   onItemClick,
 }) => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)));
-  const isScreenSmall = window.innerWidth < 700;
   const standardItems = items && items.length > 0 && items[0].text;
   const settings = useContext(SettingsContext);
+  const { isScreenSmall } = settings;
 
   return (
     <Container fluid {...swipe} style={{ width: '100%', marginTop: applyTopMargin ? topMargin(settings) : '' }}>

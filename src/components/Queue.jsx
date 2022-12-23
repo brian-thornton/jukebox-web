@@ -20,22 +20,22 @@ import PlayNowButton from './PlayNowButton';
 import NoResults from './common/NoResults';
 import { SettingsContext } from './layout/SettingsProvider';
 import './Queue.scss';
-import { pageSize } from '../lib/styleHelper';
+import { calculatePageSize } from '../lib/styleHelper';
 import PaginatedList from './common/PaginatedList';
 
 const Queue = () => {
   const settings = useContext(SettingsContext);
+  const { isScreenSmall } = settings;
   const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [isEmpty, setIsEmpty] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
   const [clearConfirm, setClearConfirm] = useState(false);
-  const isScreenSmall = window.innerWidth < 700;
   const { controlButtonSize } = settings.styles;
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 300 : 250;
-  const itemsPerPage = pageSize('item', reserve, trackHeight);
+  const itemsPerPage = calculatePageSize('item', reserve, trackHeight);
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 60;
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';

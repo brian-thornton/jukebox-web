@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { getLogs } from '../../../lib/log-client';
-import { pageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 import LogDetail from './LogDetail';
 
@@ -10,7 +10,7 @@ const LogList = () => {
   const [selectedLog, setSelectedLog] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [level, setLevel] = useState('INFO');
-  const itemsPerPage = pageSize('item', 250, 40)
+  const itemsPerPage = calculatePageSize('item', 250, 40)
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
   const loadLogs = () => {

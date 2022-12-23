@@ -1,39 +1,35 @@
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
-import React, { useContext, useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import React, { useContext, useState, useEffect } from 'react';
+import Row from 'react-bootstrap/Row';
 
+import './AlbumList.scss';
 import { applyLighting } from '../../lib/lightingHelper';
+import { getAlbums, searchAlbums } from '../../lib/librarian-client';
+import { handlers } from '../../lib/gesture-helper';
+import { headerFooterReserve } from '../../lib/styleHelper';
+import { Libraries } from '../shapes';
+import { SettingsContext } from '../layout/SettingsProvider';
 import Album from './Album';
 import AlbumTable from './AlbumTable';
-import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import StartsWithFilter from './StartsWithFilter';
-import { SettingsContext } from '../layout/SettingsProvider';
-import './AlbumList.scss';
-import { handlers } from '../../lib/gesture-helper';
-import { headerFooterReserve } from '../../lib/styleHelper';
-import { Libraries } from '../shapes';
 
 const propTypes = {
-  search: PropTypes.string,
   selectedLibraries: Libraries,
-  display: PropTypes.string.isRequired,
-  startsWithFilter: PropTypes.string,
   setStartsWithFilter: PropTypes.func,
+  startsWithFilter: PropTypes.string,
 };
 
 const AlbumList = ({
-  search,
   selectedLibraries,
-  display,
-  startsWithFilter,
   setStartsWithFilter,
+  startsWithFilter,
 }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
@@ -42,14 +38,16 @@ const AlbumList = ({
   const [totalAlbums, setTotalAlbums] = useState();
   const [lastSearch, setLastSearch] = useState('');
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
+  const [pageSize, setPageSize] = useState();
   const { state } = useLocation();
   const { startsWithLocation, coverSize } = settings.preferences;
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall, search, display } = settings;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
+  const noResults = search && !albums.length && !isLoading;
+  const cols = startsWithLocation === 'none' ? '12' : '11';
   let category = state?.category;
-
   const { pathname } = window.location;
+
   if (!category && pathname.includes('/categories')) {
     category = pathname.slice(window.location.pathname.lastIndexOf('/') + 1, pathname.length);
   }
@@ -76,21 +74,18 @@ const AlbumList = ({
   };
 
   const loadAlbums = async () => {
-    // 1: 0
-    // 2: 2 * 12 == 24 - 12 = 12
-    // 3: 3 * 12 == 36 - 12 = 24
-    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-    const end = realStart + realPageSize;
+    const start = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
+    const end = start + pageSize;
     const { preferences } = settings;
 
-    if (selectedPage && realPageSize) {
+    if (selectedPage && pageSize) {
       setAlbums([]);
       if (search || startsWithFilter) {
-        findAlbums(realStart, (realStart + realPageSize));
+        findAlbums(start, (start + pageSize));
       } else {
         const musicCategory = category === 'Albums' ? null : category;
 
-        getAlbums(realStart, end, musicCategory, selectedLibraries, preferences.restrictionGroup)
+        getAlbums(start, end, musicCategory, selectedLibraries, preferences.restrictionGroup)
           .then((data) => {
             setTotalAlbums(data.totalAlbums);
             setAlbums(data.albums);
@@ -105,21 +100,17 @@ const AlbumList = ({
   useEffect(() => {
     if (display !== 'covers') {
       const itemsPerColumn = Math.floor((window.innerHeight - 200) / 40);
-      setRealPageSize(itemsPerColumn * 3);
+      setPageSize(itemsPerColumn * 3);
     } else {
       const reserve = headerFooterReserve(settings);
       const startsWithReserve = ['left', 'right'].includes(startsWithLocation) ? 25 : 0;
 
-      let coverWidth = 225;
-      let coverHeight = 200;
-      if (coverSize === 'small') {
-        coverWidth = 200;
-        coverHeight = 200;
-      }
+      let coverWidth = 220;
+      let coverHeight = 220;
 
       if (coverSize === 'medium') {
         coverWidth = 300;
-        coverWidth = 400;
+        coverHeight = 400;
       }
 
       if (coverSize === 'large') {
@@ -129,40 +120,47 @@ const AlbumList = ({
 
       const albumsPerRow = Math.floor(window.innerWidth / (coverWidth + startsWithReserve));
       const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : coverHeight));
-      setRealPageSize(albumsPerRow * numberOfRows);
+      setPageSize(albumsPerRow * numberOfRows);
     }
   }, [display]);
 
   useEffect(() => {
     setIsLoading(true);
     loadAlbums();
-  }, [category, realPageSize, selectedPage, selectedLibraries]);
+  }, [category, pageSize, selectedPage, selectedLibraries, search, startsWithFilter]);
 
-  useEffect(() => {
-    if (!search && !startsWithFilter) {
-      if (albums.length) {
-        window.location.reload();
-      }
-    }
+  // useEffect(() => {
+  //   if (!search && !startsWithFilter) {
+  //     if (albums.length) {
+  //       window.location.reload();
+  //     }
+  //   }
 
-    if (selectedPage === 1) {
-      loadAlbums();
-    } else {
-      setSelectedPage(1);
-    }
-  }, [search, startsWithFilter]);
-
-  const noResults = search && !albums.length && !isLoading;
-  const cols = startsWithLocation === 'none' ? '12' : '11';
+  //   if (selectedPage === 1) {
+  //     alert('two');
+  //     loadAlbums();
+  //   } else {
+  //     setSelectedPage(1);
+  //   }
+  // }, [search, startsWithFilter]);
 
   const paginator = (
     <Paginator
       onPageChange={(page) => setSelectedPage(page)}
       selectedPage={selectedPage}
       totalItems={totalAlbums}
-      pageSize={realPageSize}
+      pageSize={pageSize}
       disableRandom={search?.length > 0}
     />
+  );
+
+  const startsWithCol = (
+    <Col lg="1" xl="1" md="1" sm="1">
+      <StartsWithFilter
+        startsWithFilter={startsWithFilter}
+        setStartsWithFilter={setStartsWithFilter}
+      />
+    </Col>
   );
 
   return (
@@ -174,12 +172,7 @@ const AlbumList = ({
         <Container {...swipe} fluid className="albumListContainer">
           <Row className="containerRow">
             {startsWithLocation === 'left' && !isScreenSmall && !search && (
-              <Col lg="1" xl="1" md="1" sm="1">
-                <StartsWithFilter
-                  startsWithFilter={startsWithFilter}
-                  setStartsWithFilter={setStartsWithFilter}
-                />
-              </Col>
+              { startsWithCol }
             )}
             <Col lg={cols} xl={cols} md={cols} sm={cols} className="centerCol">
               {display !== 'grid' && (
@@ -188,25 +181,20 @@ const AlbumList = ({
                     {albums.map(album => <Album album={album} />)}
                   </Row>
                   <Row className="albumRow">
-                    {(totalAlbums > realPageSize) && startsWithLocation !== 'none' && !search && paginator}
+                    {(totalAlbums > pageSize) && startsWithLocation !== 'none' && !search && paginator}
                   </Row>
                 </Container>
               )}
               {display === 'grid' && <AlbumTable albums={albums} />}
             </Col>
             {startsWithLocation === 'right' && !isScreenSmall && !search && (
-              <Col lg="1" xl="1" md="1" sm="1">
-                <StartsWithFilter
-                  startsWithFilter={startsWithFilter}
-                  setStartsWithFilter={setStartsWithFilter}
-                />
-              </Col>
+              { startsWithCol }
             )}
           </Row>
           {(startsWithLocation === 'none' || search) && (
             <Row>
               <Col lg="12" xl="12" md="12" sm="12">
-                {(totalAlbums > realPageSize) && paginator}
+                {(totalAlbums > pageSize) && paginator}
               </Col>
             </Row>
           )}

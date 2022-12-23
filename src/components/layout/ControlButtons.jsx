@@ -15,11 +15,9 @@ import { stop as radioStop } from '../../lib/radio-client';
 
 const ControlButtons = ({ mediaType, setMediaType }) => {
   const settings = useContext(SettingsContext);
-  const { preferences } = settings;
-  const { features } = settings;
+  const { features, preferences, isScreenSmall } = settings;
   const { vlcHost, vlcPort, vlcPassword } = preferences;
   const { controlButtonSize } = settings.styles;
-  const isScreenSmall = window.innerWidth < 700;
 
   let height;
   let fontSize = '';
@@ -40,12 +38,17 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
     setMediaType('file');
   };
 
+  const commonProps = {
+    height,
+    width: height,
+    disabled: features.isLocked,
+  };
+
   return (
     <>
       {features.play && (
         <Button
-          height={height}
-          width={height}
+          {...commonProps}
           disabled={features.isLocked || mediaType !== 'file'}
           onClick={next}
           content={<Play style={{ fontSize }} className="volume-icon" />}
@@ -53,8 +56,7 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
       )}
       {features.next && (
         <Button
-          height={height}
-          width={height}
+          {...commonProps}
           disabled={features.isLocked || mediaType !== 'file'}
           onClick={next}
           content={<ChevronDoubleRight style={{ fontSize }} className="volume-icon" />}
@@ -62,27 +64,21 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
       )}
       {features.stop && (
         <Button
-          height={height}
-          width={height}
-          disabled={features.isLocked}
+          {...commonProps}
           onClick={stopAll}
           content={<StopFill style={{ fontSize }} className="volume-icon" />}
         />
       )}
       {features.volume && (
         <Button
-          height={height}
-          width={height}
-          disabled={features.isLocked}
+          {...commonProps}
           onClick={up}
           content={<VolumeUp style={{ fontSize }} className="volume-icon" />}
         />
       )}
       {features.volume && (
         <Button
-          height={height}
-          width={height}
-          disabled={features.isLocked}
+          {...commonProps}
           onClick={down}
           content={<VolumeDown style={{ fontSize }} className="volume-icon" />}
         />

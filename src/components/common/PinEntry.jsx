@@ -18,7 +18,7 @@ const propTypes = {
 const PinEntry = ({ onAuthorize, onCancel, title }) => {
   const settings = useContext(SettingsContext);
   const [pin, setPin] = useState('');
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
 
   useEffect(() => {
     if (pin === settings.preferences.pin) {
@@ -45,7 +45,6 @@ const PinEntry = ({ onAuthorize, onCancel, title }) => {
         <Card className="pinCard" style={pinStyle}>
           <Card.Body>
             <Card.Title className="pinTitle">{title}</Card.Title>
-            <Card.Text className="pinText">{pin.split('').map(() => '*')}</Card.Text>
             <Container fluid>
               <Row className="pinText">{row([1, 2, 3])}</Row>
               <Row className="pinText">{row([4, 5, 6])}</Row>

@@ -14,7 +14,7 @@ const propTypes = {
 
 const Confirm = ({ onConfirm, onCancel, text }) => {
   const settings = useContext(SettingsContext);
-  const isScreenSmall = window.innerWidth < 700;
+  const { isScreenSmall } = settings;
   const { controlButtonSize } = settings.styles;
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
