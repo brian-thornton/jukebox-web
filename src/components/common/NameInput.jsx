@@ -12,11 +12,7 @@ const propTypes = {
 };
 
 const NameInput = ({
-  defaultValue,
-  onChange,
-  placeholder,
-  onEnter,
-  disabled,
+  defaultValue, onChange, placeholder, onEnter, disabled,
 }) => (
   <InputGroup className="mb-3">
     <FormControl

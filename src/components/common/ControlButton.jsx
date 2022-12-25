@@ -16,13 +16,7 @@ const propTypes = {
 };
 
 const ControlButton = ({
-  disabled,
-  height,
-  width = '275',
-  onClick,
-  text,
-  isSelected,
-  style,
+  disabled, height, width = '275', onClick, text, isSelected, style,
 }) => {
   const settings = useContext(SettingsContext);
   const { styles } = settings;

@@ -17,12 +17,7 @@ const propTypes = {
 };
 
 const AddNew = ({
-  cancelText,
-  confirmText,
-  fields,
-  onCancel,
-  onConfirm,
-  title,
+  cancelText, confirmText, fields, onCancel, onConfirm, title,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;

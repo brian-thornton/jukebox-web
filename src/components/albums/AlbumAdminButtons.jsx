@@ -14,9 +14,7 @@ const propTypes = {
 };
 
 const AlbumAdminButtons = ({
-  setIsCustomSearchOpen,
-  setIsConfirmRemoveCoverArtOpen,
-  setConfirmRestriction,
+  setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;

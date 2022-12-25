@@ -20,8 +20,7 @@ const propTypes = {
 };
 
 const CoverArtSearchModal = ({
-  handleClose,
-  album,
+  handleClose, album,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState();

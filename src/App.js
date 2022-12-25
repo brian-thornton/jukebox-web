@@ -43,7 +43,7 @@ function App() {
   const [isLocked, setIsLocked] = useState();
   const [startsWithFilter, setStartsWithFilter] = useState();
   const navigate = useNavigate();
-  const [isScreenSmall, setIsScreenSmall] = useState(window.innerWidth < 700);
+  const isScreenSmall = useState(window.innerWidth < 700);
 
   const onIdle = () => {
     navigate(`/albums`);
@@ -55,13 +55,14 @@ function App() {
   // Monitor for remote lock down.
   const monitorLock = () => {
     getSettings().then((data) => {
-      console.log(settingsRef.current)
       if (!settingsRef.current || (data.features.isLocked !== settingsRef.current.features.isLocked)) {
         setSettings(data);
 
         if (data) {
           setIsLocked(data.features.isLocked);
 
+          // The lock has been set and the user is not on the albums page. Return the user
+          // to the home page.
           if (data.features.isLocked && window.location.pathname !== '/albums') {
             window.location.replace(`/albums`);
           }

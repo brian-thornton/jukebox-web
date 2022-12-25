@@ -66,16 +66,33 @@ const PlaylistControls = ({
     });
   };
 
+  const controlButton = (text, handler, flag = true) => {
+    return (
+      <>
+        {flag && (
+          <ControlButton
+            style={{ fontSize }}
+            height={buttonHeight}
+            width="100%"
+            disabled={showDeleteModal}
+            onClick={handler}
+            text={text}
+          />
+        )}
+      </>
+    )
+  }
+
   return (
     <>
       {!isScreenSmall && (
         <>
-          <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal} onClick={handleBackToPlaylists} text="Go Back" />
-          {features.play && <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={runPlaylist} text="Run" />}
-          {features.queue && <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={enqueuePlaylist} text="Enqueue" />}
-          <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={shuffle} text="Shuffle" />
-          <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal || isEmpty} onClick={() => setIsSaveAsOpen(true)} text="Save As..." />
-          {features.deletePlaylist && <ControlButton style={{ fontSize }} height={buttonHeight} width="100%" disabled={showDeleteModal} onClick={() => setShowDeleteModal(true)} text="Delete" />}
+          {controlButton('Go Back', handleBackToPlaylists)}
+          {controlButton('Run', runPlaylist, features.play)}
+          {controlButton('Enqueue', enqueuePlaylist, features.queue)}
+          {controlButton('Shuffle', shuffle)}
+          {controlButton('Save As...', () => setIsSaveAsOpen(true))}
+          {controlButton('Delete', () => setShowDeleteModal(true), features.deletePlaylist)}
         </>
       )}
       {isScreenSmall && (

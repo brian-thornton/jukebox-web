@@ -1,6 +1,6 @@
+import { Button as ReactButton } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
-import { Button as ReactButton } from 'react-bootstrap';
 
 import { SettingsContext } from './layout/SettingsProvider';
 import { Style } from './shapes';
@@ -21,17 +21,7 @@ const propTypes = {
 };
 
 const Button = ({
-  onClick,
-  content,
-  icon,
-  disabled,
-  isToggle,
-  isToggled,
-  isSelected,
-  height,
-  width,
-  style,
-  id,
+  onClick, content, icon, disabled, isToggle, isToggled, isSelected, height, width, style, id,
   hideOnSmall,
 }) => {
   const settings = useContext(SettingsContext);
@@ -66,24 +56,19 @@ const Button = ({
     buttonStyle.background = settings.styles.buttonBackgroundColor;
   }
 
+  buttonStyle.overflow = 'hidden';
+  buttonStyle.whiteSpace = 'nowrap';
+  buttonStyle.textOverflow = 'ellipsis';
+
   if (width === '100%') {
     buttonStyle.minWidth = '100%';
     buttonStyle.maxWidth = '100%';
-    buttonStyle.overflow = 'hidden';
-    buttonStyle.whiteSpace = 'nowrap';
-    buttonStyle.textOverflow = 'ellipsis';
   } else if (width.includes('%')) {
     buttonStyle.minWidth = width;
     buttonStyle.maxWidth = width;
-    buttonStyle.overflow = 'hidden';
-    buttonStyle.whiteSpace = 'nowrap';
-    buttonStyle.textOverflow = 'ellipsis';
   } else if (width) {
     buttonStyle.minWidth = `${width}px`;
     buttonStyle.maxWidth = `${width}px`;
-    buttonStyle.overflow = 'hidden';
-    buttonStyle.whiteSpace = 'nowrap';
-    buttonStyle.textOverflow = 'ellipsis';
   }
 
   if (height) {

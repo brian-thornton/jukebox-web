@@ -20,14 +20,7 @@ const propTypes = {
 };
 
 const Item = ({
-  buttons,
-  onClick,
-  text,
-  includeCheckbox,
-  onCheck,
-  checked,
-  actionVisible,
-  font,
+  buttons, onClick, text, includeCheckbox, onCheck, checked, actionVisible, font,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;

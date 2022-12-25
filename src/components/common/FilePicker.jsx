@@ -17,12 +17,7 @@ const propTypes = {
 };
 
 const FilePicker = ({
-  onConfirm,
-  onSelectFile,
-  onCancel,
-  title,
-  confirmText,
-  cancelText,
+  onConfirm, onSelectFile, onCancel, title, confirmText, cancelText,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;

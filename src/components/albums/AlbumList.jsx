@@ -27,9 +27,7 @@ const propTypes = {
 };
 
 const AlbumList = ({
-  selectedLibraries,
-  setStartsWithFilter,
-  startsWithFilter,
+  selectedLibraries, setStartsWithFilter, startsWithFilter,
 }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);

@@ -60,6 +60,20 @@ const Search = ({
 
   const row = content => content.map(char => inputButton(char));
 
+  const searchButton = (text, target) => (
+    <Button
+      className="keyboardRow"
+      style={{ fontSize: '40px' }}
+      width="300"
+      height="55"
+      onClick={() => {
+        setSearchText(localSearch);
+        navigate(target);
+      }}
+      content={text}
+    />
+  );
+
   return (
     <>
       <KeyboardEventHandler
@@ -138,28 +152,8 @@ const Search = ({
           </Container>
         </Row>
         <Row className="keyboardRow">
-          <Button
-            className="keyboardRow"
-            style={{ fontSize: '40px' }}
-            width="300"
-            height="55"
-            onClick={() => {
-              setSearchText(localSearch);
-              navigate('/albums');
-            }}
-            content="Search Albums"
-          />
-          <Button
-            className="keyboardRow"
-            style={{ fontSize: '40px' }}
-            width="300"
-            height="55"
-            onClick={() => {
-              setSearchText(localSearch);
-              navigate('/tracks');
-            }}
-            content="Search Tracks"
-          />
+          {searchButton('Search Albums', '/albums')}
+          {searchButton('Search Tracks', '/tracks')}
         </Row>
       </Container>
     </>

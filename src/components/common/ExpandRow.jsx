@@ -14,10 +14,7 @@ const propTypes = {
 };
 
 const ExpandRow = ({
-  buttons,
-  text,
-  isExpanded,
-  setIsExpanded,
+  buttons, text, isExpanded, setIsExpanded,
 }) => {
   const settings = useContext(SettingsContext);
   const [activeKey, setActiveKey] = useState(isExpanded ? '0' : null);

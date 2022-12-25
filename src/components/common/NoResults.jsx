@@ -17,12 +17,7 @@ const propTypes = {
 };
 
 const NoResults = ({
-  text,
-  title,
-  controls,
-  applyMargin,
-  goBackText,
-  onGoBack,
+  text, title, controls, applyMargin, goBackText, onGoBack,
 }) => {
   const settings = useContext(SettingsContext);
 
