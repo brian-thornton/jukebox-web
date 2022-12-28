@@ -23,7 +23,6 @@ const TrackList = ({
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
   const [trackAlbums, setTrackAlbums] = useState([]);
-  const isMp3 = track => track.path.split('.').pop().toLowerCase() === 'mp3';
 
   const getTrackCoverArt = async (pageTracks) => {
     setTrackAlbumsLoading(true);
@@ -44,19 +43,15 @@ const TrackList = ({
         {trackAlbumsLoaded && (
           <Container fluid className="trackListContainer">
             {tracks.map((track) => {
-              if (isMp3(track)) {
-                return (
-                  <Track
-                    track={track}
-                    trackAlbums={trackAlbums}
-                    trackAlbumsLoaded={trackAlbumsLoaded}
-                    showAlbumCovers={showAlbumCovers}
-                    setAddTracks={setAddTracks}
-                  />
-                );
-              }
-
-              return <></>;
+              return (
+                <Track
+                  track={track}
+                  trackAlbums={trackAlbums}
+                  trackAlbumsLoaded={trackAlbumsLoaded}
+                  showAlbumCovers={showAlbumCovers}
+                  setAddTracks={setAddTracks}
+                />
+              );
             })}
           </Container>
         )}

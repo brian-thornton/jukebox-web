@@ -14,16 +14,7 @@ const GoToAlbumButton = ({ album }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
-
-  let heightAndWidth = '';
-
-  if (controlButtonSize === 'large') {
-    heightAndWidth = '60';
-  }
-
-  if (controlButtonSize === 'medium') {
-    heightAndWidth = '60';
-  }
+  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
 
   return (
     <Button

@@ -86,6 +86,7 @@ const Queue = () => {
     <>
       {settings.features.play && <PlayNowButton track={track} />}
       <Button
+        style={{ fontSize }}
         width={buttonWidth}
         height={buttonHeight}
         onClick={() => remove(track)}

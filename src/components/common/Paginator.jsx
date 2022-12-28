@@ -29,7 +29,7 @@ const Paginator = ({
   const settings = useContext(SettingsContext);
   const pages = Math.floor(totalItems / pageSize);
   const { controlButtonSize } = settings.styles;
-
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
   let height;
 
   if (controlButtonSize === 'large') {
@@ -44,6 +44,7 @@ const Paginator = ({
     <div className="paginator">
       {totalItems > 0 && (
         <Button
+          style={{ fontSize }}
           height={height}
           width={height}
           disabled={selectedPage === 1 || settings.features.isLocked}
@@ -52,6 +53,7 @@ const Paginator = ({
         />
       )}
       <Button
+        style={{ fontSize }}
         height={height}
         width={height}
         disabled={selectedPage === 1 || settings.features.isLocked}
@@ -61,6 +63,7 @@ const Paginator = ({
       />
       {!disableRandom && (
         <Button
+          style={{ fontSize }}
           height={height}
           hideOnSmall
           disabled={settings.features.isLocked}
@@ -70,6 +73,7 @@ const Paginator = ({
         />
       )}
       <Button
+        style={{ fontSize }}
         height={height}
         width={height}
         disabled={selectedPage === pages + 1 || settings.features.isLocked}
@@ -79,6 +83,7 @@ const Paginator = ({
       />
       {totalItems > 0 && (
         <Button
+          style={{ fontSize }}
           height={height}
           width={height}
           disabled={selectedPage === pages + 1 || settings.features.isLocked}

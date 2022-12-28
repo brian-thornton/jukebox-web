@@ -30,7 +30,6 @@ const TrackList = ({ tracks }) => {
   const [pageSize, setPageSize] = useState();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / pageSize)));
   let content = [];
-
   const { controlButtonSize } = settings.styles;
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 53 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;

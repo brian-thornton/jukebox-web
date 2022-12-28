@@ -1,5 +1,8 @@
 import { PropTypes } from 'prop-types';
 import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
 import React, { useContext, useState } from 'react';
 
 import './AddNew.scss';
@@ -17,15 +20,23 @@ const propTypes = {
 };
 
 const AddNew = ({
-  cancelText, confirmText, fields, onCancel, onConfirm, title,
+  cancelText, confirmText, fields, onCancel, onConfirm, title, dropdowns,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const [fieldValues, setFieldValues] = useState(fields);
+  const [localDropdowns, setLocalDropdowns] = useState(dropdowns);
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
     color: settings.styles.fontColor,
+  };
+
+  const onDrodownValueSet = (dropdown, value) => {
+    const cloneDropdowns = [ ...localDropdowns ];
+    const updated = cloneDropdowns.find(d => d.name === dropdown.name);
+    updated.value = value;
+    setLocalDropdowns(cloneDropdowns);
   };
 
   return (
@@ -33,22 +44,38 @@ const AddNew = ({
       <Card.Body>
         <Card.Title className="addNewTitle">{title}</Card.Title>
         <Card.Text className="addNewText">
-          {Object.keys(fieldValues).map(f => (
-            <NameInput
-              onChange={(event) => {
-                setFieldValues({
-                  ...fieldValues,
-                  [f]: event.target.value,
-                });
-              }}
-              placeholder={fieldValues[f]}
-              defaultValue={fieldValues[f]}
-            />
-          ))}
+          <Container fluid>
+            <Row>
+              {Object.keys(fieldValues).map(f => (
+                <NameInput
+                  onChange={(event) => {
+                    setFieldValues({
+                      ...fieldValues,
+                      [f]: event.target.value,
+                    });
+                  }}
+                  placeholder={fieldValues[f]}
+                  defaultValue={fieldValues[f]}
+                />
+              ))}
+            </Row>
+            <Row>
+              <>
+                {localDropdowns?.map(dropdown => (
+                  <Form.Group>
+                    <Form.Label style={{ marginRight: '10px' }}>{dropdown.name}</Form.Label>
+                    <Form.Select onChange={(e) => onDrodownValueSet(dropdown, e.target.value)}>
+                      {dropdown.options.map(o => <option>{o}</option>)}
+                    </Form.Select>
+                  </Form.Group>
+                ))}
+              </>
+            </Row>
+          </Container>
         </Card.Text>
         <div className="addNewText">
           <Button onClick={onCancel} content={cancelText} />
-          <Button onClick={() => onConfirm(fieldValues)} content={confirmText} />
+          <Button onClick={() => onConfirm(fieldValues, localDropdowns)} content={confirmText} />
         </div>
       </Card.Body>
     </Card>

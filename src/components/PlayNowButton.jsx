@@ -13,16 +13,8 @@ const propTypes = {
 const PlayNowButton = ({ track }) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
-
-  let heightAndWidth = '';
-
-  if (controlButtonSize === 'large') {
-    heightAndWidth = '60';
-  }
-
-  if (controlButtonSize === 'medium') {
-    heightAndWidth = '60';
-  }
+  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
   const playNow = () => {
     enqueueTop(track);
@@ -33,6 +25,7 @@ const PlayNowButton = ({ track }) => {
     <Button
       height={heightAndWidth}
       width={heightAndWidth}
+      style={{ fontSize }}
       icon={<PlayFill />}
       onClick={() => playNow()}
     />

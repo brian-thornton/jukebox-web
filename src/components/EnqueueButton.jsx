@@ -17,19 +17,12 @@ const propTypes = {
 const EnqueueButton = ({ track, mode }) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
-
-  let heightAndWidth = '';
-
-  if (controlButtonSize === 'large') {
-    heightAndWidth = '60';
-  }
-
-  if (controlButtonSize === 'medium') {
-    heightAndWidth = '60';
-  }
+  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
   return (
     <Button
+      style={{ fontSize }}
       width={heightAndWidth}
       height={heightAndWidth}
       onClick={() => {

@@ -40,29 +40,18 @@ const Album = ({ album, coverArtOnly }) => {
   };
 
   const albumImageStyle = {
-    width: '200px',
-    height: '200px',
-    maxWidth: '200px',
-    maxHeight: '200px',
+    width: coverSize === 'medium' ? '300px' : '200px',
+    height: coverSize === 'medium' ? '300px' : '200px',
+    maxWidth: coverSize === 'medium' ? '300px' : '200px',
+    maxHeight: coverSize === 'medium' ? '300px' : '200px',
   };
 
   const albumCardStyle = {
-    width: '203px',
-    height: '220px',
-    maxWidth: '203px',
-    maxHeight: '220px',
+    width: coverSize === 'medium' ? '303px' : '203px',
+    height: coverSize === 'medium' ? '320px' : '220px',
+    maxWidth: coverSize === 'medium' ? '303px' : '203px',
+    maxHeight: coverSize === 'medium' ? '320px' : '220px',
   };
-
-  if (coverSize === 'medium') {
-    albumImageStyle.width = '300px';
-    albumImageStyle.height = '300px';
-    albumImageStyle.maxWidth = '300px';
-    albumImageStyle.maxHeight = '300px';
-    albumCardStyle.width = '303px';
-    albumCardStyle.height = '320px';
-    albumCardStyle.maxWidth = '303px';
-    albumCardStyle.maxHeight = '320px';
-  }
 
   if (coverSize === 'large') {
     albumImageStyle.width = '400px';

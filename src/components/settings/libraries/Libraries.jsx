@@ -144,6 +144,7 @@ const Libraries = () => {
       {noPrompts && isLoading && <Loading />}
       {noPrompts && !isLoading && !libraries.length && (
         <NoResults
+          applyMargin={false}
           className="fullWidth"
           title="No Libraries"
           text="No Libraries have been added. Click Add to add your first library."

@@ -1,3 +1,4 @@
+import { PencilSquare } from 'react-bootstrap-icons';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 
@@ -23,6 +24,7 @@ const PlaylistRow = ({
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
   return (
     <Item
@@ -39,9 +41,10 @@ const PlaylistRow = ({
           )}
           {!addMode && (
             <Button
+              style={{fontSize}}
               height={buttonHeight}
               onClick={() => onSelect(playlist.name)}
-              content="Edit"
+              content={<PencilSquare />}
             />
           )}
         </>

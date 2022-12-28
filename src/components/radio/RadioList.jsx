@@ -2,13 +2,14 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useEffect, useState, useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { PlayFill } from 'react-bootstrap-icons';
 
 import Button from '../Button';
 import { getStations, play } from '../../lib/radio-client';
 import RadioCategories from './RadioCategories';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './RadioList.scss';
-import { topMargin } from '../../lib/styleHelper';
+import { headerFooterReserve, topMargin } from '../../lib/styleHelper';
 import PaginatedList from '../common/PaginatedList';
 
 const propTypes = {
@@ -18,21 +19,25 @@ const propTypes = {
 const RadioList = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall, preferences } = settings;
+  const { controlButtonSize } = settings.styles;
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [stations, setStations] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
   const loadStations = async () => {
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-
     const data = await getStations(selectedCategory, realStart, realPageSize);
     setStations(data);
   };
 
   useState(() => {
-    const itemHeight = isScreenSmall ? 45 : 60;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    const reserve = headerFooterReserve(settings);
+    const height = ['large', 'medium'].includes(controlButtonSize) ? 70 : 60
+    const itemHeight = height;
+    const viewPortHeight = Math.floor(window.innerHeight - reserve);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
@@ -42,7 +47,10 @@ const RadioList = ({ setMediaType }) => {
 
   const itemButtons = station => (
     <Button
-      content="Play"
+      height={heightAndWidth}
+      width={heightAndWidth}
+      content={<PlayFill />}
+      style={{fontSize }}
       onClick={() => {
         setMediaType('stream');
         play(station.url_resolved, preferences.vlcHost,

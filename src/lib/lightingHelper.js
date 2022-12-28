@@ -7,20 +7,12 @@ export const applyLighting = async (settings, event) => {
         for (const controller of settings?.lighting?.controllers) {
           const masterController = settings.controllers.find((c) => c.ip === controller.ip);
 
-          console.log(`controller ${masterController.ip} is online? ${masterController.online}`)
           if (masterController.online) {
-            // if (!controller.segments?.find((s) => s.event === event)) {
-            //   powerOff(controller.ip);
-            // } else {
-            console.log('debug A')
             const lightingController = settings?.lighting?.controllers?.find(c => c.ip === controller.ip);
-            console.log('debug B')
+
             if (lightingController) {
-              console.log('debug C')
               const currentEvent = lightingController.events.find(e => e.event === event);
               if (currentEvent) {
-                console.log('debug D')
-                console.log(`sending ${currentEvent.preset} to ${lightingController.ip}`);
                 applyPreset(lightingController.ip, currentEvent.preset);
               }
               // }

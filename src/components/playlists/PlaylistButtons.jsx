@@ -28,6 +28,7 @@ const PlaylistButtons = ({
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
   const deleteTrack = (trackName, trackToDelete) => {
     removeTracksFromPlaylist(trackName, [trackToDelete]);
@@ -51,18 +52,21 @@ const PlaylistButtons = ({
     <>
       <PlayNowButton track={track} />
       <Button
+        style={{ fontSize }}
         height={buttonHeight}
         width={buttonWidth}
         onClick={() => deleteTrack(name, track)}
         icon={<TrashFill />}
       />
       <Button
+        style={{ fontSize }}
         height={buttonHeight}
         width={buttonWidth}
         icon={<CaretUpFill />}
         onClick={() => onMoveTrackUp(track, index)}
       />
       <Button
+        style={{ fontSize }}
         height={buttonHeight}
         width={buttonWidth}
         icon={<CaretDownFill />}

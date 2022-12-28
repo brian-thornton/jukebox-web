@@ -43,7 +43,7 @@ function App() {
   const [isLocked, setIsLocked] = useState();
   const [startsWithFilter, setStartsWithFilter] = useState();
   const navigate = useNavigate();
-  const isScreenSmall = useState(window.innerWidth < 700);
+  const isScreenSmall= window.innerWidth < 700;
 
   const onIdle = () => {
     navigate(`/albums`);
@@ -177,7 +177,7 @@ function App() {
 
   return (
     <>
-      <SettingsContext.Provider value={{ isScreenSmall, display, search, ...settings }}>
+      <SettingsContext.Provider value={{ isScreenSmall: isScreenSmall, display, search, ...settings }}>
         {settings && isPinOpen && (
           <JukeboxRoot>
             <PinEntry

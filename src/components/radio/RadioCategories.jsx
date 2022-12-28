@@ -18,15 +18,17 @@ const RadioCategories = ({ category, setCategory }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
   const categories = [
-    'Rock', 'Pop', 'Charts', 'Hits', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance',
+    'Rock', 'Pop', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance',
   ];
 
   const buttons = (
     <>
       {categories.map(c => (
         <Button
+          style={{ fontSize }}
           disabled={features.isLocked}
           onClick={() => {
             setCategory(c);

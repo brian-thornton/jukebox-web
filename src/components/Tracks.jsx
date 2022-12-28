@@ -1,4 +1,3 @@
-import Alert from 'react-bootstrap/Alert';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
@@ -32,7 +31,6 @@ const Tracks = ({ setCurrentAlbum }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  const alertText = "Loading tracks.  If you don't see any results, set up your library in Settings.";
   let trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
   trackHeight = isScreenSmall ? 35 : trackHeight;
 
@@ -54,9 +52,6 @@ const Tracks = ({ setCurrentAlbum }) => {
   };
 
   const loadTracks = () => {
-    // 1: 0
-    // 2: 2 * 12 == 24 - 12 = 12
-    // 3: 3 * 12 == 36 - 12 = 24
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
     if (realStart >= 0 && realPageSize) {
@@ -116,6 +111,9 @@ const Tracks = ({ setCurrentAlbum }) => {
 
   return (
     <>
+      {tracksLoaded && totalTracks === 0 && (
+        <NoResults title="No Tracks" text="No Tracks Found. Configure your library in Settings." marginTop="60px"  />
+      )}
       {tracksLoaded && noResults && (
         <div className="no-albums">
           <NoResults title="No Results Found" text="No Tracks found matching your search. Please try again." marginTop="60px" />
@@ -124,7 +122,6 @@ const Tracks = ({ setCurrentAlbum }) => {
       {searchInProgress && <Loading />}
       {!noResults && !searchInProgress && (
         <>
-          {(!tracks || !tracks.length) && <Alert variant="primary">{alertText}</Alert>}
           {trackList()}
         </>
       )}
