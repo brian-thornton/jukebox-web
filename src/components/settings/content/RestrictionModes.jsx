@@ -117,7 +117,10 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
       {isDeleteOpen && (
         <Confirm
           onConfirm={() => onDeleteRestrictionGroup()}
-          onCancel={() => setIsDeleteOpen(false)}
+          onCancel={() => {
+            setIsDeleteOpen(false);
+            setSelectedRestrictionMode(null);
+          }}
           text="Are you sure that you want to delete this restriction group?"
         />
       )}

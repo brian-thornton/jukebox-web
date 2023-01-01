@@ -1,6 +1,8 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
@@ -18,7 +20,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
+const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
@@ -55,17 +57,13 @@ const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
       // If the controller exists, we need to check if the current event is already defined and update it.
       if (existingController) {
         const existingEvent = existingController.events.find(e => e.event === selectedEvent);
-        console.log(selectedEvent);
-        console.log(existingEvent);
 
         // An existing event was found. Let's update it.
         if (existingEvent) {
           // An existing event was found. Let's update it.
-          console.log('place 1');
           existingEvent.preset = preset.n;
         } else {
           // This event does not yet exist. Let's add it.
-          console.log('place 2');
           existingController.events.push({
             event: selectedEvent,
             preset: preset.n,
@@ -73,7 +71,6 @@ const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
         }
       } else {
         // This is the first time we are seeing this controller. Let's add the entry and initial event.
-        console.log('place 3');
         deepClone.lighting.controllers.push(
           {
             ip: controller.ip,
@@ -88,13 +85,11 @@ const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
       }
     }
 
-    console.log(deepClone);
-
     deleteSkin(deepClone.name).then(() => {
       createSkin({
         name: deepClone.name,
         skin: deepClone,
-      }).then(() =>  window.location.replace(`/settings?skin=${deepClone.name}&mode=style&tab=lights`))
+      }).then(() => window.location.replace(`/settings?skin=${deepClone.name}&mode=style&tab=lights`))
     });
   };
 
@@ -119,18 +114,25 @@ const SkinSegmentConfiguration = ({ skin, controller, loadSkins }) => {
   return (
     <>
       {!isDetailOpen && (
-        <>
-          <ListGroup className="styleEditorContent" {...swipe}>
-            {lightingEvents.slice(start, (start + itemsPerPage)).map(le => eventRow(le))}
-          </ListGroup>
-          <Paginator
-            disableRandom
-            onPageChange={page => setSelectedPage(page)}
-            selectedPage={selectedPage}
-            totalItems={lightingEvents.length}
-            pageSize={itemsPerPage}
-          />
-        </>
+        <Container fluid>
+          <Row>
+            <Button content="Go Back to Controllers" onClick={() => setController(null)} />
+          </Row>
+          <Row>
+            <ListGroup className="styleEditorContent" {...swipe}>
+              {lightingEvents.slice(start, (start + itemsPerPage)).map(le => eventRow(le))}
+            </ListGroup>
+          </Row>
+          <Row className="segmentRow">
+            <Paginator
+              disableRandom
+              onPageChange={page => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={lightingEvents.length}
+              pageSize={itemsPerPage}
+            />
+          </Row>
+        </Container>
       )}
       {isDetailOpen && (
         <Presets

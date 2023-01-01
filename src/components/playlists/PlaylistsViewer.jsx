@@ -79,6 +79,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
         getPlaylists().then((playlistData) => {
           getStatus().then((status) => {
             updateStatus({ ...status, totalPlaylists: playlistData.length });
+            loadPlaylists();
           });
         });
       });

@@ -32,9 +32,11 @@ const JukeboxNavRight = ({
   lastModule,
   setIsPinOpen,
   setDisplay,
+  display,
+  search,
 }) => {
   const settings = useContext(SettingsContext);
-  const { features, isScreenSmall, preferences, search, display } = settings;
+  const { features, isScreenSmall, preferences } = settings;
   const navigate = useNavigate();
   const { pathname } = window.location;
   const { navButtonSize } = settings.styles;

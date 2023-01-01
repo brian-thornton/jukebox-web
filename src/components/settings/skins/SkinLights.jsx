@@ -30,6 +30,7 @@ const SkinLights = ({ skin, loadSkins }) => {
       )}
       {selectedController && (
         <SkinSegmentConfiguration
+          setController={setSelectedController}
           controller={selectedController}
           skin={skin}
           loadSkins={loadSkins}

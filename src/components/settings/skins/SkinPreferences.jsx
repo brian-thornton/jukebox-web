@@ -12,6 +12,9 @@ import { deleteSkin, createSkin } from '../../../lib/style-client';
 import { Skin } from '../../shapes';
 
 import './SkinPreferences.scss';
+import SkinNavPreference from './SkinNavPreference';
+import SkinNavButtonSize from './SkinNavButtonSize';
+import SkinControlButtonSize from './SkinControlButtonSize';
 
 const propTypes = {
   skin: Skin.isRequired,
@@ -63,116 +66,13 @@ const SkinPreferences = ({ skin }) => {
             </Col>
           </Row>
           <Row>
-            <Form>
-              <Form.Group>
-                <div key={navButtonType} className="mb-3">
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Nav as Links"
-                    name="group1"
-                    type="radio"
-                    id="links"
-                    value="links"
-                    checked={navButtonType === 'links'}
-                    onChange={() => setNavButtonType('links')}
-                  />
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Nav as Buttons"
-                    name="group1"
-                    type="radio"
-                    id="buttons"
-                    value="buttons"
-                    checked={navButtonType === 'buttons'}
-                    onChange={() => setNavButtonType('buttons')}
-                  />
-                </div>
-              </Form.Group>
-            </Form>
+            <SkinNavPreference skin={skin} navButtonType={navButtonType} setNavButtonType={setNavButtonType} />
           </Row>
           <Row>
-            <Form>
-              <Form.Group>
-                <div key={navButtonSize} className="mb-3">
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Small Nav Buttons"
-                    name="group2"
-                    type="radio"
-                    id="smallNavButtons"
-                    value="small"
-                    checked={navButtonSize === 'small'}
-                    onChange={() => setNavButtonSize('small')}
-                  />
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Medium Nav Buttons"
-                    name="group2"
-                    type="radio"
-                    id="mediumNavButtons"
-                    value="medium"
-                    checked={navButtonSize === 'medium'}
-                    onChange={() => setNavButtonSize('medium')}
-                  />
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Large Nav Buttons"
-                    name="group2"
-                    type="radio"
-                    id="largeNavButtons"
-                    value="large"
-                    checked={navButtonSize === 'large'}
-                    onChange={() => setNavButtonSize('large')}
-                  />
-                </div>
-              </Form.Group>
-            </Form>
+            <SkinNavButtonSize skin={skin} navButtonSize={navButtonSize} setNavButtonSize={setNavButtonSize} />
           </Row>
           <Row>
-            <Form>
-              <Form.Group>
-                <div key={controlButtonSize} className="mb-3">
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Small Control Buttons"
-                    name="group3"
-                    type="radio"
-                    id="smallControlButtons"
-                    value="small"
-                    checked={controlButtonSize === 'small'}
-                    onChange={() => setControlButtonSize('small')}
-                  />
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Medium Control Buttons"
-                    name="group3"
-                    type="radio"
-                    id="mediumControlButtons"
-                    value="medium"
-                    checked={controlButtonSize === 'medium'}
-                    onChange={() => setControlButtonSize('medium')}
-                  />
-                  <Form.Check
-                    inline
-                    disabled={!skin.isEditable}
-                    label="Large Control Buttons"
-                    name="group3"
-                    type="radio"
-                    id="largeControlButtons"
-                    value="large"
-                    checked={controlButtonSize === 'large'}
-                    onChange={() => setControlButtonSize('large')}
-                  />
-                </div>
-              </Form.Group>
-            </Form>
+            <SkinControlButtonSize skin={skin} controlButtonSize={controlButtonSize} setNavButtonSize={setControlButtonSize} />
           </Row>
         </Container>
       </Card.Title>

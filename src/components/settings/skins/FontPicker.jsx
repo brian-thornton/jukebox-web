@@ -6,6 +6,7 @@ import { calculatePageSize, supportedFonts } from '../../../lib/styleHelper';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import PaginatedList from '../../common/PaginatedList';
 import { Skin } from '../../shapes';
+import Button from '../../Button';
 
 const propTypes = {
   editFont: PropTypes.string.isRequired,
@@ -13,7 +14,7 @@ const propTypes = {
   onComplete: PropTypes.func.isRequired,
 };
 
-const FontPicker = ({ editFont, skin, onComplete }) => {
+const FontPicker = ({ editFont, skin, onComplete, onCancel }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   const availableFonts = supportedFonts.google.families;
@@ -47,6 +48,7 @@ const FontPicker = ({ editFont, skin, onComplete }) => {
 
   return (
     <PaginatedList
+      topLevelControls={<Button content="Back to Font Selection List" onClick={() => onCancel()} />}
       items={items()}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}

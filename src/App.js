@@ -173,11 +173,11 @@ function App() {
     }}>
       {children}
     </div>
-  );
+  );  
 
   return (
     <>
-      <SettingsContext.Provider value={{ isScreenSmall: isScreenSmall, display, search, ...settings }}>
+      <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, }}>
         {settings && isPinOpen && (
           <JukeboxRoot>
             <PinEntry

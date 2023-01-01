@@ -45,6 +45,4 @@ export const post = async (url, body) => {
   }
 }
 
-export const page = (start, limit) => {
-  return `start=${start}&limit=${limit}`;
-};
+export const page = (start, limit) => `start=${start}&limit=${limit}`;

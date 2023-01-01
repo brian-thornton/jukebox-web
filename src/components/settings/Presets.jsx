@@ -53,7 +53,7 @@ const Presets = ({ controller, onClose, onSelect }) => {
     <>
       {presets?.length > 0 && (
         <PaginatedList
-          topLevelControls={<Button content="Back to Controllers" onClick={onClose} />}
+          topLevelControls={<Button content="Back to Controller Events" onClick={onClose} />}
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}

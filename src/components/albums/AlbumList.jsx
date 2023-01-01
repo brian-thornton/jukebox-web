@@ -27,7 +27,7 @@ const propTypes = {
 };
 
 const AlbumList = ({
-  selectedLibraries, setStartsWithFilter, startsWithFilter,
+  display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
 }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
@@ -39,7 +39,7 @@ const AlbumList = ({
   const [pageSize, setPageSize] = useState();
   const { state } = useLocation();
   const { startsWithLocation, coverSize } = settings.preferences;
-  const { isScreenSmall, search, display } = settings;
+  const { isScreenSmall } = settings;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const noResults = search && !albums.length && !isLoading;
   const cols = startsWithLocation === 'none' ? '12' : '11';
@@ -103,7 +103,7 @@ const AlbumList = ({
       const reserve = headerFooterReserve(settings);
       const startsWithReserve = ['left', 'right'].includes(startsWithLocation) ? 25 : 0;
 
-      let coverWidth = 220;
+      let coverWidth = 200;
       let coverHeight = 220;
 
       if (coverSize === 'medium') {
@@ -114,6 +114,11 @@ const AlbumList = ({
       if (coverSize === 'large') {
         coverWidth = 400;
         coverHeight = 400;
+      }
+
+      if (settings.isScreenSmall) {
+        coverWidth = 200;
+        coverHeight = 200;
       }
 
       const albumsPerRow = Math.floor(window.innerWidth / (coverWidth + startsWithReserve));
@@ -127,28 +132,13 @@ const AlbumList = ({
     loadAlbums();
   }, [category, pageSize, selectedPage, selectedLibraries, search, startsWithFilter]);
 
-  // useEffect(() => {
-  //   if (!search && !startsWithFilter) {
-  //     if (albums.length) {
-  //       window.location.reload();
-  //     }
-  //   }
-
-  //   if (selectedPage === 1) {
-  //     alert('two');
-  //     loadAlbums();
-  //   } else {
-  //     setSelectedPage(1);
-  //   }
-  // }, [search, startsWithFilter]);
-
   const paginator = (
     <Paginator
       onPageChange={(page) => setSelectedPage(page)}
       selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={pageSize}
-      disableRandom={search?.length > 0}
+      disableRandom={search?.length > 0 || display !== 'covers'}
     />
   );
 

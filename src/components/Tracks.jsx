@@ -20,9 +20,9 @@ const propTypes = {
   setCurrentAlbum: PropTypes.func.isRequired,
 };
 
-const Tracks = ({ setCurrentAlbum }) => {
+const Tracks = ({ setCurrentAlbum, search }) => {
   const settings = useContext(SettingsContext);
-  const { isScreenSmall, search } = settings;
+  const { isScreenSmall } = settings;
   const { controlButtonSize } = settings.styles;
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();

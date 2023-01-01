@@ -24,9 +24,10 @@ const JukeboxHeader = ({
   setIsLocked,
   setIsPinOpen,
   setDisplay,
+  display,
+  search,
 }) => {
   const settings = useContext(SettingsContext);
-  const { search, display } = settings;
   const { navButtonSize } = settings.styles;
   const showBrand = (navButtonSize !== 'large' && navButtonSize !== 'medium');
 

@@ -7,6 +7,8 @@ export const enqueueTop = (track) => enqueueTracksTop([track]);
 export const enqueue = (track) => enqueueTracks([track]);
 export const play = () => getData(`${path}/play`);
 export const next = () => getData(`${path}/next`);
+export const enqueueTracksTop = (tracks) => post(`${path}/enqueueTracksTop`, tracks);
+export const removeTracksFromQueue = (tracks) => post(`${path}/removeFromQueue`, { tracks });
 
 export const getQueue = (start, limit) => {
   return getData(`${path}/getQueue?${page(start, limit)}`);
@@ -20,13 +22,4 @@ export const stop = async () => {
     response = await fetch(`${path}/stop`);
   }
   return response;
-}
-
-export const enqueueTracksTop = (tracks) => {
-  return post(`${path}/enqueueTracksTop`, tracks);
 };
-
-export const removeTracksFromQueue = (tracks) => {
-  return post(`${path}/removeFromQueue`, { tracks });
-};
-

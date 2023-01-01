@@ -70,6 +70,7 @@ const SkinFonts = ({ skin }) => {
     <>
       {isFontModalOpen && (
         <FontPicker
+          onCancel={() => setIsFontModalOpen(null)}
           skin={skin}
           editFont={editFont}
           onComplete={() => {
