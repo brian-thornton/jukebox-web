@@ -57,7 +57,7 @@ Jukebox supports the control of WS2812B individually addressable LED strips to e
 Jukebox creates lighting effects by assigning WLED presets when navigation events take place in the Jukebox web front end. Users can configure the preset that should be applied for each navigation event. For example, Jukebox can be configured to turn LEDs green when a user clicks 'Albums', blue when a user clicks 'Tracks' and so on. These lighting configurations are associated to skins so that colors and effects compliment screen colors. In order to configure this behavior follow these steps.
 
 - LED configuration starts with hardware. In order to set up LED management with Jukebox you must have a WLED enabled controller connected to a WS2812B LED strip, plugged in and connected to your local network. The links to the hardware used in this project can be found below:
-  - [WLED Controller](https://www.athom.tech/wled)
+  - [WLED Controller](https://www.athom.tech/blank-1/wled-high-power-led-strip-controller)
   - [Power Supply](https://www.amazon.com/gp/product/B078RZBL8X/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
   - [Bare Wire Connectors](https://www.amazon.com/gp/product/B08PYT6HZ2/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&psc=1)
   - [LED Strip](https://www.amazon.com/gp/product/B01CDTEJBG/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&th=1)
