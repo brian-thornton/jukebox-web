@@ -9,9 +9,11 @@ Jukebox is a server / browser based music player that is intended for use in hom
 2. [Architecture](#architecture)
 3. [Getting Started](#getting-started)
 4. [Configuration](#configuration)
-    1. [Music Library](#music)
-    2. [Skins](#skins)
-    3. [Lighting](#skins)
+    1. [VLC](#vlc)
+    2. [Music Library](#music)
+    3. [Preferences](#preferences)
+    3. [Skins](#skins)
+    4. [Lighting](#skins)
 
 ## Overview
 
@@ -35,6 +37,10 @@ curl -o- https://raw.githubusercontent.com/brian-thornton/jukebox-web/master/scr
 
 ## Configuration
 
+### VLC
+
+Jukebox makes use of [VLC](https://www.videolan.org/vlc/) for the playback of local files and internet radio. The VLC HTTP API must be enabled in order for Jukebox to send commands to VLC. Configuration for the VLC HTTP API can be found in VLC at Settings > Preferences > Interface > HTTP web interface. In this section, enable the HTTP web interface and set a password.
+
 ### Music
 
 Once jukebox is running, navigate to Settings to configure your library of music. Jukebox expects your music to exist in one or more parent folders called libraries. These folders might categorize your collection in some way such as 'holiday music', 'oldies' etc. Parent folders are expected to contain subdirectories which represent albums.  For example:
@@ -47,6 +53,23 @@ Once jukebox is running, navigate to Settings to configure your library of music
 &nbsp;&nbsp;&nbsp;&nbsp;/holiday/artist - album
 
 Once your libraries have been entered press the scan button next to each. The jukebox will scan the albums and tracks and store the information in a JSON file for fast retrieval. If you add or remove content from your library you will need to scan again. Once scanning is complete click 'Albums' to view your music.
+
+### Preferences
+
+Preferences allow customization of the Jukebox. The available settings and their use can be found below:
+- **Name**: This is the name of the jukebox. This text will appear in the header navigation bar.
+- **Use Lighting Controllers**: This setting will cause commands to be sent to WLED controllers if any are configured.
+- **Show Album Name**: When enabled, this setting will cause the album name to appear under the album cover in the album list page.
+- **Show Albums Without Cover Art**: This setting will allow albums to appear even when no cover art can be found. In this case a default album cover will display.
+- **Pin Enabled**: This setting will enforce pin entry to administrative features of the jukebox.
+- **Pin**: The pin value for administrative access.
+- **Starts With Filter**: When selected, this will cause a filter to appear to the left or right of albums to quickly filter the list based on the starting letter.
+- **Album Size**: This setting controls the size of the album cover art on the album list page.
+- **Show Library Filter**: This setting will cause a filter feature to display in album mode where a user can view only albums in selected libraries.
+- **Show Album Table**: This setting will cause a button to appear in the navigation bar when viewing the album list which will allow a user to switch to a compact table view of available albums.
+- **VLC Host**: This value is the host for the machine running the VLC API for music playback.
+- **VLC Port**: The port on which the VLC service is running.
+- **VLC Password**: The password for the VLC API.
 
 ### Skins
 Jukebox is fully skinnable. You can control colors and fonts to give your Jukebox a custom look and feel. You can find skins under Settings > Skins. Jukebox ships with a few built in skins 'out of the box'. You can copy these skins as a starting point for your own customizations.

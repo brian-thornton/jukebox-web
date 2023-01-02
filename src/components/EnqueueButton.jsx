@@ -14,7 +14,7 @@ const propTypes = {
   track: Track.isRequired,
 };
 
-const EnqueueButton = ({ track, mode }) => {
+const EnqueueButton = ({ track, mode, isSelected, onComplete, disabled }) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
   const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
@@ -22,6 +22,8 @@ const EnqueueButton = ({ track, mode }) => {
 
   return (
     <Button
+      disabled={disabled}
+      isSelected={isSelected}
       style={{ fontSize }}
       width={heightAndWidth}
       height={heightAndWidth}
@@ -29,6 +31,9 @@ const EnqueueButton = ({ track, mode }) => {
         applyLighting(settings, 'Enqueue');
         enqueue(track);
         setTimeout(() => applyLighting(settings, mode), 700);
+        if (onComplete) {
+          onComplete();
+        }
       }}
       content={<ListOl />}
     />

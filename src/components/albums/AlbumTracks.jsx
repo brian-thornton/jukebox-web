@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 
 import './AlbumTracks.scss';
 import { handlers } from '../../lib/gesture-helper';
-import { calculatePageSize } from '../../lib/styleHelper';
+import { calculatePageSize, deepCloneSkin } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
 import AddToPlaylistButton from '../common/AddToPlaylistButton';
@@ -16,6 +16,7 @@ import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
+import { getQueue } from '../../lib/queue-client';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
@@ -27,6 +28,7 @@ const TrackList = ({ tracks }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
+  const [queue, setQueue] = useState([]);
   const [pageSize, setPageSize] = useState();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / pageSize)));
   let content = [];
@@ -36,6 +38,7 @@ const TrackList = ({ tracks }) => {
 
   useEffect(() => {
     setPageSize(calculatePageSize('item', reserve, trackHeight));
+    getQueue().then(data => setQueue(data));
   }, []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
@@ -43,7 +46,18 @@ const TrackList = ({ tracks }) => {
   const albumModeButtons = track => (
     <>
       {features.play && <PlayNowButton track={track} />}
-      {features.queue && <EnqueueButton mode="Albums" track={track} />}
+      {features.queue && (
+        <EnqueueButton
+          mode="Albums"
+          track={track}
+          disabled={inQueue(track)}
+          isSelected={inQueue(track)}
+          onComplete={() => {
+            const clone = { ...queue };
+            clone.tracks.push(track);
+            setQueue(clone);
+          }} />
+      )}
       {features.playlists && <AddToPlaylistButton track={track} />}
     </>
   );
@@ -61,6 +75,10 @@ const TrackList = ({ tracks }) => {
       )}
     />
   ));
+
+  const inQueue = (track) => {
+    return queue?.tracks?.filter(t => t.path === track.path).length > 0;
+  };
 
   return (
     <Container {...swipe} fluid style={{ marginBottom: isScreenSmall ? '90px' : '' }}>

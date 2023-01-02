@@ -16,6 +16,7 @@ import './AlbumDetail.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import RestrictionModes from '../settings/content/RestrictionModes';
 import { topMargin } from '../../lib/styleHelper';
+import { getQueue } from '../../lib/queue-client';
 
 const propTypes = {
   clearCurrentAlbum: PropTypes.func.isRequired,
