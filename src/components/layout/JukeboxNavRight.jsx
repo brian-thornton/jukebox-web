@@ -34,6 +34,7 @@ const JukeboxNavRight = ({
   setDisplay,
   display,
   search,
+  clearSearch,
 }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall, preferences } = settings;
@@ -76,7 +77,7 @@ const JukeboxNavRight = ({
             height={height}
             disabled={features.isLocked}
             onClick={() => {
-              setSearch('');
+              clearSearch();
               if (lastModule === 'Albums') {
                 navigate('/albums');
               } else if (lastModule === 'Tracks') {

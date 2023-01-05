@@ -26,6 +26,7 @@ const JukeboxHeader = ({
   setDisplay,
   display,
   search,
+  clearSearch,
 }) => {
   const settings = useContext(SettingsContext);
   const { navButtonSize } = settings.styles;
@@ -59,6 +60,7 @@ const JukeboxHeader = ({
             setIsPinOpen={setIsPinOpen}
             display={display}
             setDisplay={setDisplay}
+            clearSearch={clearSearch}
           />
         </Navbar.Collapse>
       </Container>

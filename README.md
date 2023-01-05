@@ -12,8 +12,10 @@ Jukebox is a server / browser based music player that is intended for use in hom
     1. [VLC](#vlc)
     2. [Music Library](#music)
     3. [Preferences](#preferences)
-    3. [Skins](#skins)
-    4. [Lighting](#skins)
+    4. [Access](#access)
+    5. [Skins](#skins)
+    6. [Restrictions](#restrictions)
+    7. [Lighting](#skins)
 
 ## Overview
 
@@ -71,8 +73,14 @@ Preferences allow customization of the Jukebox. The available settings and their
 - **VLC Port**: The port on which the VLC service is running.
 - **VLC Password**: The password for the VLC API.
 
+### Access
+Access toggles control the features that are available to users in the Jukebox frontend. 
+
 ### Skins
 Jukebox is fully skinnable. You can control colors and fonts to give your Jukebox a custom look and feel. You can find skins under Settings > Skins. Jukebox ships with a few built in skins 'out of the box'. You can copy these skins as a starting point for your own customizations.
+
+### Restrictions
+Jukebox provides the ability to create content restrictions that can be enabled to prevent access to selected content when needed (e.g. restricting offensive lyrics for a kid's party). There are two restriction modes. Blacklist restrictions will filter out blacklisted content leaving all other content available. Whitelist restrictions will show users only whitelist approved content and filter out all other content.
 
 ### Lighting
 Jukebox supports the control of WS2812B individually addressable LED strips to enhance the look of DIY jukebox cabinets. LED strip control is managed through [WLED](https://kno.wled.ge/). Jukebox can control any WLED controller on the local network meaning that your LED strips can be installed in your jukebox cabinet but also may be remote to the physical cabinet. Jukebox can manage 1..n WLED controllers. 

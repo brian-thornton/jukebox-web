@@ -16,7 +16,7 @@ const propTypes = {
   tracks: Tracks.isRequired,
 };
 
-const AlbumButtons = ({ tracks }) => {
+const AlbumButtons = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const { state } = useLocation();
@@ -29,6 +29,20 @@ const AlbumButtons = ({ tracks }) => {
   const playAlbum = () => {
     enqueueTracksTop(tracks);
     next();
+  };
+
+  const isAlbumInQueue = () => {
+    let allTracksInQueue = queue?.tracks?.length > 0;
+
+    if (tracks?.length > 0 && queue?.tracks?.length > 0) {
+      tracks.map(track => {
+        if (!queue.tracks.find(t => t.path === track.path)) {
+          allTracksInQueue = false;
+        }
+      });
+    }
+
+    return allTracksInQueue;
   };
 
   const albumButton = (onClick, name, enabled = true) => (
@@ -89,8 +103,13 @@ const AlbumButtons = ({ tracks }) => {
             {albumButton(() => {
               applyLighting(settings, 'Enqueue');
               enqueueTracks(tracks);
+
+              const clone = { ...queue };
+              clone.tracks = [...clone.tracks, ...tracks];
+              setQueue(clone);
+
               setTimeout(() => applyLighting(settings, 'Albums'), 700);
-            }, 'Enqueue Album', settings.features.queue)}
+            }, 'Enqueue Album', (settings.features.queue && !isAlbumInQueue()))}
             {albumButton(() => {
               navigate('/playlists', { state: { tracks } });
             }, 'Add to Playlist', settings.features.playlists)}

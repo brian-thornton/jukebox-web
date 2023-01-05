@@ -34,6 +34,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [confirmRestriction, setConfirmRestriction] = useState(false);
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
+  const [queue, setQueue] = useState([]);
 
   const loadTracks = () => {
     if (!areTracksLoading) {
@@ -44,6 +45,12 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
       });
     }
   };
+
+  const loadQueue = () => {
+    getQueue().then(data => setQueue(data))
+  };
+
+  useEffect(loadQueue, []);
 
   useEffect(() => {
     if (isCustomSearchOpen) {
@@ -59,6 +66,8 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
     <Container className="buttonContainer">
       <>
         <AlbumButtons
+          queue={queue}
+          setQueue={setQueue}
           album={album}
           clearCurrentAlbum={clearCurrentAlbum}
           tracks={tracks}
@@ -98,7 +107,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
             </Col>
             <Col lg={9} xl={9}>
               {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
-                <AlbumTracks tracks={tracks} />
+                <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} />
               )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
                 <Confirm

@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Routes, Route } from "react-router-dom";
-import { debounce } from 'lodash';
 import { useIdleTimer } from 'react-idle-timer'
 import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
@@ -46,6 +45,7 @@ function App() {
   const isScreenSmall= window.innerWidth < 700;
 
   const onIdle = () => {
+    setSearch('');
     navigate(`/albums`);
   };
 
@@ -117,22 +117,12 @@ function App() {
     }
   }, [settings]);
 
-  const debouncedSearch = useCallback(
-    debounce((updatedSearch) => {
-      if (updatedSearch.length > 2) {
-        setSearch(updatedSearch);
-        setTempSearch('');
-        window.scrollTo(0, 0);
-      }
-    }, 1000), [],
-  );
-
   const wrapWithKeyboard = (component) => (
     <WithKeyboardInput
       component={component}
       tempSearch={tempSearch}
       setTempSearch={setTempSearch}
-      debouncedSearch={debouncedSearch}
+      debouncedSearch={setSearch}
     />
   );
 
@@ -201,6 +191,10 @@ function App() {
               search={search}
               setSearch={setSearch}
               setLastModule={setLastModule}
+              clearSearch={() => {
+                setSearch('');
+                setTempSearch('');
+              }}
               lastModule={lastModule}
               setIsLocked={(value) => {
                 setIsLocked(value);

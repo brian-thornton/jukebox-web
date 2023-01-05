@@ -24,11 +24,10 @@ const propTypes = {
   tracks: PropTypes.arrayOf(Track),
 };
 
-const TrackList = ({ tracks }) => {
+const TrackList = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [queue, setQueue] = useState([]);
   const [pageSize, setPageSize] = useState();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / pageSize)));
   let content = [];
@@ -38,7 +37,6 @@ const TrackList = ({ tracks }) => {
 
   useEffect(() => {
     setPageSize(calculatePageSize('item', reserve, trackHeight));
-    getQueue().then(data => setQueue(data));
   }, []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
