@@ -1,9 +1,6 @@
-
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
-import Row from 'react-bootstrap/Row';
 
 import Item from '../../common/Item';
 import Button from '../../Button';
@@ -11,6 +8,7 @@ import './SkinDetail.scss';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import FilePicker from '../../common/FilePicker';
 import { Skin } from '../../shapes';
+import FullWidthRow from '../../common/FullWidthRow';
 
 const propTypes = {
   skin: Skin.isRequired,
@@ -96,15 +94,11 @@ const SkinGraphics = ({ skin }) => {
       )}
       {!isFilePickerOpen && (
         <Container fluid className="styleEditorContent">
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row>
-                <ListGroup className="styleEditorContent">
-                  {rows}
-                </ListGroup>
-              </Row>
-            </Col>
-          </Row>
+          <FullWidthRow>
+            <ListGroup className="styleEditorContent">
+              {rows}
+            </ListGroup>
+          </FullWidthRow>
         </Container>
       )}
     </>

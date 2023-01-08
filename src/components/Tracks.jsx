@@ -1,8 +1,6 @@
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
-import Row from 'react-bootstrap/Row';
 import { useSwipeable } from 'react-swipeable';
 
 import { getTracks, searchTracks } from '../lib/librarian-client';
@@ -15,6 +13,7 @@ import './Tracks.scss';
 import { applyLighting } from '../lib/lightingHelper';
 import { handlers } from '../lib/gesture-helper';
 import { headerFooterReserve, topMargin } from '../lib/styleHelper';
+import FullWidthRow from './common/FullWidthRow';
 
 const propTypes = {
   setCurrentAlbum: PropTypes.func.isRequired,
@@ -33,6 +32,7 @@ const Tracks = ({ setCurrentAlbum, search }) => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
   trackHeight = isScreenSmall ? 35 : trackHeight;
+  const noResults = search && !tracks.length;
 
   useEffect(() => {
     const reserve = headerFooterReserve(settings);
@@ -85,21 +85,15 @@ const Tracks = ({ setCurrentAlbum, search }) => {
     if (realPageSize && totalTracks) {
       return (
         <Container className="tracksContainer" {...swipe} fluid style={{ marginTop: topMargin(settings) }}>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row>{content}</Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Paginator
-                onPageChange={page => setSelectedPage(page)}
-                selectedPage={selectedPage}
-                totalItems={totalTracks}
-                pageSize={realPageSize}
-              />
-            </Col>
-          </Row>
+          <FullWidthRow>{content}</FullWidthRow>
+          <FullWidthRow>
+            <Paginator
+              onPageChange={page => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={totalTracks}
+              pageSize={realPageSize}
+            />
+          </FullWidthRow>
         </Container>
       );
     }
@@ -107,12 +101,10 @@ const Tracks = ({ setCurrentAlbum, search }) => {
     return <></>;
   };
 
-  const noResults = search && !tracks.length;
-
   return (
     <>
       {tracksLoaded && totalTracks === 0 && (
-        <NoResults title="No Tracks" text="No Tracks Found. Configure your library in Settings." marginTop="60px"  />
+        <NoResults title="No Tracks" text="No Tracks Found. Configure your library in Settings." marginTop="60px" />
       )}
       {tracksLoaded && noResults && (
         <div className="no-albums">

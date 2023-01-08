@@ -30,48 +30,33 @@ const PlaylistButtons = ({
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
 
-  const deleteTrack = (trackName, trackToDelete) => {
-    removeTracksFromPlaylist(trackName, [trackToDelete]);
+  const deleteTrack = async (trackName, trackToDelete) => {
+    await removeTracksFromPlaylist(trackName, [trackToDelete]);
     reloadTracks(name);
   };
 
-  const onMoveTrackUp = (trackToMove, trackIndex) => {
-    removeTracksFromPlaylist(name, [trackToMove]);
-    addTrackAtPosition(name, trackToMove, trackIndex - 1);
+  const moveTrack = async (trackToMove, newPosition) => {
+    await removeTracksFromPlaylist(name, [trackToMove]);
+    await addTrackAtPosition(name, trackToMove, newPosition);
     reloadTracks(name);
   };
 
-  const onMoveTrackDown = (trackToMove, trackIndex) => {
-    removeTracksFromPlaylist(name, [trackToMove]).then(() => {
-      addTrackAtPosition(name, trackToMove, trackIndex + 1);
-      reloadTracks(name);
-    });
-  };
+  const button = (onClick, icon) => (
+    <Button
+      style={{ fontSize }}
+      height={buttonHeight}
+      width={buttonWidth}
+      onClick={onClick}
+      icon={icon}
+    />
+  );
 
   return (
     <>
       <PlayNowButton track={track} />
-      <Button
-        style={{ fontSize }}
-        height={buttonHeight}
-        width={buttonWidth}
-        onClick={() => deleteTrack(name, track)}
-        icon={<TrashFill />}
-      />
-      <Button
-        style={{ fontSize }}
-        height={buttonHeight}
-        width={buttonWidth}
-        icon={<CaretUpFill />}
-        onClick={() => onMoveTrackUp(track, index)}
-      />
-      <Button
-        style={{ fontSize }}
-        height={buttonHeight}
-        width={buttonWidth}
-        icon={<CaretDownFill />}
-        onClick={() => onMoveTrackDown(track, index)}
-      />
+      {button(() => deleteTrack(name, track), <TrashFill />)}
+      {button(() => moveTrack(track, (index - 1)), <CaretUpFill />)}
+      {button(() => moveTrack(track, (index + 1)), <CaretDownFill />)}
     </>
   );
 };

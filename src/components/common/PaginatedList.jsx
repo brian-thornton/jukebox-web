@@ -1,10 +1,5 @@
 import React, { useContext } from 'react';
-import {
-  Container,
-  Row,
-  Col,
-  ListGroup,
-} from 'react-bootstrap';
+import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 
@@ -15,6 +10,7 @@ import Paginator from './Paginator';
 import { topMargin } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Items } from '../shapes';
+import FullWidthRow from './FullWidthRow';
 
 const propTypes = {
   topLevelControls: PropTypes.node,
@@ -45,48 +41,40 @@ const PaginatedList = ({
   return (
     <Container fluid {...swipe} style={{ width: '100%', marginTop: applyTopMargin ? topMargin(settings) : '' }}>
       {topLevelControls && (
-        <Row>
-          {topLevelControls}
-        </Row>
+        <FullWidthRow>{topLevelControls}</FullWidthRow>
       )}
       {items && items.length > 0 && (
         <>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row>
-                <ListGroup style={{ width: '100%' }}>
+          <FullWidthRow>
+            <ListGroup style={{ width: '100%' }}>
+              <>
+                {standardItems && items.map(item => (
                   <>
-                    {standardItems && items.map(item => (
-                      <>
-                        {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} />}
-                        {!isScreenSmall && (
-                          <Item
-                            text={item.text}
-                            buttons={item.buttons || <></>}
-                            onClick={() => onItemClick(item)}
-                          />
-                        )}
-                      </>
-                    ))}
-                    {!standardItems && items}
+                    {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} />}
+                    {!isScreenSmall && (
+                      <Item
+                        text={item.text}
+                        buttons={item.buttons || <></>}
+                        onClick={() => onItemClick(item)}
+                      />
+                    )}
                   </>
-                </ListGroup>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
-                <Paginator
-                  disableRandom
-                  onPageChange={page => setSelectedPage(page)}
-                  selectedPage={selectedPage}
-                  totalItems={totalItems || items.length}
-                  pageSize={pageSize}
-                />
-              )}
-            </Col>
-          </Row>
+                ))}
+                {!standardItems && items}
+              </>
+            </ListGroup>
+          </FullWidthRow>
+          <FullWidthRow>
+            {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
+              <Paginator
+                disableRandom
+                onPageChange={page => setSelectedPage(page)}
+                selectedPage={selectedPage}
+                totalItems={totalItems || items.length}
+                pageSize={pageSize}
+              />
+            )}
+          </FullWidthRow>
         </>
       )}
     </Container>

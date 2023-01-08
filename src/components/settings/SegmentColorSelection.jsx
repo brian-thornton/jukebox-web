@@ -149,30 +149,23 @@ const SegmentColorSelection = ({
     setSelectedColor([color.rgb.r, color.rgb.g, color.rgb.b]);
   };
 
+  const formLabelStyle = {
+    color: settings.styles.fontColor,
+    paddingTop: '5px',
+    marginLeft: '10px',
+    marginRight: '10px',
+  };
+
   return (
     <>
       {controllerState && (
         <Container fluid className="segment-color-container">
           <Row>
-            <Form.Label
-              style={{
-                color: settings.styles.fontColor,
-                paddingTop: '5px',
-                marginLeft: '10px',
-                marginRight: '10px',
-              }}
-            >
+            <Form.Label style={formLabelStyle}>
               Effect Speed
             </Form.Label>
             <Form.Range onChange={e => onSelectSpeed(e.target.value)} />
-            <Form.Label
-              style={{
-                color: settings.styles.fontColor,
-                paddingTop: '5px',
-                marginLeft: '50px',
-                marginRight: '10px',
-              }}
-            >
+            <Form.Label style={formLabelStyle}>
               Effect Brightness
             </Form.Label>
             <Form.Range onChange={e => onSelectBrightness(e.target.value)} />

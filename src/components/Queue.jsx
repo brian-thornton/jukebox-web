@@ -1,9 +1,7 @@
 import { TrashFill, XLg } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useEffect, useState } from 'react';
-import Row from 'react-bootstrap/Row';
 
 import { applyLighting } from '../lib/lightingHelper';
 import Button from './Button';
@@ -22,6 +20,7 @@ import { SettingsContext } from './layout/SettingsProvider';
 import './Queue.scss';
 import { calculatePageSize } from '../lib/styleHelper';
 import PaginatedList from './common/PaginatedList';
+import FullWidthRow from './common/FullWidthRow';
 
 const Queue = () => {
   const settings = useContext(SettingsContext);
@@ -133,20 +132,22 @@ const Queue = () => {
     });
   };
 
+  const buttonProps = {
+    width: "100%",
+    disabled: isEmpty || clearConfirm,
+    height: buttonHeight,
+    style: { fontSize },
+  };
+
   const controls = () => (
     <>
-      <ControlButton width="100%" onClick={() => setClearConfirm(true)} disabled={isEmpty || clearConfirm} text="Clear Queue" height={buttonHeight} style={{ fontSize }} />
-      <ControlButton width="100%" onClick={() => shuffle()} disabled={isEmpty || clearConfirm} text="Shuffle Queue" height={buttonHeight} style={{ fontSize }} />
+      <ControlButton {...buttonProps} onClick={() => setClearConfirm(true)} text="Clear Queue" />
+      <ControlButton {...buttonProps} onClick={() => shuffle()} text="Shuffle Queue" />
       {settings.features.playlists && (
         <ControlButton
-          width="100%"
-          onClick={() => {
-            navigate('/playlists', { state: { tracks } });
-          }}
-          disabled={isEmpty || clearConfirm}
+          {...buttonProps}
+          onClick={() => navigate('/playlists', { state: { tracks } })}
           text="Save to Playlist"
-          height={buttonHeight}
-          style={{ fontSize }}
         />
       )}
     </>
@@ -158,17 +159,13 @@ const Queue = () => {
       {isScreenSmall && (
         <Container fluid style={{ marginTop: '60px', paddingRight: '0px' }}>
           {!clearConfirm && (
-            <Row className="trackName">
-              <Col lg="12" xl="12" md="12" sm="12">
-                <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
-              </Col>
-            </Row>
+            <FullWidthRow>
+              <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
+            </FullWidthRow>
           )}
-          <Row className="trackName">
-            <Col lg="12" xl="12" md="12" sm="12">
-              {content()}
-            </Col>
-          </Row>
+          <FullWidthRow>
+            {content()}
+          </FullWidthRow>
         </Container>
       )}
     </>

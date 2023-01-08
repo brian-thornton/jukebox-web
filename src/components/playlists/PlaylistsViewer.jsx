@@ -3,19 +3,19 @@ import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
+import './PlaylistsViewer.scss';
 import { applyLighting } from '../../lib/lightingHelper';
-import ControlButton from '../common/ControlButton';
 import { getPlaylists, add, addTracksToPlaylist } from '../../lib/playlist-client';
 import { getStatus, updateStatus } from '../../lib/status-client';
+import { headerFooterReserve } from '../../lib/styleHelper';
+import { SettingsContext } from '../layout/SettingsProvider';
+import AddNew from '../common/AddNew';
+import ContentWithControls from '../common/ContentWithControls';
+import ControlButton from '../common/ControlButton';
 import NoResults from '../common/NoResults';
+import PaginatedList from '../common/PaginatedList';
 import PlaylistDetail from './PlaylistDetail';
 import PlaylistRow from './PlaylistRow';
-import ContentWithControls from '../common/ContentWithControls';
-import { SettingsContext } from '../layout/SettingsProvider';
-import './PlaylistsViewer.scss';
-import AddNew from '../common/AddNew';
-import { headerFooterReserve } from '../../lib/styleHelper';
-import PaginatedList from '../common/PaginatedList';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -28,41 +28,40 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const settings = useContext(SettingsContext);
   const [name, setName] = useState('');
   const [playlists, setPlaylists] = useState([]);
-  const [show, setShow] = useState(false);
-  const handleShow = () => setShow(true);
+  const [addMode, setAddMode] = useState(false);
   const [added, setAdded] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
   const selectPlaylist = playlistName => setName(playlistName);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
+  const [pageSize, setPageSize] = useState();
   const [totalPlaylists, setTotalPlaylists] = useState(0);
+  const { controlButtonSize } = settings.styles;
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+
+  const loadPlaylists = () => {
+    const start = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
+
+    getPlaylists(start, (start + pageSize)).then((data) => {
+      setPlaylists(data.playlists);
+      setTotalPlaylists(data.totalPlaylists);
+      setIsEmpty(data.playlists.length === 0);
+    });
+  };
 
   useEffect(() => {
     const itemHeight = 70;
     const reserve = headerFooterReserve(settings);
     const viewPortHeight = Math.floor(window.innerHeight - reserve);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+    setPageSize(Math.floor(viewPortHeight / itemHeight));
     applyLighting(settings, 'Playlists');
   }, []);
 
-  const loadPlaylists = () => {
-    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-
-    getPlaylists(realStart, (realStart + realPageSize)).then((data) => {
-      setPlaylists(data.playlists);
-      setTotalPlaylists(data.totalPlaylists)
-
-      if (data.playlists.length === 0) {
-        setIsEmpty(true);
-      } else {
-        setIsEmpty(false);
-      }
-    });
-  };
-
   useEffect(() => {
-    loadPlaylists();
-  }, [selectedPage, realPageSize]);
+    if (pageSize) {
+      loadPlaylists();
+    }
+  }, [selectedPage, pageSize]);
 
   const handleBackToPlaylists = () => {
     setName('');
@@ -84,14 +83,9 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
         });
       });
     }
-    setShow(false);
+    setAddMode(false);
     loadPlaylists();
   };
-
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
-  const controls = <ControlButton text="Add" width="100%" onClick={handleShow} height={buttonHeight} style={{ fontSize }} />;
 
   const items = () => playlists.map(playlist => (
     <PlaylistRow
@@ -106,16 +100,26 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     />
   ));
 
+  const controls = (
+    <ControlButton
+      text="Add"
+      width="100%"
+      onClick={() => setAddMode(true)}
+      height={buttonHeight}
+      style={{ fontSize }}
+    />
+  );
+
   const content = () => (
     <>
-      {!show && isEmpty && <NoResults applyMargin={false} title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
-      {show && <AddNew onCancel={() => setShow(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
-      {!show && !isEmpty && (
+      {playlists?.length === 0 && !addMode && <NoResults applyMargin={false} title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
+      {addMode && <AddNew onCancel={() => setAddMode(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
+      {!addMode && !isEmpty && (
         <PaginatedList
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
-          pageSize={realPageSize}
+          pageSize={pageSize}
           totalItems={totalPlaylists}
         />
       )}

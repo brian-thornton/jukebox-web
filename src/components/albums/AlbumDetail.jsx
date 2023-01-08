@@ -94,15 +94,13 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
           <Row className="coverRow" style={{ marginTop: isScreenSmall ? '40px' : topMargin(settings) }}>
             <Col lg={3} xl={3}>
               <Container className="albumContainer">
-                <>
-                  <Row>
-                    <AlbumCover album={album} />
-                  </Row>
-                  <Row className="albumName" style={albumNameStyle}>
-                    {album.name}
-                  </Row>
-                  <Row>{albumButtons}</Row>
-                </>
+                <Row>
+                  <AlbumCover album={album} />
+                </Row>
+                <Row className="albumName" style={albumNameStyle}>
+                  {album.name}
+                </Row>
+                <Row>{albumButtons}</Row>
               </Container>
             </Col>
             <Col lg={9} xl={9}>

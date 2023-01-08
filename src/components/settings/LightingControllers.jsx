@@ -29,6 +29,7 @@ import Loading from '../common/Loading';
 import NameInput from '../common/NameInput';
 import Presets from './Presets';
 import { Skin } from '../shapes';
+import FullWidthRow from '../common/FullWidthRow';
 
 const propTypes = {
   allowAdd: PropTypes.bool,
@@ -167,6 +168,11 @@ export const LightingControllers = ({
     }
   };
 
+  const buttonProps = (controller) => ({
+    disabled: !controller.online,
+    className: "lighting-controller-button",
+  });
+
   const controllerRow = (controller) => {
     const { online } = controller;
 
@@ -212,8 +218,7 @@ export const LightingControllers = ({
                   <>
                     {experimentalMode && (
                       <Button
-                        disabled={!controller.online}
-                        className="lighting-controller-button"
+                        {...buttonProps(controller)}
                         onClick={() => {
                           setIsConfigureOpen(true);
                           setSelectedController(controller);
@@ -225,45 +230,39 @@ export const LightingControllers = ({
                     {!skin && (
                       <>
                         {experimentalMode && (
-                          <Button
-                            className="lighting-controller-button"
-                            onClick={() => {
-                              setCloneSource(controller);
-                            }}
-                            content="Clone"
-                          />
-                        )}
-                        {experimentalMode && (
-                          <Button
-                            disabled={!controller.online}
-                            className="lighting-controller-button"
-                            onClick={() => {
-                              onSetName(controller);
-                            }}
-                            content="Save"
-                          />
-                        )}
-                        {experimentalMode && (
-                          <Button
-                            disabled={!controller.online}
-                            className="lighting-controller-button"
-                            onClick={() => {
-                              pushSegmentsFromMetadata(controller);
-                            }}
-                            content="Push Segments"
-                          />
+                          <>
+                            <Button
+                              className="lighting-controller-button"
+                              onClick={() => {
+                                setCloneSource(controller);
+                              }}
+                              content="Clone"
+                            />
+                            <Button
+                              {...buttonProps(controller)}
+                              onClick={() => {
+                                onSetName(controller);
+                              }}
+                              content="Save"
+                            />
+                            <Button
+                              {...buttonProps(controller)}
+                              onClick={() => {
+                                pushSegmentsFromMetadata(controller);
+                              }}
+                              content="Push Segments"
+                            />
+                          </>
                         )}
                         <Button
-                          disabled={!controller.online}
-                          className="lighting-controller-button"
+                          {...buttonProps(controller)}
                           onClick={() => {
                             powerOff(controller.ip);
                           }}
                           content={<Power />}
                         />
                         <Button
-                          disabled={!controller.online}
-                          className="lighting-controller-button"
+                          {...buttonProps(controller)}
                           onClick={() => {
                             setIsPresetsOpen(true);
                             setSelectedController(controller);
@@ -272,8 +271,7 @@ export const LightingControllers = ({
                         />
                         {experimentalMode && (
                           <Button
-                            disabled={!controller.online}
-                            className="lighting-controller-button"
+                            {...buttonProps(controller)}
                             onClick={() => {
                               reset(controller.ip);
                             }}
@@ -314,33 +312,31 @@ export const LightingControllers = ({
             </>
           )}
           <Container fluid className="styleEditorContent">
-            <Row>
-              <Col lg="12" xl="12" md="12" sm="12">
-                {!discoveryInProgress && (
-                  <Row>
-                    <ListGroup className="styleEditorContent">
-                      {networkControllers?.map(c => controllerRow({ ...c, online: true }))}
-                      {settings.controllers?.map((controller) => {
-                        if (!networkControllers) {
-                          return controllerRow(controller);
-                        }
+            <FullWidthRow>
+              {!discoveryInProgress && (
+                <Row>
+                  <ListGroup className="styleEditorContent">
+                    {networkControllers?.map(c => controllerRow({ ...c, online: true }))}
+                    {settings.controllers?.map((controller) => {
+                      if (!networkControllers) {
+                        return controllerRow(controller);
+                      }
 
-                        if (!networkControllers.find(nc => nc.ip === controller.ip)) {
-                          return controllerRow(controller);
-                        }
+                      if (!networkControllers.find(nc => nc.ip === controller.ip)) {
+                        return controllerRow(controller);
+                      }
 
-                        return <></>;
-                      })}
-                    </ListGroup>
-                  </Row>
-                )}
-                {discoveryInProgress && (
-                  <Row className="lighting-controller-loading">
-                    <Loading text="Searching for lighting controllers..." />
-                  </Row>
-                )}
-              </Col>
-            </Row>
+                      return <></>;
+                    })}
+                  </ListGroup>
+                </Row>
+              )}
+              {discoveryInProgress && (
+                <Row className="lighting-controller-loading">
+                  <Loading text="Searching for lighting controllers..." />
+                </Row>
+              )}
+            </FullWidthRow>
           </Container>
         </>
       )}

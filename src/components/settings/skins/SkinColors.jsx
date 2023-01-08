@@ -1,8 +1,6 @@
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 import { useSwipeable } from 'react-swipeable';
 
 import ColorCopy from './ColorCopy';
@@ -15,6 +13,7 @@ import './SkinDetail.scss';
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import { handlers } from '../../../lib/gesture-helper';
 import { Skin } from '../../shapes';
+import FullWidthRow from '../../common/FullWidthRow';
 
 const propTypes = {
   skin: Skin.isRequired,
@@ -138,26 +137,20 @@ const SkinColors = ({ skin }) => {
       )}
       {!isColorCopyOpen && !isColorModalOpen && (
         <Container fluid className="styleEditorContent" {...swipe}>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row>
-                <ListGroup className="styleEditorContent">
-                  {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
-                </ListGroup>
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Paginator
-                disableRandom
-                onPageChange={page => setSelectedPage(page)}
-                selectedPage={selectedPage}
-                totalItems={rows.length}
-                pageSize={realPageSize}
-              />
-            </Col>
-          </Row>
+          <FullWidthRow>
+            <ListGroup className="styleEditorContent">
+              {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
+            </ListGroup>
+          </FullWidthRow>
+          <FullWidthRow>
+            <Paginator
+              disableRandom
+              onPageChange={page => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={rows.length}
+              pageSize={realPageSize}
+            />
+          </FullWidthRow>
         </Container>
       )}
     </>

@@ -19,6 +19,7 @@ import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import StartsWithFilter from './StartsWithFilter';
+import FullWidthRow from '../common/FullWidthRow';
 
 const propTypes = {
   selectedLibraries: Libraries,
@@ -180,11 +181,9 @@ const AlbumList = ({
             )}
           </Row>
           {(startsWithLocation === 'none' || search) && (
-            <Row>
-              <Col lg="12" xl="12" md="12" sm="12">
-                {(totalAlbums > pageSize) && paginator}
-              </Col>
-            </Row>
+            <FullWidthRow>
+              {(totalAlbums > pageSize) && paginator}
+            </FullWidthRow>
           )}
         </Container>
       )}

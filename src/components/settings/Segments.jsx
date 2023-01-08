@@ -1,7 +1,6 @@
 import { PlusSquare } from 'react-bootstrap-icons';
 import React, { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
-import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +15,7 @@ import { createSegment, removeSegment } from '../../lib/lighting-client';
 import SegmentRowEdit from './SegmentRowEdit';
 import SegmentRowInfo from './SegmentRowInfo';
 import { Event, LightingController, Segments as SegmentsShape, Skin } from '../shapes';
+import FullWidthRow from '../common/FullWidthRow';
 
 const propTypes = {
   controller: LightingController.isRequired,
@@ -161,25 +161,21 @@ export const Segments = ({
               />
             </Row>
           )}
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row>
-                <ListGroup className="styleEditorContent">
-                  {settings.controllers?.find(c => (
-                    c.ip === (controller.info?.ip || controller.ip)).segments.map(s => (
-                      segmentRow(s, isSegmentOnController(s.start, s.stop)))))
-                  }
-                  {segments?.map((s) => {
-                    if (displayRow()) {
-                      segmentRow(s, true);
-                    }
+          <FullWidthRow>
+            <ListGroup className="styleEditorContent">
+              {settings.controllers?.find(c => (
+                c.ip === (controller.info?.ip || controller.ip)).segments.map(s => (
+                  segmentRow(s, isSegmentOnController(s.start, s.stop)))))
+              }
+              {segments?.map((s) => {
+                if (displayRow()) {
+                  segmentRow(s, true);
+                }
 
-                    return <></>;
-                  })}
-                </ListGroup>
-              </Row>
-            </Col>
-          </Row>
+                return <></>;
+              })}
+            </ListGroup>
+          </FullWidthRow>
         </Container>
       )}
     </>

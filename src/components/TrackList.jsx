@@ -37,29 +37,23 @@ const TrackList = ({
     getTrackCoverArt(tracks);
   }
 
-  if (settings?.features) {
-    return (
-      <>
-        {trackAlbumsLoaded && (
-          <Container fluid className="trackListContainer">
-            {tracks.map((track) => {
-              return (
-                <Track
-                  track={track}
-                  trackAlbums={trackAlbums}
-                  trackAlbumsLoaded={trackAlbumsLoaded}
-                  showAlbumCovers={showAlbumCovers}
-                  setAddTracks={setAddTracks}
-                />
-              );
-            })}
-          </Container>
-        )}
-      </>
-    );
-  }
-
-  return <></>;
+  return (
+    <>
+      {settings?.features && trackAlbumsLoaded && (
+        <Container fluid className="trackListContainer">
+          {tracks.map((track) => (
+            <Track
+              track={track}
+              trackAlbums={trackAlbums}
+              trackAlbumsLoaded={trackAlbumsLoaded}
+              showAlbumCovers={showAlbumCovers}
+              setAddTracks={setAddTracks}
+            />
+          ))}
+        </Container>
+      )}
+    </>
+  );
 };
 
 TrackList.propTypes = propTypes;

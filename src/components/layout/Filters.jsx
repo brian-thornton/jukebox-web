@@ -1,8 +1,6 @@
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
-import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 
@@ -14,6 +12,7 @@ import Button from '../Button';
 import './Filters.scss';
 import { handlers } from '../../lib/gesture-helper';
 import { Libraries } from '../shapes';
+import FullWidthRow from '../common/FullWidthRow';
 
 const propTypes = {
   selectedLibraries: Libraries.isRequired,
@@ -56,56 +55,48 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
       {isLoading && <Loading />}
       {!isLoading && libraries.length && (
         <Container {...swipe} fluid className="filter-container">
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Row className="filterRow">
-                {libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
-                  const checked = selectedLibraries.find(lib => lib.path === library.path);
+          <FullWidthRow>
+            {libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
+              const checked = selectedLibraries.find(lib => lib.path === library.path);
 
-                  return (
-                    <Item
-                      checked={checked}
-                      includeCheckbox
-                      onCheck={() => {
-                        setFilters(checked ? filters.filter(f => f.path !== library.path)
-                          : oldArray => [...oldArray, library]);
-                      }}
-                      text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
-                    />
-                  );
-                })}
-              </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Paginator
-                disableRandom
-                onPageChange={page => setSelectedPage(page)}
-                selectedPage={selectedPage}
-                totalItems={libraries.length}
-                pageSize={realPageSize}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col lg="12" xl="12" md="12" sm="12">
-              <Button
-                content="Clear Filters"
-                onClick={() => {
-                  setSelectedLibraries([]);
-                  navigate('/albums');
-                }}
-              />
-              <Button
-                content="Apply Filters"
-                onClick={() => {
-                  setSelectedLibraries(filters);
-                  navigate('/albums');
-                }}
-              />
-            </Col>
-          </Row>
+              return (
+                <Item
+                  checked={checked}
+                  includeCheckbox
+                  onCheck={() => {
+                    setFilters(checked ? filters.filter(f => f.path !== library.path)
+                      : oldArray => [...oldArray, library]);
+                  }}
+                  text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
+                />
+              );
+            })}
+          </FullWidthRow>
+          <FullWidthRow>
+            <Paginator
+              disableRandom
+              onPageChange={page => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={libraries.length}
+              pageSize={realPageSize}
+            />
+          </FullWidthRow>
+          <FullWidthRow>
+            <Button
+              content="Clear Filters"
+              onClick={() => {
+                setSelectedLibraries([]);
+                navigate('/albums');
+              }}
+            />
+            <Button
+              content="Apply Filters"
+              onClick={() => {
+                setSelectedLibraries(filters);
+                navigate('/albums');
+              }}
+            />
+          </FullWidthRow>
         </Container>
       )}
     </>

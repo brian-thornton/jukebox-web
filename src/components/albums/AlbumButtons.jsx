@@ -25,6 +25,7 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
+  const backText = () => state?.prevUrl.includes('tracks') ? 'Back to Tracks' : 'Back to Albums';
 
   const playAlbum = () => {
     enqueueTracksTop(tracks);
@@ -57,15 +58,6 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
       />
     </Col>
   );
-
-  const backText = () => {
-    let text = 'Back to Albums';
-    if (state?.prevUrl.includes('tracks')) {
-      text = 'Back to Tracks';
-    }
-
-    return text;
-  };
 
   return (
     <>

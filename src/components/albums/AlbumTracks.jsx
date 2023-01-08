@@ -16,7 +16,6 @@ import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
-import { getQueue } from '../../lib/queue-client';
 
 const propTypes = {
   nextPage: PropTypes.func.isRequired,
