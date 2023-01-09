@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 import ExpandRow from '../common/ExpandRow';
+import './RadioCategories.scss';
 
 const propTypes = {
   category: PropTypes.string,
@@ -55,7 +56,7 @@ const RadioCategories = ({ category, setCategory }) => {
   }
 
   return (
-    <Container fluid style={{ paddingRight: '0px', marginRight: '0px' }}>
+    <Container fluid className="categoriesContainer">
       <Row>
         {buttons}
       </Row>

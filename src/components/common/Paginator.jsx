@@ -40,22 +40,24 @@ const Paginator = ({
     height = '70';
   }
 
+  const buttonProps = {
+    style: { fontSize },
+    height: height,
+    width: height,
+  };
+
   return (
     <div className="paginator">
       {totalItems > 0 && (
         <Button
-          style={{ fontSize }}
-          height={height}
-          width={height}
+          {...buttonProps}
           disabled={selectedPage === 1 || settings.features.isLocked}
           onClick={() => onPageChange(1)}
           content={<ChevronDoubleLeft />}
         />
       )}
       <Button
-        style={{ fontSize }}
-        height={height}
-        width={height}
+        {...buttonProps}
         disabled={selectedPage === 1 || settings.features.isLocked}
         className="paginatorButton"
         onClick={() => onPageChange(selectedPage - 1)}
@@ -73,9 +75,7 @@ const Paginator = ({
         />
       )}
       <Button
-        style={{ fontSize }}
-        height={height}
-        width={height}
+        {...buttonProps}
         disabled={selectedPage === pages + 1 || settings.features.isLocked}
         className="paginatorButton"
         onClick={() => onPageChange(selectedPage + 1)}
@@ -83,9 +83,7 @@ const Paginator = ({
       />
       {totalItems > 0 && (
         <Button
-          style={{ fontSize }}
-          height={height}
-          width={height}
+          {...buttonProps}
           disabled={selectedPage === pages + 1 || settings.features.isLocked}
           className="paginatorButton"
           onClick={() => onPageChange(pages + 1)}

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, Suspense } from 'react';
 import { Routes, Route } from "react-router-dom";
 import { useIdleTimer } from 'react-idle-timer'
 import { useNavigate } from 'react-router-dom';
@@ -11,19 +11,20 @@ import { SettingsContext } from './components/layout/SettingsProvider'
 import { status } from './lib/radio-client';
 import { supportedFonts } from './lib/styleHelper';
 import { updateSettings } from './lib/settings-client';
-import AlbumDetail from './components/albums/AlbumDetail';
-import AlbumList from './components/albums/AlbumList';
-import Filters from './components/layout/Filters';
-import JukeboxFooter from './components/layout/JukeboxFooter';
-import JukeboxHeader from './components/layout/JukeboxHeader';
-import PinEntry from './components/common/PinEntry';
-import PlaylistsViewer from './components/playlists/PlaylistsViewer';
-import Queue from './components/Queue';
-import RadioList from './components/radio/RadioList';
-import Search from './components/common/Search';
-import Settings from './components/settings/Settings';
-import Tracks from './components/Tracks';
-import WithKeyboardInput from './components/layout/WithKeyboardInput';
+
+const AlbumDetail = React.lazy(() => import("./components/albums/AlbumDetail"));
+const AlbumList = React.lazy(() => import("./components/albums/AlbumList"));
+const Filters = React.lazy(() => import("./components/layout/Filters"));
+const JukeboxFooter = React.lazy(() => import("./components/layout/JukeboxFooter"));
+const JukeboxHeader = React.lazy(() => import("./components/layout/JukeboxHeader"));
+const PinEntry = React.lazy(() => import("./components/common/PinEntry"));
+const PlaylistsViewer = React.lazy(() => import("./components/playlists/PlaylistsViewer"));
+const Queue = React.lazy(() => import("./components/Queue"));
+const RadioList = React.lazy(() => import("./components/radio/RadioList"));
+const Search = React.lazy(() => import("./components/common/Search"));
+const Settings = React.lazy(() => import("./components/settings/Settings"));
+const Tracks = React.lazy(() => import("./components/Tracks"));
+const WithKeyboardInput = React.lazy(() => import("./components/layout/WithKeyboardInput"));
 
 function App() {
   const [isPinOpen, setIsPinOpen] = useState(false);
@@ -42,7 +43,7 @@ function App() {
   const [isLocked, setIsLocked] = useState();
   const [startsWithFilter, setStartsWithFilter] = useState();
   const navigate = useNavigate();
-  const isScreenSmall= window.innerWidth < 700;
+  const isScreenSmall = window.innerWidth < 700;
 
   const onIdle = () => {
     setSearch('');
@@ -163,10 +164,10 @@ function App() {
     }}>
       {children}
     </div>
-  );  
+  );
 
   return (
-    <>
+    <Suspense>
       <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, }}>
         {settings && isPinOpen && (
           <JukeboxRoot>
@@ -225,7 +226,7 @@ function App() {
           </JukeboxRoot>
         )}
       </SettingsContext.Provider>
-    </>
+    </Suspense>
   );
 }
 

@@ -25,9 +25,10 @@ const Search = ({
   const navigate = useNavigate();
   const { isScreenSmall } = settings;
   const [localSearch, setLocalSearch] = useState('');
+  
   const inputButton = value => (
     <Button
-      style={{ fontSize: '40px' }}
+      className="searchButton"
       width={isScreenSmall ? '50' : '75'}
       height={isScreenSmall ? '50' : '75'}
       onClick={() => {
@@ -39,7 +40,7 @@ const Search = ({
 
   const backspace = () => (
     <Button
-      style={{ fontSize: '40px' }}
+      className="searchButton"
       width={isScreenSmall ? '50' : '75'}
       height={isScreenSmall ? '50' : '75'}
       onClick={() => {
@@ -62,8 +63,7 @@ const Search = ({
 
   const searchButton = (text, target) => (
     <Button
-      className="keyboardRow"
-      style={{ fontSize: '40px' }}
+      className="keyboardRow searchButton"
       width="300"
       height="55"
       onClick={() => {
@@ -95,7 +95,7 @@ const Search = ({
       <Container style={{ marginTop: topMargin(settings) }}>
         <Row>
           <FormControl
-            style={{ marginTop: '20px' }}
+            className="searchForm"
             id="name"
             placeholder={localSearch || ''}
             aria-label="Name"
@@ -132,7 +132,7 @@ const Search = ({
             <Row className="keyboardRow">
               <Button
                 hideOnSmall
-                style={{ fontSize: '40px' }}
+                className="searchButton"
                 width="500"
                 height="55"
                 onClick={() => setLocalSearch(`${localSearch} `)}
@@ -140,7 +140,7 @@ const Search = ({
               />
               <Button
                 hideOnSmall
-                style={{ fontSize: '40px' }}
+                className="searchButton"
                 width="150"
                 height="55"
                 onClick={() => {

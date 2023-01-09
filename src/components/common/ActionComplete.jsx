@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 
 import './ActionComplete.scss';
 
-const ActionComplete = ({ text, title, buttons }) => {
+const ActionComplete = ({ text, title }) => {
   <Card className="addNewCard" style={confirmStyle}>
     <Card.Body>
       <Card.Title className="addNewTitle">{title}</Card.Title>

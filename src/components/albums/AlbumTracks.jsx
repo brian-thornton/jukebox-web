@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 
 import './AlbumTracks.scss';
 import { handlers } from '../../lib/gesture-helper';
-import { calculatePageSize, deepCloneSkin } from '../../lib/styleHelper';
+import { calculatePageSize } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
 import AddToPlaylistButton from '../common/AddToPlaylistButton';

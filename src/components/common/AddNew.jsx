@@ -63,7 +63,7 @@ const AddNew = ({
               <>
                 {localDropdowns?.map(dropdown => (
                   <Form.Group>
-                    <Form.Label style={{ marginRight: '10px' }}>{dropdown.name}</Form.Label>
+                    <Form.Label className="addNewFormLabel">{dropdown.name}</Form.Label>
                     <Form.Select onChange={(e) => onDrodownValueSet(dropdown, e.target.value)}>
                       {dropdown.options.map(o => <option>{o}</option>)}
                     </Form.Select>

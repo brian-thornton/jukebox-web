@@ -28,13 +28,13 @@ const NoResults = ({
   };
 
   return (
-    <Container fluid style={{width: "100%"}}>
+    <Container fluid className="no-results-container">
       {onGoBack && (
         <Row>
           <Button onClick={onGoBack} content="Go Back" />
         </Row>
       )}
-      <Row style={{width: "100%"}}>
+      <Row className="no-results-row">
         <Card className="no-results-card" style={noResultsStyle}>
           <Card.Body>
             <Card.Title className="no-results-title">{title}</Card.Title>

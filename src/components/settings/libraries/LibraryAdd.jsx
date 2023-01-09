@@ -45,7 +45,7 @@ const LibraryAdd = ({
     <Card className="addNewCard" style={confirmStyle}>
       <Card.Title>{library ? 'Edit Library' : 'Add Library'}</Card.Title>
       <Card.Body>
-        <Container fluid style={{ width: '100%' }}>
+        <Container fluid className="addContainer">
           <Row>
             <NameInput placeholder={library?.path} />
           </Row>

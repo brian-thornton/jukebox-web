@@ -157,7 +157,7 @@ const Queue = () => {
     <>
       {!isScreenSmall && <ContentWithControls controls={controls()} content={content()} />}
       {isScreenSmall && (
-        <Container fluid style={{ marginTop: '60px', paddingRight: '0px' }}>
+        <Container fluid className="queueContainer">
           {!clearConfirm && (
             <FullWidthRow>
               <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
