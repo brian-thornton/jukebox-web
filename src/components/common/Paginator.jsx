@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -20,6 +21,7 @@ const propTypes = {
 };
 
 const Paginator = ({
+  intl,
   onPageChange,
   selectedPage,
   totalItems,
@@ -71,7 +73,7 @@ const Paginator = ({
           disabled={settings.features.isLocked}
           className="paginatorButton"
           onClick={() => onPageChange(Math.floor(Math.random() * pages))}
-          content={`Page ${selectedPage} of ${pages}`}
+          content={`${intl.formatMessage({id: 'page'})} ${selectedPage} ${intl.formatMessage({id: 'of'})} ${pages}`}
         />
       )}
       <Button
@@ -101,4 +103,4 @@ Paginator.defaultProps = {
 
 Paginator.propTypes = propTypes;
 
-export default Paginator;
+export default injectIntl(Paginator);

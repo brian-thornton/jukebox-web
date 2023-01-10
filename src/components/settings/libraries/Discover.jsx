@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import CategoryPicker from './CategoryPicker';
@@ -17,6 +18,7 @@ const propTypes = {
 };
 
 const Discover = ({
+  intl,
   handleHide,
   handleSave,
 }) => {
@@ -38,11 +40,11 @@ const Discover = ({
 
   return (
     <Card className="addNewCard" style={confirmStyle}>
-      <Card.Title>Discover</Card.Title>
+      <Card.Title>{intl.formatMessage({ id: 'discover' })}</Card.Title>
       <Card.Body>
         <Container fluid>
           <Row>
-            <NameInput placeholder="Path" />
+            <NameInput placeholder={intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker
@@ -54,8 +56,8 @@ const Discover = ({
             <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
           </Row>
           <Row>
-            <Button content="Cancel" onClick={handleHide} />
-            <Button content="Save" disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
+            <Button content={intl.formatMessage({ id: 'cancel' })} onClick={handleHide} />
+            <Button content={intl.formatMessage({ id: 'save' })} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
           </Row>
         </Container>
       </Card.Body>
@@ -65,4 +67,4 @@ const Discover = ({
 
 Discover.propTypes = propTypes;
 
-export default Discover;
+export default injectIntl(Discover);

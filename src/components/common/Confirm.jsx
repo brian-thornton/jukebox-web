@@ -1,6 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -12,7 +13,7 @@ const propTypes = {
   text: PropTypes.string.isRequired,
 };
 
-const Confirm = ({ onConfirm, onCancel, text }) => {
+const Confirm = ({ intl, onConfirm, onCancel, text }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const { controlButtonSize } = settings.styles;
@@ -28,7 +29,7 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
   return (
     <Card className="confirmCard" style={confirmStyle}>
       <Card.Body>
-        <Card.Title className="confirmTitle">Are you sure?</Card.Title>
+        <Card.Title className="confirmTitle">{intl.formatMessage({id: 'are_you_sure'})}</Card.Title>
         <Card.Text className="confirmText">
           {text}
         </Card.Text>
@@ -38,14 +39,14 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
             width={buttonHeight}
             style={{ fontSize }}
             onClick={onCancel}
-            content="No"
+            content={intl.formatMessage({id: 'no'})}
           />
           <Button
             height={buttonWidth}
             width={buttonHeight}
             style={{ fontSize }}
             onClick={onConfirm}
-            content="Yes"
+            content={intl.formatMessage({id: 'yes'})}
           />
         </div>
       </Card.Body>
@@ -55,4 +56,4 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
 
 Confirm.propTypes = propTypes;
 
-export default Confirm;
+export default injectIntl(Confirm);

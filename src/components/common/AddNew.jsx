@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import React, { useContext, useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import './AddNew.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -20,7 +21,7 @@ const propTypes = {
 };
 
 const AddNew = ({
-  cancelText, confirmText, fields, onCancel, onConfirm, title, dropdowns,
+  intl, cancelText, confirmText, fields, onCancel, onConfirm, title, dropdowns,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
@@ -33,7 +34,7 @@ const AddNew = ({
   };
 
   const onDrodownValueSet = (dropdown, value) => {
-    const cloneDropdowns = [ ...localDropdowns ];
+    const cloneDropdowns = [...localDropdowns];
     const updated = cloneDropdowns.find(d => d.name === dropdown.name);
     updated.value = value;
     setLocalDropdowns(cloneDropdowns);
@@ -79,7 +80,7 @@ const AddNew = ({
         </div>
       </Card.Body>
     </Card>
-  );
+  );  
 };
 
 AddNew.defaultProps = {
@@ -91,4 +92,4 @@ AddNew.defaultProps = {
 
 AddNew.propTypes = propTypes;
 
-export default AddNew;
+export default injectIntl(AddNew);

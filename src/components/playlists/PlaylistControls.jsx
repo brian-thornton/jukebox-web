@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap-icons';
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
 import {
@@ -31,6 +32,7 @@ const propTypes = {
 };
 
 const PlaylistControls = ({
+  intl,
   handleBackToPlaylists,
   isEmpty,
   name,
@@ -87,12 +89,12 @@ const PlaylistControls = ({
     <>
       {!isScreenSmall && (
         <>
-          {controlButton('Go Back', handleBackToPlaylists)}
-          {controlButton('Run', runPlaylist, features.play)}
-          {controlButton('Enqueue', enqueuePlaylist, features.queue)}
-          {controlButton('Shuffle', shuffle)}
-          {controlButton('Save As...', () => setIsSaveAsOpen(true))}
-          {controlButton('Delete', () => setShowDeleteModal(true), features.deletePlaylist)}
+          {controlButton(intl.formatMessage({ id: 'go_back' }), handleBackToPlaylists)}
+          {controlButton(intl.formatMessage({ id: 'run' }), runPlaylist, features.play)}
+          {controlButton(intl.formatMessage({ id: 'enqueue' }), enqueuePlaylist, features.queue)}
+          {controlButton(intl.formatMessage({ id: 'shuffle' }), shuffle)}
+          {controlButton(intl.formatMessage({ id: 'save_as' }), () => setIsSaveAsOpen(true))}
+          {controlButton(intl.formatMessage({ id: 'delete' }), () => setShowDeleteModal(true), features.deletePlaylist)}
         </>
       )}
       {isScreenSmall && (
@@ -136,4 +138,4 @@ PlaylistControls.defaultProps = {
 
 PlaylistControls.propTypes = propTypes;
 
-export default PlaylistControls;
+export default injectIntl(PlaylistControls);

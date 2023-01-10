@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import React, { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
@@ -22,7 +23,7 @@ const propTypes = {
   clearCurrentAlbum: PropTypes.func.isRequired,
 };
 
-const AlbumDetail = ({ clearCurrentAlbum }) => {
+const AlbumDetail = ({ intl, clearCurrentAlbum }) => {
   const { state } = useLocation();
   const album = state.currentAlbum;
   const [tracks, setTracks] = useState([]);
@@ -109,7 +110,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
                 <Confirm
-                  text="Are you sure that you want to remove the cover?"
+                  text={intl.formatMessage({id: 'remove_cover_text'})}
                   onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
                   onConfirm={() => {
                     removeCoverArt(album);
@@ -155,4 +156,4 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
 
 AlbumDetail.propTypes = propTypes;
 
-export default AlbumDetail;
+export default injectIntl(AlbumDetail);

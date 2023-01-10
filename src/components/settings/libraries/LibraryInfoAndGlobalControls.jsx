@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import Confirm from '../../common/Confirm';
@@ -22,6 +23,7 @@ const propTypes = {
 };
 
 const LibraryInfoAndGlobalControls = ({
+  intl,
   setIsCategoryConfigOpen,
   onScanAll,
   onDeleteAll,
@@ -35,28 +37,28 @@ const LibraryInfoAndGlobalControls = ({
   const settings = useContext(SettingsContext);
 
   const categories = (
-    <Button disabled={isScanning} onClick={() => setIsCategoryConfigOpen(true)} content="Categories" />
+    <Button disabled={isScanning} onClick={() => setIsCategoryConfigOpen(true)} content={intl.formatMessage({ id: 'categories' })} />
   );
 
   const scanAllButton = (
-    <Button disabled={isScanning} onClick={onScanAll} content="Scan All" />
+    <Button disabled={isScanning} onClick={onScanAll} content={intl.formatMessage({ id: 'scan_all' })} />
   );
 
   const deleteAllButton = (
-    <Button disabled={isScanning} onClick={() => setIsDeleteAllConfirmOpen(true)} content="Delete All" />
+    <Button disabled={isScanning} onClick={() => setIsDeleteAllConfirmOpen(true)} content={intl.formatMessage({ id: 'delete_all' })} />
   );
 
   const discoverButton = (
-    <Button disabled={isScanning} onClick={handleDiscover} content="Discover" />
+    <Button disabled={isScanning} onClick={handleDiscover} content={intl.formatMessage({ id: 'discover' })} />
   );
 
-  const addButton = <Button disabled={isScanning} onClick={handleShow} content="Add" />;
+  const addButton = <Button disabled={isScanning} onClick={handleShow} content={intl.formatMessage({ id: 'add' })} />;
 
   return (
     <>
       {isDeleteAllConfirmOpen && (
         <Confirm
-          text="Are you sure you want to delete all libraries? Files on disk will not be erased."
+          text={intl.formatMessage({ id: 'delete_libraries_text' })}
           onCancel={() => setIsDeleteAllConfirmOpen(false)}
           onConfirm={() => {
             onDeleteAll();
@@ -69,8 +71,8 @@ const LibraryInfoAndGlobalControls = ({
           <Row>
             <Col lg="4" md="4">
               <div style={{ color: settings.styles.fontColor, marginTop: '20px' }}>
-                {!currentScan && <div>{`Total Library Tracks: ${totalTracks}`}</div>}
-                {currentScan && <div className="scanText">{`Currently Scanning: ${currentScan}`}</div>}
+                {!currentScan && <div>{`${intl.formatMessage({ id: 'total_library_tracks' })}: ${totalTracks}`}</div>}
+                {currentScan && <div className="scanText">{`C${intl.formatMessage({ id: 'currently_scanning' })}: ${currentScan}`}</div>}
               </div>
             </Col>
             <Col lg="8" md="8">
@@ -95,4 +97,4 @@ LibraryInfoAndGlobalControls.defaultProps = {
 
 LibraryInfoAndGlobalControls.propTypes = propTypes;
 
-export default LibraryInfoAndGlobalControls;
+export default injectIntl(LibraryInfoAndGlobalControls);

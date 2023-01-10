@@ -5,6 +5,7 @@ import {
   Search,
   Trash,
 } from 'react-bootstrap-icons';
+import { injectIntl } from 'react-intl';
 
 import InRowDeleteConfirmation from '../../common/InRowDeleteConfirmation';
 import {
@@ -24,6 +25,7 @@ const propTypes = {
 };
 
 const LibraryRow = ({
+  intl,
   library,
   reloadLibraries,
   setCurrentScan,
@@ -46,12 +48,12 @@ const LibraryRow = ({
     });
   };
 
-  const status = library.enabled ? 'Online' : 'Offline';
+  const status = intl.formatMessage({ id: library.enabled ? 'online' : 'offline' });
 
   return (
     <Item
       actionVisible={deleteConfirmLibrary}
-      text={`${library.path} - Tracks: ${library.totalTracks || 0} [Status: ${status}]`}
+      text={`${library.path} - ${intl.formatMessage({ id: 'tracks' })}: ${library.totalTracks || 0} [${intl.formatMessage({ id: 'status' })}: ${status}]`}
       buttons={(
         <>
           {deleteConfirmLibrary?.path === library.path && (
@@ -95,4 +97,4 @@ const LibraryRow = ({
 
 LibraryRow.propTypes = propTypes;
 
-export default LibraryRow;
+export default injectIntl(LibraryRow);

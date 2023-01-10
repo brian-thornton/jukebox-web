@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import './AlbumList.scss';
 import { applyLighting } from '../../lib/lightingHelper';
@@ -28,7 +29,7 @@ const propTypes = {
 };
 
 const AlbumList = ({
-  display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
+  intl, display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
 }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
@@ -154,8 +155,19 @@ const AlbumList = ({
 
   return (
     <>
-      {loadComplete && totalAlbums === 0 && <NoResults title="No Albums Loaded" text="No Albums Found. Configure your library in Settings." />}
-      {noResults && <NoResults title="No Results Found" text="No Albums found matching your search. Please try again." marginTop="60px" />}
+      {loadComplete && totalAlbums === 0 && (
+        <NoResults
+          title={intl.formatMessage({ id: 'no_albums_loaded_title' })}
+          text={intl.formatMessage({ id: 'no_albums_loaded_text' })}
+        />
+      )}
+      {noResults && (
+        <NoResults
+          title={intl.formatMessage({ id: 'no_search_results_title' })}
+          text={intl.formatMessage({ id: 'no_search_results_text' })}
+          marginTop="60px"
+        />
+      )}
       {isLoading && <Loading />}
       {!isLoading && !noResults && (
         <Container {...swipe} fluid className="albumListContainer">
@@ -200,4 +212,4 @@ AlbumList.defaultProps = {
   setStartsWithFilter: null,
 };
 
-export default AlbumList;
+export default injectIntl(AlbumList);

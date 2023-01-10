@@ -6,6 +6,7 @@ import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { BackspaceFill } from 'react-bootstrap-icons';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import './Search.scss';
@@ -18,6 +19,7 @@ const propTypes = {
 };
 
 const Search = ({
+  intl,
   setSearchText,
 }) => {
   const [lightingApplied, setLightingApplied] = useState(false);
@@ -25,7 +27,7 @@ const Search = ({
   const navigate = useNavigate();
   const { isScreenSmall } = settings;
   const [localSearch, setLocalSearch] = useState('');
-  
+
   const inputButton = value => (
     <Button
       className="searchButton"
@@ -136,7 +138,7 @@ const Search = ({
                 width="500"
                 height="55"
                 onClick={() => setLocalSearch(`${localSearch} `)}
-                content="Space"
+                content={intl.formatMessage({id: 'space'})}
               />
               <Button
                 hideOnSmall
@@ -146,14 +148,14 @@ const Search = ({
                 onClick={() => {
                   setSearchText('');
                 }}
-                content="Clear"
+                content={intl.formatMessage({id: 'clear'})}
               />
             </Row>
           </Container>
         </Row>
         <Row className="keyboardRow">
-          {searchButton('Search Albums', '/albums')}
-          {searchButton('Search Tracks', '/tracks')}
+          {searchButton(intl.formatMessage({id: 'search_albums'}), '/albums')}
+          {searchButton(intl.formatMessage({id: 'search_tracks'}), '/tracks')}
         </Row>
       </Container>
     </>
@@ -162,4 +164,4 @@ const Search = ({
 
 Search.propTypes = propTypes;
 
-export default Search;
+export default injectIntl(Search);

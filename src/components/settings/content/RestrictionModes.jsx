@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PencilSquare, Trash } from 'react-bootstrap-icons';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import AddNew from '../../common/AddNew';
 import Button from '../../Button';
@@ -20,7 +21,7 @@ const propTypes = {
   album: Album,
 };
 
-const RestrictionModes = ({ addMode, addComplete, album }) => {
+const RestrictionModes = ({ addMode, addComplete, album, intl }) => {
   const settings = useContext(SettingsContext);
   const { preferences } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
@@ -90,14 +91,14 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
               const isSet = preferences.restrictionGroup === restrictionGroup.name;
               updatePreference(settings, 'restrictionGroup', isSet ? '' : restrictionGroup.name);
             }}
-            content="Enable"
+            content={intl.formatMessage({ id: 'enable' })}
           />
         </>
       )}
       {addMode && (
         <Button
           onClick={() => addAlbumToRestrictedList(album, restrictionGroup)}
-          content="Add"
+          content={intl.formatMessage({ id: 'add' })}
         />
       )}
     </>
@@ -121,18 +122,18 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
             setIsDeleteOpen(false);
             setSelectedRestrictionMode(null);
           }}
-          text="Are you sure that you want to delete this restriction group?"
+          text={intl.formatMessage({ id: 'delete_restriction_group_text' })}
         />
       )}
       {restrictionGroups?.length === 0 && !isAddOpen && !isDeleteOpen && (
         <NoResults
           applyMargin={false}
           className="fullWidth"
-          title="No Restriction Groups"
-          text="No Restriction Groups have been added. Click below to add your first group."
+          title={intl.formatMessage({ id: 'no_restriction_groups_title' })}
+          text={intl.formatMessage({ id: 'no_restriction_groups_text' })}
           controls={(
             <>
-              <Button content="Add" onClick={() => setIsAddOpen(true)} />
+              <Button content={intl.formatMessage({ id: 'add' })} onClick={() => setIsAddOpen(true)} />
             </>
           )}
         />
@@ -145,15 +146,15 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
       )}
       {!selectedRestrictionMode && isAddOpen && !isDeleteOpen && (
         <AddNew
-          title="Add Restriction Group"
-          dropdowns={[{ name: 'Group Type', options: ['whitelist', 'blacklist'], value: 'whitelist' }]}
+          title={intl.formatMessage({ id: 'add_restriction_group' })}
+          dropdowns={[{ name: intl.formatMessage({ id: 'group_type' }), options: ['whitelist', 'blacklist'], value: 'whitelist' }]}
           onConfirm={onAddRestrictionGroup}
           onCancel={() => setIsAddOpen(false)}
         />
       )}
       {!selectedRestrictionMode && !isAddOpen && !isDeleteOpen && restrictionGroups?.length > 0 && (
         <PaginatedList
-          topLevelControls={<Button content="Add" onClick={() => setIsAddOpen(true)} />}
+          topLevelControls={<Button content={intl.formatMessage({ id: 'add' })} onClick={() => setIsAddOpen(true)} />}
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
@@ -172,4 +173,4 @@ RestrictionModes.defaultProps = {
 
 RestrictionModes.propTypes = propTypes;
 
-export default RestrictionModes;
+export default injectIntl(RestrictionModes);

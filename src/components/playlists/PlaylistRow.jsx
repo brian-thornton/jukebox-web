@@ -1,6 +1,7 @@
 import { PencilSquare } from 'react-bootstrap-icons';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import Item from '../common/Item';
@@ -16,6 +17,7 @@ const propTypes = {
 };
 
 const PlaylistRow = ({
+  intl,
   playlist,
   addMode,
   onAdd,
@@ -36,12 +38,12 @@ const PlaylistRow = ({
             <Button
               height={buttonHeight}
               onClick={() => onAdd(playlist.name)}
-              content="Add"
+              content={intl.formatMessage({ id: 'add' })}
             />
           )}
           {!addMode && (
             <Button
-              style={{fontSize}}
+              style={{ fontSize }}
               height={buttonHeight}
               onClick={() => onSelect(playlist.name)}
               content={<PencilSquare />}
@@ -56,10 +58,10 @@ const PlaylistRow = ({
 
 PlaylistRow.defaultProps = {
   addMode: false,
-  onAdd: () => {},
-  onSelect: () => {},
+  onAdd: () => { },
+  onSelect: () => { },
 };
 
 PlaylistRow.propTypes = propTypes;
 
-export default PlaylistRow;
+export default injectIntl(PlaylistRow);

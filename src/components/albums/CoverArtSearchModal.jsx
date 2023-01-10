@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import React, { useContext, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Container } from 'react-bootstrap';
+import { injectIntl } from 'react-intl';
 
 import { Album } from '../shapes';
 import Button from '../Button';
@@ -20,7 +21,7 @@ const propTypes = {
 };
 
 const CoverArtSearchModal = ({
-  handleClose, album,
+  intl, handleClose, album,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState();
@@ -78,8 +79,8 @@ const CoverArtSearchModal = ({
           </Row>
         )}
         <Row className="cover-art-search-center">
-          <Button disabled={isLoading} onClick={handleSearch} content="Search" />
-          <Button disabled={isLoading} onClick={handleClose} content="Cancel" />
+          <Button disabled={isLoading} onClick={handleSearch} content={intl.formatMessage({id: 'search'})} />
+          <Button disabled={isLoading} onClick={handleClose} content={intl.formatMessage({id: 'cancel'})} />
         </Row>
       </Container>
     </div>
@@ -88,4 +89,4 @@ const CoverArtSearchModal = ({
 
 CoverArtSearchModal.propTypes = propTypes;
 
-export default CoverArtSearchModal;
+export default injectIntl(CoverArtSearchModal);

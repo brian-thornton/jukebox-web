@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
@@ -13,7 +14,7 @@ const propTypes = {
   setCategory: PropTypes.func.isRequired,
 };
 
-const RadioCategories = ({ category, setCategory }) => {
+const RadioCategories = ({ category, intl, setCategory }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [isExpanded, setIsExpanded] = useState(false);
@@ -50,7 +51,7 @@ const RadioCategories = ({ category, setCategory }) => {
         buttons={buttons}
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
-        text="Categories"
+        text={intl.formatMessage({id: 'categories'})}
       />
     );
   }
@@ -70,4 +71,4 @@ RadioCategories.defaultProps = {
 
 RadioCategories.propTypes = propTypes;
 
-export default RadioCategories;
+export default injectIntl(RadioCategories);

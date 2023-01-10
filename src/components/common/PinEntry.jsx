@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -15,7 +16,7 @@ const propTypes = {
   title: PropTypes.string,
 };
 
-const PinEntry = ({ onAuthorize, onCancel, title }) => {
+const PinEntry = ({ intl, onAuthorize, onCancel, title }) => {
   const settings = useContext(SettingsContext);
   const [pin, setPin] = useState('');
   const { isScreenSmall } = settings;
@@ -52,10 +53,10 @@ const PinEntry = ({ onAuthorize, onCancel, title }) => {
               <Row className="pinText">
                 {numberButton('0')}
                 <Col lg="1" md="1" sm="3" xs="3">
-                  <Button height="75" width="75" onClick={() => setPin('')} content="Clear" />
+                  <Button height="75" width="75" onClick={() => setPin('')} content={intl.formatMessage({ id: 'clear' })} />
                 </Col>
                 <Col lg="1" md="1" sm="3" xs="3">
-                  <Button height="75" width="75" onClick={onCancel} content="Cancel" />
+                  <Button height="75" width="75" onClick={onCancel} content={intl.formatMessage({ id: 'cancel' })}  />
                 </Col>
               </Row>
             </Container>
@@ -72,4 +73,4 @@ PinEntry.defaultProps = {
 
 PinEntry.propTypes = propTypes;
 
-export default PinEntry;
+export default injectIntl(PinEntry);

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Confirm from '../common/Confirm';
 import {
@@ -22,7 +23,7 @@ const propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
+const PlaylistDetail = ({ intl, name, handleBackToPlaylists }) => {
   const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -107,7 +108,13 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
   const content = () => {
     if (isEmpty) {
-      return <NoResults applyMargin={false} title="Empty Playlist" text="This playlist contains no tracks. Please add tracks from the albums or tracks sections." />;
+      return (
+        <NoResults
+          applyMargin={false}
+          title={intl.formatMessage({id: 'empty_playlist_title'})}
+          text={intl.formatMessage({id: 'empty_playlist_text'})}
+        />
+      );
     }
 
     return (
@@ -136,7 +143,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     <Confirm
       onCancel={() => setShowDeleteModal(false)}
       onConfirm={handleDelete}
-      title="Are you sure that you want to delete the playlist?"
+      title={intl.formatMessage({id: 'delete_playlist_text'})}
     />
   );
 
@@ -180,4 +187,4 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
 PlaylistDetail.propTypes = propTypes;
 
-export default PlaylistDetail;
+export default injectIntl(PlaylistDetail);

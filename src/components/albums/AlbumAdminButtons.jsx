@@ -2,6 +2,7 @@ import Col from 'react-bootstrap/Col';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import ControlButton from '../common/ControlButton';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -14,7 +15,7 @@ const propTypes = {
 };
 
 const AlbumAdminButtons = ({
-  setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
+  intl, setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
@@ -42,19 +43,19 @@ const AlbumAdminButtons = ({
           {colLayout && (
             <>
               <Row>
-                {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
-                {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), 'Remove Cover')}
+                {albumButton(() => setIsCustomSearchOpen(true), intl.formatMessage({id: 'cover_search'}))}
+                {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), intl.formatMessage({id: 'remove_cover'}))}
               </Row>
               <Row>
-                {albumButton(() => setConfirmRestriction(true), 'Restrict Content')}
+                {albumButton(() => setConfirmRestriction(true), intl.formatMessage({id: 'restrict_content'}))}
               </Row>
             </>
           )}
           {!colLayout && (
             <Row>
-              {albumButton(() => setIsCustomSearchOpen(true), 'Cover Search')}
-              {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), 'Remove Cover')}
-              {albumButton(() => setConfirmRestriction(true), 'Restrict Content')}
+              {albumButton(() => setIsCustomSearchOpen(true), intl.formatMessage({id: 'cover_search'}))}
+              {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), intl.formatMessage({id: 'remove_cover'}))}
+              {albumButton(() => setConfirmRestriction(true), intl.formatMessage({id: 'restrict_content'}))}
             </Row>
           )}
         </>
@@ -65,4 +66,4 @@ const AlbumAdminButtons = ({
 
 AlbumAdminButtons.propTypes = propTypes;
 
-export default AlbumAdminButtons;
+export default injectIntl(AlbumAdminButtons);

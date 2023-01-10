@@ -3,6 +3,7 @@ import React, { useContext, useState } from 'react';
 import {
   Trash,
 } from 'react-bootstrap-icons';
+import { injectIntl } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import InRowDeleteConfirmation from '../../common/InRowDeleteConfirmation';
@@ -13,7 +14,6 @@ import { updateSettings } from '../../../lib/settings-client';
 const propTypes = {
   category: PropTypes.string.isRequired,
 };
-
 
 const CategoryRow = ({ category }) => {
   const settings = useContext(SettingsContext);
@@ -55,4 +55,4 @@ const CategoryRow = ({ category }) => {
 
 CategoryRow.propTypes = propTypes;
 
-export default CategoryRow;
+export default injectIntl(CategoryRow);

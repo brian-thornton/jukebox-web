@@ -12,7 +12,7 @@ const propTypes = {
   text: PropTypes.string,
 };
 
-const Loading = ({ text }) => {
+const Loading = ({ intl, text }) => {
   const settings = useContext(SettingsContext);
 
   const loadingInProgressSkin = {

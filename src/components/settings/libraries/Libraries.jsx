@@ -10,6 +10,7 @@ import {
   deleteLibrary,
   scan,
 } from '../../../lib/librarian-client';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import LibraryAdd from './LibraryAdd';
@@ -20,7 +21,7 @@ import LibraryList from './LibraryList';
 import Categories from './Categories';
 import Discover from './Discover';
 
-const Libraries = () => {
+const Libraries = ({ intl }) => {
   const [isLoading, setIsLoading] = useState(false);
   const settings = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([]);
@@ -132,8 +133,8 @@ const Libraries = () => {
 
   const noResultsButtons = (
     <>
-      <Button onClick={handleShow} content="Add" />
-      <Button onClick={handleDiscover} content="Discover" />
+      <Button onClick={handleShow} content={intl.formatMessage({ id: 'add' })} />
+      <Button onClick={handleDiscover} content={intl.formatMessage({ id: 'discover' })} />
     </>
   );
 
@@ -146,8 +147,8 @@ const Libraries = () => {
         <NoResults
           applyMargin={false}
           className="fullWidth"
-          title="No Libraries"
-          text="No Libraries have been added. Click Add to add your first library."
+          title={intl.formatMessage({ id: 'no_libraries_title' })}
+          text={intl.formatMessage({ id: 'no_libraries_text' })}
           controls={noResultsButtons}
         />
       )}
@@ -186,9 +187,9 @@ const Libraries = () => {
           handleSave={(category, downloadCoverArt) => handleCloseDiscover(document.getElementById('name').value, category, downloadCoverArt)}
         />
       )}
-      {isCategoryConfigOpen && <Categories onClose={() => setIsCategoryConfigOpen(false)}/>}
+      {isCategoryConfigOpen && <Categories onClose={() => setIsCategoryConfigOpen(false)} />}
     </>
   );
 };
 
-export default Libraries;
+export default injectIntl(Libraries);

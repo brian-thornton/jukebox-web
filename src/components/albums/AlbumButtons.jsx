@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
@@ -16,7 +17,7 @@ const propTypes = {
   tracks: Tracks.isRequired,
 };
 
-const AlbumButtons = ({ tracks, queue, setQueue }) => {
+const AlbumButtons = ({ intl, tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const { state } = useLocation();
@@ -25,7 +26,7 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
-  const backText = () => state?.prevUrl.includes('tracks') ? 'Back to Tracks' : 'Back to Albums';
+  const backText = () => state?.prevUrl.includes('tracks') ? intl.formatMessage({ id: 'back_to_tracks'}) : intl.formatMessage({ id: 'back_to_albums'});
 
   const playAlbum = () => {
     enqueueTracksTop(tracks);
@@ -89,7 +90,7 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
         <>
           <Row className="buttonRow">
             {albumButton(() => navigate(-1), backText())}
-            {albumButton(playAlbum, 'Play Album', settings.features.play)}
+            {albumButton(playAlbum, intl.formatMessage({id: 'play_album'}), settings.features.play)}
           </Row>
           <Row className="buttonRow">
             {albumButton(() => {
@@ -101,10 +102,10 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
               setQueue(clone);
 
               setTimeout(() => applyLighting(settings, 'Albums'), 700);
-            }, 'Enqueue Album', (settings.features.queue && !isAlbumInQueue()))}
+            }, intl.formatMessage({id: 'enqueue_album'}), (settings.features.queue && !isAlbumInQueue()))}
             {albumButton(() => {
               navigate('/playlists', { state: { tracks } });
-            }, 'Add to Playlist', settings.features.playlists)}
+            }, intl.formatMessage({id: 'add_to_playlist'}), settings.features.playlists)}
           </Row>
         </>
       )}
@@ -114,4 +115,4 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
 
 AlbumButtons.propTypes = propTypes;
 
-export default AlbumButtons;
+export default injectIntl(AlbumButtons);

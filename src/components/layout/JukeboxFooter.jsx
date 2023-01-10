@@ -5,6 +5,7 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useCallback, useContext } from 'react';
 import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
+import { injectIntl } from 'react-intl';
 
 import ControlButtons from './ControlButtons';
 import AnimatedMeter from '../common/AnimatedMeter';
@@ -18,6 +19,7 @@ const propTypes = {
 };
 
 const JukeboxFooter = ({
+  intl,
   setSearch,
   nowPlaying,
   mediaType,
@@ -44,7 +46,7 @@ const JukeboxFooter = ({
       return <></>;
     }
 
-    return <div className="now-playing" style={{ fontFamily: settings.styles.footerFont }}>{`Now Playing: ${nowPlaying}`}</div>;
+    return <div className="now-playing" style={{ fontFamily: settings.styles.footerFont }}>{`${intl.formatMessage({id: 'now_playing'})}: ${nowPlaying}`}</div>;
   };
 
   const footerContent = () => {
@@ -94,4 +96,4 @@ JukeboxFooter.defaultProps = {
 
 JukeboxFooter.propTypes = propTypes;
 
-export default JukeboxFooter;
+export default injectIntl(JukeboxFooter);

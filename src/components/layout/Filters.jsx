@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
+import { injectIntl } from 'react-intl';
 
 import { getLibraries } from '../../lib/librarian-client';
 import Item from '../common/Item';
@@ -19,7 +20,7 @@ const propTypes = {
   setSelectedLibraries: PropTypes.func.isRequired,
 };
 
-const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
+const Filters = ({ intl, selectedLibraries, setSelectedLibraries }) => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState(selectedLibraries);
   const [libraries, setLibraries] = useState([]);
@@ -67,7 +68,7 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
                     setFilters(checked ? filters.filter(f => f.path !== library.path)
                       : oldArray => [...oldArray, library]);
                   }}
-                  text={`${library.path} - Tracks: ${library.totalTracks || 0}`}
+                  text={`${library.path} - ${intl.formatMessage({ id: 'tracks' })}: ${library.totalTracks || 0}`}
                 />
               );
             })}
@@ -83,14 +84,14 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
           </FullWidthRow>
           <FullWidthRow>
             <Button
-              content="Clear Filters"
+              content={intl.formatMessage({ id: 'clear_filters' })}
               onClick={() => {
                 setSelectedLibraries([]);
                 navigate('/albums');
               }}
             />
             <Button
-              content="Apply Filters"
+              content={intl.formatMessage({ id: 'apply_filters' })}
               onClick={() => {
                 setSelectedLibraries(filters);
                 navigate('/albums');
@@ -105,4 +106,4 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
 
 Filters.propTypes = propTypes;
 
-export default Filters;
+export default injectIntl(Filters);

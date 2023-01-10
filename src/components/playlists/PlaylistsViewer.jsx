@@ -2,6 +2,7 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { injectIntl } from 'react-intl';
 
 import './PlaylistsViewer.scss';
 import { applyLighting } from '../../lib/lightingHelper';
@@ -21,7 +22,7 @@ const propTypes = {
   currentPlaylist: PropTypes.string,
 };
 
-const PlaylistsViewer = ({ currentPlaylist }) => {
+const PlaylistsViewer = ({ intl, currentPlaylist }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const tracks = state?.tracks;
@@ -102,7 +103,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
 
   const controls = (
     <ControlButton
-      text="Add"
+      text={intl.formatMessage({ id: 'add' })}
       width="100%"
       onClick={() => setAddMode(true)}
       height={buttonHeight}
@@ -112,7 +113,13 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
 
   const content = () => (
     <>
-      {playlists?.length === 0 && !addMode && <NoResults applyMargin={false} title="No Playlists" text="No Playlists have been created. Click Add to create a new playlist." />}
+      {playlists?.length === 0 && !addMode && (
+        <NoResults
+          applyMargin={false}
+          title={intl.formatMessage({ id: 'no_playlists_title' })}
+          text={intl.formatMessage({ id: 'no_playlists_text' })}
+        />
+      )}
       {addMode && <AddNew onCancel={() => setAddMode(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
       {!addMode && !isEmpty && (
         <PaginatedList
@@ -142,4 +149,4 @@ PlaylistsViewer.defaultProps = {
   currentPlaylist: '',
 };
 
-export default PlaylistsViewer;
+export default injectIntl(PlaylistsViewer);

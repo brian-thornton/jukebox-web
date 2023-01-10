@@ -1,11 +1,12 @@
 import Nav from 'react-bootstrap/Nav';
 import React, { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 import { SettingsContext } from './SettingsProvider';
 import Button from '../Button';
 
-const JukeboxNavLeft = () => {
+const JukeboxNavLeft = ({ intl }) => {
   const location = useLocation();
   const settings = useContext(SettingsContext);
   const { isScreenSmall, styles, features } = settings;
@@ -37,7 +38,7 @@ const JukeboxNavLeft = () => {
           }}
           isSelected={location.pathname === `/${feature}`}
           disabled={features.isLocked}
-          content={feature.charAt(0).toUpperCase() + feature.slice(1)}
+          content={intl.formatMessage({id: feature})}
           onClick={() => window.location.replace(`/${feature}`)}
         />
       )}
@@ -50,7 +51,7 @@ const JukeboxNavLeft = () => {
         <Nav className="me-auto">
           {features.albums && (
             <>
-              <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/albums">Albums</Nav.Link>
+              <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/albums">{intl.formatMessage({id: 'albums'})}</Nav.Link>
               {settings.categories.map(c => (
                 <>
                   {c !== 'Albums' && (
@@ -67,13 +68,13 @@ const JukeboxNavLeft = () => {
               ))}
             </>
           )}
-          {features.tracks && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/tracks">Tracks</Nav.Link>}
-          {features.playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/playlists">Playlists</Nav.Link>}
-          {features.playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/radio">Radio</Nav.Link>}
-          {features.queue && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/queue">Queue</Nav.Link>}
-          {features.settings && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/settings">Settings</Nav.Link>}
-          {features.albums && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/filters">Filters</Nav.Link>}
-          {(features.albums || features.tracks) && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/search">Search</Nav.Link>}
+          {features.tracks && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/tracks">{intl.formatMessage({id: 'tracks'})}</Nav.Link>}
+          {features.playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/playlists">{intl.formatMessage({id: 'playlists'})}</Nav.Link>}
+          {features.playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/radio">{intl.formatMessage({id: 'radio'})}</Nav.Link>}
+          {features.queue && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/queue">{intl.formatMessage({id: 'queue'})}</Nav.Link>}
+          {features.settings && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/settings">{intl.formatMessage({id: 'settings'})}</Nav.Link>}
+          {features.albums && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/filters">{intl.formatMessage({id: 'filters'})}</Nav.Link>}
+          {(features.albums || features.tracks) && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/search">{intl.formatMessage({id: 'search'})}</Nav.Link>}
         </Nav>
       )}
       {styles.navButtonType === 'buttons' && !isScreenSmall && (
@@ -113,4 +114,4 @@ const JukeboxNavLeft = () => {
   );
 };
 
-export default JukeboxNavLeft;
+export default injectIntl(JukeboxNavLeft);
