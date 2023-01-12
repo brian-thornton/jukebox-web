@@ -59,6 +59,7 @@ const Button = ({
   buttonStyle.overflow = 'hidden';
   buttonStyle.whiteSpace = 'nowrap';
   buttonStyle.textOverflow = 'ellipsis';
+  // buttonStyle.borderRadius = '35px';
 
   if (width === '100%') {
     buttonStyle.minWidth = '100%';

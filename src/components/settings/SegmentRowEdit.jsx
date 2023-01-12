@@ -3,6 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import Form from 'react-bootstrap/Form';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import Item from '../common/Item';
@@ -24,6 +25,7 @@ const propTypes = {
 };
 
 const SegmentRowEdit = ({
+  intl,
   segment,
   onSave,
   controller,
@@ -79,8 +81,8 @@ const SegmentRowEdit = ({
       )}
       buttons={(
         <>
-          <Button content="Save" onClick={() => onSave(segment, editSegment)} />
-          <Button content="Cancel" onClick={onCancel} />
+          <Button content={intl.formatMessage({ id: 'save' })} onClick={() => onSave(segment, editSegment)} />
+          <Button content={intl.formatMessage({ id: 'cancel' })} onClick={onCancel} />
         </>
       )}
     />
@@ -93,4 +95,4 @@ SegmentRowEdit.defaultProps = {
 
 SegmentRowEdit.propTypes = propTypes;
 
-export default SegmentRowEdit;
+export default injectIntl(SegmentRowEdit);

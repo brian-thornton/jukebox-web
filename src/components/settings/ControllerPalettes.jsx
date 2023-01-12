@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
@@ -13,7 +14,7 @@ const propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-const ControllerPalettes = ({ controllerState, onSelect }) => {
+const ControllerPalettes = ({ controllerState, intl, onSelect }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const paletteStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
@@ -32,7 +33,7 @@ const ControllerPalettes = ({ controllerState, onSelect }) => {
       <ListGroup {...swipe}>
         {controllerState?.palettes.slice(paletteStart, end).map(palette => (
           <Item
-            text={`${palette} (Color Palette)`}
+            text={`${palette} (${intl.formatMessage({ id: 'color_palette' })})`}
             onClick={() => {
               onSelect(palette);
             }}
@@ -52,4 +53,4 @@ const ControllerPalettes = ({ controllerState, onSelect }) => {
 
 ControllerPalettes.propTypes = propTypes;
 
-export default ControllerPalettes;
+export default injectIntl(ControllerPalettes);

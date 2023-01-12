@@ -72,7 +72,7 @@ const SkinPreferences = ({ skin }) => {
             <SkinNavButtonSize skin={skin} navButtonSize={navButtonSize} setNavButtonSize={setNavButtonSize} />
           </Row>
           <Row>
-            <SkinControlButtonSize skin={skin} controlButtonSize={controlButtonSize} setNavButtonSize={setControlButtonSize} />
+            <SkinControlButtonSize skin={skin} controlButtonSize={controlButtonSize} setControlButtonSize={setControlButtonSize} />
           </Row>
         </Container>
       </Card.Title>

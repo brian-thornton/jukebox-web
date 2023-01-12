@@ -1,5 +1,6 @@
 import { PropTypes } from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import { getCurrentState } from '../../../lib/lighting-client';
@@ -17,6 +18,7 @@ const propTypes = {
 };
 
 const SkinSegmentDetail = ({
+  intl,
   controller,
   skin,
   event,
@@ -51,7 +53,7 @@ const SkinSegmentDetail = ({
           onConfigure={segment => setConfigSegment(segment)}
         />
       )}
-      <div style={{ color: settings.styles.fontColor }}>{`Skin Lighting for controller ${controller.ip} segment ${configSegment.id} during event ${event}`}</div>
+      <div style={{ color: settings.styles.fontColor }}>{`${intl.formatMessage({ id: 'skin_lighting_for_controller' })} ${controller.ip} ${intl.formatMessage({ id: 'segment' })} ${configSegment.id} ${intl.formatMessage({ id: 'during_event' })} ${event}`}</div>
       {configSegment && (
         <SegmentColorSelection
           event={event}
@@ -64,7 +66,7 @@ const SkinSegmentDetail = ({
       <Button
         className="skin-segment-detail-done-button"
         onClick={() => onCancel(null)}
-        content="Done"
+        content={intl.formatMessage({ id: 'done' })}
       />
     </>
   );
@@ -72,4 +74,4 @@ const SkinSegmentDetail = ({
 
 SkinSegmentDetail.propTypes = propTypes;
 
-export default SkinSegmentDetail;
+export default injectIntl(SkinSegmentDetail);

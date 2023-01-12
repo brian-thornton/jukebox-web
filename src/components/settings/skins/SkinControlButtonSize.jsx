@@ -1,7 +1,8 @@
 import Form from 'react-bootstrap/Form';
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
-const SkinControlButtonSize = ({ skin, controlButtonSize, setControlButtonSize }) => {
+const SkinControlButtonSize = ({ intl, skin, controlButtonSize, setControlButtonSize }) => {
   return (
     <Form>
       <Form.Group>
@@ -9,7 +10,7 @@ const SkinControlButtonSize = ({ skin, controlButtonSize, setControlButtonSize }
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Small Control Buttons"
+            label={intl.formatMessage({ id: 'small_control_buttons' })}
             name="group3"
             type="radio"
             id="smallControlButtons"
@@ -20,7 +21,7 @@ const SkinControlButtonSize = ({ skin, controlButtonSize, setControlButtonSize }
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Medium Control Buttons"
+            label={intl.formatMessage({ id: 'medium_control_buttons' })}
             name="group3"
             type="radio"
             id="mediumControlButtons"
@@ -31,7 +32,7 @@ const SkinControlButtonSize = ({ skin, controlButtonSize, setControlButtonSize }
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Large Control Buttons"
+            label={intl.formatMessage({ id: 'large_control_buttons' })}
             name="group3"
             type="radio"
             id="largeControlButtons"
@@ -45,4 +46,4 @@ const SkinControlButtonSize = ({ skin, controlButtonSize, setControlButtonSize }
   );
 };
 
-export default SkinControlButtonSize;
+export default injectIntl(SkinControlButtonSize);

@@ -1,6 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import Item from '../../common/Item';
 import Button from '../../Button';
@@ -14,7 +15,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinGraphics = ({ skin }) => {
+const SkinGraphics = ({ intl, skin }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState();
   const [imageKey, setImageKey] = useState();
 
@@ -58,7 +59,7 @@ const SkinGraphics = ({ skin }) => {
               setImageKey(name);
               setIsFilePickerOpen(true);
             }}
-            content="Select Image"
+            content={intl.formatMessage({ id: 'select_image' })}
           />
           <Button
             disabled={!skin.isEditable}
@@ -66,7 +67,7 @@ const SkinGraphics = ({ skin }) => {
               setImageKey(null);
               setIsFilePickerOpen(false);
             }}
-            content="Clear Image"
+            content={intl.formatMessage({ id: 'clear_image' })}
           />
         </>
       )}
@@ -74,8 +75,8 @@ const SkinGraphics = ({ skin }) => {
   );
 
   const rows = [
-    fileInputRow('defaultAlbumCover', 'Default Album Cover'),
-    fileInputRow('wallpaper', 'Wallpaper'),
+    fileInputRow('defaultAlbumCover', intl.formatMessage({ id: 'default_album_cover' })),
+    fileInputRow('wallpaper', intl.formatMessage({ id: 'wallpaper' })),
   ];
 
   const onImageSelectCancel = () => {
@@ -87,7 +88,7 @@ const SkinGraphics = ({ skin }) => {
     <>
       {isFilePickerOpen && (
         <FilePicker
-          title={`Select image for ${imageKey}`}
+          title={`${intl.formatMessage({ id: 'select_image_for' })} ${imageKey}`}
           onCancel={onImageSelectCancel}
           onSelectFile={imageUpload}
         />
@@ -107,4 +108,4 @@ const SkinGraphics = ({ skin }) => {
 
 SkinGraphics.propTypes = propTypes;
 
-export default SkinGraphics;
+export default injectIntl(SkinGraphics);

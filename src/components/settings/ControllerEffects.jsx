@@ -2,6 +2,7 @@ import { ListGroup } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { useSwipeable } from 'react-swipeable';
+import { injectIntl } from 'react-intl';
 
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
@@ -13,7 +14,7 @@ const propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-const ControllerEffects = ({ controllerState, onSelect }) => {
+const ControllerEffects = ({ controllerState, intl, onSelect }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const palletEffects = ['Palette', 'Colorwaves', 'BPM', 'Lake', 'Pacifica', 'Noise Pal', 'Flow', 'Blends', 'Dynamic Smooth'];
@@ -30,7 +31,7 @@ const ControllerEffects = ({ controllerState, onSelect }) => {
     <>
       <ListGroup {...swipe}>
         {controllerState?.effects.slice(effectStart, (effectStart + realPageSize)).map((effect) => {
-          const effectType = palletEffects.includes(effect) ? '(Effect with Palette)' : '(Effect)';
+          const effectType = palletEffects.includes(effect) ? `(${intl.formatMessage({ id: 'effect_with_palette' })})` : `(${intl.formatMessage({ id: 'effect' })})`;
 
           return (
             <Item
@@ -53,4 +54,4 @@ const ControllerEffects = ({ controllerState, onSelect }) => {
 
 ControllerEffects.propTypes = propTypes;
 
-export default ControllerEffects;
+export default injectIntl(ControllerEffects);

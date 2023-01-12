@@ -5,6 +5,7 @@ import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuidv4 } from 'uuid';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -27,6 +28,7 @@ const propTypes = {
 };
 
 export const Segments = ({
+  intl,
   controller,
   segments,
   allowAdd,
@@ -141,12 +143,16 @@ export const Segments = ({
     <>
       {isAddOpen && (
         <AddNew
-          title="Add a new Lighting Segment"
+          title={intl.formatMessage({ id: 'add_new_lighting_segment' })}
           onConfirm={(fields) => {
             onAddSegment(fields);
           }}
           onCancel={() => setIsAddOpen(false)}
-          fields={{ name: 'Name', start: 'Starting LED Position', stop: 'Ending LED Position' }}
+          fields={{
+            name: intl.formatMessage({ id: 'name' }),
+            start: intl.formatMessage({ id: 'starting_led_position' }),
+            stop: intl.formatMessage({ id: 'ending_led_position' }),
+          }}
         />
       )}
       {!isAddOpen && (
@@ -189,4 +195,4 @@ Segments.defaultProps = {
 
 Segments.propTypes = propTypes;
 
-export default Segments;
+export default injectIntl(Segments);

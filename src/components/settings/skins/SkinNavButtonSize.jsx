@@ -1,7 +1,8 @@
 import Form from 'react-bootstrap/Form';
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
-const SkinNavButtonSize = ({ navButtonSize, setNavButtonSize, skin }) => {
+const SkinNavButtonSize = ({ intl, navButtonSize, setNavButtonSize, skin }) => {
   return (
     <Form>
       <Form.Group>
@@ -9,7 +10,7 @@ const SkinNavButtonSize = ({ navButtonSize, setNavButtonSize, skin }) => {
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Small Nav Buttons"
+            label={intl.formatMessage({ id: 'small_nav_buttons' })}
             name="group2"
             type="radio"
             id="smallNavButtons"
@@ -20,7 +21,7 @@ const SkinNavButtonSize = ({ navButtonSize, setNavButtonSize, skin }) => {
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Medium Nav Buttons"
+            label={intl.formatMessage({ id: 'medium_nav_buttons' })}
             name="group2"
             type="radio"
             id="mediumNavButtons"
@@ -31,7 +32,7 @@ const SkinNavButtonSize = ({ navButtonSize, setNavButtonSize, skin }) => {
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Large Nav Buttons"
+            label={intl.formatMessage({ id: 'large_nav_buttons' })}
             name="group2"
             type="radio"
             id="largeNavButtons"
@@ -45,4 +46,4 @@ const SkinNavButtonSize = ({ navButtonSize, setNavButtonSize, skin }) => {
   );
 };
 
-export default SkinNavButtonSize;
+export default injectIntl(SkinNavButtonSize);

@@ -1,6 +1,7 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
+import { injectIntl } from 'react-intl';
 
 import Item from '../../common/Item';
 import FontPicker from './FontPicker';
@@ -15,7 +16,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinFonts = ({ skin }) => {
+const SkinFonts = ({ intl, skin }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   const [isFontModalOpen, setIsFontModalOpen] = useState(false);
@@ -99,4 +100,4 @@ const SkinFonts = ({ skin }) => {
 
 SkinFonts.propTypes = propTypes;
 
-export default SkinFonts;
+export default injectIntl(SkinFonts);

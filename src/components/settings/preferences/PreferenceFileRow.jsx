@@ -6,6 +6,7 @@ import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -15,7 +16,7 @@ const propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-const PreferenceFileRow = ({ name }) => {
+const PreferenceFileRow = ({ intl, name }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
 
@@ -58,7 +59,7 @@ const PreferenceFileRow = ({ name }) => {
                 localStorage.removeItem(name);
                 navigate('/albums');
               }}
-              content="Clear"
+              content={intl.formatMessage({ id: 'clear' })}
             />
           </Col>
         </Row>
@@ -69,4 +70,4 @@ const PreferenceFileRow = ({ name }) => {
 
 PreferenceFileRow.propTypes = propTypes;
 
-export default PreferenceFileRow;
+export default injectIntl(PreferenceFileRow);

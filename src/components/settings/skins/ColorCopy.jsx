@@ -4,6 +4,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import { deleteSkin, createSkin } from '../../../lib/style-client';
 import Button from '../../Button';
@@ -14,7 +15,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const ColorCopy = ({ skin }) => {
+const ColorCopy = ({ intl, skin }) => {
   const [selectedColor, setSelectedColor] = useState();
   const [target, setTarget] = useState();
 
@@ -96,7 +97,7 @@ const ColorCopy = ({ skin }) => {
         </Col>
       </Row>
       <Row>
-        <Button content="Save" onClick={() => saveSkin()} />
+        <Button content={intl.formatMessage({ id: 'save' })} onClick={() => saveSkin()} />
       </Row>
     </Container>
   );
@@ -104,4 +105,4 @@ const ColorCopy = ({ skin }) => {
 
 ColorCopy.propTypes = propTypes;
 
-export default ColorCopy;
+export default injectIntl(ColorCopy);

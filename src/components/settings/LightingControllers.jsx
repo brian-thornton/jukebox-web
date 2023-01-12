@@ -10,6 +10,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import './LightingControllers.scss';
 import {
@@ -46,6 +47,7 @@ export const LightingControllers = ({
   allowName = true,
   allowRemove = true,
   allowConfigure = true,
+  intl,
   buttons,
   skin,
   onConfigure = () => { },
@@ -236,21 +238,21 @@ export const LightingControllers = ({
                               onClick={() => {
                                 setCloneSource(controller);
                               }}
-                              content="Clone"
+                              content={intl.formatMessage({ id: 'clone' })}
                             />
                             <Button
                               {...buttonProps(controller)}
                               onClick={() => {
                                 onSetName(controller);
                               }}
-                              content="Save"
+                              content={intl.formatMessage({ id: 'save' })}
                             />
                             <Button
                               {...buttonProps(controller)}
                               onClick={() => {
                                 pushSegmentsFromMetadata(controller);
                               }}
-                              content="Push Segments"
+                              content={intl.formatMessage({ id: 'push_segments' })}
                             />
                           </>
                         )}
@@ -267,7 +269,7 @@ export const LightingControllers = ({
                             setIsPresetsOpen(true);
                             setSelectedController(controller);
                           }}
-                          content="Presets"
+                          content={intl.formatMessage({ id: 'presets' })}
                         />
                         {experimentalMode && (
                           <Button
@@ -275,7 +277,7 @@ export const LightingControllers = ({
                             onClick={() => {
                               reset(controller.ip);
                             }}
-                            content="Reset"
+                            content={intl.formatMessage({ id: 'reset' })}
                           />
                         )}
                       </>
@@ -307,7 +309,7 @@ export const LightingControllers = ({
                 onClick={() => {
                   discoverControllers();
                 }}
-                content="Discover"
+                content={intl.formatMessage({ id: 'discover' })}
               />
             </>
           )}
@@ -333,7 +335,7 @@ export const LightingControllers = ({
               )}
               {discoveryInProgress && (
                 <Row className="lighting-controller-loading">
-                  <Loading text="Searching for lighting controllers..." />
+                  <Loading text={intl.formatMessage({ id: 'searching_for_lighting' })} />
                 </Row>
               )}
             </FullWidthRow>
@@ -343,10 +345,10 @@ export const LightingControllers = ({
       {!isPresetsOpen && !discoveryInProgress && !isConfigureOpen && isAddOpen && (
         <>
           <AddNew
-            title="Add New Lighting Controller"
-            defaultValue="IP Address"
+            title={intl.formatMessage({ id: 'add_new_lighting' })}
+            defaultValue={intl.formatMessage({ id: 'ip_address' })}
             onCancel={() => setIsAddOpen(false)}
-            fields={{ name: 'Name', ip: 'ip' }}
+            fields={{ name: intl.formatMessage({ id: 'name' }), ip: intl.formatMessage({ id: 'ip' }) }}
             onConfirm={data => onControllerAdd(data.name, data.ip)}
           />
         </>
@@ -379,4 +381,4 @@ LightingControllers.defaultProps = {
 
 LightingControllers.propTypes = propTypes;
 
-export default LightingControllers;
+export default injectIntl(LightingControllers);

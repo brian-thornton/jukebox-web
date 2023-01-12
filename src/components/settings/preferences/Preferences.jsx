@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import PreferenceRadioRow from './PreferenceRadioRow';
@@ -7,7 +8,7 @@ import PreferenceToggleRow from './PreferenceToggleRow';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 
-const Preferences = () => {
+const Preferences = ({ intl }) => {
   const settings = useContext(SettingsContext);
   const { preferences } = settings;
   const [itemsPerPage, setItemsPerPage] = useState();
@@ -16,15 +17,15 @@ const Preferences = () => {
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
   const startsWithFilterOptions = [
-    { display: 'None', value: 'none' },
-    { display: 'Left', value: 'left' },
-    { display: 'Right', value: 'right' },
+    { display: intl.formatMessage({ id: 'none' }), value: 'none' },
+    { display: intl.formatMessage({ id: 'left' }), value: 'left' },
+    { display: intl.formatMessage({ id: 'right' }), value: 'right' },
   ];
 
   const albumCoverSize = [
-    { display: 'Small', value: 'small' },
-    { display: 'Medium', value: 'medium' },
-    { display: 'Large', value: 'large' },
+    { display: intl.formatMessage({ id: 'small' }), value: 'small' },
+    { display: intl.formatMessage({ id: 'medium' }), value: 'medium' },
+    { display: intl.formatMessage({ id: 'large' }), value: 'large' },
   ];
 
   const items = [
@@ -55,4 +56,4 @@ const Preferences = () => {
   )
 };
 
-export default Preferences;
+export default injectIntl(Preferences);

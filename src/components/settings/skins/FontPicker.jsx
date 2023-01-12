@@ -1,5 +1,6 @@
 import { PropTypes } from 'prop-types';
 import React, { useState, useEffect } from 'react';
+import { injectIntl } from 'react-intl';
 
 import Item from '../../common/Item';
 import { calculatePageSize, supportedFonts } from '../../../lib/styleHelper';
@@ -14,7 +15,7 @@ const propTypes = {
   onComplete: PropTypes.func.isRequired,
 };
 
-const FontPicker = ({ editFont, skin, onComplete, onCancel }) => {
+const FontPicker = ({ editFont, intl, skin, onComplete, onCancel }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   const availableFonts = supportedFonts.google.families;
@@ -48,7 +49,7 @@ const FontPicker = ({ editFont, skin, onComplete, onCancel }) => {
 
   return (
     <PaginatedList
-      topLevelControls={<Button content="Back to Font Selection List" onClick={() => onCancel()} />}
+      topLevelControls={<Button content={intl.formatMessage({ id: 'back_to_font_selection' })} onClick={() => onCancel()} />}
       items={items()}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
@@ -60,4 +61,4 @@ const FontPicker = ({ editFont, skin, onComplete, onCancel }) => {
 
 FontPicker.propTypes = propTypes;
 
-export default FontPicker;
+export default injectIntl(FontPicker);

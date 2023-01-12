@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
@@ -22,6 +23,7 @@ const propTypes = {
 };
 
 const SegmentRowInfo = ({
+  intl,
   segment,
   controller,
   skin,
@@ -55,17 +57,17 @@ const SegmentRowInfo = ({
     effectName = skinSegment?.effect;
   }
 
-  const effectText = effectName ? `effect: ${effectName}` : '';
-  const nameText = segmentMetadata?.name ? `name: ${segmentMetadata?.name} - ` : '';
+  const effectText = effectName ? `${intl.formatMessage({ id: 'effect' })}: ${effectName}` : '';
+  const nameText = segmentMetadata?.name ? `${intl.formatMessage({ id: 'speed' })}: ${segmentMetadata?.name} - ` : '';
 
   return (
     <Item
-      text={`${nameText}Start: ${segment.start} Stop: ${segment.stop} ${effectText}`}
+      text={`${nameText}${intl.formatMessage({ id: 'start' })}: ${segment.start} ${intl.formatMessage({ id: 'stop' })}: ${segment.stop} ${effectText}`}
       buttons={(
         <>
-          <Button content="Configure" onClick={() => onConfigure(segment)} />
-          {!isOnController && <Button content="Push to Controller" onClick={() => pushSegment(segment)} />}
-          {isOnController && !onConfigure && <Button content="Remove from Controller" onClick={() => removeRemoteSegment(segment)} />}
+          <Button content={intl.formatMessage({ id: 'configure' })} onClick={() => onConfigure(segment)} />
+          {!isOnController && <Button content={intl.formatMessage({ id: 'push_to_controller' })} onClick={() => pushSegment(segment)} />}
+          {isOnController && !onConfigure && <Button content={intl.formatMessage({ id: 'remove_from_controller' })} onClick={() => removeRemoteSegment(segment)} />}
         </>
       )}
     />
@@ -80,4 +82,4 @@ SegmentRowInfo.defaultProps = {
 
 SegmentRowInfo.propTypes = propTypes;
 
-export default SegmentRowInfo;
+export default injectIntl(SegmentRowInfo);

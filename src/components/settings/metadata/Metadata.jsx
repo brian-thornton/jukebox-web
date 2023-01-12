@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import { getArtistsByGenre, linkGenereToLibrary } from '../../../lib/metadata-client';
 import Button from '../../Button';
 import PaginatedList from '../../common/PaginatedList';
 import Loading from '../../common/Loading';
 
-const Metadata = () => {
+const Metadata = ({intl}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadGenre, setLoadGenre] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
@@ -53,4 +54,4 @@ const Metadata = () => {
   );
 };
 
-export default Metadata;
+export default injectIntl(Metadata);

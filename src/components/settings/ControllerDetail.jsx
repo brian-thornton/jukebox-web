@@ -1,5 +1,6 @@
 import Card from 'react-bootstrap/Card';
 import React, { useContext, useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import { getCurrentState } from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -11,7 +12,7 @@ const propTypes = {
   controller: Controller.isRequired,
 };
 
-const ControllerDetail = ({ controller }) => {
+const ControllerDetail = ({ controller, intl }) => {
   const settings = useContext(SettingsContext);
   const [controllerState, setControllerState] = useState();
 
@@ -29,7 +30,7 @@ const ControllerDetail = ({ controller }) => {
     <>
       <Card className="controller-card">
         <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
-          {`Segments for IP: ${controller.ip}`}
+          {`${intl.formatMessage({ id: 'segments_for_ip' })}: ${controller.ip}`}
         </Card.Title>
         <Card.Body>
           {controllerState?.state && (
@@ -46,4 +47,4 @@ const ControllerDetail = ({ controller }) => {
 
 ControllerDetail.propTypes = propTypes;
 
-export default ControllerDetail;
+export default injectIntl(ControllerDetail);

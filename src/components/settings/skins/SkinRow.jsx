@@ -1,5 +1,6 @@
 import { PropTypes } from 'prop-types';
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
@@ -11,13 +12,13 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinRow = ({ skin, setEditSkin, setSelectedSkin }) => (
+const SkinRow = ({ intl, skin, setEditSkin, setSelectedSkin }) => (
   <Item
     text={skin.name}
     buttons={(
       <>
-        <Button onClick={() => setEditSkin(skin)} content="Edit" />
-        <Button onClick={() => setSelectedSkin(skin)} content="Use Skin" />
+        <Button onClick={() => setEditSkin(skin)} content={intl.formatMessage({ id: 'edit' })} />
+        <Button onClick={() => setSelectedSkin(skin)} content={intl.formatMessage({ id: 'use_skin' })} />
       </>
     )}
   />
@@ -25,4 +26,4 @@ const SkinRow = ({ skin, setEditSkin, setSelectedSkin }) => (
 
 SkinRow.propTypes = propTypes;
 
-export default SkinRow;
+export default injectIntl(SkinRow);

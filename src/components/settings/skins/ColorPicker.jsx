@@ -7,6 +7,7 @@ import { PropTypes } from 'prop-types';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -20,6 +21,7 @@ const propTypes = {
 };
 
 const ColorPicker = ({
+  intl,
   setIsOpen,
   setColor,
   onChange,
@@ -80,7 +82,7 @@ const ColorPicker = ({
                       {picker(solidColor, '50%', colorData => setSolidColor(colorData))}
                     </Col>
                     <Col lg="6" md="6" sm="6">
-                      <div style={{ backgroundColor: colorString, height: '40vh', width: '100%' }}>Example</div>
+                      <div style={{ backgroundColor: colorString, height: '40vh', width: '100%' }}>{intl.formatMessage({id: 'example'})}</div>
                     </Col>
                   </Row>
                 </Container>
@@ -95,17 +97,17 @@ const ColorPicker = ({
                       {picker(gradientB, '50%', colorData => setGradientB(colorData))}
                     </Col>
                     <Col lg="6" md="6" sm="6">
-                      <div style={{ background: colorString, height: '40vh', width: '100%' }}>Example</div>
+                      <div style={{ background: colorString, height: '40vh', width: '100%' }}>{intl.formatMessage({id: 'example'})}</div>
                     </Col>
                   </Row>
                 </Container>
               </Tab>
               <Tab eventKey="transparent" title="Transparent">
                 <Card className="transparentCardStyle" style={transparentCardSkin}>
-                  <Card.Title className="colorPickerTitle">Transparent</Card.Title>
+                  <Card.Title className="colorPickerTitle">{intl.formatMessage({ id: 'transparent_title' })}</Card.Title>
                   <Card.Body>
                     <Card.Text className="colorPickerText">
-                      If this tab is selected, the color will be transparent.
+                      {intl.formatMessage({ id: 'transparent_text' })}
                     </Card.Text>
                   </Card.Body>
                 </Card>
@@ -136,4 +138,4 @@ ColorPicker.defaultProps = {
 
 ColorPicker.propTypes = propTypes;
 
-export default ColorPicker;
+export default injectIntl(ColorPicker);

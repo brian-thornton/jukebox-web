@@ -1,7 +1,8 @@
 import Form from 'react-bootstrap/Form';
 import React from 'react';
+import { injectIntl } from 'react-intl';
 
-const SkinNavPreference = ({ skin, navButtonType, setNavButtonType }) => {
+const SkinNavPreference = ({ intl, skin, navButtonType, setNavButtonType }) => {
   return (
     <Form>
       <Form.Group>
@@ -9,7 +10,7 @@ const SkinNavPreference = ({ skin, navButtonType, setNavButtonType }) => {
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Nav as Links"
+            label={intl.formatMessage({ id: 'nav_as_links' })}
             name="group1"
             type="radio"
             id="links"
@@ -20,7 +21,7 @@ const SkinNavPreference = ({ skin, navButtonType, setNavButtonType }) => {
           <Form.Check
             inline
             disabled={!skin.isEditable}
-            label="Nav as Buttons"
+            label={intl.formatMessage({ id: 'nav_as_buttons' })}
             name="group1"
             type="radio"
             id="buttons"
@@ -34,4 +35,4 @@ const SkinNavPreference = ({ skin, navButtonType, setNavButtonType }) => {
   );
 };
 
-export default SkinNavPreference;
+export default injectIntl(SkinNavPreference);

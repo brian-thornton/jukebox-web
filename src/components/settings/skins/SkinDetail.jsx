@@ -5,6 +5,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import { useSearchParams } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import AddNew from '../../common/AddNew';
 import Confirm from '../../common/Confirm';
@@ -18,6 +19,7 @@ import SkinPreferences from './SkinPreferences';
 import Button from '../../Button';
 
 const SkinDetail = ({
+  intl,
   skin,
   goBackToThemeList,
   setControls,
@@ -38,10 +40,10 @@ const SkinDetail = ({
   const controls = (
     <Container fluid>
       <Row>
-        <Button onClick={goBackToThemeList} content="Back to Skins" />
-        <Button onClick={() => goBackToThemeList(true)} content="Save and Apply" />
-        <Button onClick={() => setIsSaveAsModalOpen(true)} content="Save As" />
-        <Button onClick={() => setIsDeleteConfirmOpen(true)} content="Delete" disabled={!skin.isEditable} />
+        <Button onClick={goBackToThemeList} content={intl.formatMessage({ id: 'back_to_skins' })} />
+        <Button onClick={() => goBackToThemeList(true)} content={intl.formatMessage({ id: 'save_and_apply' })} />
+        <Button onClick={() => setIsSaveAsModalOpen(true)} content={intl.formatMessage({ id: 'save_as' })} />
+        <Button onClick={() => setIsDeleteConfirmOpen(true)} content={intl.formatMessage({ id: 'delete' })} disabled={!skin.isEditable} />
       </Row>
     </Container>
   );
@@ -75,16 +77,16 @@ const SkinDetail = ({
       {controls}
       {isSaveAsModalOpen && (
         <AddNew
-          title={`Save ${skin.name} as...`}
-          defaultValue={`${skin.name} Copy`}
-          fields={{ name: 'Name' }}
+          title={`${intl.formatMessage({ id: 'save' })} ${skin.name} ${intl.formatMessage({ id: 'as' })}...`}
+          defaultValue={`${skin.name} ${intl.formatMessage({ id: 'copy' })}`}
+          fields={{ name: intl.formatMessage({ id: 'name' }) }}
           onCancel={() => setIsSaveAsModalOpen(false)}
           onConfirm={data => handleSkinSaveAs(data)}
         />
       )}
       {isDeleteConfirmOpen && (
         <Confirm
-          text="Are you sure you want to delete the skin?"
+          text={intl.formatMessage({ id: 'delete_skin_text' })}
           onCancel={() => setIsDeleteConfirmOpen(false)}
           onConfirm={onDeleteConfirm}
         />
@@ -92,19 +94,19 @@ const SkinDetail = ({
       {!isDeleteConfirmOpen && !isSaveAsModalOpen && (
         <Card className="skin-detail-card">
           <Tabs activeKey={activeKey} onSelect={k => setActiveKey(k)}>
-            <Tab eventKey="preferences" title="Skin Preferences">
+            <Tab eventKey="preferences" title={intl.formatMessage({ id: 'skin_preferences' })}>
               <SkinPreferences skin={skin} />
             </Tab>
-            <Tab eventKey="colors" title="Skin Colors">
+            <Tab eventKey="colors" title={intl.formatMessage({ id: 'skin_colors' })}>
               <SkinColors skin={skin} />
             </Tab>
-            <Tab eventKey="fonts" title="Skin Fonts">
+            <Tab eventKey="fonts" title={intl.formatMessage({ id: 'skin_fonts' })}>
               <SkinFonts loadSkins={loadSkins} skin={skin} />
             </Tab>
-            <Tab eventKey="graphics" title="Skin Graphics">
+            <Tab eventKey="graphics" title={intl.formatMessage({ id: 'skin_graphics' })}>
               <SkinGraphics skin={skin} />
             </Tab>
-            <Tab eventKey="lights" title="Skin Lighting">
+            <Tab eventKey="lights" title={intl.formatMessage({ id: 'skin_lighting' })}>
               <SkinLights skin={skin} loadSkins={loadSkins} />
             </Tab>
           </Tabs>
@@ -116,4 +118,4 @@ const SkinDetail = ({
   return content();
 };
 
-export default SkinDetail;
+export default injectIntl(SkinDetail);

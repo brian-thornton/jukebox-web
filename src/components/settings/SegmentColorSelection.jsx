@@ -6,9 +6,11 @@ import {
   Row,
 } from 'react-bootstrap';
 import { PropTypes } from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import {
   getCurrentState,
+  intl,
   powerOff,
   setSolidColor,
   demoEffect,
@@ -37,6 +39,7 @@ const propTypes = {
 
 const SegmentColorSelection = ({
   skin,
+  intl,
   controller,
   segment,
   event,
@@ -162,11 +165,11 @@ const SegmentColorSelection = ({
         <Container fluid className="segment-color-container">
           <Row>
             <Form.Label style={formLabelStyle}>
-              Effect Speed
+            {intl.formatMessage({ id: 'effect_speed' })}
             </Form.Label>
             <Form.Range onChange={e => onSelectSpeed(e.target.value)} />
             <Form.Label style={formLabelStyle}>
-              Effect Brightness
+            {intl.formatMessage({ id: 'effect_brightness' })}
             </Form.Label>
             <Form.Range onChange={e => onSelectBrightness(e.target.value)} />
           </Row>
@@ -195,7 +198,7 @@ const SegmentColorSelection = ({
             <Col lg="12" md="12">
               <Button
                 onClick={() => saveSkin()}
-                content="Save"
+                content={intl.formatMessage({ id: 'Save' })}
               />
               <Button
                 onClick={() => {
@@ -203,7 +206,7 @@ const SegmentColorSelection = ({
                   setSelectedEffect('Off');
                   setSelectedPalette('');
                 }}
-                content={`Disable Lights for ${event}`}
+                content={`${intl.formatMessage({ id: 'disable_lights_for' })} ${event}`}
               />
             </Col>
           </Row>
@@ -219,4 +222,4 @@ SegmentColorSelection.defaultProps = {
 
 SegmentColorSelection.propTypes = propTypes;
 
-export default SegmentColorSelection;
+export default injectIntl(SegmentColorSelection);

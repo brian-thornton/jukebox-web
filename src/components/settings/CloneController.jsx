@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -16,7 +17,7 @@ const propTypes = {
   networkControllers: PropTypes.arrayOf(LightingController),
 };
 
-const CloneController = ({ cloneSource, setCloneSource, networkControllers }) => {
+const CloneController = ({ cloneSource, intl, setCloneSource, networkControllers }) => {
   const settings = useContext(SettingsContext);
   const [targetController, setTargetController] = useState();
 
@@ -30,7 +31,7 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
         }
       }}
     >
-      <option value="select">Select...</option>
+      <option value="select">{intl.formatMessage({ id: 'select' })}</option>
       {networkControllers?.map((c) => {
         let option = <></>;
         if (c.ip !== cloneSource.ip) {
@@ -123,13 +124,13 @@ const CloneController = ({ cloneSource, setCloneSource, networkControllers }) =>
               clone();
               setCloneSource(null);
             }}
-            content="Clone"
+            content={intl.formatMessage({ id: 'clone' })}
             disabled={!targetController}
           />
           <Button
             className="lighting-controller-button"
             onClick={() => setCloneSource(null)}
-            content="Cancel"
+            content={intl.formatMessage({ id: 'cancel' })}
           />
         </Row>
       </Container>
@@ -143,4 +144,4 @@ CloneController.defaultProps = {
 
 CloneController.propTypes = propTypes;
 
-export default CloneController;
+export default injectIntl(CloneController);

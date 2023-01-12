@@ -2,14 +2,15 @@ import Container from 'react-bootstrap/Container';
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import './CabinetConfiguration.scss';
+import { injectIntl } from 'react-intl';
 
 import LightingControllers from './LightingControllers';
 
-const CabinetConfiguration = () => (
+const CabinetConfiguration = ({ intl }) => (
   <>
     <Container fluid className="cabinet-container">
       <Row>
-        Cabinet Configuration
+        {intl.formatMessage({ id: 'cabinet_configuration' })}
       </Row>
       <Row>
         <LightingControllers />
@@ -18,4 +19,4 @@ const CabinetConfiguration = () => (
   </>
 );
 
-export default CabinetConfiguration;
+export default injectIntl(CabinetConfiguration);

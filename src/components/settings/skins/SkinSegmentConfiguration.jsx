@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import { injectIntl } from 'react-intl';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
@@ -20,7 +21,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }) => {
+const SkinSegmentConfiguration = ({ intl, skin, controller, setController, loadSkins }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
@@ -97,16 +98,14 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
     <Item
       text={event}
       buttons={(
-        <>
-          <Button
-            className="skin-segment-configure-button"
-            onClick={() => {
-              setSelectedEvent(event);
-              setIsDetailOpen(true);
-            }}
-            content="Configure"
-          />
-        </>
+        <Button
+          className="skin-segment-configure-button"
+          onClick={() => {
+            setSelectedEvent(event);
+            setIsDetailOpen(true);
+          }}
+          content={intl.formatMessage({ id: 'configure' })}
+        />
       )}
     />
   );
@@ -116,7 +115,7 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
       {!isDetailOpen && (
         <Container fluid>
           <Row>
-            <Button content="Go Back to Controllers" onClick={() => setController(null)} />
+            <Button content={intl.formatMessage({ id: 'back_to_controllers' })} onClick={() => setController(null)} />
           </Row>
           <Row>
             <ListGroup className="styleEditorContent" {...swipe}>
@@ -147,4 +146,4 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
 
 SkinSegmentConfiguration.propTypes = propTypes;
 
-export default SkinSegmentConfiguration;
+export default injectIntl(SkinSegmentConfiguration);
