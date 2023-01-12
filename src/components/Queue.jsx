@@ -2,6 +2,7 @@ import { TrashFill, XLg } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useEffect, useState } from 'react';
+import { injectIntl } from 'react-intl';
 
 import { applyLighting } from '../lib/lightingHelper';
 import Button from './Button';
@@ -22,7 +23,7 @@ import { calculatePageSize } from '../lib/styleHelper';
 import PaginatedList from './common/PaginatedList';
 import FullWidthRow from './common/FullWidthRow';
 
-const Queue = () => {
+const Queue = ({intl}) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ const Queue = () => {
 
   const confirm = (
     <Confirm
-      text="Are you sure you want to clear all tracks in the queue?"
+      text={intl.formatMessage({ id: 'delete_queue_text' })}
       onConfirm={clear}
       onCancel={() => {
         setClearConfirm(false);
@@ -105,7 +106,7 @@ const Queue = () => {
 
   const content = () => {
     if (isEmpty) {
-      return <NoResults applyMargin={false} title="Queue Empty" text="The queue is empty. Enqueue tracks from the albums, tracks or playlist sections and your tracks will play next!" />;
+      return <NoResults applyMargin={false} title={intl.formatMessage({ id: 'queue_empty_title' })} text={intl.formatMessage({ id: 'queue_empty_text' })} />;
     }
 
     return (
@@ -141,13 +142,13 @@ const Queue = () => {
 
   const controls = () => (
     <>
-      <ControlButton {...buttonProps} onClick={() => setClearConfirm(true)} text="Clear Queue" />
-      <ControlButton {...buttonProps} onClick={() => shuffle()} text="Shuffle Queue" />
+      <ControlButton {...buttonProps} onClick={() => setClearConfirm(true)} text={intl.formatMessage({ id: 'clear_queue' })} />
+      <ControlButton {...buttonProps} onClick={() => shuffle()} text={intl.formatMessage({ id: 'shuffle_queue' })} />
       {settings.features.playlists && (
         <ControlButton
           {...buttonProps}
           onClick={() => navigate('/playlists', { state: { tracks } })}
-          text="Save to Playlist"
+          text={intl.formatMessage({ id: 'save_to_playlist' })}
         />
       )}
     </>
@@ -186,4 +187,4 @@ Button.defaultProps = {
   hideOnSmall: false,
 };
 
-export default Queue;
+export default injectIntl(Queue);

@@ -6,8 +6,9 @@ import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { calculatePageSize } from '../../lib/styleHelper';
+import { injectIntl } from 'react-intl';
 
-const SettingsEditor = () => {
+const SettingsEditor = ({ intl }) => {
   const [features, setFeatures] = useState();
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -33,28 +34,28 @@ const SettingsEditor = () => {
   useEffect(loadSettings, []);
 
   const displayNames = [
-    { key: 'isLocked', value: 'Lock System' },
-    { key: 'albums', value: 'View Albums' },
-    { key: 'tracks', value: 'View Tracks' },
-    { key: 'playlists', value: 'View and run playlists' },
-    { key: 'radio', value: 'Play radio' },
-    { key: 'queue', value: 'View and update queue' },
-    { key: 'settings', value: 'View settings' },
-    { key: 'volume', value: 'Control volume' },
-    { key: 'next', value: 'Advance to next track in queue' },
-    { key: 'stop', value: 'Stop playback' },
-    { key: 'play', value: 'Start playback' },
-    { key: 'playNow', value: 'Override queue for immediate playback' },
-    { key: 'enqueue', value: 'Add items to the queue' },
-    { key: 'playAlbum', value: 'Play and entire album' },
-    { key: 'addToPlaylist', value: 'Add items to playlists' },
-    { key: 'deletePlaylist', value: 'Delete playlists' },
-    { key: 'admin', value: 'Access admin features' },
-    { key: 'downloadTrack', value: 'Download a track to a local folder' },
+    { key: 'isLocked', value: intl.formatMessage({ id: 'lock_system' }) },
+    { key: 'albums', value: intl.formatMessage({ id: 'view_albums' }) },
+    { key: 'tracks', value: intl.formatMessage({ id: 'view_tracks' }) },
+    { key: 'playlists', value: intl.formatMessage({ id: 'view_run_playlists' }) },
+    { key: 'radio', value: intl.formatMessage({ id: 'play_radio' }) },
+    { key: 'queue', value: intl.formatMessage({ id: 'view_update_queue' }) },
+    { key: 'settings', value: intl.formatMessage({ id: 'view_settings' }) },
+    { key: 'volume', value: intl.formatMessage({ id: 'control_volume' }) },
+    { key: 'next', value: intl.formatMessage({ id: 'advance' }) },
+    { key: 'stop', value: intl.formatMessage({ id: 'stop_playback' }) },
+    { key: 'play', value: intl.formatMessage({ id: 'start_playback' }) },
+    { key: 'playNow', value: intl.formatMessage({ id: 'play_now' }) },
+    { key: 'enqueue', value: intl.formatMessage({ id: 'add_to_queue' }) },
+    { key: 'playAlbum', value: intl.formatMessage({ id: 'play_entire_album' }) },
+    { key: 'addToPlaylist', value: intl.formatMessage({ id: 'add_to_playlists' }) },
+    { key: 'deletePlaylist', value: intl.formatMessage({ id: 'delete_playlist' }) },
+    { key: 'admin', value: intl.formatMessage({ id: 'access_admin' }) },
+    { key: 'downloadTrack', value: intl.formatMessage({ id: 'download_track' }) },
   ];
 
   const settingRow = (name, value) => {
-    const buttonText = value ? 'Enabled' : 'Disabled';
+    const buttonText = intl.formatMessage({id: value ? 'enabled' : 'disabled'});
     const displayName = displayNames.find(entry => entry.key === name);
 
     return (
@@ -91,4 +92,4 @@ const SettingsEditor = () => {
   return <></>;
 };
 
-export default SettingsEditor;
+export default injectIntl(SettingsEditor);

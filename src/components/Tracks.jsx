@@ -104,11 +104,11 @@ const Tracks = ({ setCurrentAlbum, search }) => {
   return (
     <>
       {tracksLoaded && totalTracks === 0 && (
-        <NoResults title="No Tracks" text="No Tracks Found. Configure your library in Settings." marginTop="60px" />
+        <NoResults title={intl.formatMessage({ id: 'no_tracks_title' })} text={intl.formatMessage({ id: 'no_tracks_text' })} marginTop="60px" />
       )}
       {tracksLoaded && noResults && (
         <div className="no-albums">
-          <NoResults title="No Results Found" text="No Tracks found matching your search. Please try again." marginTop="60px" />
+          <NoResults title={intl.formatMessage({ id: 'no_search_results_text' })} text={intl.formatMessage({ id: 'no_search_results_title' })} marginTop="60px" />
         </div>
       )}
       {searchInProgress && <Loading />}
