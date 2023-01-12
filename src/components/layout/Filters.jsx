@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { getLibraries } from '../../lib/librarian-client';
 import Item from '../common/Item';
@@ -20,7 +20,7 @@ const propTypes = {
   setSelectedLibraries: PropTypes.func.isRequired,
 };
 
-const Filters = ({ intl, selectedLibraries, setSelectedLibraries }) => {
+const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
   const navigate = useNavigate();
   const [filters, setFilters] = useState(selectedLibraries);
   const [libraries, setLibraries] = useState([]);
@@ -68,7 +68,7 @@ const Filters = ({ intl, selectedLibraries, setSelectedLibraries }) => {
                     setFilters(checked ? filters.filter(f => f.path !== library.path)
                       : oldArray => [...oldArray, library]);
                   }}
-                  text={`${library.path} - ${intl.formatMessage({ id: 'tracks' })}: ${library.totalTracks || 0}`}
+                  text={<FormattedMessage id="filter_row" values={{path: library.path, tracks: library.tracks || 0 }} />}
                 />
               );
             })}
@@ -84,14 +84,14 @@ const Filters = ({ intl, selectedLibraries, setSelectedLibraries }) => {
           </FullWidthRow>
           <FullWidthRow>
             <Button
-              content={intl.formatMessage({ id: 'clear_filters' })}
+              content={<FormattedMessage id="clear_filters" />}
               onClick={() => {
                 setSelectedLibraries([]);
                 navigate('/albums');
               }}
             />
             <Button
-              content={intl.formatMessage({ id: 'apply_filters' })}
+              content={<FormattedMessage id="apply_filters" />}
               onClick={() => {
                 setSelectedLibraries(filters);
                 navigate('/albums');
@@ -106,4 +106,4 @@ const Filters = ({ intl, selectedLibraries, setSelectedLibraries }) => {
 
 Filters.propTypes = propTypes;
 
-export default injectIntl(Filters);
+export default Filters;

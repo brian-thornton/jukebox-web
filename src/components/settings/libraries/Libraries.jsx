@@ -10,7 +10,7 @@ import {
   deleteLibrary,
   scan,
 } from '../../../lib/librarian-client';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import LibraryAdd from './LibraryAdd';
@@ -21,7 +21,7 @@ import LibraryList from './LibraryList';
 import Categories from './Categories';
 import Discover from './Discover';
 
-const Libraries = ({ intl }) => {
+const Libraries = () => {
   const [isLoading, setIsLoading] = useState(false);
   const settings = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([]);
@@ -133,8 +133,8 @@ const Libraries = ({ intl }) => {
 
   const noResultsButtons = (
     <>
-      <Button onClick={handleShow} content={intl.formatMessage({ id: 'add' })} />
-      <Button onClick={handleDiscover} content={intl.formatMessage({ id: 'discover' })} />
+      <Button onClick={handleShow} content={<FormattedMessage id="add" />} />
+      <Button onClick={handleDiscover} content={<FormattedMessage id="discover" />} />
     </>
   );
 
@@ -147,8 +147,8 @@ const Libraries = ({ intl }) => {
         <NoResults
           applyMargin={false}
           className="fullWidth"
-          title={intl.formatMessage({ id: 'no_libraries_title' })}
-          text={intl.formatMessage({ id: 'no_libraries_text' })}
+          title={<FormattedMessage id="no_libraries_title" />}
+          text={<FormattedMessage id="no_libraries_text" />}
           controls={noResultsButtons}
         />
       )}
@@ -192,4 +192,4 @@ const Libraries = ({ intl }) => {
   );
 };
 
-export default injectIntl(Libraries);
+export default Libraries;

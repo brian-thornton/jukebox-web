@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
@@ -12,7 +12,7 @@ const propTypes = {
   setStartsWithFilter: PropTypes.func.isRequired,
 };
 
-const StartsWithFilter = ({ intl, startsWithFilter, setStartsWithFilter }) => {
+const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
   const settings = useContext(SettingsContext);
   const { features } = settings;
   const { startsWithLocation } = settings.preferences;
@@ -49,7 +49,7 @@ const StartsWithFilter = ({ intl, startsWithFilter, setStartsWithFilter }) => {
           onClick={() => setStartsWithFilter(null)}
           width="86%"
           height="45"
-          content={intl.formatMessage({ id: 'all' })}
+          content={<FormattedMessage id="all" />}
         />
       </Row>
     </Container>
@@ -58,4 +58,4 @@ const StartsWithFilter = ({ intl, startsWithFilter, setStartsWithFilter }) => {
 
 StartsWithFilter.propTypes = propTypes;
 
-export default injectIntl(StartsWithFilter);
+export default StartsWithFilter;

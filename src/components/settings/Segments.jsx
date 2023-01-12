@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { v4 as uuidv4 } from 'uuid';
 import { PropTypes } from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -143,15 +143,15 @@ export const Segments = ({
     <>
       {isAddOpen && (
         <AddNew
-          title={intl.formatMessage({ id: 'add_new_lighting_segment' })}
+          title={<FormattedMessage id="add_new_lighting_segment" />}
           onConfirm={(fields) => {
             onAddSegment(fields);
           }}
           onCancel={() => setIsAddOpen(false)}
           fields={{
-            name: intl.formatMessage({ id: 'name' }),
-            start: intl.formatMessage({ id: 'starting_led_position' }),
-            stop: intl.formatMessage({ id: 'ending_led_position' }),
+            name: <FormattedMessage id="name" />,
+            start: <FormattedMessage id="starting_led_position" />,
+            stop: <FormattedMessage id="ending_led_position" />,
           }}
         />
       )}
@@ -195,4 +195,4 @@ Segments.defaultProps = {
 
 Segments.propTypes = propTypes;
 
-export default injectIntl(Segments);
+export default Segments;

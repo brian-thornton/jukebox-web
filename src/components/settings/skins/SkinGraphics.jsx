@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Item from '../../common/Item';
 import Button from '../../Button';
@@ -15,7 +15,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinGraphics = ({ intl, skin }) => {
+const SkinGraphics = ({ skin }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState();
   const [imageKey, setImageKey] = useState();
 
@@ -59,7 +59,7 @@ const SkinGraphics = ({ intl, skin }) => {
               setImageKey(name);
               setIsFilePickerOpen(true);
             }}
-            content={intl.formatMessage({ id: 'select_image' })}
+            content={<FormattedMessage id="select_image" />}
           />
           <Button
             disabled={!skin.isEditable}
@@ -67,7 +67,7 @@ const SkinGraphics = ({ intl, skin }) => {
               setImageKey(null);
               setIsFilePickerOpen(false);
             }}
-            content={intl.formatMessage({ id: 'clear_image' })}
+            content={<FormattedMessage id="clear_image" />}
           />
         </>
       )}
@@ -75,8 +75,8 @@ const SkinGraphics = ({ intl, skin }) => {
   );
 
   const rows = [
-    fileInputRow('defaultAlbumCover', intl.formatMessage({ id: 'default_album_cover' })),
-    fileInputRow('wallpaper', intl.formatMessage({ id: 'wallpaper' })),
+    fileInputRow('defaultAlbumCover', <FormattedMessage id="default_album_cover" />),
+    fileInputRow('wallpaper', <FormattedMessage id="wallpaper" />),
   ];
 
   const onImageSelectCancel = () => {
@@ -88,7 +88,7 @@ const SkinGraphics = ({ intl, skin }) => {
     <>
       {isFilePickerOpen && (
         <FilePicker
-          title={`${intl.formatMessage({ id: 'select_image_for' })} ${imageKey}`}
+          title={<FormattedMessage id="select_image_for" values={{imageKey}} />}
           onCancel={onImageSelectCancel}
           onSelectFile={imageUpload}
         />
@@ -108,4 +108,4 @@ const SkinGraphics = ({ intl, skin }) => {
 
 SkinGraphics.propTypes = propTypes;
 
-export default injectIntl(SkinGraphics);
+export default SkinGraphics;

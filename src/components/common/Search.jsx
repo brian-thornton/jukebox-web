@@ -6,7 +6,7 @@ import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { BackspaceFill } from 'react-bootstrap-icons';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import './Search.scss';
@@ -18,10 +18,7 @@ const propTypes = {
   setSearchText: PropTypes.func.isRequired,
 };
 
-const Search = ({
-  intl,
-  setSearchText,
-}) => {
+const Search = ({ setSearchText }) => {
   const [lightingApplied, setLightingApplied] = useState(false);
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
@@ -138,7 +135,7 @@ const Search = ({
                 width="500"
                 height="55"
                 onClick={() => setLocalSearch(`${localSearch} `)}
-                content={intl.formatMessage({id: 'space'})}
+                content={<FormattedMessage id="space" />}
               />
               <Button
                 hideOnSmall
@@ -148,14 +145,14 @@ const Search = ({
                 onClick={() => {
                   setSearchText('');
                 }}
-                content={intl.formatMessage({id: 'clear'})}
+                content={<FormattedMessage id="clear" />}
               />
             </Row>
           </Container>
         </Row>
         <Row className="keyboardRow">
-          {searchButton(intl.formatMessage({id: 'search_albums'}), '/albums')}
-          {searchButton(intl.formatMessage({id: 'search_tracks'}), '/tracks')}
+          {searchButton(<FormattedMessage id="search_albums" />, '/albums')}
+          {searchButton(<FormattedMessage id="search_tracks" />, '/tracks')}
         </Row>
       </Container>
     </>
@@ -164,4 +161,4 @@ const Search = ({
 
 Search.propTypes = propTypes;
 
-export default injectIntl(Search);
+export default Search;

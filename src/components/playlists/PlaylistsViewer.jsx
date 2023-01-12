@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import './PlaylistsViewer.scss';
 import { applyLighting } from '../../lib/lightingHelper';
@@ -22,7 +22,7 @@ const propTypes = {
   currentPlaylist: PropTypes.string,
 };
 
-const PlaylistsViewer = ({ intl, currentPlaylist }) => {
+const PlaylistsViewer = ({ currentPlaylist }) => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const tracks = state?.tracks;
@@ -103,7 +103,7 @@ const PlaylistsViewer = ({ intl, currentPlaylist }) => {
 
   const controls = (
     <ControlButton
-      text={intl.formatMessage({ id: 'add' })}
+      text={<FormattedMessage id="add" />}
       width="100%"
       onClick={() => setAddMode(true)}
       height={buttonHeight}
@@ -116,8 +116,8 @@ const PlaylistsViewer = ({ intl, currentPlaylist }) => {
       {playlists?.length === 0 && !addMode && (
         <NoResults
           applyMargin={false}
-          title={intl.formatMessage({ id: 'no_playlists_title' })}
-          text={intl.formatMessage({ id: 'no_playlists_text' })}
+          title={<FormattedMessage id="no_playlists_title" />}
+          text={<FormattedMessage id="no_playlists_text" />}
         />
       )}
       {addMode && <AddNew onCancel={() => setAddMode(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
@@ -149,4 +149,4 @@ PlaylistsViewer.defaultProps = {
   currentPlaylist: '',
 };
 
-export default injectIntl(PlaylistsViewer);
+export default PlaylistsViewer;

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import './InRowDeleteConfirmation.scss';
@@ -10,14 +10,14 @@ const propTypes = {
   onConfirm: PropTypes.func.isRequired,
 };
 
-const InRowDeleteConfirmation = ({ intl, onCancel, onConfirm }) => (
+const InRowDeleteConfirmation = ({ onCancel, onConfirm }) => (
   <>
-    <div className="delete-confirm-are-you-sure">{intl.formatMessage({id: 'are_you_sure'})}</div>
-    <Button onClick={onCancel} content={intl.formatMessage({id: 'cancel'})} />
-    <Button onClick={onConfirm} content={intl.formatMessage({id: 'delete'})} />
+    <div className="delete-confirm-are-you-sure"><FormattedMessage id="are_you_sure" /></div>
+    <Button onClick={onCancel} content={<FormattedMessage id="cancel" />} />
+    <Button onClick={onConfirm} content={<FormattedMessage id="delete" />} />
   </>
 );
 
 InRowDeleteConfirmation.propTypes = propTypes;
 
-export default injectIntl(InRowDeleteConfirmation);
+export default InRowDeleteConfirmation;

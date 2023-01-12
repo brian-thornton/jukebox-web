@@ -5,7 +5,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -42,7 +42,7 @@ const CategoryPicker = ({
         <Col md="12" lg="12">
           <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
             <Form.Label column sm="2" style={{ color: settings.styles.fontColor }}>
-              {`${intl.formatMessage({ id: 'category' })}:`}
+              <FormattedMessage id="category" />
             </Form.Label>
             <Col sm="10">
               <Form.Control as="select" value={selectedCategory} onChange={e => onSelectCategory(e.target.value)}>
@@ -50,7 +50,7 @@ const CategoryPicker = ({
               </Form.Control>
             </Col>
           </Form.Group>
-          {!addMode && <Button onClick={() => setAddMode(true)} content={intl.formatMessage({ id: 'add_new_category' })} />}
+          {!addMode && <Button onClick={() => setAddMode(true)} content={<FormattedMessage id="add_new_category" />} />}
         </Col>
       </Row>
       {addMode && (
@@ -58,12 +58,12 @@ const CategoryPicker = ({
           <Col md="12" lg="12">
             <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
               <Form.Label column sm="3" style={{ color: settings.styles.fontColor }}>
-                New Category:
+                <FormattedMessage id="new_category" />
               </Form.Label>
               <Col sm="6">
                 <FormControl
                   id="category"
-                  placeholder={intl.formatMessage({ id: 'new_category_name' })}
+                  placeholder={<FormattedMessage id="new_category_name" />}
                   aria-label="Name"
                   defaultValue={newCategory}
                   aria-describedby="basic-addon1"
@@ -71,8 +71,8 @@ const CategoryPicker = ({
                 />
               </Col>
               <Col sm="3">
-                <Button onClick={onAddCategory} content={intl.formatMessage({ id: 'save_new_category' })} />
-                <Button onClick={() => setAddMode(false)} content={intl.formatMessage({ id: 'cancel' })} />
+                <Button onClick={onAddCategory} content={<FormattedMessage id="save_new_category" />} />
+                <Button onClick={() => setAddMode(false)} content={<FormattedMessage id="cancel" />} />
               </Col>
             </Form.Group>
           </Col>
@@ -88,4 +88,4 @@ CategoryPicker.defaultProps = {
 
 CategoryPicker.propTypes = propTypes;
 
-export default injectIntl(CategoryPicker);
+export default CategoryPicker;

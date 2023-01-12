@@ -2,13 +2,13 @@ import React, { useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import './LogDetail.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
 
-const LogList = ({ intl, log, onClose }) => {
+const LogList = ({ log, onClose }) => {
   const settings = useContext(SettingsContext);
 
   const logDetailStyle = {
@@ -18,7 +18,7 @@ const LogList = ({ intl, log, onClose }) => {
   return (
     <Container fluid>
       <Row>
-        <Button content={intl.formatMessage({id: 'go_back'})} onClick={onClose} />
+        <Button content={<FormattedMessage id="go_back" />} onClick={onClose} />
       </Row>
       <Row>
         <Card className="logCard" style={logDetailStyle}>
@@ -33,4 +33,4 @@ const LogList = ({ intl, log, onClose }) => {
   );
 };
 
-export default injectIntl(LogList);
+export default LogList;

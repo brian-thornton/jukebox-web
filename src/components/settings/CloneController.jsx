@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -17,7 +17,7 @@ const propTypes = {
   networkControllers: PropTypes.arrayOf(LightingController),
 };
 
-const CloneController = ({ cloneSource, intl, setCloneSource, networkControllers }) => {
+const CloneController = ({ cloneSource, setCloneSource, networkControllers }) => {
   const settings = useContext(SettingsContext);
   const [targetController, setTargetController] = useState();
 
@@ -31,7 +31,7 @@ const CloneController = ({ cloneSource, intl, setCloneSource, networkControllers
         }
       }}
     >
-      <option value="select">{intl.formatMessage({ id: 'select' })}</option>
+      <option value="select">{<FormattedMessage id="select" />}</option>
       {networkControllers?.map((c) => {
         let option = <></>;
         if (c.ip !== cloneSource.ip) {
@@ -124,13 +124,13 @@ const CloneController = ({ cloneSource, intl, setCloneSource, networkControllers
               clone();
               setCloneSource(null);
             }}
-            content={intl.formatMessage({ id: 'clone' })}
+            content={<FormattedMessage id="clone" />}
             disabled={!targetController}
           />
           <Button
             className="lighting-controller-button"
             onClick={() => setCloneSource(null)}
-            content={intl.formatMessage({ id: 'cancel' })}
+            content={<FormattedMessage id="cancel" />}
           />
         </Row>
       </Container>
@@ -144,4 +144,4 @@ CloneController.defaultProps = {
 
 CloneController.propTypes = propTypes;
 
-export default injectIntl(CloneController);
+export default CloneController;

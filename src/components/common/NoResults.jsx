@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import './NoResults.scss';
@@ -18,7 +18,7 @@ const propTypes = {
 };
 
 const NoResults = ({
-  intl, text, title, controls, applyMargin, goBackText, onGoBack,
+  text, title, controls, applyMargin, goBackText, onGoBack,
 }) => {
   const settings = useContext(SettingsContext);
 
@@ -32,7 +32,7 @@ const NoResults = ({
     <Container fluid className="no-results-container">
       {onGoBack && (
         <Row>
-          <Button onClick={onGoBack} content={intl.formatMessage({id: 'go_back'})} />
+          <Button onClick={onGoBack} content={<FormattedMessage id="go_back" />} />
         </Row>
       )}
       <Row className="no-results-row">
@@ -59,4 +59,4 @@ NoResults.defaultProps = {
 
 NoResults.propTypes = propTypes;
 
-export default injectIntl(NoResults);
+export default NoResults;

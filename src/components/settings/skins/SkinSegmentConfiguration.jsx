@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
@@ -21,7 +21,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinSegmentConfiguration = ({ intl, skin, controller, setController, loadSkins }) => {
+const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
@@ -104,7 +104,7 @@ const SkinSegmentConfiguration = ({ intl, skin, controller, setController, loadS
             setSelectedEvent(event);
             setIsDetailOpen(true);
           }}
-          content={intl.formatMessage({ id: 'configure' })}
+          content={<FormattedMessage id="configure" />}
         />
       )}
     />
@@ -115,7 +115,7 @@ const SkinSegmentConfiguration = ({ intl, skin, controller, setController, loadS
       {!isDetailOpen && (
         <Container fluid>
           <Row>
-            <Button content={intl.formatMessage({ id: 'back_to_controllers' })} onClick={() => setController(null)} />
+            <Button content={<FormattedMessage id="back_to_controllers" />} onClick={() => setController(null)} />
           </Row>
           <Row>
             <ListGroup className="styleEditorContent" {...swipe}>
@@ -146,4 +146,4 @@ const SkinSegmentConfiguration = ({ intl, skin, controller, setController, loadS
 
 SkinSegmentConfiguration.propTypes = propTypes;
 
-export default injectIntl(SkinSegmentConfiguration);
+export default SkinSegmentConfiguration;

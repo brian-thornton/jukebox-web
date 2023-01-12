@@ -2,7 +2,7 @@ import { TrashFill, XLg } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useEffect, useState } from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { applyLighting } from '../lib/lightingHelper';
 import Button from './Button';
@@ -23,7 +23,7 @@ import { calculatePageSize } from '../lib/styleHelper';
 import PaginatedList from './common/PaginatedList';
 import FullWidthRow from './common/FullWidthRow';
 
-const Queue = ({intl}) => {
+const Queue = () => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const Queue = ({intl}) => {
 
   const confirm = (
     <Confirm
-      text={intl.formatMessage({ id: 'delete_queue_text' })}
+      text={<FormattedMessage id="delete_queue_text" />}
       onConfirm={clear}
       onCancel={() => {
         setClearConfirm(false);
@@ -106,7 +106,7 @@ const Queue = ({intl}) => {
 
   const content = () => {
     if (isEmpty) {
-      return <NoResults applyMargin={false} title={intl.formatMessage({ id: 'queue_empty_title' })} text={intl.formatMessage({ id: 'queue_empty_text' })} />;
+      return <NoResults applyMargin={false} title={<FormattedMessage id="queue_empty_title" />} text={<FormattedMessage id="queue_empty_text" />} />;
     }
 
     return (
@@ -142,13 +142,13 @@ const Queue = ({intl}) => {
 
   const controls = () => (
     <>
-      <ControlButton {...buttonProps} onClick={() => setClearConfirm(true)} text={intl.formatMessage({ id: 'clear_queue' })} />
-      <ControlButton {...buttonProps} onClick={() => shuffle()} text={intl.formatMessage({ id: 'shuffle_queue' })} />
+      <ControlButton {...buttonProps} onClick={() => setClearConfirm(true)} text={<FormattedMessage id="clear_queue" />} />
+      <ControlButton {...buttonProps} onClick={() => shuffle()} text={<FormattedMessage id="shuffle_queue" />} />
       {settings.features.playlists && (
         <ControlButton
           {...buttonProps}
           onClick={() => navigate('/playlists', { state: { tracks } })}
-          text={intl.formatMessage({ id: 'save_to_playlist' })}
+          text={<FormattedMessage id="save_to_playlist" />}
         />
       )}
     </>
@@ -187,4 +187,4 @@ Button.defaultProps = {
   hideOnSmall: false,
 };
 
-export default injectIntl(Queue);
+export default Queue;

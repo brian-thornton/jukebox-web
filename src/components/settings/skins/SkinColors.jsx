@@ -2,7 +2,7 @@ import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect, useContext } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import ColorCopy from './ColorCopy';
 import Item from '../../common/Item';
@@ -20,7 +20,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinColors = ({ intl, skin }) => {
+const SkinColors = ({ skin }) => {
   const [isColorCopyOpen, setIsColorCopyOpen] = useState(false);
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -98,14 +98,14 @@ const SkinColors = ({ intl, skin }) => {
                 setAllowGradient(false);
               }
             }}
-            content={intl.formatMessage({ id: 'select_color' })}
+            content={<FormattedMessage id="select_color" />}
           />
           <Button
             disabled={!skin.isEditable}
             onClick={() => {
               setIsColorCopyOpen(true);
             }}
-            content={intl.formatMessage({ id: 'copy_from' })}
+            content={<FormattedMessage id="copy_from" />}
           />
         </>
       )}
@@ -113,17 +113,17 @@ const SkinColors = ({ intl, skin }) => {
   );
 
   const rows = [
-    styleRow('headerColor', intl.formatMessage({ id: 'header_background_color' })),
-    styleRow('footerColor', intl.formatMessage({ id: 'footer_background_color' })),
-    styleRow('fontColor', intl.formatMessage({ id: 'font_color' })),
-    styleRow('backgroundColor', intl.formatMessage({ id: 'background_color' })),
-    styleRow('popupBackgroundColor', intl.formatMessage({ id: 'dialog_background_color' })),
-    styleRow('buttonBackgroundColor', intl.formatMessage({ id: 'button_background_color' })),
-    styleRow('activeButtonColor', intl.formatMessage({ id: 'active_button_color' })),
-    styleRow('buttonTextColor', intl.formatMessage({ id: 'button_text_color' })),
-    styleRow('controlButtonBackgroundColor', intl.formatMessage({ id: 'control_button_background_color' })),
-    styleRow('controlButtonTextColor', intl.formatMessage({ id: 'control_button_text_color' })),
-    styleRow('trackBackgroundColor', intl.formatMessage({ id: 'track_background_color' })),
+    styleRow('headerColor', <FormattedMessage id="header_background_color" />),
+    styleRow('footerColor', <FormattedMessage id="footer_background_color" />),
+    styleRow('fontColor', <FormattedMessage id="font_color" />),
+    styleRow('backgroundColor', <FormattedMessage id="background_color" />),
+    styleRow('popupBackgroundColor', <FormattedMessage id="dialog_background_color" />),
+    styleRow('buttonBackgroundColor', <FormattedMessage id="button_background_color" />),
+    styleRow('activeButtonColor', <FormattedMessage id="active_button_color" />),
+    styleRow('buttonTextColor', <FormattedMessage id="button_text_color" />),
+    styleRow('controlButtonBackgroundColor', <FormattedMessage id="control_button_background_color" />),
+    styleRow('controlButtonTextColor', <FormattedMessage id="control_button_text_color" />),
+    styleRow('trackBackgroundColor', <FormattedMessage id="track_background_color" />),
   ];
 
   return (
@@ -160,4 +160,4 @@ const SkinColors = ({ intl, skin }) => {
 
 SkinColors.propTypes = propTypes;
 
-export default injectIntl(SkinColors);
+export default SkinColors;

@@ -1,6 +1,6 @@
 import { PropTypes } from 'prop-types';
 import React, { useContext } from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import Item from '../../common/Item';
@@ -13,9 +13,9 @@ const propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-const PreferenceToggleRow = ({ intl, name, value }) => {
+const PreferenceToggleRow = ({ name, value }) => {
   const settings = useContext(SettingsContext);
-  const buttonText = intl.formatMessage({id: value ? 'enabled' : 'disabled'});
+  const buttonText = <FormattedMessage id={value ? 'enabled' : 'disabled'} />;
 
   const rowLabel = (labelText) => {
     const result = labelText.replace(/([A-Z])/g, ' $1');
@@ -43,4 +43,4 @@ const PreferenceToggleRow = ({ intl, name, value }) => {
 
 PreferenceToggleRow.propTypes = propTypes;
 
-export default injectIntl(PreferenceToggleRow);
+export default PreferenceToggleRow;

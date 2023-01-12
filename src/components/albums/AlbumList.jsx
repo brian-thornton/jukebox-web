@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import './AlbumList.scss';
 import { applyLighting } from '../../lib/lightingHelper';
@@ -29,7 +29,7 @@ const propTypes = {
 };
 
 const AlbumList = ({
-  intl, display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
+  display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
 }) => {
   const settings = useContext(SettingsContext);
   const [albums, setAlbums] = useState([]);
@@ -157,14 +157,14 @@ const AlbumList = ({
     <>
       {loadComplete && totalAlbums === 0 && (
         <NoResults
-          title={intl.formatMessage({ id: 'no_albums_loaded_title' })}
-          text={intl.formatMessage({ id: 'no_albums_loaded_text' })}
+          title={<FormattedMessage id="no_albums_loaded_title" />}
+          text={<FormattedMessage id="no_albums_loaded_text" />}
         />
       )}
       {noResults && (
         <NoResults
-          title={intl.formatMessage({ id: 'no_search_results_title' })}
-          text={intl.formatMessage({ id: 'no_search_results_text' })}
+          title={<FormattedMessage id="no_search_results_title" />}
+          text={<FormattedMessage id="no_search_results_text" />}
           marginTop="60px"
         />
       )}
@@ -212,4 +212,4 @@ AlbumList.defaultProps = {
   setStartsWithFilter: null,
 };
 
-export default injectIntl(AlbumList);
+export default AlbumList;

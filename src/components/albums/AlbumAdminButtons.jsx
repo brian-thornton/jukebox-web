@@ -2,7 +2,7 @@ import Col from 'react-bootstrap/Col';
 import React, { useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import ControlButton from '../common/ControlButton';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -15,7 +15,7 @@ const propTypes = {
 };
 
 const AlbumAdminButtons = ({
-  intl, setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
+  setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
@@ -43,19 +43,19 @@ const AlbumAdminButtons = ({
           {colLayout && (
             <>
               <Row>
-                {albumButton(() => setIsCustomSearchOpen(true), intl.formatMessage({id: 'cover_search'}))}
-                {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), intl.formatMessage({id: 'remove_cover'}))}
+                {albumButton(() => setIsCustomSearchOpen(true), <FormattedMessage id="cover_search" />)}
+                {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), <FormattedMessage id="remove_cover" />)}
               </Row>
               <Row>
-                {albumButton(() => setConfirmRestriction(true), intl.formatMessage({id: 'restrict_content'}))}
+                {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
               </Row>
             </>
           )}
           {!colLayout && (
             <Row>
-              {albumButton(() => setIsCustomSearchOpen(true), intl.formatMessage({id: 'cover_search'}))}
-              {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), intl.formatMessage({id: 'remove_cover'}))}
-              {albumButton(() => setConfirmRestriction(true), intl.formatMessage({id: 'restrict_content'}))}
+              {albumButton(() => setIsCustomSearchOpen(true), <FormattedMessage id="cover_search" />)}
+              {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), <FormattedMessage id="remove_cover" />)}
+              {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
             </Row>
           )}
         </>
@@ -66,4 +66,4 @@ const AlbumAdminButtons = ({
 
 AlbumAdminButtons.propTypes = propTypes;
 
-export default injectIntl(AlbumAdminButtons);
+export default AlbumAdminButtons;

@@ -12,7 +12,7 @@ import {
   Search,
 } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import './Jukebox.scss';
@@ -28,7 +28,6 @@ const propTypes = {
 };
 
 const JukeboxNavRight = ({
-  intl,
   setSearch,
   selectedLibraries,
   lastModule,
@@ -94,7 +93,7 @@ const JukeboxNavRight = ({
               height={height}
               disabled={features.isLocked}
               onClick={() => setSearch('')}
-              content={intl.formatMessage({ id: 'search' })}
+              content={<FormattedMessage id="search" />}
             />
           )}
         </>
@@ -111,7 +110,7 @@ const JukeboxNavRight = ({
 
   return (
     <Nav className="ml-auto">
-      {!applyWidth && search && !isScreenSmall && <div className="search-result">{`${intl.formatMessage({ id: 'search_results' })}: ${search}`}</div>}
+      {!applyWidth && search && !isScreenSmall && <div className="search-result"><FormattedMessage id="search_results" values={{search}} /></div>}
       {(features.albums || features.tracks) && searchButtons()}
       {!isScreenSmall && !search && !applyWidth && features.albums && pathname.includes('/albums') && preferences.showLibraryFilter && (
         <Button
@@ -150,4 +149,4 @@ JukeboxNavRight.defaultProps = {
 
 JukeboxNavRight.propTypes = propTypes;
 
-export default injectIntl(JukeboxNavRight);
+export default JukeboxNavRight;

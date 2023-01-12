@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import CategoryPicker from './CategoryPicker';
@@ -21,7 +21,6 @@ const propTypes = {
 };
 
 const LibraryAdd = ({
-  intl,
   setShow,
   setSelectedLibrary,
   handleSave,
@@ -45,7 +44,7 @@ const LibraryAdd = ({
 
   return (
     <Card className="addNewCard" style={confirmStyle}>
-      <Card.Title>{library ? intl.formatMessage({ id: 'edit_library' }) : intl.formatMessage({ id: 'add_library' })}</Card.Title>
+      <Card.Title><FormattedMessage id={library ? 'edit_library' : 'add_library'} /></Card.Title>
       <Card.Body>
         <Container fluid className="addContainer">
           <Row>
@@ -62,13 +61,13 @@ const LibraryAdd = ({
           </Row>
         </Container>
         <Button
-          content={intl.formatMessage({ id: 'cancel' })}
+          content={<FormattedMessage id="cancel" />}
           onClick={() => {
             setShow(false);
             setSelectedLibrary(null);
           }}
         />
-        <Button content={intl.formatMessage({ id: 'save' })} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
+        <Button content={<FormattedMessage id="cancel" />} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
       </Card.Body>
     </Card>
   );
@@ -82,4 +81,4 @@ LibraryAdd.defaultProps = {
 
 LibraryAdd.propTypes = propTypes;
 
-export default injectIntl(LibraryAdd);
+export default LibraryAdd;

@@ -10,7 +10,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import './LightingControllers.scss';
 import {
@@ -47,7 +47,6 @@ export const LightingControllers = ({
   allowName = true,
   allowRemove = true,
   allowConfigure = true,
-  intl,
   buttons,
   skin,
   onConfigure = () => { },
@@ -238,21 +237,21 @@ export const LightingControllers = ({
                               onClick={() => {
                                 setCloneSource(controller);
                               }}
-                              content={intl.formatMessage({ id: 'clone' })}
+                              content={<FormattedMessage id="clone" />}
                             />
                             <Button
                               {...buttonProps(controller)}
                               onClick={() => {
                                 onSetName(controller);
                               }}
-                              content={intl.formatMessage({ id: 'save' })}
+                              content={<FormattedMessage id="save" />}
                             />
                             <Button
                               {...buttonProps(controller)}
                               onClick={() => {
                                 pushSegmentsFromMetadata(controller);
                               }}
-                              content={intl.formatMessage({ id: 'push_segments' })}
+                              content={<FormattedMessage id="push_segments" />}
                             />
                           </>
                         )}
@@ -269,7 +268,7 @@ export const LightingControllers = ({
                             setIsPresetsOpen(true);
                             setSelectedController(controller);
                           }}
-                          content={intl.formatMessage({ id: 'presets' })}
+                          content={<FormattedMessage id="presets" />}
                         />
                         {experimentalMode && (
                           <Button
@@ -277,7 +276,7 @@ export const LightingControllers = ({
                             onClick={() => {
                               reset(controller.ip);
                             }}
-                            content={intl.formatMessage({ id: 'reset' })}
+                            content={<FormattedMessage id="reset" />}
                           />
                         )}
                       </>
@@ -309,7 +308,7 @@ export const LightingControllers = ({
                 onClick={() => {
                   discoverControllers();
                 }}
-                content={intl.formatMessage({ id: 'discover' })}
+                content={<FormattedMessage id="discover" />}
               />
             </>
           )}
@@ -335,7 +334,7 @@ export const LightingControllers = ({
               )}
               {discoveryInProgress && (
                 <Row className="lighting-controller-loading">
-                  <Loading text={intl.formatMessage({ id: 'searching_for_lighting' })} />
+                  <Loading text={<FormattedMessage id="searching_for_lighting" />} />
                 </Row>
               )}
             </FullWidthRow>
@@ -345,10 +344,10 @@ export const LightingControllers = ({
       {!isPresetsOpen && !discoveryInProgress && !isConfigureOpen && isAddOpen && (
         <>
           <AddNew
-            title={intl.formatMessage({ id: 'add_new_lighting' })}
-            defaultValue={intl.formatMessage({ id: 'ip_address' })}
+            title={<FormattedMessage id="add_new_lighting" />}
+            defaultValue={<FormattedMessage id="ip_address" />}
             onCancel={() => setIsAddOpen(false)}
-            fields={{ name: intl.formatMessage({ id: 'name' }), ip: intl.formatMessage({ id: 'ip' }) }}
+            fields={{ name: <FormattedMessage id="name" />, ip: <FormattedMessage id="ip" /> }}
             onConfirm={data => onControllerAdd(data.name, data.ip)}
           />
         </>
@@ -381,4 +380,4 @@ LightingControllers.defaultProps = {
 
 LightingControllers.propTypes = propTypes;
 
-export default injectIntl(LightingControllers);
+export default LightingControllers;

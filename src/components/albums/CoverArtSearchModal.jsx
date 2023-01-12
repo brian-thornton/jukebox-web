@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import React, { useContext, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { Container } from 'react-bootstrap';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import { Album } from '../shapes';
 import Button from '../Button';
@@ -21,7 +21,7 @@ const propTypes = {
 };
 
 const CoverArtSearchModal = ({
-  intl, handleClose, album,
+  handleClose, album,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState();
@@ -72,15 +72,15 @@ const CoverArtSearchModal = ({
           <Row className="cover-art-search-center">
             <Col>
               <Card className="cover-art-search-center albumCover" style={resultsStyle}>
-                <Card.Title>Results</Card.Title>
+                <Card.Title><FormattedMessage id="results" /></Card.Title>
                 <Card.Img className="cover-art-search-album-cover" top src={results} onClick={handleSave} />
               </Card>
             </Col>
           </Row>
         )}
         <Row className="cover-art-search-center">
-          <Button disabled={isLoading} onClick={handleSearch} content={intl.formatMessage({id: 'search'})} />
-          <Button disabled={isLoading} onClick={handleClose} content={intl.formatMessage({id: 'cancel'})} />
+          <Button disabled={isLoading} onClick={handleSearch} content={<FormattedMessage id="search" />} />
+          <Button disabled={isLoading} onClick={handleClose} content={<FormattedMessage id="cancel" />} />
         </Row>
       </Container>
     </div>
@@ -89,4 +89,4 @@ const CoverArtSearchModal = ({
 
 CoverArtSearchModal.propTypes = propTypes;
 
-export default injectIntl(CoverArtSearchModal);
+export default CoverArtSearchModal;

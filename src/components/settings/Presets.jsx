@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { calculatePageSize } from '../../lib/styleHelper';
@@ -14,7 +14,7 @@ const propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-const Presets = ({ controller, intl, onClose, onSelect }) => {
+const Presets = ({ controller, onClose, onSelect }) => {
   const [presets, setPresets] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
@@ -43,7 +43,7 @@ const Presets = ({ controller, intl, onClose, onSelect }) => {
               applyPreset(controller.ip, preset.n);
               onSelect(preset);
             }}
-            content={intl.formatMessage({ id: 'enable' })}
+            content={<FormattedMessage id="enable" />}
           />
         </>
       )}
@@ -54,7 +54,7 @@ const Presets = ({ controller, intl, onClose, onSelect }) => {
     <>
       {presets?.length > 0 && (
         <PaginatedList
-          topLevelControls={<Button content={intl.formatMessage({ id: 'back_to_controller_events' })} onClick={onClose} />}
+          topLevelControls={<Button content={<FormattedMessage id="back_to_controller_events" />} onClick={onClose} />}
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
@@ -72,4 +72,4 @@ Presets.defaultProps = {
 
 Presets.propTypes = propTypes;
 
-export default injectIntl(Presets);
+export default Presets;

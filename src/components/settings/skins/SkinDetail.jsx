@@ -5,7 +5,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import { useSearchParams } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import AddNew from '../../common/AddNew';
 import Confirm from '../../common/Confirm';
@@ -19,7 +19,6 @@ import SkinPreferences from './SkinPreferences';
 import Button from '../../Button';
 
 const SkinDetail = ({
-  intl,
   skin,
   goBackToThemeList,
   setControls,
@@ -40,10 +39,10 @@ const SkinDetail = ({
   const controls = (
     <Container fluid>
       <Row>
-        <Button onClick={goBackToThemeList} content={intl.formatMessage({ id: 'back_to_skins' })} />
-        <Button onClick={() => goBackToThemeList(true)} content={intl.formatMessage({ id: 'save_and_apply' })} />
-        <Button onClick={() => setIsSaveAsModalOpen(true)} content={intl.formatMessage({ id: 'save_as' })} />
-        <Button onClick={() => setIsDeleteConfirmOpen(true)} content={intl.formatMessage({ id: 'delete' })} disabled={!skin.isEditable} />
+        <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
+        <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />
+        <Button onClick={() => setIsSaveAsModalOpen(true)} content={<FormattedMessage id="save_as" />} />
+        <Button onClick={() => setIsDeleteConfirmOpen(true)} content={<FormattedMessage id="delete" />} disabled={!skin.isEditable} />
       </Row>
     </Container>
   );
@@ -77,16 +76,16 @@ const SkinDetail = ({
       {controls}
       {isSaveAsModalOpen && (
         <AddNew
-          title={`${intl.formatMessage({ id: 'save' })} ${skin.name} ${intl.formatMessage({ id: 'as' })}...`}
-          defaultValue={`${skin.name} ${intl.formatMessage({ id: 'copy' })}`}
-          fields={{ name: intl.formatMessage({ id: 'name' }) }}
+          title={<FormattedMessage id="skin_save_as" values={{ name: skin.name }} />}
+          defaultValue={<FormattedMessage id="skin_copy" values={{ name: skin.name }} />}
+          fields={{ name: <FormattedMessage id="name" /> }}
           onCancel={() => setIsSaveAsModalOpen(false)}
           onConfirm={data => handleSkinSaveAs(data)}
         />
       )}
       {isDeleteConfirmOpen && (
         <Confirm
-          text={intl.formatMessage({ id: 'delete_skin_text' })}
+          text={<FormattedMessage id="delete_skin_text" />}
           onCancel={() => setIsDeleteConfirmOpen(false)}
           onConfirm={onDeleteConfirm}
         />
@@ -94,19 +93,19 @@ const SkinDetail = ({
       {!isDeleteConfirmOpen && !isSaveAsModalOpen && (
         <Card className="skin-detail-card">
           <Tabs activeKey={activeKey} onSelect={k => setActiveKey(k)}>
-            <Tab eventKey="preferences" title={intl.formatMessage({ id: 'skin_preferences' })}>
+            <Tab eventKey="preferences" title={<FormattedMessage id="skin_preferences" />}>
               <SkinPreferences skin={skin} />
             </Tab>
-            <Tab eventKey="colors" title={intl.formatMessage({ id: 'skin_colors' })}>
+            <Tab eventKey="colors" title={<FormattedMessage id="skin_colors" />}>
               <SkinColors skin={skin} />
             </Tab>
-            <Tab eventKey="fonts" title={intl.formatMessage({ id: 'skin_fonts' })}>
+            <Tab eventKey="fonts" title={<FormattedMessage id="skin_fonts" />}>
               <SkinFonts loadSkins={loadSkins} skin={skin} />
             </Tab>
-            <Tab eventKey="graphics" title={intl.formatMessage({ id: 'skin_graphics' })}>
+            <Tab eventKey="graphics" title={<FormattedMessage id="skin_graphics" />}>
               <SkinGraphics skin={skin} />
             </Tab>
-            <Tab eventKey="lights" title={intl.formatMessage({ id: 'skin_lighting' })}>
+            <Tab eventKey="lights" title={<FormattedMessage id="skin_lighting" />}>
               <SkinLights skin={skin} loadSkins={loadSkins} />
             </Tab>
           </Tabs>
@@ -118,4 +117,4 @@ const SkinDetail = ({
   return content();
 };
 
-export default injectIntl(SkinDetail);
+export default SkinDetail;

@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
+import { FormattedMessage } from 'react-intl';
 
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
@@ -104,11 +105,11 @@ const Tracks = ({ setCurrentAlbum, search }) => {
   return (
     <>
       {tracksLoaded && totalTracks === 0 && (
-        <NoResults title={intl.formatMessage({ id: 'no_tracks_title' })} text={intl.formatMessage({ id: 'no_tracks_text' })} marginTop="60px" />
+        <NoResults title={<FormattedMessage id="no_tracks_title" />} text={<FormattedMessage id="no_tracks_text" />} marginTop="60px" />
       )}
       {tracksLoaded && noResults && (
         <div className="no-albums">
-          <NoResults title={intl.formatMessage({ id: 'no_search_results_text' })} text={intl.formatMessage({ id: 'no_search_results_title' })} marginTop="60px" />
+          <NoResults title={<FormattedMessage id="no_search_results_title" />} text={<FormattedMessage id="no_search_results_text" />} marginTop="60px" />
         </div>
       )}
       {searchInProgress && <Loading />}

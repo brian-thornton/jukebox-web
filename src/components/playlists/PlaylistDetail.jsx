@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Confirm from '../common/Confirm';
 import {
@@ -23,7 +23,7 @@ const propTypes = {
   name: PropTypes.string.isRequired,
 };
 
-const PlaylistDetail = ({ intl, name, handleBackToPlaylists }) => {
+const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const settings = useContext(SettingsContext);
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -111,8 +111,8 @@ const PlaylistDetail = ({ intl, name, handleBackToPlaylists }) => {
       return (
         <NoResults
           applyMargin={false}
-          title={intl.formatMessage({id: 'empty_playlist_title'})}
-          text={intl.formatMessage({id: 'empty_playlist_text'})}
+          title={<FormattedMessage id="empty_playlist_title" />}
+          text={<FormattedMessage id="empty_playlist_text" />}
         />
       );
     }
@@ -143,7 +143,7 @@ const PlaylistDetail = ({ intl, name, handleBackToPlaylists }) => {
     <Confirm
       onCancel={() => setShowDeleteModal(false)}
       onConfirm={handleDelete}
-      title={intl.formatMessage({id: 'delete_playlist_text'})}
+      text={<FormattedMessage id="delete_playlist_text" />}
     />
   );
 
@@ -187,4 +187,4 @@ const PlaylistDetail = ({ intl, name, handleBackToPlaylists }) => {
 
 PlaylistDetail.propTypes = propTypes;
 
-export default injectIntl(PlaylistDetail);
+export default PlaylistDetail;

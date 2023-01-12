@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TrashFill } from 'react-bootstrap-icons';
 import { PropTypes } from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import PaginatedList from '../../common/PaginatedList';
@@ -15,7 +15,7 @@ const propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-const RestrictionModeDetail = ({ intl, restrictionMode, onClose }) => {
+const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
@@ -48,15 +48,15 @@ const RestrictionModeDetail = ({ intl, restrictionMode, onClose }) => {
       {restrictionMode.content?.length === 0 && (
         <NoResults
           applyMargin={false}
-          title={intl.formatMessage({ id: 'no_restrictions_title' })}
-          text={intl.formatMessage({ id: 'no_restrictions_text' })}
-          goBackText={intl.formatMessage({ id: 'go_back' })}
+          title={<FormattedMessage id="no_restrictions_title" />}
+          text={<FormattedMessage id="no_restrictions_text" />}
+          goBackText={<FormattedMessage id="go_back" />}
           onGoBack={onClose}
         />
       )}
       {restrictionMode.content?.length > 0 && (
         <PaginatedList
-          topLevelControls={<Button content={intl.formatMessage({id: 'back_to_restriction_groups'})} onClick={onClose} />}
+          topLevelControls={<Button content={<FormattedMessage id="back_to_restriction_groups" />} onClick={onClose} />}
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
@@ -69,4 +69,4 @@ const RestrictionModeDetail = ({ intl, restrictionMode, onClose }) => {
 
 RestrictionModeDetail.propTypes = propTypes;
 
-export default injectIntl(RestrictionModeDetail);
+export default RestrictionModeDetail;

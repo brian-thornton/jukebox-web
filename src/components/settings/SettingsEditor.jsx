@@ -6,9 +6,9 @@ import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { calculatePageSize } from '../../lib/styleHelper';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
-const SettingsEditor = ({ intl }) => {
+const SettingsEditor = () => {
   const [features, setFeatures] = useState();
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -34,28 +34,28 @@ const SettingsEditor = ({ intl }) => {
   useEffect(loadSettings, []);
 
   const displayNames = [
-    { key: 'isLocked', value: intl.formatMessage({ id: 'lock_system' }) },
-    { key: 'albums', value: intl.formatMessage({ id: 'view_albums' }) },
-    { key: 'tracks', value: intl.formatMessage({ id: 'view_tracks' }) },
-    { key: 'playlists', value: intl.formatMessage({ id: 'view_run_playlists' }) },
-    { key: 'radio', value: intl.formatMessage({ id: 'play_radio' }) },
-    { key: 'queue', value: intl.formatMessage({ id: 'view_update_queue' }) },
-    { key: 'settings', value: intl.formatMessage({ id: 'view_settings' }) },
-    { key: 'volume', value: intl.formatMessage({ id: 'control_volume' }) },
-    { key: 'next', value: intl.formatMessage({ id: 'advance' }) },
-    { key: 'stop', value: intl.formatMessage({ id: 'stop_playback' }) },
-    { key: 'play', value: intl.formatMessage({ id: 'start_playback' }) },
-    { key: 'playNow', value: intl.formatMessage({ id: 'play_now' }) },
-    { key: 'enqueue', value: intl.formatMessage({ id: 'add_to_queue' }) },
-    { key: 'playAlbum', value: intl.formatMessage({ id: 'play_entire_album' }) },
-    { key: 'addToPlaylist', value: intl.formatMessage({ id: 'add_to_playlists' }) },
-    { key: 'deletePlaylist', value: intl.formatMessage({ id: 'delete_playlist' }) },
-    { key: 'admin', value: intl.formatMessage({ id: 'access_admin' }) },
-    { key: 'downloadTrack', value: intl.formatMessage({ id: 'download_track' }) },
+    { key: 'isLocked', value: <FormattedMessage id="lock_system" /> },
+    { key: 'albums', value: <FormattedMessage id="view_albums" /> },
+    { key: 'tracks', value: <FormattedMessage id="view_tracks" /> },
+    { key: 'playlists', value: <FormattedMessage id="view_run_playlists" /> },
+    { key: 'radio', value: <FormattedMessage id="play_radio" /> },
+    { key: 'queue', value: <FormattedMessage id="view_update_queue" /> },
+    { key: 'settings', value: <FormattedMessage id="view_settings" /> },
+    { key: 'volume', value: <FormattedMessage id="control_volume" /> },
+    { key: 'next', value: <FormattedMessage id="advance" /> },
+    { key: 'stop', value: <FormattedMessage id="stop_playback" /> },
+    { key: 'play', value: <FormattedMessage id="start_playback" /> },
+    { key: 'playNow', value: <FormattedMessage id="play_now" /> },
+    { key: 'enqueue', value: <FormattedMessage id="add_to_queue" /> },
+    { key: 'playAlbum', value: <FormattedMessage id="play_entire_album" /> },
+    { key: 'addToPlaylist', value: <FormattedMessage id="add_to_playlists" /> },
+    { key: 'deletePlaylist', value: <FormattedMessage id="delete_playlist" /> },
+    { key: 'admin', value: <FormattedMessage id="access_admin" /> },
+    { key: 'downloadTrack', value: <FormattedMessage id="download_track" /> },
   ];
 
   const settingRow = (name, value) => {
-    const buttonText = intl.formatMessage({id: value ? 'enabled' : 'disabled'});
+    const buttonText = <FormattedMessage id={value ? 'enabled' : 'disabled'} />;
     const displayName = displayNames.find(entry => entry.key === name);
 
     return (
@@ -92,4 +92,4 @@ const SettingsEditor = ({ intl }) => {
   return <></>;
 };
 
-export default injectIntl(SettingsEditor);
+export default SettingsEditor;

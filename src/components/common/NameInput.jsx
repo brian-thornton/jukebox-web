@@ -2,7 +2,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import InputGroup from 'react-bootstrap/InputGroup';
 import { PropTypes } from 'prop-types';
 import React from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 const propTypes = {
   onChange: PropTypes.func,
@@ -13,12 +13,12 @@ const propTypes = {
 };
 
 const NameInput = ({
-  intl, defaultValue, onChange, placeholder, onEnter, disabled,
+  defaultValue, onChange, placeholder, onEnter, disabled,
 }) => (
   <InputGroup className="mb-3">
     <FormControl
       id="name"
-      placeholder={placeholder || intl.formatMessage({ id: 'name' })}
+      placeholder={placeholder || <FormattedMessage id="name" />}
       aria-label="Name"
       defaultValue={defaultValue}
       aria-describedby="basic-addon1"
@@ -43,4 +43,4 @@ NameInput.defaultProps = {
 
 NameInput.propTypes = propTypes;
 
-export default injectIntl(NameInput);
+export default NameInput;
