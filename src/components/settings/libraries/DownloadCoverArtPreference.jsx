@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import Row from 'react-bootstrap/Row';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import './LibraryAdd.scss';
 
@@ -11,14 +11,14 @@ const propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-const DownloadCoverArtPicker = ({ intl, onSelect }) => (
+const DownloadCoverArtPicker = ({ onSelect }) => (
   <Container fluid>
     <Row>
       <Form>
         <div className="mb-3">
           <Form.Check
             inline
-            label={intl.formatMessage({ id: 'do_not_download_cover_art' })}
+            label={<FormattedMessage id="do_not_download_cover_art" />}
             name="group1"
             type="radio"
             id="no"
@@ -26,7 +26,7 @@ const DownloadCoverArtPicker = ({ intl, onSelect }) => (
           />
           <Form.Check
             inline
-            label={intl.formatMessage({ id: 'download_cover_art' })}
+            label={<FormattedMessage id="download_cover_art" />}
             name="group1"
             type="radio"
             id="yes"
@@ -40,4 +40,4 @@ const DownloadCoverArtPicker = ({ intl, onSelect }) => (
 
 DownloadCoverArtPicker.propTypes = propTypes;
 
-export default injectIntl(DownloadCoverArtPicker);
+export default DownloadCoverArtPicker;

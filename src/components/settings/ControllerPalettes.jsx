@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 import { PropTypes } from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
@@ -33,7 +33,7 @@ const ControllerPalettes = ({ controllerState, intl, onSelect }) => {
       <ListGroup {...swipe}>
         {controllerState?.palettes.slice(paletteStart, end).map(palette => (
           <Item
-            text={`${palette} (${intl.formatMessage({ id: 'color_palette' })})`}
+            text={<FormattedMessage id="color_palette" values={{ palette }} />}
             onClick={() => {
               onSelect(palette);
             }}
@@ -53,4 +53,4 @@ const ControllerPalettes = ({ controllerState, intl, onSelect }) => {
 
 ControllerPalettes.propTypes = propTypes;
 
-export default injectIntl(ControllerPalettes);
+export default ControllerPalettes;

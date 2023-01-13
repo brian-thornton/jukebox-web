@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import CategoryRow from './CategoryRow';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -7,7 +7,7 @@ import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 import Button from '../../Button';
 
-const Categories = ({ intl, onClose }) => {
+const Categories = ({ onClose }) => {
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
@@ -20,7 +20,7 @@ const Categories = ({ intl, onClose }) => {
 
   return (
     <PaginatedList
-      topLevelControls={<Button content={intl.formatMessage({ id: 'back_to_libraries' })} onClick={onClose} />}
+      topLevelControls={<Button content={<FormattedMessage id="back_to_libraries" />} onClick={onClose} />}
       items={items}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
@@ -30,4 +30,4 @@ const Categories = ({ intl, onClose }) => {
   )
 };
 
-export default injectIntl(Categories);
+export default Categories;
