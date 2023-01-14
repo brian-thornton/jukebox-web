@@ -28,7 +28,7 @@ const ColorPicker = ({
   solidOnly,
 }) => {
   const settings = useContext(SettingsContext);
-  const [opacity, setOpacity] = useState(2);
+  const [opacity, setOpacity] = useState(4);
   const [colorType, setColorType] = useState('solid');
   const [gradientA, setGradientA] = useState();
   const [gradientB, setGradientB] = useState();
@@ -41,11 +41,11 @@ const ColorPicker = ({
     </div>
   );
 
-  useEffect(() => {
-    if (solidColor) {
-      onChange(solidColor);
-    }
-  }, [solidColor]);
+  // useEffect(() => {
+  //   if (solidColor) {
+  //     onChange(solidColor);
+  //   }
+  // }, [solidColor]);
 
   const formatColor = () => {
     if (colorType === 'transparent') {

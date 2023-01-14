@@ -50,7 +50,6 @@ const Skins = ({ resetControls, setControls }) => {
   }, [skinsLoading]);
 
   const promoteSkin = (s) => {
-    console.log(s);
     if (selectedSkin || s) {
       const deepClone = deepCloneSkin(settings, (selectedSkin || s));
 

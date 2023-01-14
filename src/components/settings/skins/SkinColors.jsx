@@ -47,6 +47,7 @@ const SkinColors = ({ skin }) => {
     trackBackgroundColor: skin.trackBackgroundColor,
     listFont: skin.listFont,
     lighting: skin.lighting,
+    wallpaper: skin.wallpaper,
   });
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
@@ -75,7 +76,6 @@ const SkinColors = ({ skin }) => {
 
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.styles[colorMode] = color;
-    setColorMode(null);
   };
 
   const styleRow = (name, display) => (
