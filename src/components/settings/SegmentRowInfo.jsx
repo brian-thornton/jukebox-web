@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
@@ -23,7 +23,6 @@ const propTypes = {
 };
 
 const SegmentRowInfo = ({
-  intl,
   segment,
   controller,
   skin,
@@ -57,17 +56,24 @@ const SegmentRowInfo = ({
     effectName = skinSegment?.effect;
   }
 
-  const effectText = effectName ? `${intl.formatMessage({ id: 'effect' })}: ${effectName}` : '';
-  const nameText = segmentMetadata?.name ? `${intl.formatMessage({ id: 'speed' })}: ${segmentMetadata?.name} - ` : '';
+  const effectText = effectName ? <FormattedMessage id="effect_with_name" values={{ name: effectName }} /> : '';
+  const nameText = segmentMetadata?.name ? <FormattedMessage id="speed_with_name" values={{ name: segmentMetadata?.name }} /> : '';
 
   return (
     <Item
-      text={`${nameText}${intl.formatMessage({ id: 'start' })}: ${segment.start} ${intl.formatMessage({ id: 'stop' })}: ${segment.stop} ${effectText}`}
+      text={(
+        <FormattedMessage id="segment_start_stop" values={{
+          name: nameText,
+          start: segment.start,
+          stop: segment.stop,
+          effect: effectText,
+        }} />
+      )}
       buttons={(
         <>
-          <Button content={intl.formatMessage({ id: 'configure' })} onClick={() => onConfigure(segment)} />
-          {!isOnController && <Button content={intl.formatMessage({ id: 'push_to_controller' })} onClick={() => pushSegment(segment)} />}
-          {isOnController && !onConfigure && <Button content={intl.formatMessage({ id: 'remove_from_controller' })} onClick={() => removeRemoteSegment(segment)} />}
+          <Button content={<FormattedMessage id="configure" />} onClick={() => onConfigure(segment)} />
+          {!isOnController && <Button content={<FormattedMessage id="push_to_controller" />} onClick={() => pushSegment(segment)} />}
+          {isOnController && !onConfigure && <Button content={<FormattedMessage id="remove_from_controller" />} onClick={() => removeRemoteSegment(segment)} />}
         </>
       )}
     />
@@ -82,4 +88,4 @@ SegmentRowInfo.defaultProps = {
 
 SegmentRowInfo.propTypes = propTypes;
 
-export default injectIntl(SegmentRowInfo);
+export default SegmentRowInfo;

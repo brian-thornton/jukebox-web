@@ -15,6 +15,7 @@ import './SkinPreferences.scss';
 import SkinNavPreference from './SkinNavPreference';
 import SkinNavButtonSize from './SkinNavButtonSize';
 import SkinControlButtonSize from './SkinControlButtonSize';
+import SkinButtonShape from './SkinButtonShape';
 
 const propTypes = {
   skin: Skin.isRequired,
@@ -23,6 +24,7 @@ const propTypes = {
 const SkinPreferences = ({ skin }) => {
   const [navButtonType, setNavButtonType] = useState(skin.navButtonType || 'buttons');
   const [navButtonSize, setNavButtonSize] = useState(skin.navButtonSize || 'small');
+  const [buttonShape, setButtonShape] = useState(skin.buttonShape || 'rectangle');
   const [controlButtonSize, setControlButtonSize] = useState(skin.controlButtonSize || 'small');
   const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
@@ -39,6 +41,7 @@ const SkinPreferences = ({ skin }) => {
           navButtonType,
           navButtonSize,
           controlButtonSize,
+          buttonShape,
         },
       };
 
@@ -62,8 +65,11 @@ const SkinPreferences = ({ skin }) => {
               />
             </Col>
             <Col lg="1" md="1" sm="1">
-              <Button classNam="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} disabled={!skin.isEditable} />
+              <Button className="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} disabled={!skin.isEditable} />
             </Col>
+          </Row>
+          <Row>
+            <SkinButtonShape skin={skin} buttonShape={buttonShape} setButtonShape={setButtonShape} />
           </Row>
           <Row>
             <SkinNavPreference skin={skin} navButtonType={navButtonType} setNavButtonType={setNavButtonType} />

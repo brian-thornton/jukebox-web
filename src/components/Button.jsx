@@ -43,6 +43,7 @@ const Button = ({
     color: settings.styles.buttonFontColor,
     fontFamily: fontFamily || settings.styles.buttonFont,
     float: 'right',
+    borderRadius: settings.styles.buttonShape === 'round' ? '35px' : '',
   };
 
   if (isSelected) {

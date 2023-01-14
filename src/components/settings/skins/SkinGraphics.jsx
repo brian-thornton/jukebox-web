@@ -91,6 +91,8 @@ const SkinGraphics = ({ skin }) => {
           title={<FormattedMessage id="select_image_for" values={{imageKey}} />}
           onCancel={onImageSelectCancel}
           onSelectFile={imageUpload}
+          cancelText={<FormattedMessage id="cancel" />}
+          confirmText={<FormattedMessage id="save" />}
         />
       )}
       {!isFilePickerOpen && (

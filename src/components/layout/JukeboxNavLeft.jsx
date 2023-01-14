@@ -29,6 +29,7 @@ const JukeboxNavLeft = () => {
     <>
       {features[feature] && (
         <Button
+          key={`${feature}-nav`}
           height={height}
           style={{
             fontSize,

@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../Button';
 import CategoryPicker from './CategoryPicker';
@@ -26,6 +26,7 @@ const LibraryAdd = ({
   handleSave,
   library,
 }) => {
+  const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(false);
@@ -48,7 +49,7 @@ const LibraryAdd = ({
       <Card.Body>
         <Container fluid className="addContainer">
           <Row>
-            <NameInput placeholder={library?.path} />
+            <NameInput placeholder={intl.formatMessage({id: 'path'})} />
           </Row>
           <Row>
             <CategoryPicker

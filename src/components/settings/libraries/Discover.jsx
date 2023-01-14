@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../Button';
 import CategoryPicker from './CategoryPicker';
@@ -21,6 +21,7 @@ const Discover = ({
   handleHide,
   handleSave,
 }) => {
+  const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [selectedCategory, setSelectedCategory] = useState(false);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState();
@@ -43,7 +44,7 @@ const Discover = ({
       <Card.Body>
         <Container fluid>
           <Row>
-            <NameInput placeholder={<FormattedMessage id="path" />} />
+            <NameInput placeholder={intl.formatMessage({ id: "path" })} />
           </Row>
           <Row>
             <CategoryPicker

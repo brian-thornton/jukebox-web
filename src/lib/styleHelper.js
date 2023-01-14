@@ -215,7 +215,6 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.popupBackgroundColor = selectedSkin.popupBackgroundColor;
   deepClone.styles.buttonBackgroundColor = selectedSkin.buttonBackgroundColor;
   deepClone.styles.navButtonType = selectedSkin.navButtonType;
-  deepClone.styles.navButtonSize = selectedSkin.navButtonSize;
   deepClone.styles.controlButtonSize = selectedSkin.controlButtonSize;
   deepClone.styles.activeButtonColor = selectedSkin.activeButtonColor;
   deepClone.styles.buttonFont = selectedSkin.buttonFont;
@@ -231,6 +230,7 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.navButtonType = selectedSkin.navButtonType;
   deepClone.styles.navButtonSize = selectedSkin.navButtonSize;
   deepClone.styles.controlButtonSize = selectedSkin.controlButtonSize;
+  deepClone.styles.buttonShape = selectedSkin.buttonShape;
   return deepClone;
 }
 

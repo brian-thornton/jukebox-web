@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types';
 import React, { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { injectIntl } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 import AddNew from '../../common/AddNew';
 import { createSkin, getSkins } from '../../../lib/style-client';
@@ -16,7 +16,7 @@ const propTypes = {
   setControls: PropTypes.func.isRequired,
 };
 
-const Skins = ({ intl, resetControls, setControls }) => {
+const Skins = ({ resetControls, setControls }) => {
   const settings = useContext(SettingsContext);
   const [skins, setSkins] = useState();
   const [selectedSkin, setSelectedSkin] = useState();
@@ -50,6 +50,7 @@ const Skins = ({ intl, resetControls, setControls }) => {
   }, [skinsLoading]);
 
   const promoteSkin = (s) => {
+    console.log(s);
     if (selectedSkin || s) {
       const deepClone = deepCloneSkin(settings, (selectedSkin || s));
 
@@ -62,6 +63,7 @@ const Skins = ({ intl, resetControls, setControls }) => {
   useEffect(promoteSkin, [selectedSkin]);
 
   const goBackToThemeList = (applySkin) => {
+    console.log(selectedSkin);
     if (applySkin) {
       promoteSkin();
       getSkins().then((updatedSkins) => {
@@ -132,9 +134,9 @@ const Skins = ({ intl, resetControls, setControls }) => {
         )}
         {isSaveAsOpen && (
           <AddNew
-            title={`${intl.formatMessage({ id: 'save' })} ${copySkinBase.name} ${intl.formatMessage({ id: 'as' })}...`}
-            defaultValue={`${copySkinBase.name} ${intl.formatMessage({ id: 'copy' })}`}
-            fields={{ name: intl.formatMessage({ id: 'name' })}}
+            title={<FormattedMessage id="save_skin_as" values={{ name: copySkinBase.name }} />}
+            defaultValue={<FormattedMessage id="skin_copy" values={{ name: copySkinBase.name }} />}
+            fields={{ name: <FormattedMessage id="name" /> }}
             onCancel={() => setIsSaveAsOpen(false)}
             onConfirm={data => handleSkinSaveAs(data)}
           />
@@ -148,4 +150,4 @@ const Skins = ({ intl, resetControls, setControls }) => {
 
 Skins.propTypes = propTypes;
 
-export default injectIntl(Skins);
+export default Skins;

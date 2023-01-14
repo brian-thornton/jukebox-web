@@ -1,5 +1,6 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import React, { useEffect, useState, useContext } from 'react';
 import { ChromePicker } from 'react-color';
@@ -27,6 +28,7 @@ const ColorPicker = ({
   solidOnly,
 }) => {
   const settings = useContext(SettingsContext);
+  const [opacity, setOpacity] = useState(2);
   const [colorType, setColorType] = useState('solid');
   const [gradientA, setGradientA] = useState();
   const [gradientB, setGradientB] = useState();
@@ -55,17 +57,23 @@ const ColorPicker = ({
         setColorString(solidColor.hex);
       }
     } else if (gradientA && gradientA.rgb && gradientB && gradientB.rgb) {
-      const gradientString = `linear-gradient(180deg, rgba(${gradientA.rgb.r},${gradientA.rgb.g},${gradientA.rgb.b},${gradientA.rgb.a}) 0%, rgba(${gradientB.rgb.r},${gradientB.rgb.g},${gradientB.rgb.b},${gradientB.rgb.a}) 100%`;
+      const gradientString = `linear-gradient(180deg, rgba(${gradientA.rgb.r},${gradientA.rgb.g},${gradientA.rgb.b}, .${opacity}) 0%, rgba(${gradientB.rgb.r},${gradientB.rgb.g},${gradientB.rgb.b}, .${opacity}) 100%`;
       setColor(gradientString);
       setColorString(gradientString);
     }
   };
 
-  useEffect(formatColor, [gradientA]);
-  useEffect(formatColor, [gradientB]);
+  useEffect(formatColor, [gradientA, gradientB, opacity]);
 
   const transparentCardSkin = {
     color: settings.styles.fontColor,
+  };
+
+  const formLabelStyle = {
+    color: settings.styles.fontColor,
+    paddingTop: '5px',
+    marginLeft: '10px',
+    marginRight: '10px',
   };
 
   return (
@@ -98,6 +106,12 @@ const ColorPicker = ({
                     <Col lg="6" md="6" sm="6">
                       <div style={{ background: colorString, height: '40vh', width: '100%' }}><FormattedMessage id="example" /></div>
                     </Col>
+                  </Row>
+                  <Row>
+                    <Form.Label style={formLabelStyle}>
+                      <FormattedMessage id="opacity" />
+                    </Form.Label>
+                    <Form.Range onChange={e => setOpacity(e.target.value)} />
                   </Row>
                 </Container>
               </Tab>
