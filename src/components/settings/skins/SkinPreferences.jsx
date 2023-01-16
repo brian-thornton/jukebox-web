@@ -21,7 +21,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinPreferences = ({ skin }) => {
+const SkinPreferences = ({ skin, onClose }) => {
   const [navButtonType, setNavButtonType] = useState(skin.navButtonType || 'buttons');
   const [navButtonSize, setNavButtonSize] = useState(skin.navButtonSize || 'small');
   const [buttonShape, setButtonShape] = useState(skin.buttonShape || 'rectangle');
@@ -50,39 +50,46 @@ const SkinPreferences = ({ skin }) => {
   };
 
   return (
-    <Card className="skin-detail-card">
-      <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
-        <Container fluid>
-          <Row className="skin-name-row">
-            <Col lg="2" md="2" sm="2">
-              <div className="skin-name-label">Skin Name:</div>
-            </Col>
-            <Col lg="9" md="9" sm="9">
-              <NameInput
-                disabled={!skin.isEditable}
-                defaultValue={skin.name}
-                onChange={e => setUpdatedName(e.target.value)}
-              />
-            </Col>
-            <Col lg="1" md="1" sm="1">
-              <Button className="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} disabled={!skin.isEditable} />
-            </Col>
-          </Row>
-          <Row>
-            <SkinButtonShape skin={skin} buttonShape={buttonShape} setButtonShape={setButtonShape} />
-          </Row>
-          <Row>
-            <SkinNavPreference skin={skin} navButtonType={navButtonType} setNavButtonType={setNavButtonType} />
-          </Row>
-          <Row>
-            <SkinNavButtonSize skin={skin} navButtonSize={navButtonSize} setNavButtonSize={setNavButtonSize} />
-          </Row>
-          <Row>
-            <SkinControlButtonSize skin={skin} controlButtonSize={controlButtonSize} setControlButtonSize={setControlButtonSize} />
-          </Row>
-        </Container>
-      </Card.Title>
-    </Card>
+    <Container fluid>
+      <Row>
+        <Button content="Back to Skin" onClick={onClose} />
+      </Row>
+      <Row>
+        <Card className="skin-detail-card" style={{background: settings.styles.trackBackgroundColor, width: '100%'}}>
+          <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
+            <Container fluid style={{background: settings.styles.trackBackgroundColor, width: '100%'}} >
+              <Row className="skin-name-row">
+                <Col lg="2" md="2" sm="2">
+                  <div className="skin-name-label">Skin Name:</div>
+                </Col>
+                <Col lg="9" md="9" sm="9">
+                  <NameInput
+                    disabled={!skin.isEditable}
+                    defaultValue={skin.name}
+                    onChange={e => setUpdatedName(e.target.value)}
+                  />
+                </Col>
+                <Col lg="1" md="1" sm="1">
+                  <Button className="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} disabled={!skin.isEditable} />
+                </Col>
+              </Row>
+              <Row>
+                <SkinButtonShape skin={skin} buttonShape={buttonShape} setButtonShape={setButtonShape} />
+              </Row>
+              <Row>
+                <SkinNavPreference skin={skin} navButtonType={navButtonType} setNavButtonType={setNavButtonType} />
+              </Row>
+              <Row>
+                <SkinNavButtonSize skin={skin} navButtonSize={navButtonSize} setNavButtonSize={setNavButtonSize} />
+              </Row>
+              <Row>
+                <SkinControlButtonSize skin={skin} controlButtonSize={controlButtonSize} setControlButtonSize={setControlButtonSize} />
+              </Row>
+            </Container>
+          </Card.Title>
+        </Card>
+      </Row>
+    </Container>
   );
 };
 

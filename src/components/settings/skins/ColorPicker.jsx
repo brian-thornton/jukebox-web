@@ -41,12 +41,6 @@ const ColorPicker = ({
     </div>
   );
 
-  // useEffect(() => {
-  //   if (solidColor) {
-  //     onChange(solidColor);
-  //   }
-  // }, [solidColor]);
-
   const formatColor = () => {
     if (colorType === 'transparent') {
       setColor('transparent');

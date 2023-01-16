@@ -124,6 +124,7 @@
   "of": "of",
   "offline": "Offline",
   "online": "Online",
+  "opacity": "Opacity",
   "page_of": "Page {page} of {pages}",
   "page": "Page",
   "path": "Path",
@@ -139,6 +140,7 @@
   "queue_empty_title": "Queue Empty",
   "queue": "Queue",
   "radio": "Radio",
+  "rectangle": "Rectangle Buttons",
   "remove_cover_text": "Are you sure that you want to remove the cover?",
   "remove_cover": "Remove Cover",
   "remove_from_controller": "Remove from Controller",
@@ -146,6 +148,7 @@
   "restrict_content": "Restrict Content",
   "results": "Results",
   "right": "Right",
+  "round": "Round Buttons",
   "run": "Run",
   "save_and_apply": "Save and Apply",
   "save_as": "Save As...",
@@ -199,8 +202,5 @@
   "view_tracks": "View Tracks",
   "view_update_queue": "View and Update Queue",
   "wallpaper": "Wallpaper",
-  "yes": "Yes",
-  "rectangle": "Rectangle",
-  "round": "Round",
-  "opacity": "Opacity"
+  "yes": "Yes"
 }

@@ -1,5 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Row from 'react-bootstrap/Row';
 import React, { useState, useEffect, useContext } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { FormattedMessage } from 'react-intl';
@@ -20,7 +21,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinColors = ({ skin }) => {
+const SkinColors = ({ skin, onClose }) => {
   const [isColorCopyOpen, setIsColorCopyOpen] = useState(false);
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -138,6 +139,9 @@ const SkinColors = ({ skin }) => {
       )}
       {!isColorCopyOpen && !isColorModalOpen && (
         <Container fluid className="styleEditorContent" {...swipe}>
+          <Row>
+            <Button content="Back to Skin" onClick={onClose} />
+          </Row>
           <FullWidthRow>
             <ListGroup className="styleEditorContent">
               {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}

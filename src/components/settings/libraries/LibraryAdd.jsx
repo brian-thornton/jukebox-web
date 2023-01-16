@@ -46,7 +46,7 @@ const LibraryAdd = ({
   return (
     <Card className="addNewCard" style={confirmStyle}>
       <Card.Title><FormattedMessage id={library ? 'edit_library' : 'add_library'} /></Card.Title>
-      <Card.Body>
+      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
         <Container fluid className="addContainer">
           <Row>
             <NameInput placeholder={intl.formatMessage({id: 'path'})} />
@@ -68,7 +68,7 @@ const LibraryAdd = ({
             setSelectedLibrary(null);
           }}
         />
-        <Button content={<FormattedMessage id="cancel" />} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
+        <Button content={<FormattedMessage id="save" />} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
       </Card.Body>
     </Card>
   );

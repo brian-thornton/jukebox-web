@@ -11,12 +11,13 @@ import './SkinDetail.scss';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import { handlers } from '../../../lib/gesture-helper';
 import { Skin } from '../../shapes';
+import { Container, Row } from 'react-bootstrap';
 
 const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinFonts = ({ intl, skin }) => {
+const SkinFonts = ({ onClose, skin }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   const [isFontModalOpen, setIsFontModalOpen] = useState(false);
@@ -81,18 +82,25 @@ const SkinFonts = ({ intl, skin }) => {
         />
       )}
       {!isFontModalOpen && (
-        <>
-          <ListGroup className="styleEditorContent" {...swipe}>
-            {rows.slice(start, (start + itemsPerPage)).map(r => r)}
-          </ListGroup>
-          <Paginator
-            disableRandom
-            onPageChange={page => setSelectedPage(page)}
-            selectedPage={selectedPage}
-            totalItems={4}
-            pageSize={itemsPerPage}
-          />
-        </>
+        <Container fluid>
+          <Row>
+            <Button content="Back to Skin" onClick={onClose} />
+          </Row>
+          <Row>
+            <ListGroup className="styleEditorContent" {...swipe}>
+              {rows.slice(start, (start + itemsPerPage)).map(r => r)}
+            </ListGroup>
+          </Row>
+          <Row>
+            <Paginator
+              disableRandom
+              onPageChange={page => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={4}
+              pageSize={itemsPerPage}
+            />
+          </Row>
+        </Container>
       )}
     </>
   );

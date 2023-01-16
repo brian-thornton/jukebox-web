@@ -1,4 +1,5 @@
 import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -15,7 +16,7 @@ const propTypes = {
   skin: Skin.isRequired,
 };
 
-const SkinGraphics = ({ skin }) => {
+const SkinGraphics = ({ onClose, skin }) => {
   const [isFilePickerOpen, setIsFilePickerOpen] = useState();
   const [imageKey, setImageKey] = useState();
 
@@ -97,6 +98,9 @@ const SkinGraphics = ({ skin }) => {
       )}
       {!isFilePickerOpen && (
         <Container fluid className="styleEditorContent">
+          <Row>
+            <Button content="Back to Skins" onClick={onClose} />
+          </Row>
           <FullWidthRow>
             <ListGroup className="styleEditorContent">
               {rows}

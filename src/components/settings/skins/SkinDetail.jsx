@@ -1,11 +1,8 @@
-import { Card } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
-import Tab from 'react-bootstrap/Tab';
-import Tabs from 'react-bootstrap/Tabs';
 import { useSearchParams } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import AddNew from '../../common/AddNew';
 import Confirm from '../../common/Confirm';
@@ -17,6 +14,7 @@ import SkinLights from './SkinLights';
 import './SkinDetail.scss';
 import SkinPreferences from './SkinPreferences';
 import Button from '../../Button';
+import Picker from '../../common/Picker';
 
 const SkinDetail = ({
   skin,
@@ -25,10 +23,11 @@ const SkinDetail = ({
   loadSkins,
 }) => {
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [activeKey, setActiveKey] = useState('preferences');
+  const [activeKey, setActiveKey] = useState();
   const [isContextSet, setIsContextSet] = useState(false);
   const [isSaveAsModalOpen, setIsSaveAsModalOpen] = useState(false);
   const [searchParams] = useSearchParams();
+  const intl = useIntl();
 
   useEffect(() => {
     if (searchParams.get('tab')) {
@@ -37,7 +36,7 @@ const SkinDetail = ({
   }, []);
 
   const controls = (
-    <Container fluid>
+    <Container fluid style={{marginBottom: '20px'}}>
       <Row>
         <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
         <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />
@@ -73,12 +72,12 @@ const SkinDetail = ({
 
   const content = () => (
     <>
-      {controls}
+      {!activeKey && controls}
       {isSaveAsModalOpen && (
         <AddNew
-          title={<FormattedMessage id="skin_save_as" values={{ name: skin.name }} />}
-          defaultValue={<FormattedMessage id="skin_copy" values={{ name: skin.name }} />}
-          fields={{ name: <FormattedMessage id="name" /> }}
+          title={<FormattedMessage id="save_skin_as" values={{ name: skin.name }} />}
+          defaultValue={intl.formatMessage({id: "skin_copy"}, { name: skin.name })}
+          fields={{ name: intl.formatMessage({id: "skin_copy"}, { name: skin.name })}}
           onCancel={() => setIsSaveAsModalOpen(false)}
           onConfirm={data => handleSkinSaveAs(data)}
         />
@@ -91,25 +90,47 @@ const SkinDetail = ({
         />
       )}
       {!isDeleteConfirmOpen && !isSaveAsModalOpen && (
-        <Card className="skin-detail-card">
-          <Tabs activeKey={activeKey} onSelect={k => setActiveKey(k)}>
-            <Tab eventKey="preferences" title={<FormattedMessage id="skin_preferences" />}>
-              <SkinPreferences skin={skin} />
-            </Tab>
-            <Tab eventKey="colors" title={<FormattedMessage id="skin_colors" />}>
-              <SkinColors skin={skin} />
-            </Tab>
-            <Tab eventKey="fonts" title={<FormattedMessage id="skin_fonts" />}>
-              <SkinFonts loadSkins={loadSkins} skin={skin} />
-            </Tab>
-            <Tab eventKey="graphics" title={<FormattedMessage id="skin_graphics" />}>
-              <SkinGraphics skin={skin} />
-            </Tab>
-            <Tab eventKey="lights" title={<FormattedMessage id="skin_lighting" />}>
-              <SkinLights skin={skin} loadSkins={loadSkins} />
-            </Tab>
-          </Tabs>
-        </Card>
+        <>
+          {activeKey === "preferences" && <SkinPreferences skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === "colors" && <SkinColors skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === "fonts" && <SkinFonts skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === "graphics" && <SkinGraphics skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === "lights" && <SkinLights skin={skin} onClose={() => setActiveKey('')} />}
+          {!activeKey && (
+            <Picker items={[
+              {
+                description: 'Name, button sizes & shapes.',
+                title: 'Basic Preferences',
+                buttonText: 'Go to Preferneces',
+                onClick: () => setActiveKey('preferences')
+              },
+              {
+                description: 'Customize skin colors & images.',
+                title: 'Skin Colors',
+                buttonText: 'Configure Skin Colors',
+                onClick: () => setActiveKey('colors')
+              },
+              {
+                description: 'All fonts can be customized.',
+                title: 'Skin Fonts',
+                buttonText: 'Configure Skin Fonts',
+                onClick: () => setActiveKey('fonts')
+              },
+              {
+                description: 'Pick images for wallpaper and more.',
+                title: 'Skin Graphics',
+                buttonText: 'Configure Skin Graphics',
+                onClick: () => setActiveKey('graphics')
+              },
+              {
+                description: 'Configure WLED lighting controllers',
+                title: 'Skin Lighting',
+                buttonText: 'Go to Lighting',
+                onClick: () => setActiveKey('lights')
+              }
+            ]} />
+          )}
+        </>
       )}
     </>
   );

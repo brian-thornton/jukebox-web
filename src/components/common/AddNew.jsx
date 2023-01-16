@@ -42,7 +42,7 @@ const AddNew = ({
 
   return (
     <Card className="addNewCard" style={confirmStyle}>
-      <Card.Body>
+      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
         <Card.Title className="addNewTitle">{title}</Card.Title>
         <Card.Text className="addNewText">
           <Container fluid>

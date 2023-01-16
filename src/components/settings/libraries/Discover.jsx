@@ -41,7 +41,7 @@ const Discover = ({
   return (
     <Card className="addNewCard" style={confirmStyle}>
       <Card.Title>{<FormattedMessage id="discover" />}</Card.Title>
-      <Card.Body>
+      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
         <Container fluid>
           <Row>
             <NameInput placeholder={intl.formatMessage({ id: "path" })} />
