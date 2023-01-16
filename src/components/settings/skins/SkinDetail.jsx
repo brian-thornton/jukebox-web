@@ -99,34 +99,34 @@ const SkinDetail = ({
           {!activeKey && (
             <Picker items={[
               {
-                description: 'Name, button sizes & shapes.',
-                title: 'Basic Preferences',
-                buttonText: 'Go to Preferneces',
-                onClick: () => setActiveKey('preferences')
+                description: <FormattedMessage id="skin_preference_description" />,
+                title: <FormattedMessage id="skin_preference_title" />,
+                buttonText: <FormattedMessage id="skin_preference_button" />,
+                onClick: () => setActiveKey('preferences'),
               },
               {
-                description: 'Customize skin colors & images.',
-                title: 'Skin Colors',
-                buttonText: 'Configure Skin Colors',
-                onClick: () => setActiveKey('colors')
+                description: <FormattedMessage id="skin_colors_description" />,
+                title: <FormattedMessage id="skin_colors_title" />,
+                buttonText: <FormattedMessage id="skin_colors_button" />,
+                onClick: () => setActiveKey('colors'),
               },
               {
-                description: 'All fonts can be customized.',
-                title: 'Skin Fonts',
-                buttonText: 'Configure Skin Fonts',
-                onClick: () => setActiveKey('fonts')
+                description: <FormattedMessage id="skin_fonts_description" />,
+                title: <FormattedMessage id="skin_fonts_title" />,
+                buttonText: <FormattedMessage id="skin_fonts_button" />,
+                onClick: () => setActiveKey('fonts'),
               },
               {
-                description: 'Pick images for wallpaper and more.',
-                title: 'Skin Graphics',
-                buttonText: 'Configure Skin Graphics',
-                onClick: () => setActiveKey('graphics')
+                description: <FormattedMessage id="skin_graphics_description" />,
+                title: <FormattedMessage id="skin_graphics_title" />,
+                buttonText: <FormattedMessage id="skin_graphics_button" />,
+                onClick: () => setActiveKey('graphics'),
               },
               {
-                description: 'Configure WLED lighting controllers',
-                title: 'Skin Lighting',
-                buttonText: 'Go to Lighting',
-                onClick: () => setActiveKey('lights')
+                description: <FormattedMessage id="skin_lighting_description" />,
+                title: <FormattedMessage id="skin_lighting_title" />,
+                buttonText: <FormattedMessage id="skin_lighting_button" />,
+                onClick: () => setActiveKey('lights'),
               }
             ]} />
           )}

@@ -202,5 +202,20 @@
   "view_tracks": "View Tracks",
   "view_update_queue": "View and Update Queue",
   "wallpaper": "Wallpaper",
-  "yes": "Yes"
+  "yes": "Yes",
+  "skin_preference_description": "Name, button sizes & shapes.",
+  "skin_preference_title": "Basic Preferences",
+  "skin_preference_button": "Go to Preferences",
+  "skin_colors_description": "Customize skin colors & images.",
+  "skin_colors_title": "Skin Colors",
+  "skin_colors_button": "Configure Skin Colors",
+  "skin_fonts_description": "All fonts can be customized.",
+  "skin_fonts_title": "Skin Fonts",
+  "skin_fonts_button": "Configure Skin Fonts",
+  "skin_graphics_description": "Pick images for wallpaper and more.",
+  "skin_graphics_title": "Skin Graphics",
+  "skin_graphics_button": "Configure Skin Graphics", 
+  "skin_lighting_description": "Configure WLED lighting controllers",
+  "skin_lighting_title": "Skin Lighting",
+  "skin_lighting_button": "Go to Lighting"
 }
