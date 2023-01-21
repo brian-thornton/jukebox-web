@@ -21,6 +21,7 @@ import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import StartsWithFilter from './StartsWithFilter';
 import FullWidthRow from '../common/FullWidthRow';
+import { coverDimensions } from '../../lib/styleHelper';
 
 const propTypes = {
   selectedLibraries: Libraries,
@@ -104,27 +105,9 @@ const AlbumList = ({
     } else {
       const reserve = headerFooterReserve(settings);
       const startsWithReserve = ['left', 'right'].includes(startsWithLocation) ? 25 : 0;
-
-      let coverWidth = 200;
-      let coverHeight = 220;
-
-      if (coverSize === 'medium') {
-        coverWidth = 300;
-        coverHeight = 400;
-      }
-
-      if (coverSize === 'large') {
-        coverWidth = 400;
-        coverHeight = 400;
-      }
-
-      if (settings.isScreenSmall) {
-        coverWidth = 200;
-        coverHeight = 200;
-      }
-
-      const albumsPerRow = Math.floor(window.innerWidth / (coverWidth + startsWithReserve));
-      const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : coverHeight));
+      const dimensions = coverDimensions(settings);
+      const albumsPerRow = Math.floor(window.innerWidth / (dimensions.coverWidth + startsWithReserve));
+      const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : dimensions.coverHeight));
       setPageSize(albumsPerRow * numberOfRows);
     }
   }, [display]);

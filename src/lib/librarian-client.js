@@ -13,9 +13,13 @@ export const add = (library) => post(`${path}/add`, library);
 export const saveCoverArt = (cover) => post(`${path}/saveCoverArt`, cover);
 export const removeCoverArt = (album) => post(`${path}/removeCoverArt`, album);
 
-export const getAlbums = (start, limit, category, selectedLibraries, restriction) => {
+export const getAlbums = (start, limit, category, selectedLibraries, restriction, genre) => {
   if (category) {
     return getData(`${path}/albums?${page(start, limit)}&category=${category}&restriction=${restriction}`);
+  };
+
+  if (genre) {
+    return getData(`${path}/albums?${page(start, limit)}&genre=${genre}&restriction=${restriction}`);
   };
 
   if (selectedLibraries?.length) {

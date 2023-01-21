@@ -25,6 +25,7 @@ const Search = React.lazy(() => import("./components/common/Search"));
 const Settings = React.lazy(() => import("./components/settings/Settings"));
 const Tracks = React.lazy(() => import("./components/Tracks"));
 const WithKeyboardInput = React.lazy(() => import("./components/layout/WithKeyboardInput"));
+const Genres = React.lazy(() => import("./components/genres/Genres"));
 
 function App() {
   const [isPinOpen, setIsPinOpen] = useState(false);
@@ -215,6 +216,7 @@ function App() {
               <Route path="/settings" element={<Settings />} />
               <Route path="/tracks" element={wrapWithKeyboard(<Tracks setSearch={setSearch} search={search} />)} />
               <Route path="/radio" element={wrapWithKeyboard(<RadioList setMediaType={setMediaType} />)} />
+              <Route path="/genres" element={<Genres />} />
             </Routes>
             <JukeboxFooter
               mediaType={mediaType}

@@ -7,18 +7,18 @@ import React, { useContext } from "react";
 import Button from "../Button";
 import { SettingsContext } from '../layout/SettingsProvider';
 
-const Picker = ({ items }) => {
+const Picker = ({ items, applyPadding }) => {
   const settings = useContext(SettingsContext);
 
   return (
-    <Container fluid>
+    <Container fluid style={{paddingTop: applyPadding ? '80px' : ''}}>
       <Row>
         {items.map(item => (
           <Col lg="3" xl="3" md="3" sm="12">
-            <Card style={{ background: settings.styles.trackBackgroundColor, marginBottom: "20px", height: "200px", color: settings.styles.fontColor }}>
+            <Card style={{ background: settings.styles.trackBackgroundColor, marginBottom: "20px", height: item.description ? "200px" : "120px", color: settings.styles.fontColor }}>
               <Card.Title>{item.title}</Card.Title>
               <Card.Body>
-                <Card.Text>{item.description}</Card.Text>
+                {item.description && <Card.Text>{item.description}</Card.Text>}
                  <Button onClick={item.onClick} content={item.buttonText} />
               </Card.Body>
             </Card>

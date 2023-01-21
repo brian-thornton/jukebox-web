@@ -1,42 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 
 import { getArtistsByGenre, linkGenereToLibrary } from '../../../lib/metadata-client';
 import Button from '../../Button';
 import PaginatedList from '../../common/PaginatedList';
 import Loading from '../../common/Loading';
+import { calculatePageSize } from '../../../lib/styleHelper';
 
-const Metadata = ({intl}) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadGenre, setLoadGenre] = useState();
+const Metadata = () => {
+  const [itemsPerPage, setItemsPerPage] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
-  const genres = ['Rock', 'Disco', 'Pop', 'Rap', 'Dance', 'Blues', 'Country', 'Hip Hop', 'Jazz', 'Metal', 'Punk'];
+  const [isLoading, setIsLoading] = useState(false);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
+  useEffect(() => setItemsPerPage(calculatePageSize('item', 250, 60)), []);
+  
+  const genres = ['Rock', 'Disco', 'Pop', 'Rap', 'Dance', 'Blues', 'Country', 'Hip Hop', 'Jazz',
+    'Metal', 'Punk', 'Celtic', 'Classic Rock', 'Folk', 'Jam Band', 'Raggae'];
 
   const loadData = (genre) => {
     setIsLoading(true);
     getArtistsByGenre(genre.toLowerCase()).then(() => {
-      setIsLoading(false);
-    })
-  };
-
-  const linkData = (genre) => {
-    setIsLoading(true);
-    linkGenereToLibrary(genre.toLowerCase()).then(() => {
-      setIsLoading(false);
-    })
+      linkGenereToLibrary(genre.toLowerCase()).then(() => {
+        setIsLoading(false);
+      });
+    });
   };
 
   const items = () => (
-    genres.map(genre => (
+    genres.slice(realStart, (realStart + itemsPerPage)).map(genre => (
       {
         text: genre,
-        buttons: (
-          <>
-            <Button content="Get Data" onClick={() => loadData(genre.toLowerCase())} />
-            <Button content="Link" onClick={() => linkData(genre.toLowerCase())} />
-          </>
-        ),
+        buttons: <Button content="Get Data" onClick={() => loadData(genre.toLowerCase())} />
       }
     ))
   );
@@ -47,6 +41,9 @@ const Metadata = ({intl}) => {
         <PaginatedList
           items={items()}
           totalItems={genres.length}
+          selectedPage={selectedPage}
+          setSelectedPage={setSelectedPage}
+          pageSize={itemsPerPage}
         />
       )}
       {isLoading && <Loading />}

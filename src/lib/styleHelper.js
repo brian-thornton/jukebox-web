@@ -241,6 +241,31 @@ const calculatePageSize = (type, reservedHeight = 200, itemHeight = 55) => {
   }
 };
 
+const coverDimensions = (settings) => {
+  const { coverSize } = settings.preferences;
+  const dimensions = {
+    coverHeight: 200,
+    coverWidth: 200,
+  }
+
+  if (coverSize === 'medium') {
+    dimensions.coverWidth = 300;
+    dimensions.coverHeight = 400;
+  }
+
+  if (coverSize === 'large') {
+    dimensions.coverWidth = 400;
+    dimensions.coverHeight = 400;
+  }
+
+  if (settings.isScreenSmall) {
+    dimensions.coverWidth = 200;
+    dimensions.coverHeight = 200;
+  }
+
+  return dimensions;
+}
+
 export {
   buttonProps,
   card,
@@ -256,4 +281,5 @@ export {
   calculatePageSize,
   headerFooterReserve,
   topMargin,
+  coverDimensions,
 }
