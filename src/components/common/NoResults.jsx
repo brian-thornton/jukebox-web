@@ -15,17 +15,18 @@ const propTypes = {
   text: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   applyMargin: PropTypes.bool,
+  onGoBack: PropTypes.func.isRequired,
 };
 
 const NoResults = ({
-  text, title, controls, applyMargin, goBackText, onGoBack,
+  text, title, controls, applyMargin, onGoBack,
 }) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {
     color: settings.styles.fontColor,
     marginTop: applyMargin ? topMargin(settings) : '',
-    width: "100%",
+    width: '100%',
   };
 
   return (
@@ -48,7 +49,7 @@ const NoResults = ({
           </Card.Body>
         </Card>
       </Row>
-    </Container >
+    </Container>
   );
 };
 

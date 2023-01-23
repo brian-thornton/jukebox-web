@@ -12,9 +12,14 @@ import { SettingsContext } from './layout/SettingsProvider';
 const propTypes = {
   mode: PropTypes.string,
   track: Track.isRequired,
+  isSelected: PropTypes.bool,
+  onComplete: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
-const EnqueueButton = ({ track, mode, isSelected, onComplete, disabled }) => {
+const EnqueueButton = ({
+  track, mode, isSelected, onComplete, disabled,
+}) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
   const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
@@ -42,6 +47,9 @@ const EnqueueButton = ({ track, mode, isSelected, onComplete, disabled }) => {
 
 EnqueueButton.defaultProps = {
   mode: '',
+  isSelected: false,
+  onComplete: false,
+  disabled: false,
 };
 
 EnqueueButton.propTypes = propTypes;

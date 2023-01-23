@@ -1,11 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { PropTypes } from 'prop-types';
 
 import CategoryRow from './CategoryRow';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 import Button from '../../Button';
+
+const propTypes = {
+  onClose: PropTypes.func.isRequired,
+};
 
 const Categories = ({ onClose }) => {
   const settings = useContext(SettingsContext);
@@ -27,7 +32,9 @@ const Categories = ({ onClose }) => {
       totalItems={settings.categories.length}
       itemsPerPage={itemsPerPage}
     />
-  )
+  );
 };
+
+Categories.propTypes = propTypes;
 
 export default Categories;

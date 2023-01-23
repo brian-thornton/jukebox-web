@@ -2,6 +2,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState } from 'react';
+import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import Item from '../../common/Item';
@@ -13,6 +14,7 @@ import { Skin } from '../../shapes';
 import FullWidthRow from '../../common/FullWidthRow';
 
 const propTypes = {
+  onClose: PropTypes.func.isRequired,
   skin: Skin.isRequired,
 };
 
@@ -89,7 +91,7 @@ const SkinGraphics = ({ onClose, skin }) => {
     <>
       {isFilePickerOpen && (
         <FilePicker
-          title={<FormattedMessage id="select_image_for" values={{imageKey}} />}
+          title={<FormattedMessage id="select_image_for" values={{ imageKey }} />}
           onCancel={onImageSelectCancel}
           onSelectFile={imageUpload}
           cancelText={<FormattedMessage id="cancel" />}

@@ -70,4 +70,4 @@ const PreferenceFileRow = ({ name }) => {
 
 PreferenceFileRow.propTypes = propTypes;
 
-export default injectIntl(PreferenceFileRow);
+export default PreferenceFileRow;

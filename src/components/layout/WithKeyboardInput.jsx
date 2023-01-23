@@ -18,7 +18,6 @@ const WithKeyboardInput = ({
   debouncedSearch,
   setIsSearchOpen,
 }) => {
-
   function handlePaste(e) {
     // Stop data actually being pasted into div
     e.stopPropagation();

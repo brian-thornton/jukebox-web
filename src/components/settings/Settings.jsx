@@ -42,7 +42,7 @@ const Settings = () => {
     }
   }
 
-  const controlButton = (buttonMode) => (
+  const controlButton = buttonMode => (
     <ControlButton
       isSelected={mode === buttonMode}
       width="100%"
@@ -61,7 +61,7 @@ const Settings = () => {
 
   const leftControls = () => {
     if ((settings.preferences.pinEnabled && isAuthorized) || !settings.preferences.pinEnabled) {
-      return modes.map(m => controlButton(m)) 
+      return modes.map(m => controlButton(m));
     }
 
     return <></>;

@@ -41,7 +41,7 @@ const TrackList = ({
     <>
       {settings?.features && trackAlbumsLoaded && (
         <Container fluid className="trackListContainer">
-          {tracks.map((track) => (
+          {tracks.map(track => (
             <Track
               track={track}
               trackAlbums={trackAlbums}

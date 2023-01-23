@@ -29,7 +29,7 @@ const Confirm = ({ onConfirm, onCancel, text }) => {
   return (
     <Card className="confirmCard" style={confirmStyle}>
       <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
-        <Card.Title className="confirmTitle">{<FormattedMessage id="are_you_sure" />}</Card.Title>
+        <Card.Title className="confirmTitle"><FormattedMessage id="are_you_sure" /></Card.Title>
         <Card.Text className="confirmText">
           {text}
         </Card.Text>

@@ -13,9 +13,12 @@ const propTypes = {
   editFont: PropTypes.string.isRequired,
   skin: Skin.isRequired,
   onComplete: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 };
 
-const FontPicker = ({ editFont, skin, onComplete, onCancel }) => {
+const FontPicker = ({
+  editFont, skin, onComplete, onCancel,
+}) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState();
   const availableFonts = supportedFonts.google.families;

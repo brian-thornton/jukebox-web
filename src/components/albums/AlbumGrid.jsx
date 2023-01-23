@@ -1,16 +1,29 @@
-import Container from "react-bootstrap/Container";
-import React from "react";
-import Row from "react-bootstrap/Row";
+import Container from 'react-bootstrap/Container';
+import React from 'react';
+import Row from 'react-bootstrap/Row';
+import { PropTypes } from 'prop-types';
 
 import './AlbumGrid.scss';
-import Album from "./Album";
-import FullWidthRow from "../common/FullWidthRow";
-import Paginator from "../common/Paginator";
+import Album from './Album';
+import FullWidthRow from '../common/FullWidthRow';
+import Paginator from '../common/Paginator';
+import { Albums } from '../shapes';
 
-const AlbumGrid = ({ albums, setSelectedPage, selectedPage, totalAlbums, pageSize, disableRandom }) => {
+const propTypes = {
+  albums: Albums.isRequired,
+  setSelectedPage: PropTypes.func.isRequired,
+  selectedPage: PropTypes.number.isRequired,
+  totalAlbums: PropTypes.number.isRequired,
+  pageSize: PropTypes.number.isRequired,
+  disableRandom: PropTypes.bool,
+};
+
+const AlbumGrid = ({
+  albums, setSelectedPage, selectedPage, totalAlbums, pageSize, disableRandom,
+}) => {
   const paginator = (
     <Paginator
-      onPageChange={(page) => setSelectedPage(page)}
+      onPageChange={page => setSelectedPage(page)}
       selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={pageSize}
@@ -32,6 +45,12 @@ const AlbumGrid = ({ albums, setSelectedPage, selectedPage, totalAlbums, pageSiz
       </FullWidthRow>
     </Container>
   );
+};
+
+AlbumGrid.propTypes = propTypes;
+
+AlbumGrid.defaultProps = {
+  disableRandom: false,
 };
 
 export default AlbumGrid;

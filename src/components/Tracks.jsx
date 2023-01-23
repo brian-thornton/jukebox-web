@@ -18,6 +18,7 @@ import FullWidthRow from './common/FullWidthRow';
 
 const propTypes = {
   setCurrentAlbum: PropTypes.func.isRequired,
+  search: PropTypes.string,
 };
 
 const Tracks = ({ setCurrentAlbum, search }) => {

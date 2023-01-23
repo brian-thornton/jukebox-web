@@ -67,22 +67,20 @@ const PlaylistControls = ({
     });
   };
 
-  const controlButton = (text, handler, flag = true) => {
-    return (
-      <>
-        {flag && (
-          <ControlButton
-            style={{ fontSize }}
-            height={buttonHeight}
-            width="100%"
-            disabled={showDeleteModal}
-            onClick={handler}
-            text={text}
-          />
-        )}
-      </>
-    )
-  }
+  const controlButton = (text, handler, flag = true) => (
+    <>
+      {flag && (
+        <ControlButton
+          style={{ fontSize }}
+          height={buttonHeight}
+          width="100%"
+          disabled={showDeleteModal}
+          onClick={handler}
+          text={text}
+        />
+      )}
+    </>
+  );
 
   return (
     <>

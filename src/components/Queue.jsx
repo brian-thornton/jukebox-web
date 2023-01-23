@@ -134,7 +134,7 @@ const Queue = () => {
   };
 
   const buttonProps = {
-    width: "100%",
+    width: '100%',
     disabled: isEmpty || clearConfirm,
     height: buttonHeight,
     style: { fontSize },

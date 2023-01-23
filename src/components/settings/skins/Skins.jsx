@@ -62,7 +62,6 @@ const Skins = ({ resetControls, setControls }) => {
   useEffect(promoteSkin, [selectedSkin]);
 
   const goBackToThemeList = (applySkin) => {
-    console.log(selectedSkin);
     if (applySkin) {
       promoteSkin();
       getSkins().then((updatedSkins) => {

@@ -10,7 +10,6 @@ import { FormattedMessage } from 'react-intl';
 
 import {
   getCurrentState,
-  intl,
   powerOff,
   setSolidColor,
   demoEffect,

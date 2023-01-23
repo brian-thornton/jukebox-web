@@ -43,7 +43,7 @@ const Paginator = ({
 
   const buttonProps = {
     style: { fontSize },
-    height: height,
+    height,
     width: height,
   };
 
@@ -72,7 +72,7 @@ const Paginator = ({
           disabled={settings.features.isLocked}
           className="paginatorButton"
           onClick={() => onPageChange(Math.floor(Math.random() * pages))}
-          content={<FormattedMessage id="page_of" values={{page: selectedPage, pages}} />}
+          content={<FormattedMessage id="page_of" values={{ page: selectedPage, pages }} />}
         />
       )}
       <Button

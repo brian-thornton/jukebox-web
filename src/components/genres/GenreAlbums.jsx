@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { PropTypes } from 'prop-types';
 
 import './GenreAlbums.scss';
 import { getAlbums } from '../../lib/librarian-client';
-import { headerFooterReserve } from '../../lib/styleHelper';
+import { coverDimensions, headerFooterReserve } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Loading from '../common/Loading';
 import AlbumGrid from '../albums/AlbumGrid';
-import { coverDimensions } from '../../lib/styleHelper';
+
+const propTypes = {
+  genre: PropTypes.string.isRequired,
+};
 
 const GenreAlbums = ({ genre }) => {
   const settings = useContext(SettingsContext);
@@ -35,7 +39,7 @@ const GenreAlbums = ({ genre }) => {
         window.scrollTo(0, 0);
         setIsLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
     if (selectedPage && pageSize) {
@@ -61,5 +65,6 @@ const GenreAlbums = ({ genre }) => {
   );
 };
 
-export default GenreAlbums;
+GenreAlbums.propTypes = propTypes;
 
+export default GenreAlbums;

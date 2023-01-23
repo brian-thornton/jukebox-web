@@ -11,7 +11,7 @@ import './AlbumList.scss';
 import { applyLighting } from '../../lib/lightingHelper';
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import { handlers } from '../../lib/gesture-helper';
-import { headerFooterReserve } from '../../lib/styleHelper';
+import { coverDimensions, headerFooterReserve } from '../../lib/styleHelper';
 import { Libraries } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Album from './Album';
@@ -21,7 +21,6 @@ import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import StartsWithFilter from './StartsWithFilter';
 import FullWidthRow from '../common/FullWidthRow';
-import { coverDimensions } from '../../lib/styleHelper';
 
 const propTypes = {
   selectedLibraries: Libraries,

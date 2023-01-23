@@ -36,7 +36,7 @@ const SkinDetail = ({
   }, []);
 
   const controls = (
-    <Container fluid style={{marginBottom: '20px'}}>
+    <Container fluid style={{ marginBottom: '20px' }}>
       <Row>
         <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
         <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />
@@ -76,8 +76,8 @@ const SkinDetail = ({
       {isSaveAsModalOpen && (
         <AddNew
           title={<FormattedMessage id="save_skin_as" values={{ name: skin.name }} />}
-          defaultValue={intl.formatMessage({id: "skin_copy"}, { name: skin.name })}
-          fields={{ name: intl.formatMessage({id: "skin_copy"}, { name: skin.name })}}
+          defaultValue={intl.formatMessage({ id: 'skin_copy' }, { name: skin.name })}
+          fields={{ name: intl.formatMessage({ id: 'skin_copy' }, { name: skin.name }) }}
           onCancel={() => setIsSaveAsModalOpen(false)}
           onConfirm={data => handleSkinSaveAs(data)}
         />
@@ -91,11 +91,11 @@ const SkinDetail = ({
       )}
       {!isDeleteConfirmOpen && !isSaveAsModalOpen && (
         <>
-          {activeKey === "preferences" && <SkinPreferences skin={skin} onClose={() => setActiveKey('')} />}
-          {activeKey === "colors" && <SkinColors skin={skin} onClose={() => setActiveKey('')} />}
-          {activeKey === "fonts" && <SkinFonts skin={skin} onClose={() => setActiveKey('')} />}
-          {activeKey === "graphics" && <SkinGraphics skin={skin} onClose={() => setActiveKey('')} />}
-          {activeKey === "lights" && <SkinLights skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === 'preferences' && <SkinPreferences skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === 'colors' && <SkinColors skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === 'fonts' && <SkinFonts skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === 'graphics' && <SkinGraphics skin={skin} onClose={() => setActiveKey('')} />}
+          {activeKey === 'lights' && <SkinLights skin={skin} onClose={() => setActiveKey('')} />}
           {!activeKey && (
             <Picker items={[
               {
@@ -127,8 +127,9 @@ const SkinDetail = ({
                 title: <FormattedMessage id="skin_lighting_title" />,
                 buttonText: <FormattedMessage id="skin_lighting_button" />,
                 onClick: () => setActiveKey('lights'),
-              }
-            ]} />
+              },
+            ]
+            } />
           )}
         </>
       )}

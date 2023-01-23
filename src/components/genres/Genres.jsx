@@ -7,11 +7,11 @@ import GenreAlbums from './GenreAlbums';
 const Genres = () => {
   const [genre, setGenre] = useState();
 
-  const genreItem = (genre) => (
+  const genreItem = genreName => (
     {
-      title: <FormattedMessage id={genre} />,
-      buttonText: <FormattedMessage id="go_to" values={{ name: genre }} />,
-      onClick: () => setGenre(genre),
+      title: <FormattedMessage id={genreName} />,
+      buttonText: <FormattedMessage id="go_to" values={{ name: genreName }} />,
+      onClick: () => setGenre(genreName),
     }
   );
 
@@ -42,7 +42,7 @@ const Genres = () => {
       )}
       {genre && <GenreAlbums genre={genre} />}
     </>
-  )
+  );
 };
 
 export default Genres;

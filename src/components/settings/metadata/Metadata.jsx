@@ -13,7 +13,7 @@ const Metadata = () => {
   const [isLoading, setIsLoading] = useState(false);
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
   useEffect(() => setItemsPerPage(calculatePageSize('item', 250, 60)), []);
-  
+
   const genres = ['Rock', 'Disco', 'Pop', 'Rap', 'Dance', 'Blues', 'Country', 'Hip Hop', 'Jazz',
     'Metal', 'Punk', 'Celtic', 'Classic Rock', 'Folk', 'Jam Band', 'Raggae'];
 
@@ -30,7 +30,7 @@ const Metadata = () => {
     genres.slice(realStart, (realStart + itemsPerPage)).map(genre => (
       {
         text: genre,
-        buttons: <Button content="Get Data" onClick={() => loadData(genre.toLowerCase())} />
+        buttons: <Button content="Get Data" onClick={() => loadData(genre.toLowerCase())} />,
       }
     ))
   );

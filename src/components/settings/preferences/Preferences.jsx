@@ -43,7 +43,7 @@ const Preferences = () => {
     <PreferenceTextRow rowName="vlcHost" value={preferences.vlcHost} />,
     <PreferenceTextRow rowName="vlcPort" value={preferences.vlcPort} />,
     <PreferenceTextRow rowName="vlcPassword" value={preferences.vlcPassword} />,
-  ]
+  ];
 
   return (
     <PaginatedList
@@ -53,7 +53,7 @@ const Preferences = () => {
       pageSize={itemsPerPage}
       totalItems={14}
     />
-  )
+  );
 };
 
 export default Preferences;

@@ -4,10 +4,11 @@ import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
+import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
-import { Tracks } from '../shapes';
+import { Tracks, Queue } from '../shapes';
 import ControlButton from '../common/ControlButton';
 import './AlbumButtons.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -15,6 +16,8 @@ import { applyLighting } from '../../lib/lightingHelper';
 
 const propTypes = {
   tracks: Tracks.isRequired,
+  queue: Queue.isRequired,
+  setQueue: PropTypes.func.isRequired,
 };
 
 const AlbumButtons = ({ tracks, queue, setQueue }) => {
@@ -37,7 +40,7 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
     let allTracksInQueue = queue?.tracks?.length > 0;
 
     if (tracks?.length > 0 && queue?.tracks?.length > 0) {
-      tracks.map(track => {
+      tracks.map((track) => {
         if (!queue.tracks.find(t => t.path === track.path)) {
           allTracksInQueue = false;
         }

@@ -48,7 +48,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   };
 
   const loadQueue = () => {
-    getQueue().then(data => setQueue(data))
+    getQueue().then(data => setQueue(data));
   };
 
   useEffect(loadQueue, []);

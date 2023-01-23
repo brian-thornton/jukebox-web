@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import Item from '../common/Item';
@@ -6,7 +7,6 @@ import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { calculatePageSize } from '../../lib/styleHelper';
-import { FormattedMessage } from 'react-intl';
 
 const SettingsEditor = () => {
   const [features, setFeatures] = useState();

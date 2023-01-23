@@ -10,14 +10,14 @@ const LogList = () => {
   const [selectedLog, setSelectedLog] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [level, setLevel] = useState('INFO');
-  const itemsPerPage = calculatePageSize('item', 250, 40)
+  const itemsPerPage = calculatePageSize('item', 250, 40);
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
   const loadLogs = () => {
     getLogs(start, (start + itemsPerPage), level).then((data) => {
       setLogs(data);
     });
-  }
+  };
 
   useEffect(loadLogs, []);
   useEffect(loadLogs, [selectedPage]);

@@ -53,11 +53,14 @@ const LibraryRow = ({
     <Item
       actionVisible={deleteConfirmLibrary}
       text={(
-        <FormattedMessage id="library_info" values={{
-          path: library.path,
-          totalTracks: library.totalTracks,
-          status: status,
-        }} />
+        <FormattedMessage
+          id="library_info"
+          values={{
+            path: library.path,
+            totalTracks: library.totalTracks,
+            status,
+          }}
+        />
       )}
       buttons={(
         <>

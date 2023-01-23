@@ -15,7 +15,9 @@ import './Segments.scss';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
 import SegmentRowEdit from './SegmentRowEdit';
 import SegmentRowInfo from './SegmentRowInfo';
-import { Event, LightingController, Segments as SegmentsShape, Skin } from '../shapes';
+import {
+  Event, LightingController, Segments as SegmentsShape, Skin,
+} from '../shapes';
 import FullWidthRow from '../common/FullWidthRow';
 
 const propTypes = {
@@ -28,7 +30,6 @@ const propTypes = {
 };
 
 export const Segments = ({
-  intl,
   controller,
   segments,
   allowAdd,
@@ -135,7 +136,7 @@ export const Segments = ({
   const displayRow = () => (
     !settings.controllers?.find(c => (
       c.ip === (controller.info?.ip || controller.ip)).segments.find(s => (
-        s.start.toString() === segment.start.toString()
+      s.start.toString() === segment.start.toString()
         && s.stop.toString() === segment.stop.toString())))
   );
 
@@ -171,7 +172,7 @@ export const Segments = ({
             <ListGroup className="styleEditorContent">
               {settings.controllers?.find(c => (
                 c.ip === (controller.info?.ip || controller.ip)).segments.map(s => (
-                  segmentRow(s, isSegmentOnController(s.start, s.stop)))))
+                segmentRow(s, isSegmentOnController(s.start, s.stop)))))
               }
               {segments?.map((s) => {
                 if (displayRow()) {

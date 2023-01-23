@@ -68,7 +68,7 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
                     setFilters(checked ? filters.filter(f => f.path !== library.path)
                       : oldArray => [...oldArray, library]);
                   }}
-                  text={<FormattedMessage id="filter_row" values={{path: library.path, tracks: library.tracks || 0 }} />}
+                  text={<FormattedMessage id="filter_row" values={{ path: library.path, tracks: library.tracks || 0 }} />}
                 />
               );
             })}

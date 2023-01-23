@@ -64,6 +64,8 @@ export const Items = PropTypes.arrayOf(Item);
 
 export const Tracks = PropTypes.arrayOf(Track);
 
+export const Queue = PropTypes.arrayOf(Track);
+
 export const LightingController = PropTypes.shape({
   ip: PropTypes.string,
   info: PropTypes.shape({

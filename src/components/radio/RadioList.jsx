@@ -18,7 +18,7 @@ const propTypes = {
 
 const RadioList = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
-  const { isScreenSmall, preferences } = settings;
+  const { preferences } = settings;
   const { controlButtonSize } = settings.styles;
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [stations, setStations] = useState();
@@ -35,7 +35,7 @@ const RadioList = ({ setMediaType }) => {
 
   useState(() => {
     const reserve = headerFooterReserve(settings);
-    const height = ['large', 'medium'].includes(controlButtonSize) ? 70 : 60
+    const height = ['large', 'medium'].includes(controlButtonSize) ? 70 : 60;
     const itemHeight = height;
     const viewPortHeight = Math.floor(window.innerHeight - reserve);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
@@ -50,7 +50,7 @@ const RadioList = ({ setMediaType }) => {
       height={heightAndWidth}
       width={heightAndWidth}
       content={<PlayFill />}
-      style={{fontSize }}
+      style={{ fontSize }}
       onClick={() => {
         setMediaType('stream');
         play(station.url_resolved, preferences.vlcHost,

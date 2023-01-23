@@ -14,7 +14,7 @@ const propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-const ControllerPalettes = ({ controllerState, intl, onSelect }) => {
+const ControllerPalettes = ({ controllerState, onSelect }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
   const paletteStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);

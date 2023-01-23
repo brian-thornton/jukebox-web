@@ -1,9 +1,9 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import Form from 'react-bootstrap/Form';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
+import { PropTypes } from 'prop-types';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -18,6 +18,7 @@ import SkinControlButtonSize from './SkinControlButtonSize';
 import SkinButtonShape from './SkinButtonShape';
 
 const propTypes = {
+  onClose: PropTypes.func.isRequired,
   skin: Skin.isRequired,
 };
 
@@ -55,9 +56,9 @@ const SkinPreferences = ({ skin, onClose }) => {
         <Button content="Back to Skin" onClick={onClose} />
       </Row>
       <Row>
-        <Card className="skin-detail-card" style={{background: settings.styles.trackBackgroundColor, width: '100%'}}>
+        <Card className="skin-detail-card" style={{ background: settings.styles.trackBackgroundColor, width: '100%' }}>
           <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
-            <Container fluid style={{background: settings.styles.trackBackgroundColor, width: '100%'}} >
+            <Container fluid style={{ background: settings.styles.trackBackgroundColor, width: '100%' }}>
               <Row className="skin-name-row">
                 <Col lg="2" md="2" sm="2">
                   <div className="skin-name-label">Skin Name:</div>
@@ -70,20 +71,41 @@ const SkinPreferences = ({ skin, onClose }) => {
                   />
                 </Col>
                 <Col lg="1" md="1" sm="1">
-                  <Button className="skin-detail-save" content="Save" onClick={() => saveSkin(updatedName)} disabled={!skin.isEditable} />
+                  <Button
+                    className="skin-detail-save"
+                    content="Save"
+                    onClick={() => saveSkin(updatedName)}
+                    disabled={!skin.isEditable}
+                  />
                 </Col>
               </Row>
               <Row>
-                <SkinButtonShape skin={skin} buttonShape={buttonShape} setButtonShape={setButtonShape} />
+                <SkinButtonShape
+                  skin={skin}
+                  buttonShape={buttonShape}
+                  setButtonShape={setButtonShape}
+                />
               </Row>
               <Row>
-                <SkinNavPreference skin={skin} navButtonType={navButtonType} setNavButtonType={setNavButtonType} />
+                <SkinNavPreference
+                  skin={skin}
+                  navButtonType={navButtonType}
+                  setNavButtonType={setNavButtonType}
+                />
               </Row>
               <Row>
-                <SkinNavButtonSize skin={skin} navButtonSize={navButtonSize} setNavButtonSize={setNavButtonSize} />
+                <SkinNavButtonSize
+                  skin={skin}
+                  navButtonSize={navButtonSize}
+                  setNavButtonSize={setNavButtonSize}
+                />
               </Row>
               <Row>
-                <SkinControlButtonSize skin={skin} controlButtonSize={controlButtonSize} setControlButtonSize={setControlButtonSize} />
+                <SkinControlButtonSize
+                  skin={skin}
+                  controlButtonSize={controlButtonSize}
+                  setControlButtonSize={setControlButtonSize}
+                />
               </Row>
             </Container>
           </Card.Title>
