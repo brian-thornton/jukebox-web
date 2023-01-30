@@ -25,6 +25,9 @@ const propTypes = {
   setIsPinOpen: PropTypes.func.isRequired,
   lastModule: PropTypes.string.isRequired,
   selectedLibraries: Libraries,
+  display: PropTypes.string.isRequired,
+  search: PropTypes.string,
+  clearSearch: PropTypes.func.isRequired,
 };
 
 const JukeboxNavRight = ({
@@ -110,7 +113,7 @@ const JukeboxNavRight = ({
 
   return (
     <Nav className="ml-auto">
-      {!applyWidth && search && !isScreenSmall && <div className="search-result"><FormattedMessage id="search_results" values={{search}} /></div>}
+      {!applyWidth && search && !isScreenSmall && <div className="search-result"><FormattedMessage id="search_results" values={{ search }} /></div>}
       {(features.albums || features.tracks) && searchButtons()}
       {!isScreenSmall && !search && !applyWidth && features.albums && pathname.includes('/albums') && preferences.showLibraryFilter && (
         <Button

@@ -8,6 +8,7 @@ import { Track } from './shapes';
 import './EnqueueButton.css';
 import { applyLighting } from '../lib/lightingHelper';
 import { SettingsContext } from './layout/SettingsProvider';
+import { bigButtons } from '../lib/styleHelper';
 
 const propTypes = {
   mode: PropTypes.string,
@@ -21,9 +22,8 @@ const EnqueueButton = ({
   track, mode, isSelected, onComplete, disabled,
 }) => {
   const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings.styles;
-  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const heightAndWidth = bigButtons(settings) ? '60' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
     <Button

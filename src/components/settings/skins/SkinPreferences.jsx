@@ -16,6 +16,7 @@ import SkinNavPreference from './SkinNavPreference';
 import SkinNavButtonSize from './SkinNavButtonSize';
 import SkinControlButtonSize from './SkinControlButtonSize';
 import SkinButtonShape from './SkinButtonShape';
+import SkinControlUseBackground from './SkinControlOptions';
 
 const propTypes = {
   onClose: PropTypes.func.isRequired,
@@ -27,6 +28,7 @@ const SkinPreferences = ({ skin, onClose }) => {
   const [navButtonSize, setNavButtonSize] = useState(skin.navButtonSize || 'small');
   const [buttonShape, setButtonShape] = useState(skin.buttonShape || 'rectangle');
   const [controlButtonSize, setControlButtonSize] = useState(skin.controlButtonSize || 'small');
+  const [controlUseBackground, setControlUseBackground] = useState(skin.controlUseBackground || false);
   const [updatedName, setUpdatedName] = useState();
   const settings = useContext(SettingsContext);
 
@@ -105,6 +107,13 @@ const SkinPreferences = ({ skin, onClose }) => {
                   skin={skin}
                   controlButtonSize={controlButtonSize}
                   setControlButtonSize={setControlButtonSize}
+                />
+              </Row>
+              <Row>
+                <SkinControlUseBackground
+                  skin={skin}
+                  controlUseBackground={controlUseBackground}
+                  setControlUseBackground={setControlUseBackground}
                 />
               </Row>
             </Container>

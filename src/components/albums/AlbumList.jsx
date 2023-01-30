@@ -26,6 +26,8 @@ const propTypes = {
   selectedLibraries: Libraries,
   setStartsWithFilter: PropTypes.func,
   startsWithFilter: PropTypes.string,
+  display: PropTypes.string.isRequired,
+  search: PropTypes.string,
 };
 
 const AlbumList = ({
@@ -40,7 +42,7 @@ const AlbumList = ({
   const [selectedPage, setSelectedPage] = useState(1);
   const [pageSize, setPageSize] = useState();
   const { state } = useLocation();
-  const { startsWithLocation, coverSize } = settings.preferences;
+  const { startsWithLocation } = settings.preferences;
   const { isScreenSmall } = settings;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const noResults = search && !albums.length && !isLoading;
@@ -105,8 +107,9 @@ const AlbumList = ({
       const reserve = headerFooterReserve(settings);
       const startsWithReserve = ['left', 'right'].includes(startsWithLocation) ? 25 : 0;
       const dimensions = coverDimensions(settings);
-      const albumsPerRow = Math.floor(window.innerWidth / (dimensions.coverWidth + startsWithReserve));
-      const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : dimensions.coverHeight));
+      const { coverWidth, coverHeight } = dimensions;
+      const albumsPerRow = Math.floor(window.innerWidth / (coverWidth + startsWithReserve));
+      const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : coverHeight));
       setPageSize(albumsPerRow * numberOfRows);
     }
   }, [display]);
@@ -118,7 +121,7 @@ const AlbumList = ({
 
   const paginator = (
     <Paginator
-      onPageChange={(page) => setSelectedPage(page)}
+      onPageChange={page => setSelectedPage(page)}
       selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={pageSize}

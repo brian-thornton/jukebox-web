@@ -10,6 +10,7 @@ import {
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Track } from '../shapes';
+import { bigButtons } from '../../lib/styleHelper';
 
 const propTypes = {
   name: PropTypes.string.isRequired,
@@ -28,7 +29,7 @@ const PlaylistButtons = ({
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   const deleteTrack = async (trackName, trackToDelete) => {
     await removeTracksFromPlaylist(trackName, [trackToDelete]);

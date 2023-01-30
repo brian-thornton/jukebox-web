@@ -33,7 +33,9 @@ const PaginatedList = ({
   applyTopMargin = false,
   onItemClick,
 }) => {
-  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)));
+  const swipe = useSwipeable(
+    handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)),
+  );
   const standardItems = items && items.length > 0 && items[0].text;
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;

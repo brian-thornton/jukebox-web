@@ -75,7 +75,7 @@ const topMargin = (settings) => {
   if (settings) {
     const { navButtonSize } = settings.styles;
 
-    let headerReserve = 65;
+    let headerReserve = 63;
 
     if (navButtonSize === 'medium') {
       headerReserve = 105;
@@ -264,7 +264,12 @@ const coverDimensions = (settings) => {
   }
 
   return dimensions;
-}
+};
+
+const bigButtons = (settings) => {
+  const { controlButtonSize } = settings.styles;
+  return ['large', 'medium'].includes(controlButtonSize);
+};
 
 export {
   buttonProps,
@@ -282,4 +287,5 @@ export {
   headerFooterReserve,
   topMargin,
   coverDimensions,
+  bigButtons,
 }

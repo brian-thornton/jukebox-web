@@ -10,7 +10,7 @@ const CabinetConfiguration = () => (
   <>
     <Container fluid className="cabinet-container">
       <Row>
-        {<FormattedMessage id="cabinet_configuration" />}
+        <FormattedMessage id="cabinet_configuration" />
       </Row>
       <Row>
         <LightingControllers />

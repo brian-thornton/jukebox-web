@@ -11,6 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Paginator.scss';
+import { bigButtons } from '../../lib/styleHelper';
 
 const propTypes = {
   onPageChange: PropTypes.func.isRequired,
@@ -30,7 +31,7 @@ const Paginator = ({
   const settings = useContext(SettingsContext);
   const pages = Math.floor(totalItems / pageSize);
   const { controlButtonSize } = settings.styles;
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
   let height;
 
   if (controlButtonSize === 'large') {
@@ -43,7 +44,7 @@ const Paginator = ({
 
   const buttonProps = {
     style: { fontSize },
-    height,
+      height,
     width: height,
   };
 

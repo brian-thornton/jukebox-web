@@ -3,7 +3,7 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Skin from '../../shapes';
+import { Skin } from '../../shapes';
 
 const propTypes = {
   skin: Skin.isRequired,

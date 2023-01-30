@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 import LightingControllers from '../LightingControllers';
 import SkinSegmentConfiguration from './SkinSegmentConfiguration';
 import { Skin } from '../../shapes';
-import { Container } from 'react-bootstrap';
-import FullWidthRow from '../../common/FullWidthRow';
 import Button from '../../Button';
 
 const propTypes = {
+  onClose: PropTypes.func.isRequired,
   skin: Skin.isRequired,
   loadSkins: PropTypes.func.isRequired,
 };

@@ -14,6 +14,7 @@ import GoToAlbumButton from './GoToAlbumButton';
 import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
+import { bigButtons } from '../lib/styleHelper';
 import './Track.scss';
 
 const propTypes = {
@@ -33,17 +34,7 @@ const Track = ({
 }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
-  const { controlButtonSize } = settings.styles;
-
-  let fontSize = '';
-
-  if (controlButtonSize === 'large') {
-    fontSize = '25px';
-  }
-
-  if (controlButtonSize === 'medium') {
-    fontSize = '25px';
-  }
+  const fontSize = bigButtons(settings) ? '25px' : '';
 
   const getAlbum = (albumTrack) => {
     if (trackAlbumsLoaded) {

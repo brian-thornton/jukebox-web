@@ -42,7 +42,7 @@ const propTypes = {
   onConfigure: PropTypes.func,
 };
 
-export const LightingControllers = ({
+const LightingControllers = ({
   allowAdd = true,
   allowName = true,
   allowRemove = true,

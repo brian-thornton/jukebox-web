@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState, Suspense } from 'react';
-import { Routes, Route } from "react-router-dom";
 import { useIdleTimer } from 'react-idle-timer'
 import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
@@ -11,21 +10,11 @@ import { SettingsContext } from './components/layout/SettingsProvider'
 import { status } from './lib/radio-client';
 import { supportedFonts } from './lib/styleHelper';
 import { updateSettings } from './lib/settings-client';
+import JukeboxRoutes from './components/layout/JukeboxRoutes';
 
-const AlbumDetail = React.lazy(() => import("./components/albums/AlbumDetail"));
-const AlbumList = React.lazy(() => import("./components/albums/AlbumList"));
-const Filters = React.lazy(() => import("./components/layout/Filters"));
 const JukeboxFooter = React.lazy(() => import("./components/layout/JukeboxFooter"));
 const JukeboxHeader = React.lazy(() => import("./components/layout/JukeboxHeader"));
 const PinEntry = React.lazy(() => import("./components/common/PinEntry"));
-const PlaylistsViewer = React.lazy(() => import("./components/playlists/PlaylistsViewer"));
-const Queue = React.lazy(() => import("./components/Queue"));
-const RadioList = React.lazy(() => import("./components/radio/RadioList"));
-const Search = React.lazy(() => import("./components/common/Search"));
-const Settings = React.lazy(() => import("./components/settings/Settings"));
-const Tracks = React.lazy(() => import("./components/Tracks"));
-const WithKeyboardInput = React.lazy(() => import("./components/layout/WithKeyboardInput"));
-const Genres = React.lazy(() => import("./components/genres/Genres"));
 
 function App() {
   const [isPinOpen, setIsPinOpen] = useState(false);
@@ -66,7 +55,9 @@ function App() {
           // The lock has been set and the user is not on the albums page. Return the user
           // to the home page.
           if (data.features.isLocked && window.location.pathname !== '/albums') {
-            window.location.replace(`/albums`);
+            setSearch('');
+            setTempSearch('');
+            setTimeout(() => window.location.replace(`/albums`), 3000);
           }
         }
       }
@@ -118,15 +109,6 @@ function App() {
       startPlaybackWatchers();
     }
   }, [settings]);
-
-  const wrapWithKeyboard = (component) => (
-    <WithKeyboardInput
-      component={component}
-      tempSearch={tempSearch}
-      setTempSearch={setTempSearch}
-      debouncedSearch={setSearch}
-    />
-  );
 
   useEffect(() => {
     if (settings) {
@@ -204,20 +186,18 @@ function App() {
               }}
               setIsPinOpen={setIsPinOpen}
             />
-            <Routes>
-              <Route path="/" element={wrapWithKeyboard(<AlbumList selectedLibraries={selectedLibraries} search={search} setStartsWithFilter={setStartsWithFilter} startsWithFilter={startsWithFilter} display={display} />)} />
-              <Route path="/albums" element={wrapWithKeyboard(<AlbumList setStartsWithFilter={setStartsWithFilter} startsWithFilter={startsWithFilter} selectedLibraries={selectedLibraries} display={display} search={search} />)} />
-              <Route path="/albums/:id" element={<AlbumDetail />} />
-              <Route path="/albums/categories/:id" element={<AlbumList />} search={search} display={display} />
-              <Route path="/filters" element={<Filters selectedLibraries={selectedLibraries} setSelectedLibraries={setSelectedLibraries} />} />
-              <Route path="/playlists" element={<PlaylistsViewer />} />
-              <Route path="/queue" element={<Queue />} />
-              <Route path="/search" element={<Search setSearchText={setSearch} />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/tracks" element={wrapWithKeyboard(<Tracks setSearch={setSearch} search={search} />)} />
-              <Route path="/radio" element={wrapWithKeyboard(<RadioList setMediaType={setMediaType} />)} />
-              <Route path="/genres" element={<Genres />} />
-            </Routes>
+            <JukeboxRoutes
+              display={display}
+              search={search}
+              selectedLibraries={selectedLibraries}
+              setMediaType={setMediaType}
+              setSearch={setSearch}
+              setSelectedLibraries={setSelectedLibraries}
+              setStartsWithFilter={setStartsWithFilter}
+              setTempSearch={setTempSearch}
+              startsWithFilter={startsWithFilter}
+              tempSearch={tempSearch}
+            />
             <JukeboxFooter
               mediaType={mediaType}
               setMediaType={setMediaType}

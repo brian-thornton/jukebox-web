@@ -5,6 +5,7 @@ import Button from './Button';
 import { enqueueTop, next } from '../lib/queue-client';
 import { Track } from './shapes';
 import { SettingsContext } from './layout/SettingsProvider';
+import { bigButtons } from '../lib/styleHelper';
 
 const propTypes = {
   track: Track.isRequired,
@@ -12,9 +13,8 @@ const propTypes = {
 
 const PlayNowButton = ({ track }) => {
   const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings.styles;
-  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const heightAndWidth = bigButtons(settings) ? '60' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   const playNow = () => {
     enqueueTop(track);

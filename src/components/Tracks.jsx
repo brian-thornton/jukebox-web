@@ -13,7 +13,7 @@ import Loading from './common/Loading';
 import './Tracks.scss';
 import { applyLighting } from '../lib/lightingHelper';
 import { handlers } from '../lib/gesture-helper';
-import { headerFooterReserve, topMargin } from '../lib/styleHelper';
+import { bigButtons, headerFooterReserve, topMargin } from '../lib/styleHelper';
 import FullWidthRow from './common/FullWidthRow';
 
 const propTypes = {
@@ -24,7 +24,6 @@ const propTypes = {
 const Tracks = ({ setCurrentAlbum, search }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
-  const { controlButtonSize } = settings.styles;
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState();
   const [totalTracks, setTotalTracks] = useState();
@@ -32,7 +31,7 @@ const Tracks = ({ setCurrentAlbum, search }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  let trackHeight = ['large', 'medium'].includes(controlButtonSize) ? 70 : 50;
+  let trackHeight = bigButtons(settings) ? 70 : 50;
   trackHeight = isScreenSmall ? 35 : trackHeight;
   const noResults = search && !tracks.length;
 

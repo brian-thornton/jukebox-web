@@ -5,6 +5,7 @@ import React, { useContext } from 'react';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 import { Track } from '../shapes';
+import { bigButtons } from '../../lib/styleHelper';
 
 const propTypes = {
   track: Track.isRequired,
@@ -13,9 +14,8 @@ const propTypes = {
 const AddToPlaylistButton = ({ track }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings.styles;
-  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const heightAndWidth = bigButtons(settings) ? '60' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
     <>

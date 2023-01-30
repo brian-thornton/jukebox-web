@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { SettingsContext } from './layout/SettingsProvider';
 import { Album } from './shapes';
+import { bigButtons } from '../lib/styleHelper';
 
 const propTypes = {
   album: Album.isRequired,
@@ -13,8 +14,7 @@ const propTypes = {
 const GoToAlbumButton = ({ album }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings.styles;
-  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
+  const heightAndWidth = bigButtons(settings) ? '60' : '';
 
   return (
     <Button

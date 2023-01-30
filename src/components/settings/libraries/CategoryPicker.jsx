@@ -17,7 +17,6 @@ const propTypes = {
 };
 
 const CategoryPicker = ({
-  intl,
   selectedCategory,
   onSelectCategory,
 }) => {

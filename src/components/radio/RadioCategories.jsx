@@ -8,6 +8,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 import ExpandRow from '../common/ExpandRow';
 import './RadioCategories.scss';
+import { bigButtons } from '../../lib/styleHelper';
 
 const propTypes = {
   category: PropTypes.string,
@@ -20,7 +21,7 @@ const RadioCategories = ({ category, setCategory }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   const categories = [
     'Rock', 'Pop', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance',

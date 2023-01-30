@@ -18,6 +18,13 @@ const propTypes = {
 const ContentWithControls = ({ controls, content, alertText }) => {
   const settings = useContext(SettingsContext);
 
+  const controlStyle = {
+    paddingTop: '10px',
+    paddingBottom: '20px',
+    background: settings.styles.headerColor,
+    borderBottomRightRadius: '35px',
+  };
+
   return (
     <Container fluid style={{ marginTop: topMargin(settings) }}>
       <Row>
@@ -26,7 +33,7 @@ const ContentWithControls = ({ controls, content, alertText }) => {
         </Col>
       </Row>
       <Row>
-        <Col lg={2} xl={2}>
+        <Col lg={2} xl={2} style={controlStyle}>
           {controls}
         </Col>
         <Col lg={10} xl={10}>

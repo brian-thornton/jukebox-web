@@ -1,7 +1,9 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import React, { useState, useEffect } from 'react';
+import { Container, Row } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 import { injectIntl } from 'react-intl';
+import PropTypes from 'prop-types';
 
 import Item from '../../common/Item';
 import FontPicker from './FontPicker';
@@ -11,9 +13,9 @@ import './SkinDetail.scss';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import { handlers } from '../../../lib/gesture-helper';
 import { Skin } from '../../shapes';
-import { Container, Row } from 'react-bootstrap';
 
 const propTypes = {
+  onClose: PropTypes.func.isRequired,
   skin: Skin.isRequired,
 };
 

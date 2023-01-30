@@ -6,6 +6,7 @@ import { Album as albumShape } from './shapes';
 import { coverArtUrl } from '../lib/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
 import './TrackAlbum.scss';
+import { bigButtons } from '../lib/styleHelper';
 
 const propTypes = {
   album: albumShape.isRequired,
@@ -15,18 +16,7 @@ const TrackAlbum = ({ album }) => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const [coverArt, setCoverArt] = useState();
-
-  const { controlButtonSize } = settings.styles;
-
-  let heightAndWidth = '';
-
-  if (controlButtonSize === 'large') {
-    heightAndWidth = '60px';
-  }
-
-  if (controlButtonSize === 'medium') {
-    heightAndWidth = '50px';
-  }
+  const heightAndWidth = bigButtons(settings) ? '60px' : '';
 
   const loadCoverArt = () => {
     coverArtUrl(album).then(data => setCoverArt(data.url));

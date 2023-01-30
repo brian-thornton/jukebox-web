@@ -8,6 +8,7 @@ import Item from '../common/Item';
 import { Playlist } from '../shapes';
 import './PlaylistsViewer.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
+import { bigButtons } from '../../lib/styleHelper';
 
 const propTypes = {
   playlist: Playlist.isRequired,
@@ -25,7 +26,7 @@ const PlaylistRow = ({
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
     <Item

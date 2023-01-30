@@ -8,7 +8,12 @@ import Button from '../../Button';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import RestrictionModeDetail from './RestrictionModeDetail';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { createRestrictionGroup, deleteRestrictionGroup, getRestrictionGroups, updateRestrictionGroup } from '../../../lib/settings-client';
+import {
+  createRestrictionGroup,
+  deleteRestrictionGroup,
+  getRestrictionGroups,
+  updateRestrictionGroup,
+} from '../../../lib/settings-client';
 import { updatePreference } from '../../../lib/preferenceHelper';
 import PaginatedList from '../../common/PaginatedList';
 import { Album } from '../../shapes';
@@ -42,9 +47,9 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
     loadRestrictionGroups();
   }, []);
 
-  const addAlbumToRestrictedList = (album, restrictionGroup) => {
-    if (!restrictionGroup.content.includes(album.path)) {
-      restrictionGroup.content.push(album.path);
+  const addAlbumToRestrictedList = (restrictAlbum, restrictionGroup) => {
+    if (!restrictionGroup.content.includes(restrictAlbum.path)) {
+      restrictionGroup.content.push(restrictAlbum.path);
       updateRestrictionGroup(restrictionGroup);
     }
 
@@ -81,7 +86,7 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
           <Button
             onClick={() => {
               setSelectedRestrictionMode(restrictionGroup);
-              setIsDeleteOpen(true)
+              setIsDeleteOpen(true);
             }}
             content={<Trash />}
           />
@@ -146,7 +151,7 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
       )}
       {!selectedRestrictionMode && isAddOpen && !isDeleteOpen && (
         <AddNew
-          title={<FormattedMessage id="add_restriction_group" /> }
+          title={<FormattedMessage id="add_restriction_group" />}
           dropdowns={[{ name: <FormattedMessage id="group_type" />, options: ['whitelist', 'blacklist'], value: 'whitelist' }]}
           onConfirm={onAddRestrictionGroup}
           onCancel={() => setIsAddOpen(false)}

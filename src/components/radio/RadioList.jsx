@@ -9,7 +9,7 @@ import { getStations, play } from '../../lib/radio-client';
 import RadioCategories from './RadioCategories';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './RadioList.scss';
-import { headerFooterReserve, topMargin } from '../../lib/styleHelper';
+import { bigButtons, headerFooterReserve, topMargin } from '../../lib/styleHelper';
 import PaginatedList from '../common/PaginatedList';
 
 const propTypes = {
@@ -19,13 +19,12 @@ const propTypes = {
 const RadioList = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
   const { preferences } = settings;
-  const { controlButtonSize } = settings.styles;
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [stations, setStations] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-  const heightAndWidth = ['large', 'medium'].includes(controlButtonSize) ? '60' : '';
-  const fontSize = ['large', 'medium'].includes(controlButtonSize) ? '30px' : '';
+  const heightAndWidth = bigButtons(settings) ? '60' : '';
+  const fontSize = bigButtons(settings) ? '30px' : '';
 
   const loadStations = async () => {
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
@@ -35,7 +34,7 @@ const RadioList = ({ setMediaType }) => {
 
   useState(() => {
     const reserve = headerFooterReserve(settings);
-    const height = ['large', 'medium'].includes(controlButtonSize) ? 70 : 60;
+    const height = bigButtons(settings) ? 70 : 60;
     const itemHeight = height;
     const viewPortHeight = Math.floor(window.innerHeight - reserve);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));

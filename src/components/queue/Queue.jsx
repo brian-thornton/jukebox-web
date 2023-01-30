@@ -1,32 +1,29 @@
 import { TrashFill, XLg } from 'react-bootstrap-icons';
-import { useNavigate } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { applyLighting } from '../lib/lightingHelper';
-import Button from './Button';
-import Confirm from './common/Confirm';
-import ControlButton from './common/ControlButton';
+import { applyLighting } from '../../lib/lightingHelper';
+import Button from '../Button';
+import Confirm from '../common/Confirm';
 import {
   clearQueue,
   getQueue,
-  enqueueTracks,
   removeTracksFromQueue,
-} from '../lib/queue-client';
-import ContentWithControls from './common/ContentWithControls';
-import PlayNowButton from './PlayNowButton';
-import NoResults from './common/NoResults';
-import { SettingsContext } from './layout/SettingsProvider';
+} from '../../lib/queue-client';
+import ContentWithControls from '../common/ContentWithControls';
+import PlayNowButton from '../PlayNowButton';
+import NoResults from '../common/NoResults';
+import { SettingsContext } from '../layout/SettingsProvider';
 import './Queue.scss';
-import { calculatePageSize } from '../lib/styleHelper';
-import PaginatedList from './common/PaginatedList';
-import FullWidthRow from './common/FullWidthRow';
+import { calculatePageSize } from '../../lib/styleHelper';
+import PaginatedList from '../common/PaginatedList';
+import FullWidthRow from '../common/FullWidthRow';
+import QueueControls from './QueueControls';
 
 const Queue = () => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
-  const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -125,38 +122,19 @@ const Queue = () => {
     );
   };
 
-  const shuffle = () => {
-    clearQueue().then(() => {
-      enqueueTracks(tracks.sort(() => Math.random() - 0.5)).then(() => {
-        loadQueue();
-      });
-    });
-  };
-
-  const buttonProps = {
-    width: '100%',
-    disabled: isEmpty || clearConfirm,
-    height: buttonHeight,
-    style: { fontSize },
-  };
-
-  const controls = () => (
-    <>
-      <ControlButton {...buttonProps} onClick={() => setClearConfirm(true)} text={<FormattedMessage id="clear_queue" />} />
-      <ControlButton {...buttonProps} onClick={() => shuffle()} text={<FormattedMessage id="shuffle_queue" />} />
-      {settings.features.playlists && (
-        <ControlButton
-          {...buttonProps}
-          onClick={() => navigate('/playlists', { state: { tracks } })}
-          text={<FormattedMessage id="save_to_playlist" />}
-        />
-      )}
-    </>
-  );
-
   return (
     <>
-      {!isScreenSmall && <ContentWithControls controls={controls()} content={content()} />}
+      {!isScreenSmall && (
+        <ContentWithControls
+          controls={(
+            <QueueControls
+              loadQueue={loadQueue}
+              tracks={tracks}
+              setClearConfirm={setClearConfirm}
+              clearConfirm={clearConfirm} />)
+          }
+          content={content()}
+        />)}
       {isScreenSmall && (
         <Container fluid className="queueContainer">
           {!clearConfirm && (

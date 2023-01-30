@@ -62,12 +62,14 @@ const SegmentRowInfo = ({
   return (
     <Item
       text={(
-        <FormattedMessage id="segment_start_stop" values={{
-          name: nameText,
-          start: segment.start,
-          stop: segment.stop,
-          effect: effectText,
-        }} />
+        <FormattedMessage
+          id="segment_start_stop"
+          values={{
+            name: nameText,
+            start: segment.start,
+            stop: segment.stop,
+            effect: effectText,
+          }} />
       )}
       buttons={(
         <>
