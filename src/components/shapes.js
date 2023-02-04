@@ -18,6 +18,10 @@ export const ControllerState = PropTypes.shape({
   palettes: PropTypes.arrayOf(PropTypes.string),
 });
 
+export const Log = PropTypes.shape({
+  text: PropTypes.string,
+});
+
 export const Track = PropTypes.shape({
   name: PropTypes.string,
   path: PropTypes.string,

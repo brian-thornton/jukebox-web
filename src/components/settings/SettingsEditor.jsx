@@ -61,7 +61,7 @@ const SettingsEditor = () => {
         description={displayName?.value || name}
         keys={['on', 'off']}
         selectedKey={settings.features[name] === true ? 'on' : 'off'}
-        onSetKey={(updatedValue) => updateFeature(name, updatedValue === 'on')}
+        onSetKey={updatedValue => updateFeature(name, updatedValue === 'on')}
       />
     );
   };

@@ -45,7 +45,7 @@ const JukeboxFooter = ({
       return <></>;
     }
 
-    return <div className="now-playing" style={{ fontFamily: settings.styles.footerFont }}><FormattedMessage id="now_playing" values={{track: nowPlaying}} /></div>;
+    return <div className="now-playing" style={{ fontFamily: settings.styles.footerFont }}><FormattedMessage id="now_playing" values={{ track: nowPlaying }} /></div>;
   };
 
   const footerContent = () => {
@@ -89,7 +89,6 @@ const JukeboxFooter = ({
 
 JukeboxFooter.defaultProps = {
   nowPlaying: '',
-  search: '',
   setSearch: null,
 };
 

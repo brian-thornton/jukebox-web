@@ -1,31 +1,45 @@
 import React from 'react';
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route } from 'react-router-dom';
+import { PropTypes } from 'prop-types';
 
-const AlbumDetail = React.lazy(() => import("../albums/AlbumDetail"));
-const AlbumList = React.lazy(() => import("../albums/AlbumList"));
-const Filters = React.lazy(() => import("../layout/Filters"));
-const PlaylistsViewer = React.lazy(() => import("../playlists/PlaylistsViewer"));
-const Queue = React.lazy(() => import("../queue/Queue"));
-const RadioList = React.lazy(() => import("../radio/RadioList"));
-const Search = React.lazy(() => import("../common/Search"));
-const Settings = React.lazy(() => import("../settings/Settings"));
-const Tracks = React.lazy(() => import("../Tracks"));
-const WithKeyboardInput = React.lazy(() => import("../layout/WithKeyboardInput"));
-const Genres = React.lazy(() => import("../genres/Genres"));
+const AlbumDetail = React.lazy(() => import('../albums/AlbumDetail'));
+const AlbumList = React.lazy(() => import('../albums/AlbumList'));
+const Filters = React.lazy(() => import('./Filters'));
+const Genres = React.lazy(() => import('../genres/Genres'));
+const PlaylistsViewer = React.lazy(() => import('../playlists/PlaylistsViewer'));
+const Queue = React.lazy(() => import('../queue/Queue'));
+const RadioList = React.lazy(() => import('../radio/RadioList'));
+const Search = React.lazy(() => import('../common/Search'));
+const Settings = React.lazy(() => import('../settings/Settings'));
+const Tracks = React.lazy(() => import('../Tracks'));
+const WithKeyboardInput = React.lazy(() => import('./WithKeyboardInput'));
+
+const propTypes = {
+  display: PropTypes.string.isRequired,
+  search: PropTypes.string,
+  selectedLibraries: PropTypes.arrayOf(PropTypes.string),
+  setMediaType: PropTypes.func.isRequired,
+  setSearch: PropTypes.func.isRequired,
+  setSelectedLibraries: PropTypes.func.isRequired,
+  setStartsWithFilter: PropTypes.func.isRequired,
+  setTempSearch: PropTypes.func.isRequired,
+  startsWithFilter: PropTypes.string,
+  tempSearch: PropTypes.string,
+};
 
 const JukeboxRoutes = ({
-  selectedLibraries,
-  setSelectedLibraries,
-  search,
-  setStartsWithFilter,
-  startsWithFilter,
   display,
+  search,
+  selectedLibraries,
   setMediaType,
-  tempSearch,
-  setTempSearch,
   setSearch,
+  setSelectedLibraries,
+  setStartsWithFilter,
+  setTempSearch,
+  startsWithFilter,
+  tempSearch,
 }) => {
-  const wrapWithKeyboard = (component) => (
+  const wrapWithKeyboard = component => (
     <WithKeyboardInput
       component={component}
       tempSearch={tempSearch}
@@ -62,12 +76,14 @@ const JukeboxRoutes = ({
       />
       <Route path="/albums/:id" element={<AlbumDetail />} />
       <Route path="/albums/categories/:id" element={<AlbumList />} search={search} display={display} />
-      <Route path="/filters" element={(
-        <Filters
-          selectedLibraries={selectedLibraries}
-          setSelectedLibraries={setSelectedLibraries}
-        />
-      )}
+      <Route
+        path="/filters"
+        element={(
+          <Filters
+            selectedLibraries={selectedLibraries}
+            setSelectedLibraries={setSelectedLibraries}
+          />
+        )}
       />
       <Route path="/playlists" element={<PlaylistsViewer />} />
       <Route path="/queue" element={<Queue />} />
@@ -78,6 +94,15 @@ const JukeboxRoutes = ({
       <Route path="/genres" element={<Genres />} />
     </Routes>
   );
+};
+
+JukeboxRoutes.propTypes = propTypes;
+
+JukeboxRoutes.defaultProps = {
+  search: '',
+  selectedLibraries: null,
+  startsWithFilter: null,
+  tempSearch: '',
 };
 
 export default JukeboxRoutes;

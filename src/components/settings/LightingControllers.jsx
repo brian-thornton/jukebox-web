@@ -169,9 +169,9 @@ const LightingControllers = ({
     }
   };
 
-  const buttonProps = (controller) => ({
+  const buttonProps = controller => ({
     disabled: !controller.online,
-    className: "lighting-controller-button",
+    className: 'lighting-controller-button',
   });
 
   const controllerRow = (controller) => {

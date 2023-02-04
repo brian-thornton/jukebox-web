@@ -16,7 +16,7 @@ const propTypes = {
 };
 
 const QueueControls = ({
-  tracks, loadQueue, setClearConfirm, clearConfirm
+  tracks, loadQueue, setClearConfirm, clearConfirm,
 }) => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
