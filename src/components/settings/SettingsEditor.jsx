@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
-import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { calculatePageSize } from '../../lib/styleHelper';
+import ToggleRow from './ToggleRow';
 
 const SettingsEditor = () => {
   const [features, setFeatures] = useState();
@@ -54,21 +53,15 @@ const SettingsEditor = () => {
     { key: 'downloadTrack', value: <FormattedMessage id="download_track" /> },
   ];
 
-  const settingRow = (name, value) => {
-    const buttonText = <FormattedMessage id={value ? 'enabled' : 'disabled'} />;
+  const settingRow = (name) => {
     const displayName = displayNames.find(entry => entry.key === name);
 
     return (
-      <Item
-        buttons={(
-          <Button
-            onClick={() => updateFeature(name, !value)}
-            isToggle
-            isToggled={value}
-            content={buttonText}
-          />
-        )}
-        text={displayName?.value || name}
+      <ToggleRow
+        description={displayName?.value || name}
+        keys={['on', 'off']}
+        selectedKey={settings.features[name] === true ? 'on' : 'off'}
+        onSetKey={(updatedValue) => updateFeature(name, updatedValue === 'on')}
       />
     );
   };
@@ -77,7 +70,7 @@ const SettingsEditor = () => {
     return (
       <>
         {features.slice(realStart, (realStart + realPageSize)).map(key => (
-          settingRow(key, settings.features[key])))}
+          settingRow(key)))}
         <Paginator
           disableRandom
           onPageChange={page => setSelectedPage(page)}

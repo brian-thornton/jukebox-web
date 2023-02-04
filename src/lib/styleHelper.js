@@ -231,6 +231,7 @@ const deepCloneSkin = (settings, selectedSkin) => {
   deepClone.styles.navButtonSize = selectedSkin.navButtonSize;
   deepClone.styles.controlButtonSize = selectedSkin.controlButtonSize;
   deepClone.styles.buttonShape = selectedSkin.buttonShape;
+  deepClone.styles.controlUseBackground = selectedSkin.controlUseBackground;
   return deepClone;
 }
 

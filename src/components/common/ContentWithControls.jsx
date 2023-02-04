@@ -17,11 +17,12 @@ const propTypes = {
 
 const ContentWithControls = ({ controls, content, alertText }) => {
   const settings = useContext(SettingsContext);
+  const { headerColor, controlUseBackground } = settings.styles;
 
   const controlStyle = {
     paddingTop: '10px',
     paddingBottom: '20px',
-    background: settings.styles.headerColor,
+    background: controlUseBackground === "on" ? headerColor : '',
     borderBottomRightRadius: '35px',
   };
 

@@ -65,9 +65,6 @@ const ColorPicker = ({
 
   const formLabelStyle = {
     color: settings.styles.fontColor,
-    paddingTop: '5px',
-    marginLeft: '10px',
-    marginRight: '10px',
   };
 
   return (
@@ -102,7 +99,7 @@ const ColorPicker = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Form.Label style={formLabelStyle}>
+                    <Form.Label className="formLabel" style={formLabelStyle}>
                       <FormattedMessage id="opacity" />
                     </Form.Label>
                     <Form.Range onChange={e => setOpacity(e.target.value)} />
