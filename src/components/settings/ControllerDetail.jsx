@@ -29,7 +29,7 @@ const ControllerDetail = ({ controller }) => {
   return (
     <>
       <Card className="controller-card">
-        <Card.Title style={{ marginTop: '5px', color: settings.styles.fontColor }}>
+        <Card.Title className="controller-card-title" style={{ color: settings.styles.fontColor }}>
           <FormattedMessage id="segments_for_ip" values={{ ip: controller.ip }} />
         </Card.Title>
         <Card.Body>

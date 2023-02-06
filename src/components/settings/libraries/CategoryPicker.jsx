@@ -5,7 +5,7 @@ import FormControl from 'react-bootstrap/FormControl';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -20,6 +20,7 @@ const CategoryPicker = ({
   selectedCategory,
   onSelectCategory,
 }) => {
+  const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [newCategory, setNewCategory] = useState();
   const [categories, setCategories] = useState(settings.categories);
@@ -51,7 +52,7 @@ const CategoryPicker = ({
           </Form.Group>
           {!addMode && <Button onClick={() => setAddMode(true)} content={<FormattedMessage id="add_new_category" />} />}
         </Col>
-      </Row>
+      </Row>  
       {addMode && (
         <Row>
           <Col md="12" lg="12">
@@ -62,7 +63,7 @@ const CategoryPicker = ({
               <Col sm="6">
                 <FormControl
                   id="category"
-                  placeholder={<FormattedMessage id="new_category_name" />}
+                  placeholder={intl.formatMessage({ id: "new_category_name" })}
                   aria-label="Name"
                   defaultValue={newCategory}
                   aria-describedby="basic-addon1"

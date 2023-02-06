@@ -31,7 +31,8 @@ const AlbumAdminButtons = ({
         text={name}
         width="100%"
         height={buttonHeight}
-        style={{ fontSize, marginTop: '0px', marginBottom: '0px' }}
+        className="albumControlButton"
+        style={{ fontSize }}
       />
     </Col>
   );

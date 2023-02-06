@@ -36,7 +36,7 @@ const SkinDetail = ({
   }, []);
 
   const controls = (
-    <Container fluid style={{ marginBottom: '20px' }}>
+    <Container fluid className="skin-container">
       <Row>
         <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
         <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />

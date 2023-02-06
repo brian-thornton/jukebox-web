@@ -11,6 +11,7 @@ import { topMargin } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Items } from '../shapes';
 import FullWidthRow from './FullWidthRow';
+import './PaginatedList.scss';
 
 const propTypes = {
   topLevelControls: PropTypes.node,
@@ -41,14 +42,14 @@ const PaginatedList = ({
   const { isScreenSmall } = settings;
 
   return (
-    <Container fluid {...swipe} style={{ width: '100%', marginTop: applyTopMargin ? topMargin(settings) : '' }}>
+    <Container fluid className="paginated-list-container" {...swipe} style={{ marginTop: applyTopMargin ? topMargin(settings) : '' }}>
       {topLevelControls && (
         <FullWidthRow>{topLevelControls}</FullWidthRow>
       )}
       {items && items.length > 0 && (
         <>
           <FullWidthRow>
-            <ListGroup style={{ width: '100%' }}>
+            <ListGroup className="paginated-list-group">
               <>
                 {standardItems && items.map(item => (
                   <>

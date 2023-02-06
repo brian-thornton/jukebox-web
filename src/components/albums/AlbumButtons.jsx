@@ -58,7 +58,8 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
         onClick={onClick}
         width="100%"
         height={buttonHeight}
-        style={{ fontSize, marginTop: '0px', marginBottom: '0px' }}
+        className="albumControlButton"
+        style={{ fontSize }}
       />
     </Col>
   );

@@ -11,7 +11,7 @@ const propTypes = {
   onSelect: PropTypes.func.isRequired,
 };
 
-const DownloadCoverArtPicker = ({ onSelect }) => (
+const DownloadCoverArtPreference = ({ library, onSelect }) => (
   <Container fluid>
     <Row>
       <Form>
@@ -22,6 +22,7 @@ const DownloadCoverArtPicker = ({ onSelect }) => (
             name="group1"
             type="radio"
             id="no"
+            checked={!library?.allowCoverArtDownload}
             onChange={() => onSelect(false)}
           />
           <Form.Check
@@ -30,6 +31,7 @@ const DownloadCoverArtPicker = ({ onSelect }) => (
             name="group1"
             type="radio"
             id="yes"
+            checked={library?.allowCoverArtDownload}
             onChange={() => onSelect(true)}
           />
         </div>
@@ -38,6 +40,6 @@ const DownloadCoverArtPicker = ({ onSelect }) => (
   </Container>
 );
 
-DownloadCoverArtPicker.propTypes = propTypes;
+DownloadCoverArtPreference.propTypes = propTypes;
 
-export default DownloadCoverArtPicker;
+export default DownloadCoverArtPreference;

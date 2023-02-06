@@ -7,7 +7,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../Button';
 import CategoryPicker from './CategoryPicker';
-import DownloadCoverArtPicker from './DownloadCoverArtPreference';
+import DownloadCoverArtPreference from './DownloadCoverArtPreference';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './LibraryAdd.scss';
@@ -29,7 +29,7 @@ const LibraryAdd = ({
   const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(library.category);
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const { isScreenSmall } = settings;
 
@@ -49,7 +49,7 @@ const LibraryAdd = ({
       <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
         <Container fluid className="addContainer">
           <Row>
-            <NameInput placeholder={intl.formatMessage({ id: 'path' })} />
+            <NameInput placeholder={library?.path || intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker
@@ -58,7 +58,7 @@ const LibraryAdd = ({
             />
           </Row>
           <Row>
-            <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
+            <DownloadCoverArtPreference library={library} onSelect={onSelectDownloadPreference} />
           </Row>
         </Container>
         <Button

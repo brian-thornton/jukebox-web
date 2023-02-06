@@ -7,6 +7,7 @@ import JukeboxNavLeft from './JukeboxNavLeft';
 import JukeboxNavRight from './JukeboxNavRight';
 import { SettingsContext } from './SettingsProvider';
 import { Libraries } from '../shapes';
+import './JukeboxHeader.scss';
 
 const propTypes = {
   setSearch: PropTypes.func.isRequired,
@@ -33,7 +34,7 @@ const JukeboxHeader = ({
   const showBrand = (navButtonSize !== 'large' && navButtonSize !== 'medium');
 
   return (
-    <Navbar style={{ marginBottom: '0px', background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar className="header-nav-bar" style={{ background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
         {showBrand && (
           <Navbar.Brand
