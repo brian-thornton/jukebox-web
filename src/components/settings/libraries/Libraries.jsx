@@ -75,7 +75,7 @@ const Libraries = () => {
       add({ path, category, allowCoverArtDownload });
     } else if (selectedLibrary && (path || selectedLibrary)) {
       deleteLibrary(selectedLibrary.name).then(() => {
-        add({ path: path || selectedLibrary.path, category, allowCoverArtDownload });
+        add({ path: path || selectedLibrary.path, category, allowCoverArtDownload, albums: selectedLibrary?.albums || [], tracks: selectedLibrary?.tracks || [] });
       });
     }
     setSelectedLibrary(null);

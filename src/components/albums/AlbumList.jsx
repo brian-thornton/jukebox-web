@@ -87,6 +87,7 @@ const AlbumList = ({
       } else {
         const musicCategory = category === 'Albums' ? null : category;
 
+        console.log(`start: ${start} end: ${end} category: ${musicCategory}`)
         getAlbums(start, end, musicCategory, selectedLibraries, preferences.restrictionGroup)
           .then((data) => {
             setTotalAlbums(data.totalAlbums);
@@ -100,7 +101,7 @@ const AlbumList = ({
   };
 
   useEffect(() => {
-    if (display !== 'covers') {
+    if (display !== 'covers' && !category) {
       const itemsPerColumn = Math.floor((window.innerHeight - 200) / 40);
       setPageSize(itemsPerColumn * 3);
     } else {

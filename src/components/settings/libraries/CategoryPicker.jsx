@@ -17,7 +17,7 @@ const propTypes = {
 };
 
 const CategoryPicker = ({
-  selectedCategory,
+  category,
   onSelectCategory,
 }) => {
   const intl = useIntl();
@@ -45,7 +45,7 @@ const CategoryPicker = ({
               <FormattedMessage id="category" />
             </Form.Label>
             <Col sm="10">
-              <Form.Control as="select" value={selectedCategory} onChange={e => onSelectCategory(e.target.value)}>
+              <Form.Control as="select" value={category} onChange={e => onSelectCategory(e.target.value)}>
                 {categories.map(category => <option>{category}</option>)}
               </Form.Control>
             </Col>
@@ -83,7 +83,7 @@ const CategoryPicker = ({
 };
 
 CategoryPicker.defaultProps = {
-  selectedCategory: '',
+  category: '',
 };
 
 CategoryPicker.propTypes = propTypes;

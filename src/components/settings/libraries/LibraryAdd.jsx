@@ -26,12 +26,14 @@ const LibraryAdd = ({
   handleSave,
   library,
 }) => {
+  console.log(library)
   const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(library.category);
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const { isScreenSmall } = settings;
+  const [editLibrary, setEditLibrary] = useState(library);
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
@@ -49,12 +51,16 @@ const LibraryAdd = ({
       <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
         <Container fluid className="addContainer">
           <Row>
-            <NameInput placeholder={library?.path || intl.formatMessage({ id: 'path' })} />
+            <NameInput placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker
-              onSelectCategory={category => setSelectedCategory(category)}
-              category={selectedCategory}
+              onSelectCategory={category => {
+                console.log({...editLibrary, category})
+                setEditLibrary({...editLibrary, category})
+                setSelectedCategory(category);
+              }}
+              category={editLibrary?.category || library.category}
             />
           </Row>
           <Row>

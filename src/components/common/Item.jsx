@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -8,19 +7,15 @@ import ExpandRow from './ExpandRow';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Item.scss';
 
-const propTypes = {
-  buttons: PropTypes.node,
-  onClick: PropTypes.func,
-  text: PropTypes.string,
-  includeCheckbox: PropTypes.bool,
-  onCheck: PropTypes.func,
-  checked: PropTypes.bool,
-  actionVisible: PropTypes.bool,
-  font: PropTypes.string,
-};
-
 const Item = ({
-  buttons, onClick, text, includeCheckbox, onCheck, checked, actionVisible, font,
+  buttons,
+  onClick,
+  text,
+  includeCheckbox,
+  onCheck,
+  checked,
+  actionVisible,
+  font
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
@@ -66,8 +61,5 @@ Item.defaultProps = {
   actionVisible: false,
   font: '',
 };
-
-
-Item.propTypes = propTypes;
 
 export default Item;

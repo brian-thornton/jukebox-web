@@ -14,36 +14,31 @@ const propTypes = {
 };
 
 const Confirm = ({ onConfirm, onCancel, text }) => {
-  const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
-  const { controlButtonSize } = settings.styles;
-  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '20px';
+  const { styles, isScreenSmall } = useContext(SettingsContext);
+  const { controlButtonSize, fontColor, trackBackgroundColor } = styles;
 
-  const confirmStyle = {
-    marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
-  };
+  const buttonSize = controlButtonSize === 'small' ? '' : '60';
+  const fontSize = controlButtonSize === 'small' ? '' : '20px';
+  const marginTop = isScreenSmall ? '60px' : '0px';
 
   return (
-    <Card className="confirmCard" style={confirmStyle}>
-      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
-        <Card.Title className="confirmTitle"><FormattedMessage id="are_you_sure" /></Card.Title>
-        <Card.Text className="confirmText">
-          {text}
-        </Card.Text>
+    <Card className="confirmCard" style={{ color: fontColor, marginTop }}>
+      <Card.Body style={{ background: trackBackgroundColor }}>
+        <Card.Title className="confirmTitle">
+          <FormattedMessage id="are_you_sure" />
+        </Card.Title>
+        <Card.Text className="confirmText">{text}</Card.Text>
         <div className="confirmText">
           <Button
-            height={buttonWidth}
-            width={buttonHeight}
+            height={buttonSize}
+            width={buttonSize}
             style={{ fontSize }}
             onClick={onCancel}
             content={<FormattedMessage id="no" />}
           />
           <Button
-            height={buttonWidth}
-            width={buttonHeight}
+            height={buttonSize}
+            width={buttonSize}
             style={{ fontSize }}
             onClick={onConfirm}
             content={<FormattedMessage id="yes" />}
