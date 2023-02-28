@@ -9,6 +9,7 @@ import Preferences from './preferences/Preferences';
 import SettingsEditor from './SettingsEditor';
 import { SettingsContext } from '../layout/SettingsProvider';
 import RestrictionModes from './content/RestrictionModes';
+import CategoryList from './categories/CategoryList';
 import Skins from './skins/Skins';
 import PinEntry from '../common/PinEntry';
 import { applyLighting } from '../../lib/lightingHelper';
@@ -57,7 +58,7 @@ const Settings = () => {
   );
 
   const modes = ['LIBRARY', 'PREFERENCES', 'ACCESS', 'STYLE', 'RESTRICTIONS',
-    'CABINET', 'LOGS', 'METADATA'];
+    'CABINET', 'LOGS', 'METADATA', 'CATEGORIES'];
 
   const leftControls = () => {
     if ((settings.preferences.pinEnabled && isAuthorized) || !settings.preferences.pinEnabled) {
@@ -78,6 +79,7 @@ const Settings = () => {
           {mode === 'CABINET' && <CabinetConfiguration />}
           {mode === 'LOGS' && <LogList />}
           {mode === 'METADATA' && <Metadata />}
+          {mode === 'CATEGORIES' && <CategoryList />}
           {mode === 'STYLE' && (
             <Skins
               resetControls={() => setControls(leftControls())}

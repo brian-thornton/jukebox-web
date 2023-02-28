@@ -12,6 +12,7 @@ const messages = {
   'en': messages_en,
 };
 
+
 // get browser language without the region code
 const language = navigator.language.split(/[-_]/)[0];
 

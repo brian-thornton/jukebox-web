@@ -22,7 +22,7 @@ const ContentWithControls = ({ controls, content, alertText }) => {
   const controlStyle = {
     paddingTop: '10px',
     paddingBottom: '20px',
-    background: controlUseBackground === "on" ? headerColor : '',
+    background: controlUseBackground === 'on' ? headerColor : '',
     borderBottomRightRadius: '35px',
   };
 

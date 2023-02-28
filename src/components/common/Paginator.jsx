@@ -44,7 +44,7 @@ const Paginator = ({
 
   const buttonProps = {
     style: { fontSize },
-      height,
+    height,
     width: height,
   };
 

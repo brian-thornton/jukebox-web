@@ -46,16 +46,16 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
               {
                 event: selectedEvent,
                 preset: preset.n,
-              }
-            ]
-          }
-        ]
-      }
+              },
+            ],
+          },
+        ],
+      };
     } else {
-      // The skin has lighting defined. We need to search for configuration for the current controller.
+      // The skin has lighting defined. Search for configuration for the current controller.
       const existingController = deepClone.lighting.controllers.find(c => c.ip === controller.ip);
 
-      // If the controller exists, we need to check if the current event is already defined and update it.
+      // If the controller exists, check if the current event is already defined and update it.
       if (existingController) {
         const existingEvent = existingController.events.find(e => e.event === selectedEvent);
 
@@ -71,7 +71,7 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
           });
         }
       } else {
-        // This is the first time we are seeing this controller. Let's add the entry and initial event.
+        // This is the first time we are seeing this controller. Add the entry and initial event.
         deepClone.lighting.controllers.push(
           {
             ip: controller.ip,
@@ -79,9 +79,9 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
               {
                 event: selectedEvent,
                 preset: preset.n,
-              }
-            ]
-          }
+              },
+            ],
+          },
         );
       }
     }
@@ -90,7 +90,7 @@ const SkinSegmentConfiguration = ({ skin, controller, setController, loadSkins }
       createSkin({
         name: deepClone.name,
         skin: deepClone,
-      }).then(() => window.location.replace(`/settings?skin=${deepClone.name}&mode=style&tab=lights`))
+      }).then(() => window.location.replace(`/settings?skin=${deepClone.name}&mode=style&tab=lights`));
     });
   };
 

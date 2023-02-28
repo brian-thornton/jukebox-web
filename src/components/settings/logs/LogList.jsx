@@ -31,7 +31,7 @@ const LogList = () => {
           totalItems={logs?.totalLogs}
           pageSize={itemsPerPage}
           items={logs?.messages?.map(m => ({ text: JSON.stringify(m.message) }))}
-          onItemClick={(item) => setSelectedLog(item)}
+          onItemClick={item => setSelectedLog(item)}
         />
       )}
       {selectedLog && <LogDetail log={selectedLog} onClose={() => setSelectedLog(null)} />}

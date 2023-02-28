@@ -21,6 +21,8 @@ const propTypes = {
   nextPage: PropTypes.func.isRequired,
   previousPage: PropTypes.func.isRequired,
   tracks: PropTypes.arrayOf(Track),
+  queue: PropTypes.arrayOf(Track),
+  setQueue: PropTypes.func.isRequired,
 };
 
 const TrackList = ({ tracks, queue, setQueue }) => {
@@ -128,6 +130,7 @@ const TrackList = ({ tracks, queue, setQueue }) => {
 TrackList.propTypes = propTypes;
 TrackList.defaultProps = {
   tracks: [],
+  queue: [],
 };
 
 export default TrackList;

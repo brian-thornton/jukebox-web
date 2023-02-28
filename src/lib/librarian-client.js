@@ -5,6 +5,7 @@ const albumArt = require('album-art');
 const path = '/librarian';
 
 export const getLibraries = () => getData(`${path}/libraries`);
+export const getByCategory = () => getData(`${path}/getByCategory`);
 export const getCoverArt = (url) => getBlob(`${path}/coverArt?path=${url}`);
 export const getAlbumTracks = (url) => getData(`${path}/albumTracks?path=${url}`);
 export const discover = (url) => getData(`${path}/discover?path=${url}`);

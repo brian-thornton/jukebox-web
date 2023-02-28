@@ -59,7 +59,7 @@ const JukeboxRoutes = ({
             setStartsWithFilter={setStartsWithFilter}
             startsWithFilter={startsWithFilter}
             display={display}
-          />
+          />,
         )}
       />
       <Route
@@ -71,7 +71,7 @@ const JukeboxRoutes = ({
             selectedLibraries={selectedLibraries}
             display={display}
             search={search}
-          />
+          />,
         )}
       />
       <Route path="/albums/:id" element={<AlbumDetail />} />

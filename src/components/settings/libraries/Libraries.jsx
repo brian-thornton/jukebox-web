@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { getStatus, updateStatus } from '../../../lib/status-client';
@@ -10,7 +11,6 @@ import {
   deleteLibrary,
   scan,
 } from '../../../lib/librarian-client';
-import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import LibraryAdd from './LibraryAdd';
@@ -75,7 +75,12 @@ const Libraries = () => {
       add({ path, category, allowCoverArtDownload });
     } else if (selectedLibrary && (path || selectedLibrary)) {
       deleteLibrary(selectedLibrary.name).then(() => {
-        add({ path: path || selectedLibrary.path, category, allowCoverArtDownload, albums: selectedLibrary?.albums || [], tracks: selectedLibrary?.tracks || [] });
+        add({
+          path: path || selectedLibrary.path,
+          category, allowCoverArtDownload,
+          albums: selectedLibrary?.albums || [],
+          tracks: selectedLibrary?.tracks || [],
+        });
       });
     }
     setSelectedLibrary(null);

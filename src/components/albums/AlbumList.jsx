@@ -1,3 +1,4 @@
+import { FormattedMessage } from 'react-intl';
 import { PropTypes } from 'prop-types';
 import { useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
@@ -5,22 +6,21 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import React, { useContext, useState, useEffect } from 'react';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
 
 import './AlbumList.scss';
 import { applyLighting } from '../../lib/lightingHelper';
+import { coverDimensions, headerFooterReserve } from '../../lib/styleHelper';
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import { handlers } from '../../lib/gesture-helper';
-import { coverDimensions, headerFooterReserve } from '../../lib/styleHelper';
 import { Libraries } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Album from './Album';
 import AlbumTable from './AlbumTable';
+import FullWidthRow from '../common/FullWidthRow';
 import Loading from '../common/Loading';
 import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import StartsWithFilter from './StartsWithFilter';
-import FullWidthRow from '../common/FullWidthRow';
 
 const propTypes = {
   selectedLibraries: Libraries,
@@ -87,7 +87,6 @@ const AlbumList = ({
       } else {
         const musicCategory = category === 'Albums' ? null : category;
 
-        console.log(`start: ${start} end: ${end} category: ${musicCategory}`)
         getAlbums(start, end, musicCategory, selectedLibraries, preferences.restrictionGroup)
           .then((data) => {
             setTotalAlbums(data.totalAlbums);

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, Suspense } from 'react';
 import { useIdleTimer } from 'react-idle-timer'
 import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
+import { gql, useQuery } from "@apollo/client";
 
 import './App.css';
 import { getSettings } from './lib/settings-client';

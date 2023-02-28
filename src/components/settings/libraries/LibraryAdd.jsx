@@ -26,7 +26,6 @@ const LibraryAdd = ({
   handleSave,
   library,
 }) => {
-  console.log(library)
   const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
@@ -55,9 +54,8 @@ const LibraryAdd = ({
           </Row>
           <Row>
             <CategoryPicker
-              onSelectCategory={category => {
-                console.log({...editLibrary, category})
-                setEditLibrary({...editLibrary, category})
+              onSelectCategory={(category) => {
+                setEditLibrary({ ...editLibrary, category });
                 setSelectedCategory(category);
               }}
               category={editLibrary?.category || library.category}

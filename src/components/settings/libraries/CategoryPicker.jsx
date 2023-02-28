@@ -52,7 +52,7 @@ const CategoryPicker = ({
           </Form.Group>
           {!addMode && <Button onClick={() => setAddMode(true)} content={<FormattedMessage id="add_new_category" />} />}
         </Col>
-      </Row>  
+      </Row>
       {addMode && (
         <Row>
           <Col md="12" lg="12">
@@ -63,7 +63,7 @@ const CategoryPicker = ({
               <Col sm="6">
                 <FormControl
                   id="category"
-                  placeholder={intl.formatMessage({ id: "new_category_name" })}
+                  placeholder={intl.formatMessage({ id: 'new_category_name' })}
                   aria-label="Name"
                   defaultValue={newCategory}
                   aria-describedby="basic-addon1"
