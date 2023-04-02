@@ -1,25 +1,24 @@
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import { Container, Row, Col } from 'react-bootstrap';
-import { PropTypes } from 'prop-types';
 
 import CheckToggle from './CheckToggle';
 import ExpandRow from './ExpandRow';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './Item.scss';
 
-const propTypes = {
-  buttons: PropTypes.arrayOf(PropTypes.node),
-  onClick: PropTypes.func,
-  text: PropTypes.string,
-  includeCheckbox: PropTypes.bool,
-  onCheck: PropTypes.func,
-  checked: PropTypes.bool,
-  actionVisible: PropTypes.bool,
-  font: PropTypes.string,
+interface IItem {
+  buttons: [any],
+  onClick: Function,
+  text: string,
+  includeCheckbox?: boolean,
+  onCheck: Function,
+  checked: boolean,
+  actionVisible: boolean,
+  font?: string,
 };
 
-const Item = ({
+const Item: FC<IItem> = ({
   buttons,
   onClick,
   text,
@@ -33,17 +32,17 @@ const Item = ({
   const { isScreenSmall } = settings;
 
   const itemStyle = {
-    color: settings.styles.fontColor,
-    background: settings.styles.trackBackgroundColor,
-    fontFamily: font || settings.styles.listFont,
+    color: settings?.styles?.fontColor,
+    background: settings?.styles?.trackBackgroundColor,
+    fontFamily: font || settings?.styles?.listFont,
   };
 
   if (isScreenSmall) {
-    return <ExpandRow text={text} buttons={buttons} />;
+    return <ExpandRow text={text} buttons={buttons} setIsExpanded={() => {}} isExpanded={false} />;
   }
 
   return (
-    <ListGroupItem className="itemStyle" style={itemStyle} onClick={onClick}>
+    <ListGroupItem className="itemStyle" style={itemStyle} onClick={(e) => onClick()}>
       <Container fluid>
         <Row>
           <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">
@@ -62,18 +61,5 @@ const Item = ({
     </ListGroupItem>
   );
 };
-
-Item.defaultProps = {
-  buttons: null,
-  onClick: null,
-  text: '',
-  includeCheckbox: false,
-  onCheck: null,
-  checked: false,
-  actionVisible: false,
-  font: '',
-};
-
-Item.propTypes = propTypes;
 
 export default Item;

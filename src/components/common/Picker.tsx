@@ -2,30 +2,29 @@ import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
+import { FC, useContext } from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 
-const propTypes = {
-  applyPadding: PropTypes.bool,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
-    buttonText: PropTypes.string,
-    onClick: PropTypes.func,
-  })),
+interface IPicker {
+  applyPadding: boolean,
+  items: [{
+    title: string,
+    description: string,
+    buttonText: string,
+    onClick: Function,
+  }],
 };
 
-const Picker = ({ items, applyPadding }) => {
+const Picker: FC<IPicker> = ({ items, applyPadding }) => {
   const settings = useContext(SettingsContext);
 
-  const pickerCardStyle = item => ({
-    background: settings.styles.trackBackgroundColor,
+  const pickerCardStyle = (item: any) => ({
+    background: settings?.styles?.trackBackgroundColor,
     marginBottom: '20px',
     height: item.description ? '200px' : '120px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   });
 
   return (
@@ -45,13 +44,6 @@ const Picker = ({ items, applyPadding }) => {
       </Row>
     </Container>
   );
-};
-
-Picker.propTypes = propTypes;
-
-Picker.defaultProps = {
-  applyPadding: false,
-  items: [],
 };
 
 export default Picker;

@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
-import PropTypes from 'prop-types';
 
 import { handlers } from '../../lib/gesture-helper';
 import ExpandRow from './ExpandRow';
@@ -9,22 +8,22 @@ import Item from './Item';
 import Paginator from './Paginator';
 import { topMargin } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { Items } from '../shapes';
+import { IItem } from '../interface';
 import FullWidthRow from './FullWidthRow';
 import './PaginatedList.scss';
 
-const propTypes = {
-  topLevelControls: PropTypes.node,
-  items: Items,
-  selectedPage: PropTypes.number,
-  totalItems: PropTypes.number,
-  setSelectedPage: PropTypes.func.isRequired,
-  pageSize: PropTypes.number,
-  applyTopMargin: PropTypes.bool,
-  onItemClick: PropTypes.func,
+interface IPaginatedList {
+  topLevelControls: any,
+  items: [IItem],
+  selectedPage: number,
+  totalItems: number,
+  setSelectedPage: Function,
+  pageSize: number,
+  applyTopMargin: boolean,
+  onItemClick: Function,
 };
 
-const PaginatedList = ({
+const PaginatedList: FC<IPaginatedList> = ({
   topLevelControls,
   items,
   selectedPage,
@@ -53,12 +52,15 @@ const PaginatedList = ({
               <>
                 {standardItems && items.map(item => (
                   <>
-                    {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} />}
+                    {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} setIsExpanded={() => {}} isExpanded={false} />}
                     {!isScreenSmall && (
                       <Item
                         text={item.text}
                         buttons={item.buttons || <></>}
                         onClick={() => onItemClick(item)}
+                        onCheck={() => {}}
+                        checked={false}
+                        actionVisible={false}
                       />
                     )}
                   </>
@@ -71,7 +73,7 @@ const PaginatedList = ({
             {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
               <Paginator
                 disableRandom
-                onPageChange={page => setSelectedPage(page)}
+                onPageChange={(page: any) => setSelectedPage(page)}
                 selectedPage={selectedPage}
                 totalItems={totalItems || items.length}
                 pageSize={pageSize}
@@ -83,17 +85,5 @@ const PaginatedList = ({
     </Container>
   );
 };
-
-PaginatedList.defaultProps = {
-  topLevelControls: null,
-  items: null,
-  selectedPage: null,
-  totalItems: null,
-  pageSize: null,
-  applyTopMargin: null,
-  onItemClick: () => { },
-};
-
-PaginatedList.propTypes = propTypes;
 
 export default PaginatedList;

@@ -1,8 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import FormControl from 'react-bootstrap/FormControl';
 //import KeyboardEventHandler from 'react-keyboard-event-handler';
-import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { BackspaceFill } from 'react-bootstrap-icons';
@@ -14,20 +13,19 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
 import { topMargin } from '../../lib/styleHelper';
 
-const propTypes = {
-  setSearchText: PropTypes.func.isRequired,
+interface ISearch {
+  setSearchText: Function,
 };
 
-const Search = ({ setSearchText }) => {
+const Search: FC<ISearch> = ({ setSearchText }) => {
   const [lightingApplied, setLightingApplied] = useState(false);
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const { isScreenSmall } = settings;
   const [localSearch, setLocalSearch] = useState('');
 
-  const inputButton = value => (
+  const inputButton = (value: any) => (
     <Button
-      className="searchButton"
       width={isScreenSmall ? '50' : '75'}
       height={isScreenSmall ? '50' : '75'}
       onClick={() => {
@@ -39,7 +37,6 @@ const Search = ({ setSearchText }) => {
 
   const backspace = () => (
     <Button
-      className="searchButton"
       width={isScreenSmall ? '50' : '75'}
       height={isScreenSmall ? '50' : '75'}
       onClick={() => {
@@ -58,11 +55,10 @@ const Search = ({ setSearchText }) => {
     fireLightingEvents();
   }
 
-  const row = content => content.map(char => inputButton(char));
+  const row = (content: any) => content.map((char: any) => inputButton(char));
 
-  const searchButton = (text, target) => (
+  const searchButton = (text: any, target: any) => (
     <Button
-      className="keyboardRow searchButton"
       width="300"
       height="55"
       onClick={() => {
@@ -112,26 +108,25 @@ const Search = ({ setSearchText }) => {
         <Row>
           <Container fluid className="d-none d-sm-block">
             <Row className="keyboardRow firstKeyboardRow">
-              {inputButton(1, 60)}
+              {inputButton(1)}
               {row([2, 3, 4, 5, 6, 7, 8, 9, '0'])}
-              {backspace(<BackspaceFill />)}
+              {backspace()}
             </Row>
             <Row className="keyboardRow">
-              {inputButton('Q', 60)}
+              {inputButton('Q')}
               {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
             </Row>
             <Row className="keyboardRow">
-              {inputButton('A', 100)}
+              {inputButton('A')}
               {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
             </Row>
             <Row className="keyboardRow">
-              {inputButton('Z', 150)}
+              {inputButton('Z')}
               {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
             <Row className="keyboardRow">
               <Button
                 hideOnSmall
-                className="searchButton"
                 width="500"
                 height="55"
                 onClick={() => setLocalSearch(`${localSearch} `)}
@@ -139,7 +134,6 @@ const Search = ({ setSearchText }) => {
               />
               <Button
                 hideOnSmall
-                className="searchButton"
                 width="150"
                 height="55"
                 onClick={() => {
@@ -158,7 +152,5 @@ const Search = ({ setSearchText }) => {
     </>
   );
 };
-
-Search.propTypes = propTypes;
 
 export default Search;

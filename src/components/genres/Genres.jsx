@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { FC, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Picker from '../common/Picker';

@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { PropTypes } from 'prop-types';
+import { FC, useContext, useEffect, useState } from 'react';
 
 import './GenreAlbums.scss';
 import { getAlbums } from '../../lib/librarian-client';
@@ -8,15 +7,15 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import Loading from '../common/Loading';
 import AlbumGrid from '../albums/AlbumGrid';
 
-const propTypes = {
-  genre: PropTypes.string.isRequired,
+interface IGenreAlbums {
+  genre: string,
 };
 
-const GenreAlbums = ({ genre }) => {
+const GenreAlbums: FC<IGenreAlbums> = ({ genre }) => {
   const settings = useContext(SettingsContext);
-  const [genreAlbums, setGenreAlbums] = useState();
+  const [genreAlbums, setGenreAlbums] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [pageSize, setPageSize] = useState();
+  const [pageSize, setPageSize] = useState(0);
   const [totalAlbums, setTotalAlbums] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +31,7 @@ const GenreAlbums = ({ genre }) => {
     const start = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
     const end = start + pageSize;
 
-    getAlbums(start, end, null, null, settings.preferences.restrictionGroup, genre)
+    getAlbums(start, end, null, null, settings?.preferences?.restrictionGroup, genre)
       .then((data) => {
         setTotalAlbums(data.totalAlbums);
         setGenreAlbums(data.albums);
@@ -50,8 +49,8 @@ const GenreAlbums = ({ genre }) => {
 
   return (
     <>
-      {isLoading && <Loading />}
-      {!isLoading && genreAlbums?.length > 0 && (
+      {isLoading && <Loading text="Loading" />}
+      {!isLoading && genreAlbums.length > 0 && (
         <AlbumGrid
           albums={genreAlbums}
           setSelectedPage={setSelectedPage}
@@ -64,7 +63,5 @@ const GenreAlbums = ({ genre }) => {
     </>
   );
 };
-
-GenreAlbums.propTypes = propTypes;
 
 export default GenreAlbums;

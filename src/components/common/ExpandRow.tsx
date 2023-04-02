@@ -1,30 +1,30 @@
-import React, { useContext, useState } from 'react';
-import { PropTypes } from 'prop-types';
+import { FC, useContext, useState } from 'react';
 import { Accordion } from 'react-bootstrap';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import './ExpandRow.scss';
 
-const propTypes = {
-  buttons: PropTypes.node,
-  text: PropTypes.string,
-  isExpanded: PropTypes.bool,
-  setIsExpanded: PropTypes.func,
+interface IExpandRow {
+  buttons: [any],
+  text: string,
+  isExpanded: boolean,
+  setIsExpanded: Function,
 };
 
-const ExpandRow = ({
+const ExpandRow: FC<IExpandRow> = ({
   buttons, text, isExpanded, setIsExpanded,
 }) => {
   const settings = useContext(SettingsContext);
   const [activeKey, setActiveKey] = useState(isExpanded ? '0' : null);
 
-  const togglePropTypes = {
-    children: PropTypes.node.isRequired,
-    eventKey: PropTypes.string.isRequired,
+  interface ICustomToggle {
+    children: any,
+    eventKey: string,
+    setIsExpanded: Function,
   };
 
-  function CustomToggle({ children, eventKey }) {
+  const CustomToggle: FC<ICustomToggle> = ({ children, eventKey }) => {
     const decoratedOnClick = useAccordionButton(eventKey, () => {
       setActiveKey(activeKey ? null : eventKey);
       if (setIsExpanded) {
@@ -33,9 +33,9 @@ const ExpandRow = ({
     });
 
     const itemStyle = {
-      color: settings.styles.fontColor,
-      background: settings.styles.trackBackgroundColor,
-      fontFamily: settings.styles.listFont,
+      color: settings?.styles?.fontColor,
+      background: settings?.styles?.trackBackgroundColor,
+      fontFamily: settings?.styles?.listFont,
     };
 
     return (
@@ -50,8 +50,6 @@ const ExpandRow = ({
     );
   }
 
-  CustomToggle.propTypes = togglePropTypes;
-
   return (
     <Accordion activeKey={activeKey} className="accordion">
       <CustomToggle eventKey="0" setIsExpanded={setIsExpanded}>{text}</CustomToggle>
@@ -63,15 +61,5 @@ const ExpandRow = ({
     </Accordion>
   );
 };
-
-ExpandRow.defaultProps = {
-  buttons: null,
-  text: '',
-  isExpanded: false,
-  setIsExpanded: null,
-};
-
-
-ExpandRow.propTypes = propTypes;
 
 export default ExpandRow;

@@ -1,23 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import './InRowDeleteConfirmation.scss';
 
-const propTypes = {
-  onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
+interface IInRowDeleteConfirmation {
+  onCancel: Function,
+  onConfirm: Function,
 };
 
-const InRowDeleteConfirmation = ({ onCancel, onConfirm }) => (
+const InRowDeleteConfirmation: FC<IInRowDeleteConfirmation> = ({ onCancel, onConfirm }) => (
   <>
     <div className="delete-confirm-are-you-sure"><FormattedMessage id="are_you_sure" /></div>
     <Button onClick={onCancel} content={<FormattedMessage id="cancel" />} />
     <Button onClick={onConfirm} content={<FormattedMessage id="delete" />} />
   </>
 );
-
-InRowDeleteConfirmation.propTypes = propTypes;
 
 export default InRowDeleteConfirmation;

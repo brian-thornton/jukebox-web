@@ -1,22 +1,21 @@
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
-import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
+import { FC, useContext } from 'react';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './FilePicker.scss';
 
-const propTypes = {
-  onConfirm: PropTypes.func.isRequired,
-  onSelectFile: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  title: PropTypes.string,
-  confirmText: PropTypes.string,
-  cancelText: PropTypes.string,
+interface IFilePicker {
+  onConfirm: Function,
+  onSelectFile: Function,
+  onCancel: Function,
+  title: string,
+  confirmText: string,
+  cancelText: string,
 };
 
-const FilePicker = ({
+const FilePicker: FC<IFilePicker> = ({
   onConfirm, onSelectFile, onCancel, title, confirmText, cancelText,
 }) => {
   const settings = useContext(SettingsContext);
@@ -24,7 +23,7 @@ const FilePicker = ({
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   };
 
   return (
@@ -32,7 +31,7 @@ const FilePicker = ({
       <Card.Body>
         <Card.Title className="addNewTitle">{title}</Card.Title>
         <Card.Text className="addNewText">
-          <Form.Control className="fileControl" type="file" onChange={onSelectFile} />
+          <Form.Control className="fileControl" type="file" onChange={(e) => onSelectFile()} />
         </Card.Text>
         <div className="addNewText">
           <Button onClick={onCancel} content={cancelText} />
@@ -42,13 +41,5 @@ const FilePicker = ({
     </Card>
   );
 };
-
-FilePicker.defaultProps = {
-  title: '',
-  confirmText: '',
-  cancelText: '',
-};
-
-FilePicker.propTypes = propTypes;
 
 export default FilePicker;

@@ -48,6 +48,7 @@ interface IPreferences {
   vlcPassword: string,
   coverSize: string,
   experimentalMode: boolean,
+  restrictionGroup: string,
 }
 
 interface IStyles {

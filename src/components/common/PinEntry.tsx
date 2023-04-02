@@ -1,43 +1,42 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import React, { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import './PinEntry.scss';
 
-const propTypes = {
-  onAuthorize: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  title: PropTypes.string,
+interface IPinEntry {
+  onAuthorize: Function,
+  onCancel: Function,
+  title: string,
 };
 
-const PinEntry = ({ onAuthorize, onCancel, title }) => {
+const PinEntry: FC<IPinEntry> = ({ onAuthorize, onCancel, title }) => {
   const settings = useContext(SettingsContext);
   const [pin, setPin] = useState('');
   const { isScreenSmall } = settings;
 
   useEffect(() => {
-    if (pin === settings.preferences.pin) {
+    if (pin === settings?.preferences?.pin) {
       onAuthorize();
     }
   }, [pin]);
 
-  const numberButton = number => (
+  const numberButton = (number: any) => (
     <Col lg="1" md="1" sm="3" xs="3">
       <Button onClick={() => setPin(`${pin}${number}`)} content={number} height="75" width="75" />
     </Col>
   );
 
-  const row = content => content.map(number => numberButton(number));
+  const row = (content: any) => content.map((number: any) => numberButton(number));
 
   const pinStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   };
 
   return (
@@ -66,11 +65,5 @@ const PinEntry = ({ onAuthorize, onCancel, title }) => {
     </>
   );
 };
-
-PinEntry.defaultProps = {
-  title: 'Enter Pin',
-};
-
-PinEntry.propTypes = propTypes;
 
 export default PinEntry;

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import {
   ChevronDoubleRight,
   Play,
@@ -13,27 +13,30 @@ import { next, stop } from '../../lib/queue-client';
 import { SettingsContext } from './SettingsProvider';
 import { stop as radioStop } from '../../lib/radio-client';
 
-const ControlButtons = ({ mediaType, setMediaType }) => {
+interface IControlButtons {
+  mediaType: string,
+  setMediaType: Function,
+}
+
+const ControlButtons: FC<IControlButtons> = ({ mediaType, setMediaType }) => {
   const settings = useContext(SettingsContext);
-  const { features, preferences, isScreenSmall } = settings;
-  const { vlcHost, vlcPort, vlcPassword } = preferences;
-  const { controlButtonSize } = settings.styles;
+  const { features, isScreenSmall } = settings;
 
   let height;
   let fontSize = '';
 
-  if (!isScreenSmall && controlButtonSize === 'large') {
+  if (!isScreenSmall && settings?.styles?.controlButtonSize === 'large') {
     height = '100';
     fontSize = '40px';
   }
 
-  if (!isScreenSmall && controlButtonSize === 'medium') {
+  if (!isScreenSmall && settings?.styles?.controlButtonSize === 'medium') {
     height = '70';
     fontSize = '30px';
   }
 
   const stopAll = () => {
-    stop(vlcHost, vlcPort, vlcPassword);
+    stop();
     radioStop();
     setMediaType('file');
   };
@@ -41,12 +44,12 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
   const commonProps = {
     height,
     width: height,
-    disabled: features.isLocked,
+    disabled: features?.isLocked,
   };
 
   return (
     <>
-      {features.play && (
+      {features?.play && (
         <Button
           {...commonProps}
           disabled={features.isLocked || mediaType !== 'file'}
@@ -54,7 +57,7 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
           content={<Play style={{ fontSize }} className="volume-icon" />}
         />
       )}
-      {features.next && (
+      {features?.next && (
         <Button
           {...commonProps}
           disabled={features.isLocked || mediaType !== 'file'}
@@ -62,21 +65,21 @@ const ControlButtons = ({ mediaType, setMediaType }) => {
           content={<ChevronDoubleRight style={{ fontSize }} className="volume-icon" />}
         />
       )}
-      {features.stop && (
+      {features?.stop && (
         <Button
           {...commonProps}
           onClick={stopAll}
           content={<StopFill style={{ fontSize }} className="volume-icon" />}
         />
       )}
-      {features.volume && (
+      {features?.volume && (
         <Button
           {...commonProps}
           onClick={up}
           content={<VolumeUp style={{ fontSize }} className="volume-icon" />}
         />
       )}
-      {features.volume && (
+      {features?.volume && (
         <Button
           {...commonProps}
           onClick={down}
