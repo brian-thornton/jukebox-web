@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import './AlbumTable.scss';
 import { Albums } from '../shapes';
 import { SettingsContext } from '../layout/SettingsProvider';
+import Item from '../common/Item';
 
 const propTypes = {
   albums: Albums.isRequired,
@@ -38,9 +39,7 @@ const AlbumTable = ({ albums }) => {
         onMouseLeave={() => setHoverAlbum(null)}
         style={{ background: hoverAlbum === album ? settings.styles.activeButtonColor : '' }}
       >
-        <Button variant="link" onClick={() => goToAlbum(album)} className="albumButton">
-          {album.name}
-        </Button>
+        <Item text={album.name} onClick={() => goToAlbum(album)} />
       </td>
     );
 

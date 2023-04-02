@@ -1,6 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import FormControl from 'react-bootstrap/FormControl';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
+//import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { PropTypes } from 'prop-types';
 import React, { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
@@ -75,7 +75,7 @@ const Search = ({ setSearchText }) => {
 
   return (
     <>
-      <KeyboardEventHandler
+      {/* <KeyboardEventHandler
         handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.', 'enter']}
         onKeyEvent={(key) => {
           if (key === 'space') {
@@ -89,7 +89,7 @@ const Search = ({ setSearchText }) => {
             setLocalSearch(`${localSearch}${key}`);
           }
         }}
-      />
+      /> */}
 
       <Container style={{ marginTop: topMargin(settings) }}>
         <Row>

@@ -28,7 +28,10 @@ const CategoryPicker = ({
 
   const onAddCategory = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
-    deepClone.categories.push(newCategory);
+    deepClone.categories.push({
+      category: newCategory,
+      enabled: true,
+    });
     updateSettings(deepClone).then(() => {
       setCategories(deepClone.categories);
       setNewCategory('');
@@ -46,7 +49,7 @@ const CategoryPicker = ({
             </Form.Label>
             <Col sm="10">
               <Form.Control as="select" value={category} onChange={e => onSelectCategory(e.target.value)}>
-                {categories.map(category => <option>{category}</option>)}
+                {categories.map(category => <option>{category.category}</option>)}
               </Form.Control>
             </Col>
           </Form.Group>

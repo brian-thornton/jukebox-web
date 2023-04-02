@@ -4,6 +4,7 @@ import {
   Trash,
 } from 'react-bootstrap-icons';
 import { injectIntl } from 'react-intl';
+import { ButtonGroup } from 'react-bootstrap';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import InRowDeleteConfirmation from '../../common/InRowDeleteConfirmation';

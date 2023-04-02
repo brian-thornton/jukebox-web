@@ -1,6 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
@@ -10,21 +9,21 @@ import './NoResults.scss';
 import { topMargin } from '../../lib/styleHelper';
 import Button from '../Button';
 
-const propTypes = {
-  controls: PropTypes.node,
-  text: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  applyMargin: PropTypes.bool,
-  onGoBack: PropTypes.func.isRequired,
-};
+interface INoResults {
+  text?: string,
+  title?: string,
+  controls?: [any],
+  applyMargin: boolean,
+  onGoBack: Function,
+}
 
-const NoResults = ({
-  text, title, controls, applyMargin, onGoBack,
+const NoResults: FC<INoResults> = ({
+  text, title, controls, applyMargin = true, onGoBack,
 }) => {
   const settings = useContext(SettingsContext);
 
   const noResultsStyle = {
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
     marginTop: applyMargin ? topMargin(settings) : '',
     width: '100%',
   };
@@ -52,12 +51,5 @@ const NoResults = ({
     </Container>
   );
 };
-
-NoResults.defaultProps = {
-  controls: null,
-  applyMargin: true,
-};
-
-NoResults.propTypes = propTypes;
 
 export default NoResults;

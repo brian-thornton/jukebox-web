@@ -1,5 +1,6 @@
 import { FormattedMessage } from 'react-intl';
 import React, { useContext, useEffect, useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 
 import { getStatus, updateStatus } from '../../../lib/status-client';
 import Loading from '../../common/Loading';
@@ -33,6 +34,17 @@ const Libraries = () => {
   const [selectedLibrary, setSelectedLibrary] = useState();
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
+
+  const GET_LIBRARIES = gql`
+    query GetLibraries {
+      libraries {
+        name
+      }
+    }
+`;
+
+  const { loading, error, data } = useQuery(GET_LIBRARIES);
+  useEffect(() => console.log(data), data);
 
   const updateTotals = (data) => {
     let totalTracks = 0;

@@ -59,9 +59,9 @@ const JukeboxNavLeft = () => {
                     <Nav.Link
                       disabled={features.isLocked}
                       style={{ fontFamily: styles.headerFont }}
-                      href={`/albums/categories/${c.replace(' ', '%20')}`}
+                      href={`/albums/categories/${c.category.replace(' ', '%20')}`}
                     >
-                      {c}
+                      {c.category}
                     </Nav.Link>
                   )
                   }
@@ -95,8 +95,8 @@ const JukeboxNavLeft = () => {
                         marginBottom: '0',
                       }}
                       disabled={features.isLocked}
-                      content={c}
-                      onClick={() => window.location.replace(`/albums/categories/${c.replace(' ', '%20')}`)}
+                      content={c.category}
+                      onClick={() => window.location.replace(`/albums/categories/${c.category.replace(' ', '%20')}`)}
                     />
                   )}
                 </>

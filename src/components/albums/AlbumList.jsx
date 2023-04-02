@@ -101,7 +101,7 @@ const AlbumList = ({
 
   useEffect(() => {
     if (display !== 'covers' && !category) {
-      const itemsPerColumn = Math.floor((window.innerHeight - 200) / 40);
+      const itemsPerColumn = Math.floor((window.innerHeight - 200) / 60);
       setPageSize(itemsPerColumn * 3);
     } else {
       const reserve = headerFooterReserve(settings);

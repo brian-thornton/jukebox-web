@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import KeyboardEventHandler from 'react-keyboard-event-handler';
+// import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 
@@ -35,7 +35,7 @@ const WithKeyboardInput = ({
 
   return (
     <>
-      <KeyboardEventHandler
+      {/* <KeyboardEventHandler
         handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.', 'cmd+f']}
         onKeyEvent={(key, e) => {
           let newSearch = cloneDeep(tempSearch);
@@ -55,7 +55,7 @@ const WithKeyboardInput = ({
 
           debouncedSearch(newSearch);
         }}
-      />
+      /> */}
       {component}
     </>
   );

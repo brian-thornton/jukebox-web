@@ -1,17 +1,17 @@
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
-import { Track } from '../shapes';
+import { ITrack } from '../interface';
 import { bigButtons } from '../../lib/styleHelper';
 
-const propTypes = {
-  track: Track.isRequired,
-};
+interface IAddToPlaylistButton {
+  track: ITrack,
+}
 
-const AddToPlaylistButton = ({ track }) => {
+const AddToPlaylistButton: FC<IAddToPlaylistButton> = ({ track }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
   const heightAndWidth = bigButtons(settings) ? '60' : '';
@@ -31,7 +31,5 @@ const AddToPlaylistButton = ({ track }) => {
     </>
   );
 };
-
-AddToPlaylistButton.propTypes = propTypes;
 
 export default AddToPlaylistButton;
