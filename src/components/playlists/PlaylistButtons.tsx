@@ -1,6 +1,5 @@
 import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 
 import PlayNowButton from '../PlayNowButton';
 import {
@@ -9,40 +8,39 @@ import {
 } from '../../lib/playlist-client';
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { Track } from '../shapes';
+import { ITrack } from '../interface';
 import { bigButtons } from '../../lib/styleHelper';
 
-const propTypes = {
-  name: PropTypes.string.isRequired,
-  track: Track,
-  index: PropTypes.number.isRequired,
-  reloadTracks: PropTypes.func.isRequired,
+interface IPlaylistButtons {
+  name: string,
+  track: ITrack,
+  index: number,
+  reloadTracks: Function,
 };
 
-const PlaylistButtons = ({
+const PlaylistButtons: FC<IPlaylistButtons> = ({
   name,
   track,
   index,
   reloadTracks,
 }) => {
   const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles.controlButtonSize === 'small') ? '' : '60';
+  const buttonWidth = (!settings?.styles?.controlButtonSize || settings?.styles.controlButtonSize === 'small') ? '' : '60';
   const fontSize = bigButtons(settings) ? '30px' : '';
 
-  const deleteTrack = async (trackName, trackToDelete) => {
+  const deleteTrack = async (trackName: any, trackToDelete: any) => {
     await removeTracksFromPlaylist(trackName, [trackToDelete]);
     reloadTracks(name);
   };
 
-  const moveTrack = async (trackToMove, newPosition) => {
+  const moveTrack = async (trackToMove: any, newPosition: any) => {
     await removeTracksFromPlaylist(name, [trackToMove]);
     await addTrackAtPosition(name, trackToMove, newPosition);
     reloadTracks(name);
   };
 
-  const button = (onClick, icon) => (
+  const button = (onClick: any, icon: any) => (
     <Button
       style={{ fontSize }}
       height={buttonHeight}
@@ -61,11 +59,5 @@ const PlaylistButtons = ({
     </>
   );
 };
-
-PlaylistButtons.defaultProps = {
-  track: null,
-};
-
-PlaylistButtons.propTypes = propTypes;
 
 export default PlaylistButtons;

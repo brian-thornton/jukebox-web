@@ -1,24 +1,26 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 
 import JukeboxNavLeft from './JukeboxNavLeft';
 import JukeboxNavRight from './JukeboxNavRight';
 import { SettingsContext } from './SettingsProvider';
-import { Libraries } from '../shapes';
+import { ILibrary } from '../interface';
 import './JukeboxHeader.scss';
 
-const propTypes = {
-  setSearch: PropTypes.func.isRequired,
-  selectedLibraries: Libraries,
-  lastModule: PropTypes.string,
-  setIsLocked: PropTypes.func,
-  setIsPinOpen: PropTypes.func,
-  setDisplay: PropTypes.func,
+interface IJukeboxHeader {
+  setSearch: Function,
+  selectedLibraries: [ILibrary],
+  lastModule: string,
+  setIsLocked: Function,
+  setIsPinOpen: Function,
+  setDisplay: Function,
+  display: string,
+  search: string,
+  clearSearch: Function,
 };
 
-const JukeboxHeader = ({
+const JukeboxHeader: FC<IJukeboxHeader> = ({
   setSearch,
   selectedLibraries,
   lastModule,
@@ -30,23 +32,22 @@ const JukeboxHeader = ({
   clearSearch,
 }) => {
   const settings = useContext(SettingsContext);
-  const { navButtonSize } = settings.styles;
-  const showBrand = (navButtonSize !== 'large' && navButtonSize !== 'medium');
+  const showBrand = (settings?.styles?.navButtonSize !== 'large' && settings?.styles?.navButtonSize !== 'medium');
 
   return (
-    <Navbar className="header-nav-bar" style={{ background: settings.styles.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar className="header-nav-bar" style={{ background: settings?.styles?.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
         {showBrand && (
           <Navbar.Brand
             style={
               {
-                color: settings.styles.fontColor,
-                fontFamily: settings.styles.headerFont,
+                color: settings?.styles?.fontColor,
+                fontFamily: settings?.styles?.headerFont,
               }
             }
             href="#home"
           >
-            {settings.preferences.name}
+            {settings?.preferences?.name}
           </Navbar.Brand>
         )}
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -57,7 +58,6 @@ const JukeboxHeader = ({
             setSearch={setSearch}
             selectedLibraries={selectedLibraries}
             lastModule={lastModule}
-            setIsLocked={setIsLocked}
             setIsPinOpen={setIsPinOpen}
             display={display}
             setDisplay={setDisplay}
@@ -68,17 +68,5 @@ const JukeboxHeader = ({
     </Navbar>
   );
 };
-
-JukeboxHeader.defaultProps = {
-  search: '',
-  selectedLibraries: [],
-  lastModule: '',
-  setIsLocked: null,
-  setIsPinOpen: null,
-  display: '',
-  setDisplay: null,
-};
-
-JukeboxHeader.propTypes = propTypes;
 
 export default JukeboxHeader;

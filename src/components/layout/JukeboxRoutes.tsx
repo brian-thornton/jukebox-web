@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { PropTypes } from 'prop-types';
 
 const AlbumDetail = React.lazy(() => import('../albums/AlbumDetail'));
 const AlbumList = React.lazy(() => import('../albums/AlbumList'));
@@ -14,20 +13,20 @@ const Settings = React.lazy(() => import('../settings/Settings'));
 const Tracks = React.lazy(() => import('../Tracks'));
 const WithKeyboardInput = React.lazy(() => import('./WithKeyboardInput'));
 
-const propTypes = {
-  display: PropTypes.string.isRequired,
-  search: PropTypes.string,
-  selectedLibraries: PropTypes.arrayOf(PropTypes.string),
-  setMediaType: PropTypes.func.isRequired,
-  setSearch: PropTypes.func.isRequired,
-  setSelectedLibraries: PropTypes.func.isRequired,
-  setStartsWithFilter: PropTypes.func.isRequired,
-  setTempSearch: PropTypes.func.isRequired,
-  startsWithFilter: PropTypes.string,
-  tempSearch: PropTypes.string,
+interface IJukeboxRoutes {
+  display: string,
+  search: string,
+  selectedLibraries: [string],
+  setMediaType: Function,
+  setSearch: Function,
+  setSelectedLibraries: Function,
+  setStartsWithFilter: Function,
+  setTempSearch: Function,
+  startsWithFilter: string,
+  tempSearch: string,
 };
 
-const JukeboxRoutes = ({
+const JukeboxRoutes: FC<IJukeboxRoutes> = ({
   display,
   search,
   selectedLibraries,
@@ -39,7 +38,7 @@ const JukeboxRoutes = ({
   startsWithFilter,
   tempSearch,
 }) => {
-  const wrapWithKeyboard = component => (
+  const wrapWithKeyboard = (component: any) => (
     <WithKeyboardInput
       component={component}
       tempSearch={tempSearch}
@@ -75,7 +74,7 @@ const JukeboxRoutes = ({
         )}
       />
       <Route path="/albums/:id" element={<AlbumDetail />} />
-      <Route path="/albums/categories/:id" element={<AlbumList />} search={search} display={display} />
+      <Route path="/albums/categories/:id" element={<AlbumList search={search} display={display} />} />
       <Route
         path="/filters"
         element={(
@@ -89,20 +88,11 @@ const JukeboxRoutes = ({
       <Route path="/queue" element={<Queue />} />
       <Route path="/search" element={<Search setSearchText={setSearch} />} />
       <Route path="/settings" element={<Settings />} />
-      <Route path="/tracks" element={wrapWithKeyboard(<Tracks setSearch={setSearch} search={search} />)} />
+      <Route path="/tracks" element={wrapWithKeyboard(<Tracks search={search} />)} />
       <Route path="/radio" element={wrapWithKeyboard(<RadioList setMediaType={setMediaType} />)} />
       <Route path="/genres" element={<Genres />} />
     </Routes>
   );
-};
-
-JukeboxRoutes.propTypes = propTypes;
-
-JukeboxRoutes.defaultProps = {
-  search: '',
-  selectedLibraries: null,
-  startsWithFilter: null,
-  tempSearch: '',
 };
 
 export default JukeboxRoutes;
