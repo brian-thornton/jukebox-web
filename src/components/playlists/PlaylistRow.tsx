@@ -1,31 +1,29 @@
 import { PencilSquare } from 'react-bootstrap-icons';
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import Item from '../common/Item';
-import { Playlist } from '../shapes';
+import { IPlaylist } from '../interface';
 import './PlaylistsViewer.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { bigButtons } from '../../lib/styleHelper';
 
-const propTypes = {
-  playlist: Playlist.isRequired,
-  addMode: PropTypes.bool,
-  onAdd: PropTypes.func,
-  onSelect: PropTypes.func,
+interface IPlaylistRow {
+  playlist: IPlaylist,
+  addMode: boolean,
+  onAdd: Function,
+  onSelect: Function,
 };
 
-const PlaylistRow = ({
+const PlaylistRow: FC<IPlaylistRow> = ({
   playlist,
   addMode,
   onAdd,
   onSelect,
 }) => {
   const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : 50;
   const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
@@ -54,14 +52,5 @@ const PlaylistRow = ({
     />
   );
 };
-
-
-PlaylistRow.defaultProps = {
-  addMode: false,
-  onAdd: () => { },
-  onSelect: () => { },
-};
-
-PlaylistRow.propTypes = propTypes;
 
 export default PlaylistRow;

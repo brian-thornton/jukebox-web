@@ -1,9 +1,8 @@
-import { PropTypes } from 'prop-types';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
@@ -12,21 +11,21 @@ import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { getBase64 } from '../../../lib/localStorageHelper';
 
-const propTypes = {
-  name: PropTypes.string.isRequired,
+interface IPreferenceFileRow {
+  name: string,
 };
 
-const PreferenceFileRow = ({ name }) => {
+const PreferenceFileRow: FC<IPreferenceFileRow> = ({ name }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
 
-  const rowLabel = (value) => {
+  const rowLabel = (value: any) => {
     const result = value.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
   };
 
-  const imageUpload = (e) => {
+  const imageUpload = (e: any) => {
     const file = e.target.files[0];
     getBase64(file).then((base64) => {
       localStorage[name] = base64;
@@ -37,9 +36,9 @@ const PreferenceFileRow = ({ name }) => {
   return (
     <ListGroupItem
       style={{
-        color: settings.styles.fontColor,
-        background: settings.styles.trackBackgroundColor,
-        fontFamily: settings.styles.listFont,
+        color: settings?.styles?.fontColor,
+        background: settings?.styles?.trackBackgroundColor,
+        fontFamily: settings?.styles?.listFont,
         height: '60px',
       }}
     >
@@ -67,7 +66,5 @@ const PreferenceFileRow = ({ name }) => {
     </ListGroupItem>
   );
 };
-
-PreferenceFileRow.propTypes = propTypes;
 
 export default PreferenceFileRow;

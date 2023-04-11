@@ -6,7 +6,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import './ExpandRow.scss';
 
 interface IExpandRow {
-  buttons: [any],
+  buttons: any,
   text: string,
   isExpanded: boolean,
   setIsExpanded: Function,

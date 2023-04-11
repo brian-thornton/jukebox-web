@@ -1,17 +1,17 @@
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { PlayFill } from 'react-bootstrap-icons';
 
 import Button from './Button';
 import { enqueueTop, next } from '../lib/queue-client';
-import { Track } from './shapes';
+import { ITrack } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
 
-const propTypes = {
-  track: Track.isRequired,
+interface IPlayNowButton {
+  track: ITrack,
 };
 
-const PlayNowButton = ({ track }) => {
+const PlayNowButton: FC<IPlayNowButton> = ({ track }) => {
   const settings = useContext(SettingsContext);
   const heightAndWidth = bigButtons(settings) ? '60' : '';
   const fontSize = bigButtons(settings) ? '30px' : '';
@@ -31,7 +31,5 @@ const PlayNowButton = ({ track }) => {
     />
   );
 };
-
-PlayNowButton.propTypes = propTypes;
 
 export default PlayNowButton;

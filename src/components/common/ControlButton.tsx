@@ -11,8 +11,8 @@ interface IControlButton {
   text: string,
   height: string,
   width: string,
-  isSelected: boolean,
-  style: IStyle,
+  isSelected?: false,
+  style?: IStyle,
 };
 
 const ControlButton: FC<IControlButton> = ({

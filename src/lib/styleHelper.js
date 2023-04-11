@@ -236,10 +236,8 @@ const deepCloneSkin = (settings, selectedSkin) => {
 }
 
 const calculatePageSize = (type, reservedHeight = 200, itemHeight = 55) => {
-  if (type === 'item') {
-    const viewPortHeight = Math.floor(window.innerHeight - reservedHeight);
-    return Math.floor(viewPortHeight / itemHeight);
-  }
+  const viewPortHeight = Math.floor(window.innerHeight - reservedHeight);
+  return Math.floor(viewPortHeight / itemHeight);
 };
 
 const coverDimensions = (settings) => {

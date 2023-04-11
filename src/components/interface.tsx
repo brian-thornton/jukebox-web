@@ -5,6 +5,7 @@ export interface ITrack {
 };
 
 export interface IAlbum {
+  id: string,
   name: string,
   path: string,
   coverArtExists: boolean,
@@ -132,16 +133,17 @@ export interface IColors {
 };
 
 export interface IStyle {
-  headerColor: string,
-  footerColor: string,
-  fontColor: string,
-  backgroundColor: string,
-  popupBackgroundColor: string,
-  buttonBackgroundColor: string,
-  marginTop: string,
-  marginBottom: string,
-  fontSize: string,
-  fontFamily: string,
+  headerColor?: string,
+  footerColor?: string,
+  fontColor?: string,
+  backgroundColor?: string,
+  popupBackgroundColor?: string,
+  buttonBackgroundColor?: string,
+  marginTop?: string,
+  marginBottom?: string,
+  fontSize?: string,
+  fontFamily?: string,
+  defaultAlbumCover?: string,
 };
 
 export interface IPage {

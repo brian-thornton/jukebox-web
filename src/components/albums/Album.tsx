@@ -1,28 +1,28 @@
-import { PropTypes } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import React, { useEffect, useContext, useState } from 'react';
+import { FC, useEffect, useContext, useState } from 'react';
 
 import './Album.scss';
-import { Album as albumShape } from '../shapes';
+import { IAlbum as AlbumInterface } from '../interface';
 import { coverArtUrl, saveCoverArt } from '../../lib/librarian-client';
 import { SettingsContext } from '../layout/SettingsProvider';
+
+// @ts-ignore
 import defaultCover from './default_album.jpg';
 
-const propTypes = {
-  album: albumShape.isRequired,
-  coverArtOnly: PropTypes.bool,
+interface IAlbum {
+  album: AlbumInterface,
+  coverArtOnly: boolean,
 };
 
-const Album = ({ album, coverArtOnly }) => {
+const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
-  const { coverSize } = settings.preferences;
   const [coverArt, setCoverArt] = useState(defaultCover);
 
   const loadCoverArt = () => {
-    if (album.coverArtExists || settings.features.admin) {
-      coverArtUrl(album, settings.styles.defaultAlbumCover).then((data) => {
+    if (album.coverArtExists || settings?.features?.admin) {
+      coverArtUrl(album, settings?.styles?.defaultAlbumCover).then((data) => {
         setCoverArt(data.url);
 
         if (!data.isLocal && !data.isDefault) {
@@ -35,25 +35,25 @@ const Album = ({ album, coverArtOnly }) => {
   useEffect(() => loadCoverArt(), []);
 
   const albumNameStyle = {
-    color: settings.styles.fontColor,
-    fontFamily: settings.styles.buttonFont,
+    color: settings?.styles?.fontColor,
+    fontFamily: settings?.styles?.buttonFont,
   };
 
   const albumImageStyle = {
-    width: coverSize === 'medium' ? '300px' : '200px',
-    height: coverSize === 'medium' ? '300px' : '200px',
-    maxWidth: coverSize === 'medium' ? '300px' : '200px',
-    maxHeight: coverSize === 'medium' ? '300px' : '200px',
+    width: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
+    height: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
+    maxWidth: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
+    maxHeight: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
   };
 
   const albumCardStyle = {
-    width: coverSize === 'medium' ? '303px' : '203px',
-    height: coverSize === 'medium' ? '320px' : '220px',
-    maxWidth: coverSize === 'medium' ? '303px' : '203px',
-    maxHeight: coverSize === 'medium' ? '320px' : '220px',
+    width: settings?.preferences?.coverSize === 'medium' ? '303px' : '203px',
+    height: settings?.preferences?.coverSize === 'medium' ? '320px' : '220px',
+    maxWidth: settings?.preferences?.coverSize === 'medium' ? '303px' : '203px',
+    maxHeight: settings?.preferences?.coverSize === 'medium' ? '320px' : '220px',
   };
 
-  if (coverSize === 'large') {
+  if (settings?.preferences?.coverSize === 'large') {
     albumImageStyle.width = '400px';
     albumImageStyle.height = '400px';
     albumImageStyle.maxWidth = '400px';
@@ -69,25 +69,19 @@ const Album = ({ album, coverArtOnly }) => {
       className="albumCard"
       style={albumCardStyle}
       onClick={() => {
-        if (!settings.features.isLocked) {
+        if (!settings?.features?.isLocked) {
           navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
         }
       }}
     >
-      <Card.Img top src={coverArt} style={albumImageStyle} />
+      <Card.Img src={coverArt} style={albumImageStyle} />
       {!coverArtOnly && (
         <Card.Body className="albumCardBody" style={albumNameStyle}>
-          {settings.preferences.showAlbumName && album.name}
+          {settings?.preferences?.showAlbumName && album.name}
         </Card.Body>
       )}
     </Card>
   );
 };
-
-Album.defaultProps = {
-  coverArtOnly: false,
-};
-
-Album.propTypes = propTypes;
 
 export default Album;

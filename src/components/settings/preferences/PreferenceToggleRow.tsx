@@ -1,5 +1,4 @@
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
@@ -8,16 +7,16 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import './PreferenceToggleRow.scss';
 import { updatePreference } from '../../../lib/preferenceHelper';
 
-const propTypes = {
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
+interface IPreferenceToggleRow {
+  name: string,
+  value: string,
 };
 
-const PreferenceToggleRow = ({ name, value }) => {
+const PreferenceToggleRow: FC<IPreferenceToggleRow> = ({ name, value }) => {
   const settings = useContext(SettingsContext);
   const buttonText = <FormattedMessage id={value ? 'enabled' : 'disabled'} />;
 
-  const rowLabel = (labelText) => {
+  const rowLabel = (labelText: any) => {
     const result = labelText.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
@@ -25,7 +24,7 @@ const PreferenceToggleRow = ({ name, value }) => {
 
   return (
     <Item
-      className="preference-toggle-row"
+      onClick={() => { }}
       buttons={(
         <Button
           onClick={() => {
@@ -40,7 +39,5 @@ const PreferenceToggleRow = ({ name, value }) => {
     />
   );
 };
-
-PreferenceToggleRow.propTypes = propTypes;
 
 export default PreferenceToggleRow;

@@ -1,24 +1,23 @@
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import { ListOl } from 'react-bootstrap-icons';
 
 import Button from './Button';
 import { enqueue } from '../lib/queue-client';
-import { Track } from './shapes';
+import { ITrack } from './interface';
 import './EnqueueButton.css';
 import { applyLighting } from '../lib/lightingHelper';
 import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
 
-const propTypes = {
-  mode: PropTypes.string,
-  track: Track.isRequired,
-  isSelected: PropTypes.bool,
-  onComplete: PropTypes.func,
-  disabled: PropTypes.bool,
+interface IEnqueueButton {
+  mode: string,
+  track: ITrack,
+  isSelected: boolean,
+  onComplete: Function,
+  disabled: boolean,
 };
 
-const EnqueueButton = ({
+const EnqueueButton: FC<IEnqueueButton> = ({
   track, mode, isSelected, onComplete, disabled,
 }) => {
   const settings = useContext(SettingsContext);
@@ -44,14 +43,5 @@ const EnqueueButton = ({
     />
   );
 };
-
-EnqueueButton.defaultProps = {
-  mode: '',
-  isSelected: false,
-  onComplete: false,
-  disabled: false,
-};
-
-EnqueueButton.propTypes = propTypes;
 
 export default EnqueueButton;

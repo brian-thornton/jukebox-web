@@ -1,19 +1,18 @@
-import React from 'react';
+import { FC } from 'react';
 import Row from 'react-bootstrap/Row';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
-import { PropTypes } from 'prop-types';
 
 import Button from '../Button';
 import Item from '../common/Item';
 
-const propTypes = {
-  description: PropTypes.string.isRequired,
-  keys: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onSetKey: PropTypes.func.isRequired,
-  selectedKey: PropTypes.string.isRequired,
+interface IToggleRow {
+  description: string,
+  keys: [string],
+  onSetKey: Function,
+  selectedKey: string,
 };
 
-const ToggleRow = ({
+const ToggleRow: FC<IToggleRow> = ({
   description,
   keys,
   onSetKey,
@@ -21,7 +20,7 @@ const ToggleRow = ({
 }) => (
   <Row>
     <Item
-      className="preference-toggle-row"
+      onClick={() => {}}
       buttons={(
         <ButtonGroup>
           {keys.map(key => (
@@ -38,7 +37,5 @@ const ToggleRow = ({
     />
   </Row>
 );
-
-ToggleRow.propTypes = propTypes;
 
 export default ToggleRow;

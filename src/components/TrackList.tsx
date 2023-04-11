@@ -1,30 +1,27 @@
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useState, useContext } from 'react';
+import { FC, useState, useContext } from 'react';
 
 import { getTrackAlbums } from '../lib/librarian-client';
-import { Track as TrackShape } from './shapes';
+import { ITrack } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
 import './TrackList.scss';
 
-const propTypes = {
-  tracks: PropTypes.arrayOf(TrackShape),
-  showAlbumCovers: PropTypes.bool,
-  setAddTracks: PropTypes.func,
+interface ITrackList {
+  tracks: [ITrack],
+  showAlbumCovers: boolean,
 };
 
-const TrackList = ({
+const TrackList: FC<ITrackList> = ({
   tracks,
   showAlbumCovers,
-  setAddTracks,
 }) => {
   const settings = useContext(SettingsContext);
-  const [trackAlbumsLoading, setTrackAlbumsLoading] = useState();
+  const [trackAlbumsLoading, setTrackAlbumsLoading] = useState(false);
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
   const [trackAlbums, setTrackAlbums] = useState([]);
 
-  const getTrackCoverArt = async (pageTracks) => {
+  const getTrackCoverArt = async (pageTracks: any) => {
     setTrackAlbumsLoading(true);
     const data = await getTrackAlbums(pageTracks);
     setTrackAlbums(data);
@@ -47,20 +44,12 @@ const TrackList = ({
               trackAlbums={trackAlbums}
               trackAlbumsLoaded={trackAlbumsLoaded}
               showAlbumCovers={showAlbumCovers}
-              setAddTracks={setAddTracks}
             />
           ))}
         </Container>
       )}
     </>
   );
-};
-
-TrackList.propTypes = propTypes;
-TrackList.defaultProps = {
-  showAlbumCovers: false,
-  tracks: [],
-  setAddTracks: null,
 };
 
 export default TrackList;

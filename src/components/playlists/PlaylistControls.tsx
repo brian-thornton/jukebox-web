@@ -6,8 +6,7 @@ import {
   Save,
   XLg,
 } from 'react-bootstrap-icons';
-import React, { useContext } from 'react';
-import { PropTypes } from 'prop-types';
+import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
@@ -18,20 +17,20 @@ import {
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { Tracks } from '../shapes';
+import { ITrack } from '../interface';
 
-const propTypes = {
-  handleBackToPlaylists: PropTypes.func.isRequired,
-  isEmpty: PropTypes.bool,
-  name: PropTypes.string.isRequired,
-  reloadTracks: PropTypes.func.isRequired,
-  setIsSaveAsOpen: PropTypes.func.isRequired,
-  setShowDeleteModal: PropTypes.func.isRequired,
-  showDeleteModal: PropTypes.bool,
-  tracks: Tracks.isRequired,
+interface IPlaylistControls {
+  handleBackToPlaylists: Function,
+  isEmpty: boolean,
+  name: string,
+  reloadTracks: Function,
+  setIsSaveAsOpen: Function,
+  setShowDeleteModal: Function,
+  showDeleteModal: boolean,
+  tracks: [ITrack],
 };
 
-const PlaylistControls = ({
+const PlaylistControls: FC<IPlaylistControls> = ({
   handleBackToPlaylists,
   isEmpty,
   name,
@@ -43,9 +42,8 @@ const PlaylistControls = ({
 }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '25px';
 
   const runPlaylist = () => {
     enqueueTracksTop(tracks);
@@ -67,16 +65,17 @@ const PlaylistControls = ({
     });
   };
 
-  const controlButton = (text, handler, flag = true) => (
+  const controlButton = (text: any, handler: any, flag = true) => (
     <>
       {flag && (
         <ControlButton
-          style={{ fontSize }}
+          style={{fontSize}}
           height={buttonHeight}
           width="100%"
           disabled={showDeleteModal}
           onClick={handler}
           text={text}
+          isSelected={false}
         />
       )}
     </>
@@ -87,24 +86,24 @@ const PlaylistControls = ({
       {!isScreenSmall && (
         <>
           {controlButton(<FormattedMessage id="go_back" />, handleBackToPlaylists)}
-          {controlButton(<FormattedMessage id="run" />, runPlaylist, features.play)}
-          {controlButton(<FormattedMessage id="enqueue" />, enqueuePlaylist, features.queue)}
+          {controlButton(<FormattedMessage id="run" />, runPlaylist, features?.play)}
+          {controlButton(<FormattedMessage id="enqueue" />, enqueuePlaylist, features?.queue)}
           {controlButton(<FormattedMessage id="shuffle" />, shuffle)}
           {controlButton(<FormattedMessage id="save_as" />, () => setIsSaveAsOpen(true))}
-          {controlButton(<FormattedMessage id="delete" />, () => setShowDeleteModal(true), features.deletePlaylist)}
+          {controlButton(<FormattedMessage id="delete" />, () => setShowDeleteModal(true), features?.deletePlaylist)}
         </>
       )}
       {isScreenSmall && (
         <>
           <Button disabled={showDeleteModal} onClick={handleBackToPlaylists} icon={<ArrowLeft />} />
-          {features.play && (
+          {features?.play && (
             <Button
               disabled={showDeleteModal || isEmpty}
               onClick={runPlaylist}
               icon={<CaretRightFill />}
             />
           )}
-          {features.queue && (
+          {features?.queue && (
             <Button
               disabled={showDeleteModal || isEmpty}
               onClick={enqueuePlaylist}
@@ -127,12 +126,5 @@ const PlaylistControls = ({
     </>
   );
 };
-
-PlaylistControls.defaultProps = {
-  isEmpty: false,
-  showDeleteModal: false,
-};
-
-PlaylistControls.propTypes = propTypes;
 
 export default PlaylistControls;

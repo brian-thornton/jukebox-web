@@ -1,12 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import { CheckSquare, Square } from 'react-bootstrap-icons';
-import React, { FC, useContext } from 'react';
+import { FC, useContext } from 'react';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 
 interface ICheckToggle {
-  isChecked: boolean,
-  onClick: Function
+  isChecked?: false,
+  onClick?: Function
 }
 
 const CheckToggle: FC<ICheckToggle> = ({ isChecked, onClick }) => {
@@ -23,7 +23,11 @@ const CheckToggle: FC<ICheckToggle> = ({ isChecked, onClick }) => {
 
   return (
     <>
-      <Button style={buttonStyle} onClick={(e) => onClick()}>
+      <Button style={buttonStyle} onClick={(e) => {
+        if (onClick) {
+          onClick()
+        }
+      }}>
         {isChecked && <CheckSquare />}
         {!isChecked && <Square />}
       </Button>

@@ -72,6 +72,7 @@ interface IStyles {
   navButtonSize: string,
   buttonShape: string,
   controlUseBackground: boolean,
+  defaultAlbumCover: string,
 }
 
 interface ISettings {

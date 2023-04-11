@@ -1,8 +1,7 @@
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
@@ -10,17 +9,17 @@ import ExpandRow from '../common/ExpandRow';
 import './RadioCategories.scss';
 import { bigButtons } from '../../lib/styleHelper';
 
-const propTypes = {
-  category: PropTypes.string,
-  setCategory: PropTypes.func.isRequired,
+interface IRadioCategories {
+  category: string,
+  setCategory: Function,
 };
 
-const RadioCategories = ({ category, setCategory }) => {
+const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
+  const intl = useIntl();
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [isExpanded, setIsExpanded] = useState(false);
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : 50;
   const fontSize = bigButtons(settings) ? '30px' : '';
 
   const categories = [
@@ -32,7 +31,7 @@ const RadioCategories = ({ category, setCategory }) => {
       {categories.map(c => (
         <Button
           style={{ fontSize }}
-          disabled={features.isLocked}
+          disabled={features?.isLocked}
           onClick={() => {
             setCategory(c);
             setIsExpanded(false);
@@ -52,7 +51,7 @@ const RadioCategories = ({ category, setCategory }) => {
         buttons={buttons}
         isExpanded={isExpanded}
         setIsExpanded={setIsExpanded}
-        text={<FormattedMessage id="categories" />}
+        text={intl.formatMessage({id: 'categories'})}
       />
     );
   }
@@ -65,11 +64,5 @@ const RadioCategories = ({ category, setCategory }) => {
     </Container>
   );
 };
-
-RadioCategories.defaultProps = {
-  category: '',
-};
-
-RadioCategories.propTypes = propTypes;
 
 export default RadioCategories;
