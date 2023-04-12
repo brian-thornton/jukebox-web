@@ -8,7 +8,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import './Item.scss';
 
 interface IItem {
-  buttons: any,
+  buttons?: any,
   onClick: Function,
   text: string,
   includeCheckbox?: boolean,

@@ -1,35 +1,34 @@
 import Col from 'react-bootstrap/Col';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
-import { FormattedMessage } from 'react-intl';
-import { PropTypes } from 'prop-types';
+import { useIntl } from 'react-intl';
 
 import Button from '../Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../lib/queue-client';
-import { Tracks, Queue } from '../shapes';
+import { ITrack, IQueue } from '../interface';
 import ControlButton from '../common/ControlButton';
 import './AlbumButtons.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { applyLighting } from '../../lib/lightingHelper';
 
-const propTypes = {
-  tracks: Tracks.isRequired,
-  queue: Queue.isRequired,
-  setQueue: PropTypes.func.isRequired,
+interface IAlbumButtons {
+  tracks: Array<ITrack>,
+  queue: IQueue,
+  setQueue: Function,
 };
 
-const AlbumButtons = ({ tracks, queue, setQueue }) => {
+const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
+  const intl = useIntl();
   const { isScreenSmall } = settings;
   const { state } = useLocation();
   const navigate = useNavigate();
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
-  const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
-  const backText = () => <FormattedMessage id={state?.prevUrl.includes('tracks') ? 'back_to_tracks' : 'back_to_albums'} />;
+  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '25px';
+  const colLayout = ((!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') && !isScreenSmall);
+  const backText = () => intl.formatMessage({ id: state?.prevUrl.includes('tracks') ? 'back_to_tracks' : 'back_to_albums' });
 
   const playAlbum = () => {
     enqueueTracksTop(tracks);
@@ -50,7 +49,7 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
     return allTracksInQueue;
   };
 
-  const albumButton = (onClick, name, enabled = true) => (
+  const albumButton = (onClick: Function, name: string, enabled = true) => (
     <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className="albumButton">
       <ControlButton
         disabled={!enabled}
@@ -58,7 +57,6 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
         onClick={onClick}
         width="100%"
         height={buttonHeight}
-        className="albumControlButton"
         style={{ fontSize }}
       />
     </Col>
@@ -69,19 +67,19 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
       {isScreenSmall && (
         <>
           <Row className="buttonRow">
-            {settings.features.play && (
+            {settings?.features?.play && (
               <Button
                 icon={<PlayFill />}
                 onClick={playAlbum}
               />
             )}
-            {settings.features.queue && (
+            {settings?.features?.queue && (
               <Button
                 icon={<ListOl />}
                 onClick={() => enqueueTracks(tracks)}
               />
             )}
-            {settings.features.playlists && (
+            {settings?.features?.playlists && (
               <Button
                 icon={<PlusSquare />}
                 onClick={() => navigate('/playlists', { state: { tracks } })}
@@ -94,7 +92,7 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
         <>
           <Row className="buttonRow">
             {albumButton(() => navigate(-1), backText())}
-            {albumButton(playAlbum, <FormattedMessage id="play_album" />, settings.features.play)}
+            {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), settings?.features?.play)}
           </Row>
           <Row className="buttonRow">
             {albumButton(() => {
@@ -102,21 +100,21 @@ const AlbumButtons = ({ tracks, queue, setQueue }) => {
               enqueueTracks(tracks);
 
               const clone = { ...queue };
+
+              // @ts-ignore
               clone.tracks = [...clone.tracks, ...tracks];
               setQueue(clone);
 
               setTimeout(() => applyLighting(settings, 'Albums'), 700);
-            }, <FormattedMessage id="enqueue_album" />, (settings.features.queue && !isAlbumInQueue()))}
+            }, intl.formatMessage({ id: 'enqueue_album' }), (settings?.features?.queue && !isAlbumInQueue()))}
             {albumButton(() => {
               navigate('/playlists', { state: { tracks } });
-            }, <FormattedMessage id="add_to_playlist" />, settings.features.playlists)}
+            }, intl.formatMessage({ id: 'add_to_playlist' }), settings?.features?.playlists)}
           </Row>
         </>
       )}
     </>
   );
 };
-
-AlbumButtons.propTypes = propTypes;
 
 export default AlbumButtons;

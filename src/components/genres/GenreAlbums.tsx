@@ -16,7 +16,7 @@ const GenreAlbums: FC<IGenreAlbums> = ({ genre }) => {
   const [genreAlbums, setGenreAlbums] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [pageSize, setPageSize] = useState(0);
-  const [totalAlbums, setTotalAlbums] = useState();
+  const [totalAlbums, setTotalAlbums] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {

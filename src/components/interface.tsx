@@ -17,8 +17,8 @@ export interface IController {
 };
 
 export interface IControllerState {
-  effects: [string],
-  palettes: [string],
+  effects: Array<string>,
+  palettes: Array<string>,
 };
 
 export interface ILog {
@@ -28,7 +28,7 @@ export interface ILog {
 export interface IPlaylist {
   id: string,
   name: string,
-  tracks: [ITrack],
+  tracks: Array<ITrack>,
 };
 
 export interface IOption {
@@ -43,7 +43,7 @@ export interface ILibrary {
   enabled: boolean,
   name: string,
   scanStatus: string,
-  albums: [IAlbum],
+  albums: Array<IAlbum>,
 };
 
 export interface IEvent {
@@ -144,6 +144,11 @@ export interface IStyle {
   fontSize?: string,
   fontFamily?: string,
   defaultAlbumCover?: string,
+};
+
+export interface IQueue {
+  tracks: Array<ITrack>,
+  totalTracks: number,
 };
 
 export interface IPage {

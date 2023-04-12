@@ -1,21 +1,19 @@
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 
-const propTypes = {
-  startsWithFilter: PropTypes.string.isRequired,
-  setStartsWithFilter: PropTypes.func.isRequired,
+interface IStartsWithFilter {
+  startsWithFilter?: string,
+  setStartsWithFilter?: Function,
 };
 
-const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
+const StartsWithFilter: FC<IStartsWithFilter> = ({ startsWithFilter, setStartsWithFilter }) => {
   const settings = useContext(SettingsContext);
   const { features } = settings;
-  const { startsWithLocation } = settings.preferences;
   const availableHeight = window.innerHeight;
   const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L',
     'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
@@ -26,8 +24,8 @@ const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
   };
 
   const filterStyle = {
-    paddingRight: startsWithLocation === 'left' ? '0px' : '0px',
-    marginRight: startsWithLocation === 'left' ? '0px' : '0px',
+    paddingRight: settings?.preferences?.startsWithLocation === 'left' ? '0px' : '0px',
+    marginRight: settings?.preferences?.startsWithLocation === 'left' ? '0px' : '0px',
   };
 
   return (
@@ -35,8 +33,12 @@ const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
       <Row>
         {alphabet.map(letter => (
           <Button
-            disabled={features.isLocked}
-            onClick={() => setStartsWithFilter(letter)}
+            disabled={features?.isLocked}
+            onClick={() => {
+              if (setStartsWithFilter) {
+                setStartsWithFilter(letter);
+              }
+            }}
             isSelected={letter === startsWithFilter}
             width="40%"
             height="30"
@@ -45,8 +47,12 @@ const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
           />
         ))}
         <Button
-          disabled={features.isLocked}
-          onClick={() => setStartsWithFilter(null)}
+          disabled={features?.isLocked}
+          onClick={() => {
+            if (setStartsWithFilter) {
+              setStartsWithFilter(null);
+            }
+          }}
           width="86%"
           height="45"
           content={<FormattedMessage id="all" />}
@@ -55,7 +61,5 @@ const StartsWithFilter = ({ startsWithFilter, setStartsWithFilter }) => {
     </Container>
   );
 };
-
-StartsWithFilter.propTypes = propTypes;
 
 export default StartsWithFilter;

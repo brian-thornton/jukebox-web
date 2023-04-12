@@ -1,15 +1,14 @@
-import { PropTypes } from 'prop-types';
 import { useSwipeable } from 'react-swipeable';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import React, { useEffect, useState, useContext } from 'react';
+import { FC, useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import './AlbumTracks.scss';
 import { handlers } from '../../lib/gesture-helper';
 import { calculatePageSize } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { Track } from '../shapes';
+import { ITrack, IQueue } from '../interface';
 import AddToPlaylistButton from '../common/AddToPlaylistButton';
 import DownloadButton from '../DownloadButton';
 import EnqueueButton from '../EnqueueButton';
@@ -17,28 +16,27 @@ import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
 
-const propTypes = {
-  nextPage: PropTypes.func.isRequired,
-  previousPage: PropTypes.func.isRequired,
-  tracks: PropTypes.arrayOf(Track),
-  queue: PropTypes.arrayOf(Track),
-  setQueue: PropTypes.func.isRequired,
+interface ITrackList {
+  nextPage: Function,
+  previousPage: Function,
+  tracks: Array<ITrack>,
+  queue: IQueue,
+  setQueue: Function,
 };
 
-const TrackList = ({ tracks, queue, setQueue }) => {
+const TrackList: FC<ITrackList> = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [pageSize, setPageSize] = useState();
+  const [pageSize, setPageSize] = useState(0);
   const swipe = useSwipeable(
     handlers(setSelectedPage, selectedPage, Math.ceil(tracks.length / pageSize))
   );
   let content = [];
-  const { controlButtonSize } = settings.styles;
-  const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 53 : 80;
-  const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 200 : 250;
+  const trackHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? 53 : 80;
+  const reserve = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? 200 : 250;
 
-  const inQueue = (track) => {
+  const inQueue = (track: any) => {
     return queue?.tracks?.filter(t => t.path === track.path).length > 0;
   };
 
@@ -48,10 +46,10 @@ const TrackList = ({ tracks, queue, setQueue }) => {
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
 
-  const albumModeButtons = track => (
+  const albumModeButtons = (track: any) => (
     <>
-      {features.play && <PlayNowButton track={track} />}
-      {features.queue && (
+      {features?.play && <PlayNowButton track={track} />}
+      {features?.queue && (
         <EnqueueButton
           mode="Albums"
           track={track}
@@ -63,19 +61,20 @@ const TrackList = ({ tracks, queue, setQueue }) => {
             setQueue(clone);
           }} />
       )}
-      {features.playlists && <AddToPlaylistButton track={track} />}
+      {features?.playlists && <AddToPlaylistButton track={track} />}
     </>
   );
 
   content = tracks.slice(realStart, (realStart + pageSize)).map(track => (
     <Item
+      onClick={() => { }}
       text={track.name}
       buttons={(
         <>
-          {features.play && <PlayNowButton track={track} />}
-          {features.queue && <EnqueueButton track={track} />}
-          {features.playlists && <AddToPlaylistButton track={track} />}
-          {features.downloadTrack && <DownloadButton track={track} />}
+          {features?.play && <PlayNowButton track={track} />}
+          {features?.queue && <EnqueueButton isSelected={false} disabled={false} track={track} />}
+          {features?.playlists && <AddToPlaylistButton track={track} />}
+          {features?.downloadTrack && <DownloadButton track={track} />}
         </>
       )}
     />
@@ -88,11 +87,12 @@ const TrackList = ({ tracks, queue, setQueue }) => {
           <Row className="d-none d-md-block d-lg-block">
             {tracks.slice(realStart, (realStart + pageSize)).map(track => (
               <Item
+                onClick={() => { }}
                 text={track.name}
                 buttons={(
                   <>
                     {albumModeButtons(track)}
-                    {features.downloadTrack && (
+                    {features?.downloadTrack && (
                       <DownloadButton track={track} />
                     )}
                   </>
@@ -103,6 +103,7 @@ const TrackList = ({ tracks, queue, setQueue }) => {
           <Row className="d-block d-sm-none">
             {tracks.map(track => (
               <Item
+                onClick={() => { }}
                 text={track.name}
                 buttons={albumModeButtons(track)}
               />
@@ -115,7 +116,7 @@ const TrackList = ({ tracks, queue, setQueue }) => {
           <Col lg="12" xl="12" md="12" sm="12">
             <Paginator
               disableRandom
-              onPageChange={page => setSelectedPage(page)}
+              onPageChange={(page: any) => setSelectedPage(page)}
               selectedPage={selectedPage}
               totalItems={tracks.length}
               pageSize={pageSize}
@@ -125,12 +126,6 @@ const TrackList = ({ tracks, queue, setQueue }) => {
       )}
     </Container>
   );
-};
-
-TrackList.propTypes = propTypes;
-TrackList.defaultProps = {
-  tracks: [],
-  queue: [],
 };
 
 export default TrackList;

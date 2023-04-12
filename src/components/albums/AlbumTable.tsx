@@ -1,18 +1,17 @@
 import { useNavigate } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 
 import './AlbumTable.scss';
-import { Albums } from '../shapes';
+import { IAlbum } from '../interface';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Item from '../common/Item';
 
-const propTypes = {
-  albums: Albums.isRequired,
+interface IAlbumTable {
+  albums: Array<IAlbum>,
 };
 
-const AlbumTable = ({ albums }) => {
+const AlbumTable: FC<IAlbumTable> = ({ albums }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
   const [hoverAlbum, setHoverAlbum] = useState();
@@ -29,15 +28,15 @@ const AlbumTable = ({ albums }) => {
     const tableRows = [];
     let rowAlbums = [];
 
-    const goToAlbum = (album) => {
+    const goToAlbum = (album: any) => {
       navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
     };
 
-    const albumTableData = album => (
+    const albumTableData = (album: any) => (
       <td
         onMouseEnter={() => setHoverAlbum(album)}
-        onMouseLeave={() => setHoverAlbum(null)}
-        style={{ background: hoverAlbum === album ? settings.styles.activeButtonColor : '' }}
+        onMouseLeave={() => setHoverAlbum(undefined)}
+        style={{ background: hoverAlbum === album ? settings?.styles?.activeButtonColor : '' }}
       >
         <Item text={album.name} onClick={() => goToAlbum(album)} />
       </td>
@@ -74,7 +73,5 @@ const AlbumTable = ({ albums }) => {
     </Table>
   );
 };
-
-AlbumTable.propTypes = propTypes;
 
 export default AlbumTable;

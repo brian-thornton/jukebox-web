@@ -10,10 +10,10 @@ import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
 
 interface IEnqueueButton {
-  mode: string,
+  mode?: string,
   track: ITrack,
   isSelected: boolean,
-  onComplete: Function,
+  onComplete?: Function,
   disabled: boolean,
 };
 
