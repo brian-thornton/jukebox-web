@@ -16,15 +16,13 @@ import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
 
-interface ITrackList {
-  nextPage: Function,
-  previousPage: Function,
+interface IAlbumTracks {
   tracks: Array<ITrack>,
-  queue: IQueue,
+  queue?: IQueue,
   setQueue: Function,
 };
 
-const TrackList: FC<ITrackList> = ({ tracks, queue, setQueue }) => {
+const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
@@ -37,7 +35,12 @@ const TrackList: FC<ITrackList> = ({ tracks, queue, setQueue }) => {
   const reserve = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? 200 : 250;
 
   const inQueue = (track: any) => {
-    return queue?.tracks?.filter(t => t.path === track.path).length > 0;
+    const queueTracks = queue?.tracks?.filter(t => t.path === track.path);
+    if (queueTracks?.length) {
+      return true;
+    } else {
+      return false;
+    }
   };
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const TrackList: FC<ITrackList> = ({ tracks, queue, setQueue }) => {
           isSelected={inQueue(track)}
           onComplete={() => {
             const clone = { ...queue };
-            clone.tracks.push(track);
+            clone?.tracks?.push(track);
             setQueue(clone);
           }} />
       )}
@@ -128,4 +131,4 @@ const TrackList: FC<ITrackList> = ({ tracks, queue, setQueue }) => {
   );
 };
 
-export default TrackList;
+export default AlbumTracks;

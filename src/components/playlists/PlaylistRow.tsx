@@ -34,7 +34,7 @@ const PlaylistRow: FC<IPlaylistRow> = ({
         <>
           {addMode && (
             <Button
-              height={buttonHeight}
+              height={buttonHeight.toString()}
               onClick={() => onAdd(playlist.name)}
               content={<FormattedMessage id="add" />}
             />
@@ -42,7 +42,7 @@ const PlaylistRow: FC<IPlaylistRow> = ({
           {!addMode && (
             <Button
               style={{ fontSize }}
-              height={buttonHeight}
+              height={buttonHeight.toString()}
               onClick={() => onSelect(playlist.name)}
               content={<PencilSquare />}
             />

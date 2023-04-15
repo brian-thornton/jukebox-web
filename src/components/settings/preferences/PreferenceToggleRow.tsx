@@ -31,7 +31,7 @@ const PreferenceToggleRow: FC<IPreferenceToggleRow> = ({ name, value }) => {
             updatePreference(settings, name, !value, '/settings?mode=preferences');
           }}
           isToggle
-          isToggled={value}
+          isToggled={value === 'true'}
           content={buttonText}
         />
       )}

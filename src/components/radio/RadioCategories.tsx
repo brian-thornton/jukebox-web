@@ -38,7 +38,7 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
           }}
           isSelected={c === category}
           width="100%"
-          height={buttonHeight}
+          height={buttonHeight.toString()}
           content={c}
         />
       ))}

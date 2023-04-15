@@ -1,10 +1,9 @@
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import AlbumAdminButtons from './AlbumAdminButtons';
 import AlbumButtons from './AlbumButtons';
@@ -19,13 +18,10 @@ import RestrictionModes from '../settings/content/RestrictionModes';
 import { topMargin } from '../../lib/styleHelper';
 import { getQueue } from '../../lib/queue-client';
 
-const propTypes = {
-  clearCurrentAlbum: PropTypes.func.isRequired,
-};
-
-const AlbumDetail = ({ clearCurrentAlbum }) => {
+const AlbumDetail = () => {
   const { state } = useLocation();
   const album = state.currentAlbum;
+  const intl = useIntl();
   const [tracks, setTracks] = useState([]);
   const [areTracksLoading, setAreTracksLoading] = useState(false);
   const [areTracksLoaded, setAreTracksLoaded] = useState(false);
@@ -35,7 +31,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   const [confirmRestriction, setConfirmRestriction] = useState(false);
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
-  const [queue, setQueue] = useState([]);
+  const [queue, setQueue] = useState({tracks: [], totalTracks: 0});
 
   const loadTracks = () => {
     if (!areTracksLoading) {
@@ -69,12 +65,9 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
         <AlbumButtons
           queue={queue}
           setQueue={setQueue}
-          album={album}
-          clearCurrentAlbum={clearCurrentAlbum}
           tracks={tracks}
         />
         <AlbumAdminButtons
-          album={album}
           setIsCustomSearchOpen={setIsCustomSearchOpen}
           setIsConfirmRemoveCoverArtOpen={setIsConfirmRemoveCoverArtOpen}
           setConfirmRestriction={setConfirmRestriction}
@@ -84,8 +77,8 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
   );
 
   const albumNameStyle = {
-    color: settings.styles.fontColor,
-    fontFamily: settings.styles.buttonFont,
+    color: settings?.styles?.fontColor,
+    fontFamily: settings?.styles?.buttonFont,
   };
 
   const largeAlbum = () => {
@@ -110,7 +103,7 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
                 <Confirm
-                  text={<FormattedMessage id="remove_cover_text" />}
+                  text={intl.formatMessage({id: 'remove_cover_text'})}
                   onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
                   onConfirm={() => {
                     removeCoverArt(album);
@@ -122,7 +115,6 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
               {isCustomSearchOpen && (
                 <CoverArtSearchModal
                   album={album}
-                  isOpen={isCustomSearchOpen}
                   handleClose={() => setIsCustomSearchOpen(false)}
                 />
               )}
@@ -153,7 +145,5 @@ const AlbumDetail = ({ clearCurrentAlbum }) => {
 
   return largeAlbum();
 };
-
-AlbumDetail.propTypes = propTypes;
 
 export default AlbumDetail;
