@@ -1,8 +1,7 @@
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useContext, useState, useEffect } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
-import { FormattedMessage } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
@@ -16,19 +15,20 @@ import { handlers } from '../lib/gesture-helper';
 import { bigButtons, headerFooterReserve, topMargin } from '../lib/styleHelper';
 import FullWidthRow from './common/FullWidthRow';
 
-const propTypes = {
-  setCurrentAlbum: PropTypes.func.isRequired,
-  search: PropTypes.string,
+interface ITracks {
+  setCurrentAlbum?: Function,
+  search?: string,
 };
 
-const Tracks = ({ setCurrentAlbum, search }) => {
+const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
+  const intl = useIntl();
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const [tracks, setTracks] = useState([]);
-  const [searchInProgress, setSearchInProgress] = useState();
+  const [searchInProgress, setSearchInProgress] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
+  const [realPageSize, setRealPageSize] = useState(0);
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let trackHeight = bigButtons(settings) ? 70 : 50;
@@ -43,7 +43,7 @@ const Tracks = ({ setCurrentAlbum, search }) => {
     applyLighting(settings, 'Tracks');
   }, []);
 
-  const findTracks = async (start, limit) => {
+  const findTracks = async (start: any, limit: any) => {
     searchTracks(search, start, limit).then((data) => {
       setTotalTracks(data.totalTracks);
       setTracks(data.tracks);
@@ -78,7 +78,6 @@ const Tracks = ({ setCurrentAlbum, search }) => {
     <TrackList
       tracks={tracks}
       showAlbumCovers
-      setCurrentAlbum={setCurrentAlbum}
     />
   );
 
@@ -89,7 +88,7 @@ const Tracks = ({ setCurrentAlbum, search }) => {
           <FullWidthRow>{content}</FullWidthRow>
           <FullWidthRow>
             <Paginator
-              onPageChange={page => setSelectedPage(page)}
+              onPageChange={(page: any) => setSelectedPage(page)}
               selectedPage={selectedPage}
               totalItems={totalTracks}
               pageSize={realPageSize}
@@ -105,14 +104,14 @@ const Tracks = ({ setCurrentAlbum, search }) => {
   return (
     <>
       {tracksLoaded && totalTracks === 0 && (
-        <NoResults title={<FormattedMessage id="no_tracks_title" />} text={<FormattedMessage id="no_tracks_text" />} marginTop="60px" />
+        <NoResults title={intl.formatMessage({id: 'no_tracks_title'})} text={intl.formatMessage({id: 'no_tracks_text'})} />
       )}
       {tracksLoaded && noResults && (
         <div className="no-albums">
-          <NoResults title={<FormattedMessage id="no_search_results_title" />} text={<FormattedMessage id="no_search_results_text" />} marginTop="60px" />
+          <NoResults title={intl.formatMessage({id: 'no_search_results_title'})} text={intl.formatMessage({id: 'no_search_results_text'})}/>
         </div>
       )}
-      {searchInProgress && <Loading />}
+      {searchInProgress && <Loading text="Loading..." />}
       {!noResults && !searchInProgress && (
         <>
           {trackList()}
@@ -120,11 +119,6 @@ const Tracks = ({ setCurrentAlbum, search }) => {
       )}
     </>
   );
-};
-
-Tracks.propTypes = propTypes;
-Tracks.defaultProps = {
-  search: '',
 };
 
 export default Tracks;

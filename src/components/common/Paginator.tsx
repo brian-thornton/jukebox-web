@@ -17,7 +17,7 @@ interface IPaginator {
   selectedPage: number,
   totalItems: number,
   pageSize: number,
-  disableRandom: boolean,
+  disableRandom?: boolean,
 };
 
 const Paginator: FC<IPaginator> = ({

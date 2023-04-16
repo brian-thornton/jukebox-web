@@ -1,7 +1,6 @@
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -12,28 +11,28 @@ import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './LibraryAdd.scss';
 
-const propTypes = {
-  handleHide: PropTypes.func.isRequired,
-  handleSave: PropTypes.func.isRequired,
+interface IDiscover {
+  handleHide: Function,
+  handleSave: Function,
 };
 
-const Discover = ({
+const Discover: FC<IDiscover> = ({
   handleHide,
   handleSave,
 }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
-  const [selectedCategory, setSelectedCategory] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState();
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const { isScreenSmall } = settings;
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   };
 
-  const onSelectDownloadPreference = (value) => {
+  const onSelectDownloadPreference = (value: any) => {
     setAllowCoverArtDownload(value);
     setDownloadCoverArtDirty(true);
   };
@@ -41,14 +40,14 @@ const Discover = ({
   return (
     <Card className="addNewCard" style={confirmStyle}>
       <Card.Title><FormattedMessage id="discover" /></Card.Title>
-      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
+      <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
         <Container fluid>
           <Row>
             <NameInput placeholder={intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker
-              onSelectCategory={category => setSelectedCategory(category)}
+              onSelectCategory={(category: any) => setSelectedCategory(category)}
               category={selectedCategory}
             />
           </Row>
@@ -64,7 +63,5 @@ const Discover = ({
     </Card>
   );
 };
-
-Discover.propTypes = propTypes;
 
 export default Discover;

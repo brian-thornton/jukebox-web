@@ -1,17 +1,18 @@
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import { PropTypes } from 'prop-types';
-import React from 'react';
+import { FC } from 'react';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
+import { ILibrary } from '../../interface';
 import './LibraryAdd.scss';
 
-const propTypes = {
-  onSelect: PropTypes.func.isRequired,
+interface IDownloadCoverArtPreference {
+  onSelect: Function,
+  library?: ILibrary,
 };
 
-const DownloadCoverArtPreference = ({ library, onSelect }) => (
+const DownloadCoverArtPreference: FC<IDownloadCoverArtPreference> = ({ library, onSelect }) => (
   <Container fluid>
     <Row>
       <Form>
@@ -39,7 +40,5 @@ const DownloadCoverArtPreference = ({ library, onSelect }) => (
     </Row>
   </Container>
 );
-
-DownloadCoverArtPreference.propTypes = propTypes;
 
 export default DownloadCoverArtPreference;

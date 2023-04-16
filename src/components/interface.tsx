@@ -44,6 +44,7 @@ export interface ILibrary {
   name: string,
   scanStatus: string,
   albums: Array<IAlbum>,
+  totalTracks: number,
 };
 
 export interface IEvent {

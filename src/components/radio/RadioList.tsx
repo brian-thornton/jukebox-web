@@ -1,6 +1,5 @@
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useEffect, useState, useContext } from 'react';
+import { FC, useEffect, useState, useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { PlayFill } from 'react-bootstrap-icons';
 
@@ -12,17 +11,17 @@ import './RadioList.scss';
 import { bigButtons, headerFooterReserve, topMargin } from '../../lib/styleHelper';
 import PaginatedList from '../common/PaginatedList';
 
-const propTypes = {
-  setMediaType: PropTypes.func.isRequired,
+interface IRadioList {
+  setMediaType: Function,
 };
 
-const RadioList = ({ setMediaType }) => {
+const RadioList: FC<IRadioList> = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
   const { preferences } = settings;
   const [selectedCategory, setSelectedCategory] = useState('rock');
-  const [stations, setStations] = useState();
+  const [stations, setStations] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
+  const [realPageSize, setRealPageSize] = useState(0);
   const heightAndWidth = bigButtons(settings) ? '60' : '';
   const fontSize = bigButtons(settings) ? '30px' : '';
 
@@ -32,7 +31,7 @@ const RadioList = ({ setMediaType }) => {
     setStations(data);
   };
 
-  useState(() => {
+  useEffect(() => {
     const reserve = headerFooterReserve(settings);
     const height = bigButtons(settings) ? 70 : 60;
     const itemHeight = height;
@@ -41,10 +40,12 @@ const RadioList = ({ setMediaType }) => {
   }, []);
 
   useEffect(() => {
-    loadStations();
-  }, [selectedCategory, selectedPage]);
+    if (realPageSize) {
+      loadStations();
+    }
+  }, [selectedCategory, selectedPage, realPageSize]);
 
-  const itemButtons = station => (
+  const itemButtons = (station: any) => (
     <Button
       height={heightAndWidth}
       width={heightAndWidth}
@@ -52,13 +53,13 @@ const RadioList = ({ setMediaType }) => {
       style={{ fontSize }}
       onClick={() => {
         setMediaType('stream');
-        play(station.url_resolved, preferences.vlcHost,
-          preferences.vlcPort, preferences.vlcPassword);
+        play(station.url_resolved, preferences?.vlcHost,
+          preferences?.vlcPort, preferences?.vlcPassword);
       }}
     />
   );
 
-  const items = () => stations?.map(station => (
+  const items = () => stations.map((station: any) => (
     {
       text: station.name,
       buttons: itemButtons(station),
@@ -73,6 +74,7 @@ const RadioList = ({ setMediaType }) => {
         </Col>
         <Col lg="11" xl="11" md="11" sm="11">
           <PaginatedList
+            // @ts-ignore
             items={items()}
             selectedPage={selectedPage}
             setSelectedPage={setSelectedPage}
@@ -82,7 +84,5 @@ const RadioList = ({ setMediaType }) => {
     </Container>
   );
 };
-
-RadioList.propTypes = propTypes;
 
 export default RadioList;

@@ -1,26 +1,25 @@
-import { PropTypes } from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 import LibraryRow from './LibraryRow';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
-import { Libraries } from '../../shapes';
+import { ILibrary } from '../../interface';
 
-const propTypes = {
-  libraries: Libraries.isRequired,
-  reloadLibraries: PropTypes.func.isRequired,
-  setCurrentScan: PropTypes.func.isRequired,
-  setSelectedLibrary: PropTypes.func.isRequired,
+interface ILibraryList {
+  libraries: Array<ILibrary>,
+  reloadLibraries: Function,
+  setCurrentScan: Function,
+  setSelectedLibrary: Function,
 };
 
-const LibraryList = ({
+const LibraryList: FC<ILibraryList> = ({
   libraries,
   reloadLibraries,
   setCurrentScan,
   setSelectedLibrary,
 }) => {
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
+  const [realPageSize, setRealPageSize] = useState(0);
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
@@ -37,6 +36,7 @@ const LibraryList = ({
 
   return (
     <PaginatedList
+      // @ts-ignore
       items={items()}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
@@ -45,7 +45,5 @@ const LibraryList = ({
     />
   );
 };
-
-LibraryList.propTypes = propTypes;
 
 export default LibraryList;

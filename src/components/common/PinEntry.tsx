@@ -12,7 +12,7 @@ import './PinEntry.scss';
 interface IPinEntry {
   onAuthorize: Function,
   onCancel: Function,
-  title: string,
+  title?: string,
 };
 
 const PinEntry: FC<IPinEntry> = ({ onAuthorize, onCancel, title }) => {

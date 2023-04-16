@@ -1,13 +1,12 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useContext } from 'react';
+import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import AddToPlaylistButton from './common/AddToPlaylistButton';
 import TrackAlbum from './TrackAlbum';
-import { Track as TrackShape } from './shapes';
+import { ITrack as TrackShape, IAlbum } from './interface';
 import DownloadButton from './DownloadButton';
 import ExpandRow from './common/ExpandRow';
 import GoToAlbumButton from './GoToAlbumButton';
@@ -17,15 +16,15 @@ import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
 import './Track.scss';
 
-const propTypes = {
-  setCurrentAlbum: PropTypes.func,
-  showAlbumCovers: PropTypes.bool,
-  track: TrackShape.isRequired,
-  trackAlbums: PropTypes.arrayOf(TrackShape).isRequired,
-  trackAlbumsLoaded: PropTypes.bool,
+interface ITrack {
+  setCurrentAlbum?: Function,
+  showAlbumCovers: boolean,
+  track: TrackShape,
+  trackAlbums: Array<IAlbum>,
+  trackAlbumsLoaded: boolean,
 };
 
-const Track = ({
+const Track: FC<ITrack> = ({
   showAlbumCovers,
   setCurrentAlbum,
   track,
@@ -36,23 +35,23 @@ const Track = ({
   const { features, isScreenSmall } = settings;
   const fontSize = bigButtons(settings) ? '25px' : '';
 
-  const getAlbum = (albumTrack) => {
+  const getAlbum = (albumTrack: any) => {
     if (trackAlbumsLoaded) {
       return trackAlbums.find(trackAlbum => trackAlbum.path === albumTrack.path.substr(0, albumTrack.path.lastIndexOf('/')));
     }
 
-    return null;
+    return undefined;
   };
 
-  const album = (albumTrack) => {
+  const album = (albumTrack: any) => {
     const ta = getAlbum(albumTrack);
 
     if (showAlbumCovers && ta) {
       if (settings && features) {
         return (
           <TrackAlbum
+            // @ts-ignore
             album={ta}
-            setCurrentAlbum={setCurrentAlbum}
           />
         );
       }
@@ -62,12 +61,12 @@ const Track = ({
   };
 
   const trackCardSkin = {
-    color: settings.styles.fontColor,
-    background: settings.styles.trackBackgroundColor,
+    color: settings?.styles?.fontColor,
+    background: settings?.styles?.trackBackgroundColor,
   };
 
   const trackNameSkin = {
-    fontFamily: settings.styles.listFont,
+    fontFamily: settings?.styles?.listFont,
     fontSize,
   };
 
@@ -77,11 +76,11 @@ const Track = ({
 
   const buttons = (
     <>
-      {features.albums && <GoToAlbumButton className="d-none d-sm-block d-md-none" album={getAlbum(track)} />}
-      {features.playlists && <AddToPlaylistButton track={track} />}
-      {features.play && <PlayNowButton track={track} />}
-      {features.queue && <EnqueueButton track={track} mode="Tracks" />}
-      {features.downloadTrack && <DownloadButton track={track} />}
+      {features?.albums && <GoToAlbumButton album={getAlbum(track)} />}
+      {features?.playlists && <AddToPlaylistButton track={track} />}
+      {features?.play && <PlayNowButton track={track} />}
+      {features?.queue && <EnqueueButton track={track} mode="Tracks" />}
+      {features?.downloadTrack && <DownloadButton track={track} />}
     </>
   );
 
@@ -111,13 +110,5 @@ const Track = ({
     </Card>
   );
 };
-
-Track.defaultProps = {
-  setCurrentAlbum: null,
-  showAlbumCovers: false,
-  trackAlbumsLoaded: false,
-};
-
-Track.propTypes = propTypes;
 
 export default Track;

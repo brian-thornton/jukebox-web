@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 
 import { getStatus, updateStatus } from '../../../lib/status-client';

@@ -8,7 +8,7 @@ import { IAlbum } from './interface';
 import { bigButtons } from '../lib/styleHelper';
 
 interface IGoToAlbumButton {
-  album: IAlbum,
+  album?: IAlbum,
 };
 
 const GoToAlbumButton:FC<IGoToAlbumButton> = ({ album }) => {
@@ -21,7 +21,7 @@ const GoToAlbumButton:FC<IGoToAlbumButton> = ({ album }) => {
       width={heightAndWidth}
       height={heightAndWidth}
       icon={<MusicNoteBeamed />}
-      onClick={() => navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: '/tracks' } })}
+      onClick={() => navigate(`/albums/${album?.id}`, { state: { currentAlbum: album, prevUrl: '/tracks' } })}
     />
   );
 };

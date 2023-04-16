@@ -4,11 +4,11 @@ import { FC } from 'react';
 import { useIntl } from 'react-intl';
 
 interface INameInput {
-  onChange: Function,
-  defaultValue: string,
-  placeholder: string,
-  onEnter: Function,
-  disabled: boolean,
+  onChange?: Function,
+  defaultValue?: string,
+  placeholder?: string,
+  onEnter?: Function,
+  disabled?: boolean,
 }
 
 const NameInput: FC<INameInput> = ({
@@ -20,15 +20,21 @@ const NameInput: FC<INameInput> = ({
     <InputGroup className="mb-3">
       <FormControl
         id="name"
-        placeholder={placeholder || intl.formatMessage({id: "name"})}
+        placeholder={placeholder || intl.formatMessage({ id: "name" })}
         aria-label="Name"
         defaultValue={defaultValue}
         aria-describedby="basic-addon1"
-        onChange={(e) => onChange()}
+        onChange={(e) => {
+          if (onChange) {
+            onChange();
+          }
+        }}
         disabled={disabled}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
-            onEnter();
+            if (onEnter) {
+              onEnter();
+            }
           }
         }}
       />

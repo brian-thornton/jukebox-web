@@ -1,7 +1,6 @@
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
-import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
 
@@ -11,16 +10,16 @@ import DownloadCoverArtPreference from './DownloadCoverArtPreference';
 import NameInput from '../../common/NameInput';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './LibraryAdd.scss';
-import { Library } from '../../shapes';
+import { ILibrary } from '../../interface';
 
-const propTypes = {
-  setShow: PropTypes.func,
-  setSelectedLibrary: PropTypes.func,
-  handleSave: PropTypes.func.isRequired,
-  library: Library,
+interface ILibraryAdd {
+  setShow: Function,
+  setSelectedLibrary: Function,
+  handleSave: Function,
+  library: ILibrary,
 };
 
-const LibraryAdd = ({
+const LibraryAdd: FC<ILibraryAdd> = ({
   setShow,
   setSelectedLibrary,
   handleSave,
@@ -36,10 +35,10 @@ const LibraryAdd = ({
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   };
 
-  const onSelectDownloadPreference = (value) => {
+  const onSelectDownloadPreference = (value: any) => {
     setAllowCoverArtDownload(value);
     setDownloadCoverArtDirty(true);
   };
@@ -47,14 +46,14 @@ const LibraryAdd = ({
   return (
     <Card className="addNewCard" style={confirmStyle}>
       <Card.Title><FormattedMessage id={library ? 'edit_library' : 'add_library'} /></Card.Title>
-      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
+      <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
         <Container fluid className="addContainer">
           <Row>
             <NameInput placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker
-              onSelectCategory={(category) => {
+              onSelectCategory={(category: any) => {
                 setEditLibrary({ ...editLibrary, category });
                 setSelectedCategory(category);
               }}
@@ -77,13 +76,5 @@ const LibraryAdd = ({
     </Card>
   );
 };
-
-LibraryAdd.defaultProps = {
-  setShow: null,
-  setSelectedLibrary: null,
-  library: null,
-};
-
-LibraryAdd.propTypes = propTypes;
 
 export default LibraryAdd;

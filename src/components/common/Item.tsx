@@ -9,12 +9,12 @@ import './Item.scss';
 
 interface IItem {
   buttons?: any,
-  onClick: Function,
+  onClick?: Function,
   text: string,
   includeCheckbox?: boolean,
   onCheck?: Function,
   checked?: false,
-  actionVisible?: false,
+  actionVisible?: boolean,
   font?: string,
 };
 
@@ -42,7 +42,12 @@ const Item: FC<IItem> = ({
   }
 
   return (
-    <ListGroupItem className="itemStyle" style={itemStyle} onClick={(e) => onClick()}>
+    <ListGroupItem className="itemStyle" style={itemStyle} onClick={(e) => {
+      if (onClick) {
+        onClick();
+      }
+    }}
+      >
       <Container fluid>
         <Row>
           <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">

@@ -9,7 +9,7 @@ import './ContentWithControls.scss';
 import { topMargin } from '../../lib/styleHelper';
 
 interface IContentWithControls {
-  alertText: string,
+  alertText?: string,
   content: any,
   controls: any,
 };

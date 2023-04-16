@@ -8,7 +8,7 @@ import Track from './Track';
 import './TrackList.scss';
 
 interface ITrackList {
-  tracks: [ITrack],
+  tracks: Array<ITrack>,
   showAlbumCovers: boolean,
 };
 

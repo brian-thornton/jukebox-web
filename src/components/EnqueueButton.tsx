@@ -12,9 +12,9 @@ import { bigButtons } from '../lib/styleHelper';
 interface IEnqueueButton {
   mode?: string,
   track: ITrack,
-  isSelected: boolean,
+  isSelected?: boolean,
   onComplete?: Function,
-  disabled: boolean,
+  disabled?: boolean,
 };
 
 const EnqueueButton: FC<IEnqueueButton> = ({

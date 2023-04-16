@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import CabinetConfiguration from './CabinetConfiguration';
@@ -23,27 +23,28 @@ const Settings = () => {
   const [isPinOpen, setIsPinOpen] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [modalClosed, setModalClosed] = useState(false);
-  const [controls, setControls] = useState(null);
+  const [controls, setControls] = useState([]);
   const [searchParams] = useSearchParams();
-  const { controlButtonSize } = settings.styles;
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
+  const { controlButtonSize } = settings.styles || {};
+  const { preferences } = settings || {};
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
   useEffect(() => {
     if (searchParams.get('mode')) {
-      setMode(searchParams.get('mode').toUpperCase());
+      setMode(searchParams.get('mode')!.toUpperCase());
     }
 
     applyLighting(settings, 'Settings');
   }, []);
 
   if (settings) {
-    if (settings.preferences.pinEnabled && !isAuthorized && !isPinOpen && !modalClosed) {
+    if (preferences?.pinEnabled && !isAuthorized && !isPinOpen && !modalClosed) {
       setIsPinOpen(true);
     }
   }
 
-  const controlButton = buttonMode => (
+  const controlButton = (buttonMode: any) => (
     <ControlButton
       isSelected={mode === buttonMode}
       width="100%"
@@ -61,15 +62,15 @@ const Settings = () => {
     'CABINET', 'LOGS', 'METADATA', 'CATEGORIES'];
 
   const leftControls = () => {
-    if ((settings.preferences.pinEnabled && isAuthorized) || !settings.preferences.pinEnabled) {
+    if ((preferences?.pinEnabled && isAuthorized) || !preferences?.pinEnabled) {
       return modes.map(m => controlButton(m));
     }
 
-    return <></>;
+    return [];
   };
 
   const content = () => {
-    if (isAuthorized || !settings.preferences.pinEnabled) {
+    if (isAuthorized || !settings?.preferences?.pinEnabled) {
       return (
         <>
           {mode === 'LIBRARY' && <Libraries />}
@@ -82,6 +83,7 @@ const Settings = () => {
           {mode === 'CATEGORIES' && <CategoryList />}
           {mode === 'STYLE' && (
             <Skins
+              // @ts-ignore
               resetControls={() => setControls(leftControls())}
               setControls={setControls}
             />
@@ -93,11 +95,12 @@ const Settings = () => {
     return <></>;
   };
 
-  if ((isAuthorized || !settings.preferences.pinEnabled) && !controls) {
+  if ((isAuthorized || !preferences?.pinEnabled) && !controls) {
+    // @ts-ignore
     setControls(leftControls());
   }
 
-  if (isAuthorized || !settings.preferences.pinEnabled) {
+  if (isAuthorized || !preferences?.pinEnabled) {
     return <ContentWithControls controls={leftControls()} content={content()} />;
   }
 

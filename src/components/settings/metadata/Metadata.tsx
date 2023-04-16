@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 
 import { getArtistsByGenre, linkGenereToLibrary } from '../../../lib/metadata-client';
@@ -8,7 +8,7 @@ import Loading from '../../common/Loading';
 import { calculatePageSize } from '../../../lib/styleHelper';
 
 const Metadata = () => {
-  const [itemsPerPage, setItemsPerPage] = useState();
+  const [itemsPerPage, setItemsPerPage] = useState(0);
   const [selectedPage, setSelectedPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
@@ -17,7 +17,7 @@ const Metadata = () => {
   const genres = ['Rock', 'Disco', 'Pop', 'Rap', 'Dance', 'Blues', 'Country', 'Hip Hop', 'Jazz',
     'Metal', 'Punk', 'Celtic', 'Classic Rock', 'Folk', 'Jam Band', 'Raggae'];
 
-  const loadData = (genre) => {
+  const loadData = (genre: string) => {
     setIsLoading(true);
     getArtistsByGenre(genre.toLowerCase()).then(() => {
       linkGenereToLibrary(genre.toLowerCase()).then(() => {
@@ -39,6 +39,7 @@ const Metadata = () => {
     <>
       {!isLoading && (
         <PaginatedList
+          // @ts-ignore
           items={items()}
           totalItems={genres.length}
           selectedPage={selectedPage}
@@ -46,7 +47,7 @@ const Metadata = () => {
           pageSize={itemsPerPage}
         />
       )}
-      {isLoading && <Loading />}
+      {isLoading && <Loading text="Loading..." />}
     </>
   );
 };

@@ -13,8 +13,8 @@ interface INoResults {
   text?: string,
   title?: string,
   controls?: [any],
-  applyMargin: boolean,
-  onGoBack: Function,
+  applyMargin?: boolean,
+  onGoBack?: Function,
 }
 
 const NoResults: FC<INoResults> = ({

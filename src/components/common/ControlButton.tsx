@@ -6,12 +6,12 @@ import { IStyle } from '../interface';
 import { Icon } from 'react-bootstrap-icons';
 
 interface IControlButton {
-  disabled: boolean,
+  disabled?: boolean,
   onClick: Function,
   text: string,
   height: string,
   width: string,
-  isSelected?: false,
+  isSelected?: boolean,
   style?: IStyle,
 };
 

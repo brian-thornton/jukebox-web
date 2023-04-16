@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { PropTypes } from 'prop-types';
 
 import CategoryRow from './CategoryRow';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -8,33 +7,33 @@ import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 import Button from '../../Button';
 
-const propTypes = {
-  onClose: PropTypes.func.isRequired,
+interface ICategories {
+  onClose: Function,
 };
 
-const Categories = ({ onClose }) => {
+const Categories: FC<ICategories> = ({ onClose }) => {
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState();
+  const [itemsPerPage, setItemsPerPage] = useState(0);
   useEffect(() => setItemsPerPage(calculatePageSize('item')), []);
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
-  const items = settings.categories.slice(start, (start + itemsPerPage)).map(category => (
+  const items = settings?.categories?.slice(start, (start + itemsPerPage)).map(category => (
+    // @ts-ignore
     <CategoryRow category={category} />
   ));
 
   return (
     <PaginatedList
       topLevelControls={<Button content={<FormattedMessage id="back_to_libraries" />} onClick={onClose} />}
+      // @ts-ignore
       items={items}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
-      totalItems={settings.categories.length}
+      totalItems={settings?.categories?.length || 0}
       itemsPerPage={itemsPerPage}
     />
   );
 };
-
-Categories.propTypes = propTypes;
 
 export default Categories;

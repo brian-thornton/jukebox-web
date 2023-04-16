@@ -8,8 +8,8 @@ import './ExpandRow.scss';
 interface IExpandRow {
   buttons: any,
   text: string,
-  isExpanded: boolean,
-  setIsExpanded: Function,
+  isExpanded?: boolean,
+  setIsExpanded?: Function,
 };
 
 const ExpandRow: FC<IExpandRow> = ({
@@ -52,7 +52,11 @@ const ExpandRow: FC<IExpandRow> = ({
 
   return (
     <Accordion activeKey={activeKey} className="accordion">
-      <CustomToggle eventKey="0" setIsExpanded={setIsExpanded}>{text}</CustomToggle>
+      <CustomToggle eventKey="0" setIsExpanded={() => {
+        if (setIsExpanded) {
+          setIsExpanded();
+        }
+      }}>{text}</CustomToggle>
       <Accordion.Collapse eventKey="0">
         <div onClick={() => setActiveKey(null)}>
           {buttons}
