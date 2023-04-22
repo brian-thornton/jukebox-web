@@ -1,38 +1,38 @@
-import { PropTypes } from 'prop-types';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import './AddNew.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import Button from '../Button';
 import NameInput from './NameInput';
 
-const propTypes = {
-  cancelText: PropTypes.string,
-  confirmText: PropTypes.string,
-  fields: PropTypes.shape({ name: PropTypes.string }),
-  onCancel: PropTypes.func.isRequired,
-  onConfirm: PropTypes.func.isRequired,
-  title: PropTypes.string,
+interface IAddNew {
+  cancelText: string,
+  confirmText: string,
+  fields: { name: string },
+  onCancel: Function,
+  onConfirm: Function,
+  title: string,
+  dropdowns?: Array<any>,
 };
 
-const AddNew = ({
+const AddNew: FC<IAddNew> = ({
   cancelText, confirmText, fields, onCancel, onConfirm, title, dropdowns,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const [fieldValues, setFieldValues] = useState(fields);
-  const [localDropdowns, setLocalDropdowns] = useState(dropdowns);
+  const [localDropdowns, setLocalDropdowns] = useState(Array<any>);
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   };
 
-  const onDrodownValueSet = (dropdown, value) => {
+  const onDrodownValueSet = (dropdown: any, value: any) => {
     const cloneDropdowns = [...localDropdowns];
     const updated = cloneDropdowns.find(d => d.name === dropdown.name);
     updated.value = value;
@@ -41,20 +41,22 @@ const AddNew = ({
 
   return (
     <Card className="addNewCard" style={confirmStyle}>
-      <Card.Body style={{ background: settings.styles.trackBackgroundColor }}>
+      <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
         <Card.Title className="addNewTitle">{title}</Card.Title>
         <Card.Text className="addNewText">
           <Container fluid>
             <Row>
               {Object.keys(fieldValues).map(f => (
                 <NameInput
-                  onChange={(event) => {
+                  onChange={(event: any) => {
                     setFieldValues({
                       ...fieldValues,
                       [f]: event.target.value,
                     });
                   }}
+                  // @ts-ignore
                   placeholder={fieldValues[f]}
+                  //@ts-ignore
                   defaultValue={fieldValues[f]}
                 />
               ))}
@@ -65,7 +67,7 @@ const AddNew = ({
                   <Form.Group>
                     <Form.Label className="addNewFormLabel">{dropdown.name}</Form.Label>
                     <Form.Select onChange={e => onDrodownValueSet(dropdown, e.target.value)}>
-                      {dropdown.options.map(o => <option>{o}</option>)}
+                      {dropdown.options.map((o: string) => <option>{o}</option>)}
                     </Form.Select>
                   </Form.Group>
                 ))}
@@ -81,14 +83,5 @@ const AddNew = ({
     </Card>
   );
 };
-
-AddNew.defaultProps = {
-  cancelText: 'Cancel',
-  confirmText: 'Save',
-  fields: { name: 'Name' },
-  title: 'Add',
-};
-
-AddNew.propTypes = propTypes;
 
 export default AddNew;

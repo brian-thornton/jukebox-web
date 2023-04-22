@@ -23,7 +23,7 @@ const LibraryList: FC<ILibraryList> = ({
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
-  const items = () => (
+  const items = (): JSX.Element[] => (
     libraries.slice(realStart, (realStart + realPageSize)).map(library => (
       <LibraryRow
         library={library}
@@ -42,6 +42,7 @@ const LibraryList: FC<ILibraryList> = ({
       setSelectedPage={setSelectedPage}
       pageSize={realPageSize}
       totalItems={libraries.length}
+      onItemClick={() => {}}
     />
   );
 };

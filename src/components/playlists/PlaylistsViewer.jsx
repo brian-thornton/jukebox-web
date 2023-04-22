@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { FormattedMessage } from 'react-intl';
@@ -13,10 +13,10 @@ import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew';
 import ContentWithControls from '../common/ContentWithControls';
 import ControlButton from '../common/ControlButton';
-import NoResults from '../common/NoResults';
 import PaginatedList from '../common/PaginatedList';
 import PlaylistDetail from './PlaylistDetail';
 import PlaylistRow from './PlaylistRow';
+import NoPlaylists from './NoPlaylists';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -113,13 +113,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
 
   const content = () => (
     <>
-      {playlists?.length === 0 && !addMode && (
-        <NoResults
-          applyMargin={false}
-          title={<FormattedMessage id="no_playlists_title" />}
-          text={<FormattedMessage id="no_playlists_text" />}
-        />
-      )}
+      {playlists?.length === 0 && !addMode && <NoPlaylists />}
       {addMode && <AddNew onCancel={() => setAddMode(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
       {!addMode && !isEmpty && (
         <PaginatedList

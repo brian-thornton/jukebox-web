@@ -9,12 +9,12 @@ import { SettingsContext } from '../layout/SettingsProvider';
 
 interface IPicker {
   applyPadding: boolean,
-  items: [{
+  items: Array<{
     title: string,
-    description: string,
+    description?: string,
     buttonText: string,
     onClick: Function,
-  }],
+  }>,
 };
 
 const Picker: FC<IPicker> = ({ items, applyPadding }) => {

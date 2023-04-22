@@ -21,13 +21,14 @@ interface IAlbumButtons {
 
 const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
+  const { controlButtonSize } = settings?.styles || {};
   const intl = useIntl();
-  const { isScreenSmall } = settings;
+  const { features, isScreenSmall } = settings || {};
   const { state } = useLocation();
   const navigate = useNavigate();
-  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '25px';
-  const colLayout = ((!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') && !isScreenSmall);
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
   const backText = () => intl.formatMessage({ id: state?.prevUrl.includes('tracks') ? 'back_to_tracks' : 'back_to_albums' });
 
   const playAlbum = () => {
@@ -67,19 +68,19 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
       {isScreenSmall && (
         <>
           <Row className="buttonRow">
-            {settings?.features?.play && (
+            {features?.play && (
               <Button
                 icon={<PlayFill />}
                 onClick={playAlbum}
               />
             )}
-            {settings?.features?.queue && (
+            {features?.queue && (
               <Button
                 icon={<ListOl />}
                 onClick={() => enqueueTracks(tracks)}
               />
             )}
-            {settings?.features?.playlists && (
+            {features?.playlists && (
               <Button
                 icon={<PlusSquare />}
                 onClick={() => navigate('/playlists', { state: { tracks } })}
@@ -92,7 +93,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
         <>
           <Row className="buttonRow">
             {albumButton(() => navigate(-1), backText())}
-            {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), settings?.features?.play)}
+            {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), features?.play)}
           </Row>
           <Row className="buttonRow">
             {albumButton(() => {
@@ -106,10 +107,10 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
               setQueue(clone);
 
               setTimeout(() => applyLighting(settings, 'Albums'), 700);
-            }, intl.formatMessage({ id: 'enqueue_album' }), (settings?.features?.queue && !isAlbumInQueue()))}
+            }, intl.formatMessage({ id: 'enqueue_album' }), (features?.queue && !isAlbumInQueue()))}
             {albumButton(() => {
               navigate('/playlists', { state: { tracks } });
-            }, intl.formatMessage({ id: 'add_to_playlist' }), settings?.features?.playlists)}
+            }, intl.formatMessage({ id: 'add_to_playlist' }), features?.playlists)}
           </Row>
         </>
       )}

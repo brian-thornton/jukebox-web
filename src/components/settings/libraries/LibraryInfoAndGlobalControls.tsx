@@ -1,9 +1,8 @@
-import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../Button';
 import Confirm from '../../common/Confirm';
@@ -11,18 +10,18 @@ import Confirm from '../../common/Confirm';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './Libraries.scss';
 
-const propTypes = {
-  setIsCategoryConfigOpen: PropTypes.func.isRequired,
-  onScanAll: PropTypes.func.isRequired,
-  onDeleteAll: PropTypes.func.isRequired,
-  handleDiscover: PropTypes.func.isRequired,
-  handleShow: PropTypes.func.isRequired,
-  currentScan: PropTypes.string,
-  totalTracks: PropTypes.number,
-  isScanning: PropTypes.bool,
+interface ILibraryInfoAndGlobalControls {
+  setIsCategoryConfigOpen: Function,
+  onScanAll: Function,
+  onDeleteAll: Function,
+  handleDiscover: Function,
+  handleShow: Function,
+  currentScan: string,
+  totalTracks: number,
+  isScanning: boolean,
 };
 
-const LibraryInfoAndGlobalControls = ({
+const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
   setIsCategoryConfigOpen,
   onScanAll,
   onDeleteAll,
@@ -32,6 +31,7 @@ const LibraryInfoAndGlobalControls = ({
   totalTracks,
   isScanning,
 }) => {
+  const intl = useIntl();
   const [isDeleteAllConfirmOpen, setIsDeleteAllConfirmOpen] = useState(false);
   const settings = useContext(SettingsContext);
 
@@ -57,7 +57,7 @@ const LibraryInfoAndGlobalControls = ({
     <>
       {isDeleteAllConfirmOpen && (
         <Confirm
-          text={<FormattedMessage id="delete_libraries_text" />}
+          text={intl.formatMessage({id: 'delete_libraries_text'})}
           onCancel={() => setIsDeleteAllConfirmOpen(false)}
           onConfirm={() => {
             onDeleteAll();
@@ -69,7 +69,7 @@ const LibraryInfoAndGlobalControls = ({
         <Container fluid>
           <Row>
             <Col lg="4" md="4">
-              <div style={{ color: settings.styles.fontColor, marginTop: '20px' }}>
+              <div style={{ color: settings?.styles?.fontColor, marginTop: '20px' }}>
                 {!currentScan && <div><FormattedMessage id="library_total_tracks" values={{ totalTracks }} /></div>}
                 {currentScan && <div className="scanText"><FormattedMessage id="currently_scanning" values={{ currentScan }} /></div>}
               </div>
@@ -87,13 +87,5 @@ const LibraryInfoAndGlobalControls = ({
     </>
   );
 };
-
-LibraryInfoAndGlobalControls.defaultProps = {
-  currentScan: '',
-  totalTracks: 0,
-  isScanning: false,
-};
-
-LibraryInfoAndGlobalControls.propTypes = propTypes;
 
 export default LibraryInfoAndGlobalControls;

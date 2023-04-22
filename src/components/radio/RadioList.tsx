@@ -78,6 +78,8 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
             items={items()}
             selectedPage={selectedPage}
             setSelectedPage={setSelectedPage}
+            pageSize={realPageSize}
+            onItemClick={() => {}}
           />
         </Col>
       </Row>

@@ -45,6 +45,7 @@ const Metadata = () => {
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
           pageSize={itemsPerPage}
+          onItemClick={() => {}}
         />
       )}
       {isLoading && <Loading text="Loading..." />}

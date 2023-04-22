@@ -93,7 +93,7 @@ export interface ISegment {
 };
 
 export interface ISettings {
-  features: {
+  features?: {
     albums: boolean,
     tracks: boolean,
     playlists: boolean,
@@ -110,11 +110,12 @@ export interface ISettings {
     deletePlaylist: boolean,
     admin: boolean,
   },
-  preferences: {
+  preferences?: {
     name: string,
+    startsWithLocation: string,
   },
-  pin: string,
-  styles: {
+  pin?: string,
+  styles?: {
     headerColor: string,
     footerColor: string,
     fontColor: string,
@@ -122,6 +123,7 @@ export interface ISettings {
     popupBackgroundColor: string,
     buttonBackgroundColor: string,
   },
+  search?: string,
 };
 
 export interface IColors {

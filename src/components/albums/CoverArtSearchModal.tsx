@@ -1,12 +1,11 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import React, { useContext, useState } from 'react';
-import { PropTypes } from 'prop-types';
+import { FC, useContext, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 
-import { Album } from '../shapes';
+import { IAlbum } from '../interface';
 import Button from '../Button';
 import NameInput from '../common/NameInput';
 import { saveCoverArt } from '../../lib/librarian-client';
@@ -15,12 +14,12 @@ import { SettingsContext } from '../layout/SettingsProvider';
 
 const albumArt = require('album-art');
 
-const propTypes = {
-  handleClose: PropTypes.func.isRequired,
-  album: Album.isRequired,
+interface ICoverArtSearchModal {
+  handleClose: Function,
+  album: IAlbum,
 };
 
-const CoverArtSearchModal = ({
+const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
   handleClose, album,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +29,7 @@ const CoverArtSearchModal = ({
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
 
-  const handleResult = (data) => {
+  const handleResult = (data: any) => {
     if (data.toString().includes('http')) {
       setResults(data);
     }
@@ -40,12 +39,12 @@ const CoverArtSearchModal = ({
     setIsLoading(true);
     if (query.includes('-')) {
       const nameArray = query.split('-');
-      albumArt(nameArray[0], { album: nameArray[1] }).then((data) => {
+      albumArt(nameArray[0], { album: nameArray[1] }).then((data: any) => {
         handleResult(data);
         setIsLoading(false);
       });
     } else {
-      albumArt(query).then((data) => {
+      albumArt(query).then((data: any) => {
         handleResult(data);
         setIsLoading(false);
       });
@@ -59,21 +58,21 @@ const CoverArtSearchModal = ({
 
   const resultsStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings.styles.fontColor,
+    color: settings?.styles?.fontColor,
   };
 
   return (
     <div className="cover-art-search">
       <Container>
         <Row className="cover-art-search-center">
-          <NameInput defaultValue={album.name} onChange={e => setQuery(e.target.value)} />
+          <NameInput defaultValue={album.name} onChange={(e: any) => setQuery(e.target.value)} />
         </Row>
         {!isLoading && results && (
           <Row className="cover-art-search-center">
             <Col>
               <Card className="cover-art-search-center albumCover" style={resultsStyle}>
                 <Card.Title><FormattedMessage id="results" /></Card.Title>
-                <Card.Img className="cover-art-search-album-cover" top src={results} onClick={handleSave} />
+                <Card.Img className="cover-art-search-album-cover" src={results} onClick={handleSave} />
               </Card>
             </Col>
           </Row>
@@ -86,7 +85,5 @@ const CoverArtSearchModal = ({
     </div>
   );
 };
-
-CoverArtSearchModal.propTypes = propTypes;
 
 export default CoverArtSearchModal;

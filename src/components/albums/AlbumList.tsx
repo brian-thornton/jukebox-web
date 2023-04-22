@@ -1,4 +1,3 @@
-import { useIntl } from 'react-intl';
 import { useLocation } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import Col from 'react-bootstrap/Col';
@@ -8,7 +7,6 @@ import Row from 'react-bootstrap/Row';
 
 import './AlbumList.scss';
 import { applyLighting } from '../../lib/lightingHelper';
-import { coverDimensions, headerFooterReserve } from '../../lib/styleHelper';
 import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import { handlers } from '../../lib/gesture-helper';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -16,9 +14,11 @@ import Album from './Album';
 import AlbumTable from './AlbumTable';
 import FullWidthRow from '../common/FullWidthRow';
 import Loading from '../common/Loading';
-import NoResults from '../common/NoResults';
 import Paginator from '../common/Paginator';
 import StartsWithFilter from './StartsWithFilter';
+import NoAlbumsLoaded from './NoAlbumsLoaded';
+import NoAlbumSearchResults from './NoAlbumsSearchResults';
+import { usePageSize } from './album-hooks';
 
 interface IAlbumList {
   selectedLibraries?: Array<string>,
@@ -31,22 +31,23 @@ interface IAlbumList {
 const AlbumList: FC<IAlbumList> = ({
   display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
 }) => {
-  const intl = useIntl();
   const settings = useContext(SettingsContext);
+  const { preferences } = settings;
+  const { startsWithLocation } = preferences || {};
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [loadComplete, setLoadComplete] = useState(false);
   const [totalAlbums, setTotalAlbums] = useState(0);
   const [lastSearch, setLastSearch] = useState('');
   const [selectedPage, setSelectedPage] = useState(1);
-  const [pageSize, setPageSize] = useState(0);
   const { state } = useLocation();
   const { isScreenSmall } = settings;
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const noResults = search && !albums.length && !isLoading;
-  const cols = settings?.preferences?.startsWithLocation === 'none' ? '12' : '11';
+  const cols = startsWithLocation === 'none' ? '12' : '11';
   let category = state?.category;
   const { pathname } = window.location;
+  const pageSize = usePageSize(display, settings);
 
   if (!category && pathname.includes('/categories')) {
     category = pathname.slice(window.location.pathname.lastIndexOf('/') + 1, pathname.length);
@@ -76,7 +77,6 @@ const AlbumList: FC<IAlbumList> = ({
   const loadAlbums = async () => {
     const start = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
     const end = start + pageSize;
-    const { preferences } = settings;
 
     if (selectedPage && pageSize) {
       setAlbums([]);
@@ -96,21 +96,6 @@ const AlbumList: FC<IAlbumList> = ({
       }
     }
   };
-
-  useEffect(() => {
-    if (display !== 'covers' && !category) {
-      const itemsPerColumn = Math.floor((window.innerHeight - 200) / 60);
-      setPageSize(itemsPerColumn * 3);
-    } else {
-      const reserve = headerFooterReserve(settings);
-      const startsWithReserve = ['left', 'right'].includes(settings?.preferences?.startsWithLocation || '') ? 25 : 0;
-      const dimensions = coverDimensions(settings);
-      const { coverWidth, coverHeight } = dimensions;
-      const albumsPerRow = Math.floor(window.innerWidth / (coverWidth + startsWithReserve));
-      const numberOfRows = Math.floor((window.innerHeight - reserve) / (display === 'grid' ? 65 : coverHeight));
-      setPageSize(albumsPerRow * numberOfRows);
-    }
-  }, [display]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -138,28 +123,14 @@ const AlbumList: FC<IAlbumList> = ({
 
   return (
     <>
-      {loadComplete && totalAlbums === 0 && (
-        <NoResults
-          title={intl.formatMessage({ id: 'no_albums_loaded_title' })}
-          text={intl.formatMessage({ id: 'no_albums_loaded_text' })}
-          applyMargin={false}
-          onGoBack={() => { }}
-        />
-      )}
-      {noResults && (
-        <NoResults
-          title={intl.formatMessage({ id: 'no_search_results_title' })}
-          text={intl.formatMessage({ id: 'no_search_results_text' })}
-          applyMargin={false}
-          onGoBack={() => { }}
-        />
-      )}
+      {loadComplete && totalAlbums === 0 && <NoAlbumsLoaded />}
+      {noResults && <NoAlbumSearchResults />}
       {isLoading && <Loading text="Loading..." />}
       {!isLoading && !noResults && (
         <Container {...swipe} fluid className="albumListContainer">
           <Row className="containerRow">
             <>
-              {settings?.preferences?.startsWithLocation === 'left' && !isScreenSmall && !search && (
+              {startsWithLocation === 'left' && !isScreenSmall && !search && (
                 { startsWithCol }
               )}
               <Col lg={cols} xl={cols} md={cols} sm={cols} className="centerCol">
@@ -169,18 +140,18 @@ const AlbumList: FC<IAlbumList> = ({
                       {albums.map(album => <Album album={album} coverArtOnly={false} />)}
                     </Row>
                     <Row className="albumRow">
-                      {(totalAlbums > pageSize) && settings?.preferences?.startsWithLocation !== 'none' && !search && paginator}
+                      {(totalAlbums > pageSize) && startsWithLocation !== 'none' && !search && paginator}
                     </Row>
                   </Container>
                 )}
                 {display === 'grid' && <AlbumTable albums={albums} />}
               </Col>
-              {settings?.preferences?.startsWithLocation === 'right' && !isScreenSmall && !search && (
+              {startsWithLocation === 'right' && !isScreenSmall && !search && (
                 { startsWithCol }
               )}
             </>
           </Row>
-          {(settings?.preferences?.startsWithLocation === 'none' || search) && (
+          {(startsWithLocation === 'none' || search) && (
             <FullWidthRow>
               {(totalAlbums > pageSize) && paginator}
             </FullWidthRow>

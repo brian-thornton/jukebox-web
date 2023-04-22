@@ -28,7 +28,7 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
   const [searchInProgress, setSearchInProgress] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(0);
+  const [realPageSize, setRealPageSize] = useState(1);
   const [tracksLoaded, setTracksLoaded] = useState(false);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let trackHeight = bigButtons(settings) ? 70 : 50;
@@ -59,7 +59,9 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
       if (search) {
         findTracks(realStart, (realStart + realPageSize));
       } else {
+        console.log(realStart, (realStart + realPageSize));
         getTracks(realStart, (realStart + realPageSize)).then((data) => {
+          console.log(data);
           setTotalTracks(data.totalTracks);
           setTracks(data.tracks);
           setTracksLoaded(true);
@@ -71,7 +73,10 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
 
   useEffect(() => {
     setSearchInProgress(true);
-    loadTracks();
+
+    if (realPageSize > 1) {
+      loadTracks();
+    }
   }, [search, selectedPage, realPageSize]);
 
   const content = (
@@ -104,11 +109,11 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
   return (
     <>
       {tracksLoaded && totalTracks === 0 && (
-        <NoResults title={intl.formatMessage({id: 'no_tracks_title'})} text={intl.formatMessage({id: 'no_tracks_text'})} />
+        <NoResults title={intl.formatMessage({ id: 'no_tracks_title' })} text={intl.formatMessage({ id: 'no_tracks_text' })} />
       )}
       {tracksLoaded && noResults && (
         <div className="no-albums">
-          <NoResults title={intl.formatMessage({id: 'no_search_results_title'})} text={intl.formatMessage({id: 'no_search_results_text'})}/>
+          <NoResults title={intl.formatMessage({ id: 'no_search_results_title' })} text={intl.formatMessage({ id: 'no_search_results_text' })} />
         </div>
       )}
       {searchInProgress && <Loading text="Loading..." />}

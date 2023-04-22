@@ -17,10 +17,11 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
   setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
 }) => {
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
-  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '25px';
-  const colLayout = ((!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') && !isScreenSmall);
+  const { isScreenSmall, styles } = settings || {};
+  const {controlButtonSize} = styles || {};
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
 
   const albumButton = (onClick: any, name: any) => (
     <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className="adminRow">

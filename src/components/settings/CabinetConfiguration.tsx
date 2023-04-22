@@ -1,5 +1,4 @@
 import Container from 'react-bootstrap/Container';
-import React from 'react';
 import Row from 'react-bootstrap/Row';
 import './CabinetConfiguration.scss';
 import { FormattedMessage } from 'react-intl';

@@ -18,7 +18,10 @@ interface IAlbum {
 const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   const navigate = useNavigate();
   const settings = useContext(SettingsContext);
+  const { styles, preferences, features } = settings || {};
+  const { coverSize, showAlbumName } = preferences || { coverSize: 'medium' };
   const [coverArt, setCoverArt] = useState(defaultCover);
+  const isMediumCover = coverSize === 'medium';
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings?.features?.admin) {
@@ -35,25 +38,25 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   useEffect(() => loadCoverArt(), []);
 
   const albumNameStyle = {
-    color: settings?.styles?.fontColor,
-    fontFamily: settings?.styles?.buttonFont,
+    color: styles?.fontColor,
+    fontFamily: styles?.buttonFont,
   };
 
   const albumImageStyle = {
-    width: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
-    height: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
-    maxWidth: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
-    maxHeight: settings?.preferences?.coverSize === 'medium' ? '300px' : '200px',
+    width: isMediumCover ? '300px' : '200px',
+    height: isMediumCover ? '300px' : '200px',
+    maxWidth: isMediumCover ? '300px' : '200px',
+    maxHeight: isMediumCover ? '300px' : '200px',
   };
 
   const albumCardStyle = {
-    width: settings?.preferences?.coverSize === 'medium' ? '303px' : '203px',
-    height: settings?.preferences?.coverSize === 'medium' ? '320px' : '220px',
-    maxWidth: settings?.preferences?.coverSize === 'medium' ? '303px' : '203px',
-    maxHeight: settings?.preferences?.coverSize === 'medium' ? '320px' : '220px',
+    width: isMediumCover ? '303px' : '203px',
+    height: isMediumCover ? '320px' : '220px',
+    maxWidth: isMediumCover ? '303px' : '203px',
+    maxHeight: isMediumCover ? '320px' : '220px',
   };
 
-  if (settings?.preferences?.coverSize === 'large') {
+  if (coverSize === 'large') {
     albumImageStyle.width = '400px';
     albumImageStyle.height = '400px';
     albumImageStyle.maxWidth = '400px';
@@ -69,7 +72,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
       className="albumCard"
       style={albumCardStyle}
       onClick={() => {
-        if (!settings?.features?.isLocked) {
+        if (!features?.isLocked) {
           navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
         }
       }}
@@ -77,7 +80,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
       <Card.Img src={coverArt} style={albumImageStyle} />
       {!coverArtOnly && (
         <Card.Body className="albumCardBody" style={albumNameStyle}>
-          {settings?.preferences?.showAlbumName && album.name}
+          {showAlbumName && album.name}
         </Card.Body>
       )}
     </Card>

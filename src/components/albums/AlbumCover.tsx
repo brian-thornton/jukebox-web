@@ -13,9 +13,10 @@ interface IAlbumCover {
 const AlbumCover: FC<IAlbumCover> = ({ album }) => {
   const [coverArt, setCoverArt] = useState('');
   const settings = useContext(SettingsContext);
+  const { defaultAlbumCover } = settings?.styles || {};
 
   const loadCoverArt = () => {
-    coverArtUrl(album, settings?.styles?.defaultAlbumCover).then(data => setCoverArt(data.url));
+    coverArtUrl(album, defaultAlbumCover).then(data => setCoverArt(data.url));
   };
 
   useEffect(() => loadCoverArt(), []);

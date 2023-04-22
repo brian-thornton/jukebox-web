@@ -34,7 +34,7 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue }) => {
   const trackHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? 53 : 80;
   const reserve = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? 200 : 250;
 
-  const inQueue = (track: any) => {
+  const inQueue = (track: ITrack): boolean => {
     const queueTracks = queue?.tracks?.filter(t => t.path === track.path);
     if (queueTracks?.length) {
       return true;

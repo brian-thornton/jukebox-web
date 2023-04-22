@@ -1,16 +1,17 @@
-import { FC, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useState } from 'react';
+import { useIntl } from 'react-intl';
 
 import Picker from '../common/Picker';
 import GenreAlbums from './GenreAlbums';
 
 const Genres = () => {
+  const intl = useIntl();
   const [genre, setGenre] = useState();
 
-  const genreItem = genreName => (
+  const genreItem = (genreName: any) => (
     {
-      title: <FormattedMessage id={genreName} />,
-      buttonText: <FormattedMessage id="go_to" values={{ name: genreName }} />,
+      title: intl.formatMessage({id: genreName}),
+      buttonText: intl.formatMessage({id: 'go_to'}, { name: genreName }),
       onClick: () => setGenre(genreName),
     }
   );

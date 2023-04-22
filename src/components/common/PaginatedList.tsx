@@ -13,13 +13,13 @@ import FullWidthRow from './FullWidthRow';
 import './PaginatedList.scss';
 
 interface IPaginatedList {
-  topLevelControls: any,
-  items: [IItem],
+  topLevelControls?: any,
+  items: Array<any>,
   selectedPage: number,
-  totalItems: number,
+  totalItems?: number,
   setSelectedPage: Function,
   pageSize: number,
-  applyTopMargin: boolean,
+  applyTopMargin?: boolean,
   onItemClick: Function,
 };
 

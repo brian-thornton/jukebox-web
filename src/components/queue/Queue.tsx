@@ -1,7 +1,7 @@
 import { TrashFill, XLg } from 'react-bootstrap-icons';
 import Container from 'react-bootstrap/Container';
-import React, { useContext, useEffect, useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useContext, useEffect, useState } from 'react';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import { applyLighting } from '../../lib/lightingHelper';
 import Button from '../Button';
@@ -22,6 +22,7 @@ import FullWidthRow from '../common/FullWidthRow';
 import QueueControls from './QueueControls';
 
 const Queue = () => {
+  const intl = useIntl();
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const [tracks, setTracks] = useState([]);
@@ -29,12 +30,12 @@ const Queue = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
   const [clearConfirm, setClearConfirm] = useState(false);
-  const { controlButtonSize } = settings.styles;
+  const { controlButtonSize } = settings.styles || {};
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 300 : 250;
   const itemsPerPage = calculatePageSize('item', reserve, trackHeight);
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 60;
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
   const loadQueue = () => {
@@ -54,7 +55,7 @@ const Queue = () => {
     loadQueue();
   };
 
-  const clear = () => clearQueue().then(loadQueue());
+  const clear = () => clearQueue().then(() => loadQueue());
 
   useEffect(() => {
     applyLighting(settings, 'Queue');
@@ -63,14 +64,14 @@ const Queue = () => {
 
   useEffect(loadQueue, [selectedPage]);
 
-  const remove = (track) => {
+  const remove = (track: any) => {
     removeTracksFromQueue([track]);
     loadQueue();
   };
 
   const confirm = (
     <Confirm
-      text={<FormattedMessage id="delete_queue_text" />}
+      text={intl.formatMessage({ id: 'delete_queue_text' })}
       onConfirm={clear}
       onCancel={() => {
         setClearConfirm(false);
@@ -79,9 +80,9 @@ const Queue = () => {
     />
   );
 
-  const itemButtons = track => (
+  const itemButtons = (track: any) => (
     <>
-      {settings.features.play && <PlayNowButton track={track} />}
+      {settings?.features?.play && <PlayNowButton track={track} />}
       <Button
         style={{ fontSize }}
         width={buttonWidth}
@@ -93,7 +94,7 @@ const Queue = () => {
   );
 
   const items = () => (
-    tracks.map(track => (
+    tracks.map((track: any) => (
       {
         text: track.name,
         buttons: itemButtons(track),
@@ -103,7 +104,12 @@ const Queue = () => {
 
   const content = () => {
     if (isEmpty) {
-      return <NoResults applyMargin={false} title={<FormattedMessage id="queue_empty_title" />} text={<FormattedMessage id="queue_empty_text" />} />;
+      return (
+        <NoResults
+          applyMargin={false}
+          title={intl.formatMessage({id: 'queue_empty_title'})}
+          text={intl.formatMessage({id: 'queue_empty_text'})}
+        />);
     }
 
     return (
@@ -115,6 +121,7 @@ const Queue = () => {
             setSelectedPage={setSelectedPage}
             pageSize={itemsPerPage}
             totalItems={totalTracks}
+            onItemClick={() => {}}
           />
         )}
         {clearConfirm && confirm}
@@ -149,20 +156,6 @@ const Queue = () => {
       )}
     </>
   );
-};
-
-Button.defaultProps = {
-  content: '',
-  icon: <></>,
-  disabled: false,
-  isToggle: false,
-  isToggled: false,
-  isSelected: false,
-  height: '',
-  width: '',
-  style: {},
-  id: '',
-  hideOnSmall: false,
 };
 
 export default Queue;
