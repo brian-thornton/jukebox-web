@@ -16,6 +16,7 @@ const ExpandRow: FC<IExpandRow> = ({
   buttons, text, isExpanded, setIsExpanded,
 }) => {
   const settings = useContext(SettingsContext);
+  const { styles } = settings || {};
   const [activeKey, setActiveKey] = useState(isExpanded ? '0' : null);
 
   interface ICustomToggle {
@@ -33,9 +34,9 @@ const ExpandRow: FC<IExpandRow> = ({
     });
 
     const itemStyle = {
-      color: settings?.styles?.fontColor,
-      background: settings?.styles?.trackBackgroundColor,
-      fontFamily: settings?.styles?.listFont,
+      color: styles?.fontColor,
+      background: styles?.trackBackgroundColor,
+      fontFamily: styles?.listFont,
     };
 
     return (

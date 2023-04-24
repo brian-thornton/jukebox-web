@@ -1,7 +1,7 @@
 import { TrashFill, XLg } from 'react-bootstrap-icons';
 import Container from 'react-bootstrap/Container';
 import { useContext, useEffect, useState } from 'react';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import { applyLighting } from '../../lib/lightingHelper';
 import Button from '../Button';

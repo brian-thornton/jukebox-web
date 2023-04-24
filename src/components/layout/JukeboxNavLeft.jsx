@@ -47,13 +47,23 @@ const JukeboxNavLeft = () => {
     </>
   );
 
+  const navLink = feature => (
+    <Nav.Link
+      disabled={features.isLocked}
+      style={{ fontFamily: headerFont }}
+      href={`/${feature}`}
+    >
+      <FormattedMessage id={feature} />
+    </Nav.Link>
+  )
+
   return (
     <>
       {(!styles || !styles.navButtonType || styles.navButtonType !== 'buttons' || isScreenSmall) && (
         <Nav className="me-auto">
           {albums && (
             <>
-              <Nav.Link disabled={features.isLocked} style={{ fontFamily: styles.headerFont }} href="/albums"><FormattedMessage id="albums" /></Nav.Link>
+              {navLink('albums')}
               {settings.categories.map(c => (
                 <>
                   {c !== 'Albums' && (
@@ -70,14 +80,14 @@ const JukeboxNavLeft = () => {
               ))}
             </>
           )}
-          {tracks && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/tracks"><FormattedMessage id="tracks" /></Nav.Link>}
-          {tracks && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/genres"><FormattedMessage id="genres" /></Nav.Link>}
-          {playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/playlists"><FormattedMessage id="playlists" /></Nav.Link>}
-          {playlists && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/radio"><FormattedMessage id="radio" /></Nav.Link>}
-          {queue && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/queue"><FormattedMessage id="queue" /></Nav.Link>}
-          {features.settings && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/settings"><FormattedMessage id="settings" /></Nav.Link>}
-          {albums && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/filters"><FormattedMessage id="filters" /></Nav.Link>}
-          {(albums || features.tracks) && isScreenSmall && <Nav.Link disabled={features.isLocked} style={{ fontFamily: headerFont }} href="/search"><FormattedMessage id="search" /></Nav.Link>}
+          {tracks && navLink('tracks')}
+          {tracks && navLink('genres')}
+          {playlists && navLink('playlists')}
+          {playlists && navLink('radio')}
+          {queue && navLink('queue')}
+          {features.settings && navLink('settings')}
+          {albums && isScreenSmall && navLink('filters')}
+          {(albums || features.tracks) && isScreenSmall && navLink('search')}
         </Nav>
       )}
       {styles.navButtonType === 'buttons' && !isScreenSmall && (

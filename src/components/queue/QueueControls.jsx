@@ -20,7 +20,7 @@ const QueueControls = ({
 }) => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
-  const { controlButtonSize } = settings.styles;
+  const { controlButtonSize } = settings.styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 60;
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 

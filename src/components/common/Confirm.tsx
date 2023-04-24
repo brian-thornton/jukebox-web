@@ -21,6 +21,16 @@ const Confirm: FC<IConfirm> = ({ onConfirm, onCancel, text }) => {
     const fontSize = controlButtonSize === 'small' ? '' : '20px';
     const marginTop = isScreenSmall ? '60px' : '0px';
 
+    const button = (content: any, onClick: any) => (
+      <Button
+        height={buttonSize}
+        width={buttonSize}
+        style={{ fontSize }}
+        onClick={onClick}
+        content={content}
+      />
+    );
+
     return (
       <Card className="confirmCard" style={{ color: fontColor, marginTop }}>
         <Card.Body style={{ background: trackBackgroundColor }}>
@@ -29,20 +39,8 @@ const Confirm: FC<IConfirm> = ({ onConfirm, onCancel, text }) => {
           </Card.Title>
           <Card.Text className="confirmText">{text}</Card.Text>
           <div className="confirmText">
-            <Button
-              height={buttonSize}
-              width={buttonSize}
-              style={{ fontSize }}
-              onClick={onCancel}
-              content={<FormattedMessage id="no" />}
-            />
-            <Button
-              height={buttonSize}
-              width={buttonSize}
-              style={{ fontSize }}
-              onClick={onConfirm}
-              content={<FormattedMessage id="yes" />}
-            />
+            {button(<FormattedMessage id="no" />, onCancel)}
+            {button(<FormattedMessage id="yes" />, onConfirm)}
           </div>
         </Card.Body>
       </Card>

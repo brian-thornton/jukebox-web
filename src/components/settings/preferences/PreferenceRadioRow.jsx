@@ -19,6 +19,7 @@ const propTypes = {
 
 const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
   const settings = useContext(SettingsContext);
+  const { styles, preferences } = settings || {};
   const [radioValue, setRadioValue] = useState(options[0]?.value || '');
 
   const rowLabel = (value) => {
@@ -28,9 +29,9 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
   };
 
   const itemStyle = {
-    color: settings.styles.fontColor,
-    background: settings.styles.trackBackgroundColor,
-    fontFamily: settings.styles.listFont,
+    color: styles.fontColor,
+    background: styles.trackBackgroundColor,
+    fontFamily: styles.listFont,
     width: '100%',
     height: '60px',
   };
@@ -51,7 +52,7 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
                     label={option.display}
                     name="group1"
                     type="radio"
-                    checked={settings.preferences[preferenceName] === option.value}
+                    checked={preferences[preferenceName] === option.value}
                     onChange={() => {
                       setRadioValue(option.value);
                       updatePreference(settings, preferenceName, option.value, '/settings?mode=preferences');

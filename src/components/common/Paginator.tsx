@@ -28,15 +28,16 @@ const Paginator: FC<IPaginator> = ({
   disableRandom,
 }) => {
   const settings = useContext(SettingsContext);
+  const { styles, features } = settings || {};
   const pages = Math.floor(totalItems / pageSize);
   const fontSize = bigButtons(settings) ? '30px' : '';
   let height;
 
-  if (settings?.styles?.controlButtonSize === 'large') {
+  if (styles?.controlButtonSize === 'large') {
     height = '100';
   }
 
-  if (settings?.styles?.controlButtonSize === 'medium') {
+  if (styles?.controlButtonSize === 'medium') {
     height = '70';
   }
 
@@ -51,14 +52,14 @@ const Paginator: FC<IPaginator> = ({
       {totalItems > 0 && (
         <Button
           {...buttonProps}
-          disabled={selectedPage === 1 || settings?.features?.isLocked}
+          disabled={selectedPage === 1 || features?.isLocked}
           onClick={() => onPageChange(1)}
           content={<ChevronDoubleLeft />}
         />
       )}
       <Button
         {...buttonProps}
-        disabled={selectedPage === 1 || settings?.features?.isLocked}
+        disabled={selectedPage === 1 || features?.isLocked}
         onClick={() => onPageChange(selectedPage - 1)}
         content={<ChevronLeft />}
       />
@@ -67,21 +68,21 @@ const Paginator: FC<IPaginator> = ({
           style={{ fontSize }}
           height={height}
           hideOnSmall
-          disabled={settings?.features?.isLocked}
+          disabled={features?.isLocked}
           onClick={() => onPageChange(Math.floor(Math.random() * pages))}
           content={<FormattedMessage id="page_of" values={{ page: selectedPage, pages }} />}
         />
       )}
       <Button
         {...buttonProps}
-        disabled={selectedPage === pages + 1 || settings?.features?.isLocked}
+        disabled={selectedPage === pages + 1 || features?.isLocked}
         onClick={() => onPageChange(selectedPage + 1)}
         content={<ChevronRight />}
       />
       {totalItems > 0 && (
         <Button
           {...buttonProps}
-          disabled={selectedPage === pages + 1 || settings?.features?.isLocked}
+          disabled={selectedPage === pages + 1 || features?.isLocked}
           onClick={() => onPageChange(pages + 1)}
           content={<ChevronDoubleRight />}
         />

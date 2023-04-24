@@ -114,7 +114,15 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const content = () => (
     <>
       {playlists?.length === 0 && !addMode && <NoPlaylists />}
-      {addMode && <AddNew onCancel={() => setAddMode(false)} onConfirm={() => handleClose(document.getElementById('name').value)} />}
+      {addMode && (
+        <AddNew
+          fields={{ name: 'Name' }}
+          onCancel={() => setAddMode(false)}
+          onConfirm={() => handleClose(document.getElementById('name').value)}
+          confirmText='Add'
+          cancelText='Cancel'
+        />
+      )}
       {!addMode && !isEmpty && (
         <PaginatedList
           items={items()}

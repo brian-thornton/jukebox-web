@@ -154,16 +154,20 @@ const RestrictionModes = ({ addMode, addComplete, album }) => {
           title={<FormattedMessage id="add_restriction_group" />}
           dropdowns={[{ name: <FormattedMessage id="group_type" />, options: ['whitelist', 'blacklist'], value: 'whitelist' }]}
           onConfirm={onAddRestrictionGroup}
+          confirmText='Add'
+          cancelText='Cancel'
           onCancel={() => setIsAddOpen(false)}
+          fields={{name: 'Name'}}
         />
       )}
       {!selectedRestrictionMode && !isAddOpen && !isDeleteOpen && restrictionGroups?.length > 0 && (
         <PaginatedList
-          topLevelControls={<Button content={<FormattedMessage id="add" />} onClick={() => setIsAddOpen(true)} />}
+          topLevelControls={album ? <></> : <Button content={<FormattedMessage id="add" />} onClick={() => setIsAddOpen(true)} />}
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
           pageSize={realPageSize}
+          applyTopMargin={album ? true : false}
         />
       )}
     </>

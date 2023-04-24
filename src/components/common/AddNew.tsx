@@ -25,7 +25,7 @@ const AddNew: FC<IAddNew> = ({
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const [fieldValues, setFieldValues] = useState(fields);
-  const [localDropdowns, setLocalDropdowns] = useState(Array<any>);
+  const [localDropdowns, setLocalDropdowns] = useState(dropdowns);
 
   const confirmStyle = {
     marginTop: isScreenSmall ? '60px' : '0px',
@@ -33,6 +33,7 @@ const AddNew: FC<IAddNew> = ({
   };
 
   const onDrodownValueSet = (dropdown: any, value: any) => {
+    // @ts-ignore
     const cloneDropdowns = [...localDropdowns];
     const updated = cloneDropdowns.find(d => d.name === dropdown.name);
     updated.value = value;
@@ -49,6 +50,7 @@ const AddNew: FC<IAddNew> = ({
               {Object.keys(fieldValues).map(f => (
                 <NameInput
                   onChange={(event: any) => {
+                    console.log(event)
                     setFieldValues({
                       ...fieldValues,
                       [f]: event.target.value,
@@ -77,7 +79,9 @@ const AddNew: FC<IAddNew> = ({
         </Card.Text>
         <div className="addNewText">
           <Button onClick={onCancel} content={cancelText} />
-          <Button onClick={() => onConfirm(fieldValues, localDropdowns)} content={confirmText} />
+          <Button onClick={() => {
+            onConfirm(fieldValues, localDropdowns);
+          }} content={confirmText} />
         </div>
       </Card.Body>
     </Card>

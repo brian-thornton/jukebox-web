@@ -80,6 +80,8 @@ const SkinDetail = ({
           fields={{ name: intl.formatMessage({ id: 'skin_copy' }, { name: skin.name }) }}
           onCancel={() => setIsSaveAsModalOpen(false)}
           onConfirm={data => handleSkinSaveAs(data)}
+          confirmText='Save'
+          cancelText='Cancel'
         />
       )}
       {isDeleteConfirmOpen && (

@@ -11,12 +11,13 @@ interface ICheckToggle {
 
 const CheckToggle: FC<ICheckToggle> = ({ isChecked, onClick }) => {
   const settings = useContext(SettingsContext);
+  const { styles } = settings || {};
 
   const buttonStyle = {
-    background: settings?.styles?.buttonBackgroundColor,
-    fontWeight: settings?.styles?.buttonFontWeight,
-    color: settings?.styles?.buttonFontColor,
-    fontFamily: settings?.styles?.buttonFont,
+    background: styles?.buttonBackgroundColor,
+    fontWeight: styles?.buttonFontWeight,
+    color: styles?.buttonFontColor,
+    fontFamily: styles?.buttonFont,
     marginBottom: '10px',
     marginRight: '10px',
   };

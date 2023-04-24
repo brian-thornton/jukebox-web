@@ -25,8 +25,9 @@ const PlaylistButtons: FC<IPlaylistButtons> = ({
   reloadTracks,
 }) => {
   const settings = useContext(SettingsContext);
-  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles.controlButtonSize === 'small') ? '' : '60';
-  const buttonWidth = (!settings?.styles?.controlButtonSize || settings?.styles.controlButtonSize === 'small') ? '' : '60';
+  const { controlButtonSize } = settings?.styles || {};
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
+  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const fontSize = bigButtons(settings) ? '30px' : '';
 
   const deleteTrack = async (trackName: any, trackToDelete: any) => {

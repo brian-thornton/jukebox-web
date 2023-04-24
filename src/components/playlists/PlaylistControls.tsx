@@ -42,8 +42,9 @@ const PlaylistControls: FC<IPlaylistControls> = ({
 }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
-  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : '25px';
+  const { controlButtonSize } = settings?.styles || {};
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
+  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
   const runPlaylist = () => {
     enqueueTracksTop(tracks);

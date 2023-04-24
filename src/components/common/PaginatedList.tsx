@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, isValidElement } from 'react';
 import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 
@@ -36,7 +36,8 @@ const PaginatedList: FC<IPaginatedList> = ({
   const swipe = useSwipeable(
     handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)),
   );
-  const standardItems = items && items.length > 0 && items[0].text;
+  const standardItems = items && items.length > 0 && !isValidElement(items[0]);
+  
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
 
@@ -52,13 +53,17 @@ const PaginatedList: FC<IPaginatedList> = ({
               <>
                 {standardItems && items.map(item => (
                   <>
-                    {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} setIsExpanded={() => {}} isExpanded={false} />}
+                    {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} setIsExpanded={() => { }} isExpanded={false} />}
                     {!isScreenSmall && (
                       <Item
                         text={item.text}
                         buttons={item.buttons || <></>}
-                        onClick={() => onItemClick(item)}
-                        onCheck={() => {}}
+                        onClick={() => {
+                          if (onItemClick) {
+                            onItemClick(item);
+                          }
+                        }}
+                        onCheck={() => { }}
                         checked={false}
                         actionVisible={false}
                       />

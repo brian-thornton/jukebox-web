@@ -20,17 +20,17 @@ interface IControlButtons {
 
 const ControlButtons: FC<IControlButtons> = ({ mediaType, setMediaType }) => {
   const settings = useContext(SettingsContext);
-  const { features, isScreenSmall } = settings;
+  const { features, isScreenSmall, styles } = settings;
 
   let height;
   let fontSize = '';
 
-  if (!isScreenSmall && settings?.styles?.controlButtonSize === 'large') {
+  if (!isScreenSmall && styles?.controlButtonSize === 'large') {
     height = '100';
     fontSize = '40px';
   }
 
-  if (!isScreenSmall && settings?.styles?.controlButtonSize === 'medium') {
+  if (!isScreenSmall && styles?.controlButtonSize === 'medium') {
     height = '70';
     fontSize = '30px';
   }

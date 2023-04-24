@@ -26,14 +26,14 @@ const NameInput: FC<INameInput> = ({
         aria-describedby="basic-addon1"
         onChange={(e) => {
           if (onChange) {
-            onChange();
+            onChange(e);
           }
         }}
         disabled={disabled}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {
             if (onEnter) {
-              onEnter();
+              onEnter(event);
             }
           }
         }}

@@ -19,7 +19,8 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [isExpanded, setIsExpanded] = useState(false);
-  const buttonHeight = (!settings?.styles?.controlButtonSize || settings?.styles?.controlButtonSize === 'small') ? '' : 50;
+  const { controlButtonSize } = settings?.styles || {};
+  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
   const fontSize = bigButtons(settings) ? '30px' : '';
 
   const categories = [

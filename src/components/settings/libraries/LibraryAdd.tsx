@@ -28,7 +28,7 @@ const LibraryAdd: FC<ILibraryAdd> = ({
   const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState(library.category);
+  const [selectedCategory, setSelectedCategory] = useState(library?.category || '');
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const { isScreenSmall } = settings;
   const [editLibrary, setEditLibrary] = useState(library);
@@ -57,7 +57,7 @@ const LibraryAdd: FC<ILibraryAdd> = ({
                 setEditLibrary({ ...editLibrary, category });
                 setSelectedCategory(category);
               }}
-              category={editLibrary?.category || library.category}
+              category={editLibrary?.category || library?.category}
             />
           </Row>
           <Row>

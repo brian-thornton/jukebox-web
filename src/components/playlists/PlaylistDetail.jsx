@@ -124,6 +124,8 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
             fields={{ name: 'Name' }}
             onCancel={() => setIsSaveAsOpen(false)}
             onConfirm={data => handleSave(data)}
+            confirmText='Add'
+            cancelText='Cancel'
           />
         )}
         {!isSaveAsOpen && (
