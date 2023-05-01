@@ -1,4 +1,4 @@
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { PropTypes } from 'prop-types';
@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import ControlButtons from './ControlButtons';
 import AnimatedMeter from '../common/AnimatedMeter';
 import { SettingsContext } from './SettingsProvider';
+import Button from '../Button';
 
 import './Jukebox.scss';
 
@@ -51,30 +52,34 @@ const JukeboxFooter = ({
   const footerContent = () => {
     if (isSmallSearchEnabled) {
       return (
-        <Nav className="ml-auto">
-          <Button
-            className="button"
-            variant="outline-light"
-            onClick={() => {
-              document.activeElement.blur();
-              setIsSmallSearchEnabled(false);
-            }}
-          >
-            <XSquare className="volume-icon" />
-          </Button>
-          <input type="text" onChange={event => debouncedSearch(event.target.value)} />
-        </Nav>
+        <>
+          <Nav className="ml-auto">
+            <Button
+              className="button"
+              variant="outline-light"
+              onClick={() => {
+                document.activeElement.blur();
+                setIsSmallSearchEnabled(false);
+              }}
+            >
+              <XSquare className="volume-icon" />
+            </Button>
+            <input type="text" onChange={event => debouncedSearch(event.target.value)} />
+          </Nav>
+        </>
       );
     }
 
     return (
-      <Nav className="ml-auto">
-        <ControlButtons
-          mediaType={mediaType}
-          setMediaType={setMediaType}
-          setIsSmallSearchEnabled={setIsSmallSearchEnabled}
-        />
-      </Nav>
+      <>
+        <Nav className="ml-auto">
+          <ControlButtons
+            mediaType={mediaType}
+            setMediaType={setMediaType}
+            setIsSmallSearchEnabled={setIsSmallSearchEnabled}
+          />
+        </Nav>
+      </>
     );
   };
 

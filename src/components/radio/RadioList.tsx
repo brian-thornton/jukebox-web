@@ -24,19 +24,24 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
   const [realPageSize, setRealPageSize] = useState(0);
   const heightAndWidth = bigButtons(settings) ? '60' : '';
   const fontSize = bigButtons(settings) ? '30px' : '';
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const loadStations = async () => {
+    console.log('in load');
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
     const data = await getStations(selectedCategory, realStart, realPageSize);
     setStations(data);
+    setIsLoaded(true)
   };
 
   useEffect(() => {
-    const reserve = headerFooterReserve(settings);
-    const height = bigButtons(settings) ? 70 : 60;
-    const itemHeight = height;
-    const viewPortHeight = Math.floor(window.innerHeight - reserve);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+    if (realPageSize === 0 && !isLoaded) {
+      const reserve = headerFooterReserve(settings);
+      const height = bigButtons(settings) ? 70 : 60;
+      const itemHeight = height;
+      const viewPortHeight = Math.floor(window.innerHeight - reserve);
+      setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+    }
   }, []);
 
   useEffect(() => {
@@ -73,14 +78,17 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
           <RadioCategories category={selectedCategory} setCategory={setSelectedCategory} />
         </Col>
         <Col lg="11" xl="11" md="11" sm="11">
-          <PaginatedList
-            // @ts-ignore
-            items={items()}
-            selectedPage={selectedPage}
-            setSelectedPage={setSelectedPage}
-            pageSize={realPageSize}
-            onItemClick={() => {}}
-          />
+          {stations?.length > 0 && (
+            <PaginatedList
+              // @ts-ignore
+              items={items()}
+              selectedPage={selectedPage}
+              setSelectedPage={setSelectedPage}
+              pageSize={realPageSize}
+              onItemClick={() => { }}
+              totalItems={300}
+            />
+          )}
         </Col>
       </Row>
     </Container>

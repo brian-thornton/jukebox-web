@@ -85,6 +85,7 @@ export interface ISkin {
 
 export interface IRestrictionMode {
   content: [string],
+  name: string,
 };
 
 export interface ISegment {

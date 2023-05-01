@@ -12,7 +12,7 @@ import Button from '../Button';
 interface INoResults {
   text?: string,
   title?: string,
-  controls?: [any],
+  controls?: any,
   applyMargin?: boolean,
   onGoBack?: Function,
 }

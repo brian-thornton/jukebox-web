@@ -24,6 +24,7 @@ const CategoryList = () => {
     const targetCategory = categories.find(c => c.category === cateogry.category);
     targetCategory.enabled = key;
     updateSettings(deepClone);
+    window.location.reload();
   };
 
   const items = () => (

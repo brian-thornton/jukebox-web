@@ -15,7 +15,7 @@ const CategoryDetail = ({ category, setCategory, onClose }) => {
   return (
     <>
       <NameInput
-        defaultValue={category}
+        defaultValue={category.category}
         onChange={(e) => setUpdatedCategory({ ...updatedCategory, name: e.target.value })}
       />
       <Button content="Save" onClick={onClose} />

@@ -16,6 +16,7 @@ interface IItem {
   checked?: false,
   actionVisible?: boolean,
   font?: string,
+  allowToggle?: boolean,
 };
 
 const Item: FC<IItem> = ({
@@ -27,17 +28,18 @@ const Item: FC<IItem> = ({
   checked,
   actionVisible,
   font,
+  allowToggle = true,
 }) => {
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
+  const { isScreenSmall, styles } = settings || {};
 
   const itemStyle = {
-    color: settings?.styles?.fontColor,
-    background: settings?.styles?.trackBackgroundColor,
-    fontFamily: font || settings?.styles?.listFont,
+    color: styles?.fontColor,
+    background: styles?.trackBackgroundColor,
+    fontFamily: font || styles?.listFont,
   };
 
-  if (isScreenSmall) {
+  if (isScreenSmall && allowToggle) {
     return <ExpandRow text={text} buttons={buttons} setIsExpanded={() => {}} isExpanded={false} />;
   }
 

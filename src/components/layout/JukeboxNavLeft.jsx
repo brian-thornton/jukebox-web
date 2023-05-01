@@ -66,7 +66,7 @@ const JukeboxNavLeft = () => {
               {navLink('albums')}
               {settings.categories.map(c => (
                 <>
-                  {c !== 'Albums' && (
+                  {c !== 'Albums' && c.enabled === 'ON' && (
                     <Nav.Link
                       disabled={features.isLocked}
                       style={{ fontFamily: styles.headerFont }}
@@ -97,7 +97,7 @@ const JukeboxNavLeft = () => {
               {navButton('albums')}
               {settings.categories.map(c => (
                 <>
-                  {c !== 'Albums' && (
+                  {c !== 'Albums' && c.enabled === 'ON' && (
                     <Button
                       style={{
                         fontSize,

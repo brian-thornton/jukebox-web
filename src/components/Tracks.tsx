@@ -117,11 +117,7 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
         </div>
       )}
       {searchInProgress && <Loading text="Loading..." />}
-      {!noResults && !searchInProgress && (
-        <>
-          {trackList()}
-        </>
-      )}
+      {!noResults && !searchInProgress && trackList()}
     </>
   );
 };

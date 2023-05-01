@@ -20,7 +20,6 @@ const CategoryPicker: FC<ICategoryPicker> = ({
   category,
   onSelectCategory,
 }) => {
-  console.log(category)
   const intl = useIntl();
   const settings = useContext(SettingsContext);
   const [newCategory, setNewCategory] = useState('');

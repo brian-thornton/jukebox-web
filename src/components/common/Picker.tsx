@@ -10,9 +10,10 @@ import { SettingsContext } from '../layout/SettingsProvider';
 interface IPicker {
   applyPadding: boolean,
   items: Array<{
-    title: string,
+    title?: string,
     description?: string,
     buttonText: string,
+    buttonWidth?: string,
     onClick: Function,
   }>,
 };
@@ -20,12 +21,22 @@ interface IPicker {
 const Picker: FC<IPicker> = ({ items, applyPadding }) => {
   const settings = useContext(SettingsContext);
 
-  const pickerCardStyle = (item: any) => ({
-    background: settings?.styles?.trackBackgroundColor,
-    marginBottom: '20px',
-    height: item.description ? '200px' : '120px',
-    color: settings?.styles?.fontColor,
-  });
+  const pickerCardStyle = (item: any) => {
+    const style = {
+      background: settings?.styles?.trackBackgroundColor,
+      marginBottom: '20px',
+      height: item.description ? '200px' : '120px',
+      color: settings?.styles?.fontColor,
+    }
+
+    if (!item.title) {
+      style.height = '110px';
+    }
+
+    return style;
+  };
+
+
 
   return (
     <Container fluid style={{ paddingTop: applyPadding ? '80px' : '' }}>
@@ -33,10 +44,10 @@ const Picker: FC<IPicker> = ({ items, applyPadding }) => {
         {items.map(item => (
           <Col lg="3" xl="3" md="3" sm="12">
             <Card style={pickerCardStyle(item)}>
-              <Card.Title>{item.title}</Card.Title>
+              {item.title && <Card.Title>{item.title}</Card.Title>}
               <Card.Body>
                 {item.description && <Card.Text>{item.description}</Card.Text>}
-                <Button onClick={item.onClick} content={item.buttonText} />
+                <Button width={item.buttonWidth} onClick={item.onClick} content={item.buttonText} />
               </Card.Body>
             </Card>
           </Col>

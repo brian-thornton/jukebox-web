@@ -55,11 +55,13 @@ const Libraries = () => {
 
     if (data) {
       data.forEach((lib) => {
-        if (lib.category) {
+        if (lib.category && lib.albums?.length) {
           categoryAlbums[lib.category] += lib.albums.length;
         } else {
-          totalTracks += lib?.totalTracks;
-          totalAlbums += lib?.albums?.length;
+          if (lib?.albums?.length) {
+            totalTracks += lib?.totalTracks;
+            totalAlbums += lib?.albums?.length;
+          }
         }
       });
       getStatus().then((response) => {

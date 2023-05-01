@@ -130,9 +130,7 @@ const AlbumList: FC<IAlbumList> = ({
         <Container {...swipe} fluid className="albumListContainer">
           <Row className="containerRow">
             <>
-              {startsWithLocation === 'left' && !isScreenSmall && !search && (
-                { startsWithCol }
-              )}
+              {startsWithLocation === 'left' && !isScreenSmall && !search && startsWithCol}
               <Col lg={cols} xl={cols} md={cols} sm={cols} className="centerCol">
                 {display !== 'grid' && (
                   <Container fluid>
@@ -146,9 +144,7 @@ const AlbumList: FC<IAlbumList> = ({
                 )}
                 {display === 'grid' && <AlbumTable albums={albums} />}
               </Col>
-              {startsWithLocation === 'right' && !isScreenSmall && !search && (
-                { startsWithCol }
-              )}
+              {startsWithLocation === 'right' && !isScreenSmall && !search && startsWithCol }
             </>
           </Row>
           {(startsWithLocation === 'none' || search) && (

@@ -38,7 +38,7 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
 
   return (
     <>
-      {settings?.features?.admin && (
+      {settings?.features?.admin && !isScreenSmall && (
         <>
           {colLayout && (
             <>

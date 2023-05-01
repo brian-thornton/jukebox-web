@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import AddToPlaylistButton from './common/AddToPlaylistButton';
@@ -14,6 +14,8 @@ import PlayNowButton from './PlayNowButton';
 import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
+import TrackActions from './TrackActions';
+import Item from './common/Item';
 import './Track.scss';
 
 interface ITrack {
@@ -22,6 +24,7 @@ interface ITrack {
   track: TrackShape,
   trackAlbums: Array<IAlbum>,
   trackAlbumsLoaded: boolean,
+  setTrackClicked?: Function,
 };
 
 const Track: FC<ITrack> = ({
@@ -30,10 +33,12 @@ const Track: FC<ITrack> = ({
   track,
   trackAlbums,
   trackAlbumsLoaded,
+  setTrackClicked,
 }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const fontSize = bigButtons(settings) ? '25px' : '';
+  const [clicked, setClicked] = useState(false);
 
   const getAlbum = (albumTrack: any) => {
     if (trackAlbumsLoaded) {
@@ -86,28 +91,38 @@ const Track: FC<ITrack> = ({
 
   if (isScreenSmall) {
     return (
-      <ExpandRow text={`${albumFolder} - ${track.name}`} buttons={buttons} />
+      <>
+        {<Item text={`${albumFolder} - ${track.name}`} allowToggle={false} onClick={() => {
+          if (settings?.isScreenSmall && setTrackClicked) {
+            setTrackClicked(track);
+          }
+        }} />}
+      </>
     );
   }
 
   return (
-    <Card className="trackCard" style={trackCardSkin}>
-      <Container className="trackContainer" fluid>
-        <Row>
-          <Col className="d-none d-sm-block" lg={1} md={1}>
-            {album(track)}
-          </Col>
-          <Col lg={8} md={8}>
-            <div className="trackName" style={trackNameSkin}>
-              {`${albumFolder} - ${track.name}`}
-            </div>
-          </Col>
-          <Col lg={3} md={3}>
-            {buttons}
-          </Col>
-        </Row>
-      </Container>
-    </Card>
+    <>
+      {!clicked && (
+        <Card className="trackCard" style={trackCardSkin}>
+          <Container className="trackContainer" fluid>
+            <Row>
+              <Col className="d-none d-sm-block" lg={1} md={1}>
+                {album(track)}
+              </Col>
+              <Col lg={8} md={8}>
+                <div className="trackName" style={trackNameSkin}>
+                  {`${albumFolder} - ${track.name}`}
+                </div>
+              </Col>
+              <Col lg={3} md={3}>
+                {buttons}
+              </Col>
+            </Row>
+          </Container>
+        </Card>
+      )}
+    </>
   );
 };
 

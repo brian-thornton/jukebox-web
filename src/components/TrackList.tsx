@@ -6,6 +6,7 @@ import { ITrack } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
 import './TrackList.scss';
+import TrackActions from './TrackActions';
 
 interface ITrackList {
   tracks: Array<ITrack>,
@@ -17,6 +18,7 @@ const TrackList: FC<ITrackList> = ({
   showAlbumCovers,
 }) => {
   const settings = useContext(SettingsContext);
+  const [isTrackClicked, setIsTrackClicked] = useState<ITrack | undefined>(undefined);
   const [trackAlbumsLoading, setTrackAlbumsLoading] = useState(false);
   const [trackAlbumsLoaded, setTrackAlbumsLoaded] = useState(false);
   const [trackAlbums, setTrackAlbums] = useState([]);
@@ -36,7 +38,7 @@ const TrackList: FC<ITrackList> = ({
 
   return (
     <>
-      {settings?.features && trackAlbumsLoaded && (
+      {settings?.features && trackAlbumsLoaded && !isTrackClicked && (
         <Container fluid className="trackListContainer">
           {tracks.map(track => (
             <Track
@@ -44,10 +46,12 @@ const TrackList: FC<ITrackList> = ({
               trackAlbums={trackAlbums}
               trackAlbumsLoaded={trackAlbumsLoaded}
               showAlbumCovers={showAlbumCovers}
+              setTrackClicked={setIsTrackClicked}
             />
           ))}
         </Container>
       )}
+      {settings.isScreenSmall && settings?.features && trackAlbumsLoaded && isTrackClicked && <TrackActions track={isTrackClicked} onClose={() => setIsTrackClicked(undefined)} />}
     </>
   );
 };

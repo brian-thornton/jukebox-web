@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { TrashFill } from 'react-bootstrap-icons';
-import { PropTypes } from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../Button';
 import PaginatedList from '../../common/PaginatedList';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import NoResults from '../../common/NoResults';
 import { updateRestrictionGroup } from '../../../lib/settings-client';
-import { RestrictionMode } from '../../shapes';
+import { IRestrictionMode } from '../../interface';
 
-const propTypes = {
-  restrictionMode: RestrictionMode.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
+interface IRestrictionModeDetail {
+  restrictionMode: IRestrictionMode,
+  onClose: Function,
+}
 
-const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
+const RestrictionModeDetail: FC<IRestrictionModeDetail> = ({ restrictionMode, onClose }) => {
+  const intl = useIntl();
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
+  const [realPageSize, setRealPageSize] = useState(0);
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
-  const removeRestriction = (path) => {
+  const removeRestriction = (path: string) => {
     const deepClone = JSON.parse(JSON.stringify(restrictionMode));
-    deepClone.content = deepClone.content.filter(p => p !== path);
+    deepClone.content = deepClone.content.filter((p: any) => p !== path);
     updateRestrictionGroup(deepClone);
   };
 
@@ -45,12 +45,11 @@ const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
 
   return (
     <>
-      {restrictionMode.content?.length === 0 && (
+      {restrictionMode.content?.length < 1 && (
         <NoResults
           applyMargin={false}
-          title={<FormattedMessage id="no_restrictions_title" />}
-          text={<FormattedMessage id="no_restrictions_text" />}
-          goBackText={<FormattedMessage id="go_back" />}
+          title={intl.formatMessage({id: "no_restrictions_title"})}
+          text={intl.formatMessage({id: "no_restrictions_text"})}
           onGoBack={onClose}
         />
       )}
@@ -61,12 +60,11 @@ const RestrictionModeDetail = ({ restrictionMode, onClose }) => {
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
           pageSize={realPageSize}
+          onItemClick={() => {}}
         />
       )}
     </>
   );
 };
-
-RestrictionModeDetail.propTypes = propTypes;
 
 export default RestrictionModeDetail;
