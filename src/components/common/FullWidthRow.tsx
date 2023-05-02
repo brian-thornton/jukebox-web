@@ -9,7 +9,7 @@ interface IFullWidthRow {
 }
 
 const FullWidthRow: FC<IFullWidthRow> = ({ children }) => (
-  <Row className="fullWidthRow">
+  <Row>
     <Col lg="12" xl="12" md="12" sm="12">
       {children}
     </Col>

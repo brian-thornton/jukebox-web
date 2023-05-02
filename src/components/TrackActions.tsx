@@ -1,8 +1,8 @@
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import { FC, useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
+import { useNavigate } from 'react-router-dom';
 
 import { ITrack } from './interface';
 import { coverArtUrl } from '../lib/librarian-client';
@@ -11,6 +11,8 @@ import './TrackAlbum.scss';
 import { bigButtons } from '../lib/styleHelper';
 import Button from './Button';
 import Picker from './common/Picker';
+import { enqueue } from '../lib/queue-client';
+import { enqueueTop, next } from '../lib/queue-client';
 
 interface ITrackActions {
   track?: ITrack,
@@ -23,6 +25,10 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose }) => {
   const [coverArt, setCoverArt] = useState();
   const heightAndWidth = bigButtons(settings) ? '60px' : '';
 
+  const playNow = () => {
+    enqueueTop(track);
+    next();
+  };
 
   return (
     <Picker
@@ -31,17 +37,23 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose }) => {
         {
           buttonText: "Play Now",
           buttonWidth: "100%",
-          onClick: () => { },
+          onClick: () => {
+            playNow();
+            onClose();
+          },
         },
         {
           buttonText: "Enqueue",
           buttonWidth: "100%",
-          onClick: () => { },
+          onClick: () => {
+            enqueue(track);
+            onClose();
+          },
         },
         {
           buttonText: "Add to Playlist",
           buttonWidth: "100%",
-          onClick: () => { },
+          onClick: () => { navigate('/playlists', { state: { tracks: [track] } }); },
         },
         {
           buttonText: "Cancel",
