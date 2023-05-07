@@ -73,6 +73,7 @@ interface IStyles {
   buttonShape: string,
   controlUseBackground: boolean,
   defaultAlbumCover: string,
+  footerFont: string,
 }
 
 interface ISettings {
@@ -84,6 +85,7 @@ interface ISettings {
   categories?: [ICategory],
   controllers?: [IController],
   isScreenSmall?: boolean,
+  search?: string,
 }
 
 export const SettingsContext = createContext<ISettings>({});

@@ -44,13 +44,8 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
   const { pathname } = window.location;
   const { navButtonSize } = settings.styles || {};
   const applyWidth = (navButtonSize === 'large' || navButtonSize === 'medium');
-  let height = '35';
-  let fontSize = '';
-
-  if (navButtonSize === 'large') {
-    height = '100';
-    fontSize = '40px';
-  }
+  let height = navButtonSize === 'large' ? '100' : '35';
+  let fontSize = navButtonSize === 'large' ? '40px' : '';
 
   if (navButtonSize === 'medium') {
     height = '70';
@@ -82,7 +77,7 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
           content={selectedLibraries?.length ? funnelFill : funnel}
         />
       )}
-      {settings?.features?.albums && !applyWidth && !search && pathname === '/albums' && preferences?.showAlbumTable && (
+      {!isScreenSmall && settings?.features?.albums && !applyWidth && !search && pathname === '/albums' && preferences?.showAlbumTable && (
         <Button
           width={applyWidth ? height : ''}
           height={height}

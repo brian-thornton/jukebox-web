@@ -103,16 +103,13 @@ const Queue = () => {
   );
 
   const content = () => {
-    if (isEmpty) {
-      return (
-        <NoResults
-          applyMargin={false}
-          title={intl.formatMessage({id: 'queue_empty_title'})}
-          text={intl.formatMessage({id: 'queue_empty_text'})}
-        />);
-    }
-
-    return (
+    return isEmpty ? (
+      <NoResults
+        applyMargin={false}
+        title={intl.formatMessage({ id: 'queue_empty_title' })}
+        text={intl.formatMessage({ id: 'queue_empty_text' })}
+      />
+    ) : (
       <>
         {!clearConfirm && (
           <PaginatedList
@@ -121,7 +118,7 @@ const Queue = () => {
             setSelectedPage={setSelectedPage}
             pageSize={itemsPerPage}
             totalItems={totalTracks}
-            onItemClick={() => {}}
+            onItemClick={() => { }}
           />
         )}
         {clearConfirm && confirm}
@@ -129,32 +126,28 @@ const Queue = () => {
     );
   };
 
-  return (
-    <>
-      {!isScreenSmall && (
-        <ContentWithControls
-          controls={(
-            <QueueControls
-              loadQueue={loadQueue}
-              tracks={tracks}
-              setClearConfirm={setClearConfirm}
-              clearConfirm={clearConfirm} />)
-          }
-          content={content()}
-        />)}
-      {isScreenSmall && (
-        <Container fluid className="queueContainer">
-          {!clearConfirm && (
-            <FullWidthRow>
-              <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
-            </FullWidthRow>
-          )}
-          <FullWidthRow>
-            {content()}
-          </FullWidthRow>
-        </Container>
+  return isScreenSmall ? (
+    <Container fluid className="queueContainer">
+      {!clearConfirm && (
+        <FullWidthRow>
+          <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
+        </FullWidthRow>
       )}
-    </>
+      <FullWidthRow>
+        {content()}
+      </FullWidthRow>
+    </Container>
+  ) : (
+    <ContentWithControls
+      controls={(
+        <QueueControls
+          loadQueue={loadQueue}
+          tracks={tracks}
+          setClearConfirm={setClearConfirm}
+          clearConfirm={clearConfirm} />)
+      }
+      content={content()}
+    />
   );
 };
 

@@ -148,6 +148,8 @@ export interface IStyle {
   fontSize?: string,
   fontFamily?: string,
   defaultAlbumCover?: string,
+  headerFont?: string,
+  navButtonSize?: string,
 };
 
 export interface IQueue {

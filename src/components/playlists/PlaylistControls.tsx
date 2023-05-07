@@ -9,11 +9,7 @@ import {
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { enqueueTracks, enqueueTracksTop, play } from '../../lib/queue-client';
-import {
-  deletePlaylist,
-  add,
-} from '../../lib/playlist-client';
+import { runPlaylist, enqueuePlaylist, shuffle } from '../../lib/playlist-helper';
 import Button from '../Button';
 import ControlButton from '../common/ControlButton';
 import { SettingsContext } from '../layout/SettingsProvider';
@@ -46,26 +42,6 @@ const PlaylistControls: FC<IPlaylistControls> = ({
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
-  const runPlaylist = () => {
-    enqueueTracksTop(tracks);
-    play();
-  };
-
-  const enqueuePlaylist = () => {
-    enqueueTracks(tracks);
-  };
-
-  const shuffle = () => {
-    deletePlaylist(name).then(() => {
-      const newOrder = tracks.sort(() => Math.random() - 0.5);
-
-      add({
-        name,
-        tracks: newOrder,
-      }).then(() => reloadTracks(name));
-    });
-  };
-
   const controlButton = (text: any, handler: any, flag = true) => (
     <>
       {flag && (
@@ -87,9 +63,9 @@ const PlaylistControls: FC<IPlaylistControls> = ({
       {!isScreenSmall && (
         <>
           {controlButton(<FormattedMessage id="go_back" />, handleBackToPlaylists)}
-          {controlButton(<FormattedMessage id="run" />, runPlaylist, features?.play)}
-          {controlButton(<FormattedMessage id="enqueue" />, enqueuePlaylist, features?.queue)}
-          {controlButton(<FormattedMessage id="shuffle" />, shuffle)}
+          {controlButton(<FormattedMessage id="run" />, () => runPlaylist(tracks), features?.play)}
+          {controlButton(<FormattedMessage id="enqueue" />, () => enqueuePlaylist(tracks), features?.queue)}
+          {controlButton(<FormattedMessage id="shuffle" />, () => shuffle(name, tracks, reloadTracks))}
           {controlButton(<FormattedMessage id="save_as" />, () => setIsSaveAsOpen(true))}
           {controlButton(<FormattedMessage id="delete" />, () => setShowDeleteModal(true), features?.deletePlaylist)}
         </>
@@ -100,18 +76,18 @@ const PlaylistControls: FC<IPlaylistControls> = ({
           {features?.play && (
             <Button
               disabled={showDeleteModal || isEmpty}
-              onClick={runPlaylist}
+              onClick={() => runPlaylist(tracks)}
               icon={<CaretRightFill />}
             />
           )}
           {features?.queue && (
             <Button
               disabled={showDeleteModal || isEmpty}
-              onClick={enqueuePlaylist}
+              onClick={() => enqueuePlaylist(tracks)}
               icon={<ListOl />}
             />
           )}
-          <Button disabled={showDeleteModal || isEmpty} onClick={shuffle} icon={<Shuffle />} />
+          <Button disabled={showDeleteModal || isEmpty} onClick={() => shuffle(name, tracks, reloadTracks)} icon={<Shuffle />} />
           <Button
             disabled={showDeleteModal || isEmpty}
             onClick={() => setIsSaveAsOpen(true)}

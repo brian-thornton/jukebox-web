@@ -1,25 +1,19 @@
 import Nav from 'react-bootstrap/Nav';
-import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
+import { useContext } from 'react';
 
 import { SettingsContext } from './SettingsProvider';
 import Button from '../Button';
+import NavLink from './NavLink';
+import NavButton from './NavButton';
 
 const JukeboxNavLeft = () => {
-  const location = useLocation();
   const settings = useContext(SettingsContext);
   const { isScreenSmall, styles, features } = settings;
   const { playlists, tracks, queue, albums } = features || {};
-  const { headerFont } = styles;
   const { navButtonSize } = settings.styles;
-  let height = '35';
-  let fontSize = '';
-
-  if (navButtonSize === 'large') {
-    height = '100';
-    fontSize = '40px';
-  }
+  const navLink = feature => <NavLink feature={feature} />;
+  let height = navButtonSize === 'large' ? '100' : '35';
+  let fontSize = navButtonSize === 'large' ? '40px' : '';
 
   if (navButtonSize === 'medium') {
     height = '70';
@@ -28,34 +22,22 @@ const JukeboxNavLeft = () => {
 
   const navButton = feature => (
     <>
-      {features[feature] && (
-        <Button
-          key={`${feature}-nav`}
-          height={height}
-          style={{
-            fontSize,
-            fontFamily: settings.buttonFont,
-            marginTop: '0',
-            marginBottom: '0',
-          }}
-          isSelected={location.pathname === `/${feature}`}
-          disabled={features.isLocked}
-          content={<FormattedMessage id={feature} />}
-          onClick={() => window.location.replace(`/${feature}`)}
-        />
-      )}
+      {features[feature] && <NavButton feature={feature} />}
     </>
   );
 
-  const navLink = feature => (
-    <Nav.Link
-      disabled={features.isLocked}
-      style={{ fontFamily: headerFont }}
-      href={`/${feature}`}
-    >
-      <FormattedMessage id={feature} />
-    </Nav.Link>
-  )
+  const navItems = (generator) => (
+    <>
+      {tracks && generator('tracks')}
+      {tracks && generator('genres')}
+      {playlists && generator('playlists')}
+      {playlists && generator('radio')}
+      {queue && generator('queue')}
+      {features.settings && generator('settings')}
+      {albums && isScreenSmall && generator('filters')}
+      {(albums || features.tracks) && isScreenSmall && generator('search')}
+    </>
+  );
 
   return (
     <>
@@ -80,14 +62,7 @@ const JukeboxNavLeft = () => {
               ))}
             </>
           )}
-          {tracks && navLink('tracks')}
-          {tracks && navLink('genres')}
-          {playlists && navLink('playlists')}
-          {playlists && navLink('radio')}
-          {queue && navLink('queue')}
-          {features.settings && navLink('settings')}
-          {albums && isScreenSmall && navLink('filters')}
-          {(albums || features.tracks) && isScreenSmall && navLink('search')}
+          {navItems(navLink)}
         </Nav>
       )}
       {styles.navButtonType === 'buttons' && !isScreenSmall && (
@@ -114,14 +89,7 @@ const JukeboxNavLeft = () => {
               ))}
             </>
           )}
-          {tracks && navButton('tracks')}
-          {tracks && navButton('genres')}
-          {playlists && navButton('playlists')}
-          {playlists && navButton('radio')}
-          {queue && navButton('queue')}
-          {features.settings && navButton('settings')}
-          {albums && isScreenSmall && navButton('filters')}
-          {(albums || tracks) && isScreenSmall && navButton('search')}
+          {navItems(navButton)}
         </Nav>
       )}
     </>
