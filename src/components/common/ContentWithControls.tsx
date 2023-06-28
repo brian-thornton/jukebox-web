@@ -5,8 +5,9 @@ import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { SettingsContext } from '../layout/SettingsProvider';
-import './ContentWithControls.scss';
+import styles from './ContentWithControls.module.css';
 import { topMargin } from '../../lib/styleHelper';
+import FullWidthRow from './FullWidthRow';
 
 interface IContentWithControls {
   alertText?: string,
@@ -16,6 +17,7 @@ interface IContentWithControls {
 
 const ContentWithControls: FC<IContentWithControls> = ({ controls, content, alertText }) => {
   const settings = useContext(SettingsContext);
+  const { screen } = settings;
 
   if (settings.styles) {
     const { headerColor, controlUseBackground } = settings.styles;
@@ -27,18 +29,34 @@ const ContentWithControls: FC<IContentWithControls> = ({ controls, content, aler
       borderBottomRightRadius: '35px',
     };
 
+    const smallControlStyle = {
+      paddingTop: '10px',
+      paddingBottom: '20px',
+      background: controlUseBackground ? headerColor : '',
+      borderBottomRightRadius: '35px',
+
+    };
+
+    const controlClass = screen?.isMobile ? styles.centeredRow : '';
+
+    const wrapControls = (controls: any) => {
+      if (screen?.isMobile) {
+        return <Col lg={12} xl={12} style={controlStyle}>{controls}</Col>;
+      } else {
+        return <Col lg={2} xl={2} style={controlStyle}>{controls}</Col>
+      }
+    }
+
     return (
-      <Container fluid style={{ marginTop: topMargin(settings) }}>
-        <Row>
+      <Container fluid style={{ marginTop: topMargin(settings), marginRight: '0', marginLeft: '0', paddingLeft: '0', paddingRight: '0' }}>
+        <Row style={{ marginRight: '0', marginLeft: '0' }}>
           <Col lg={12} xl={12}>
             {alertText && <Alert variant="primary">{alertText}</Alert>}
           </Col>
         </Row>
-        <Row>
-          <Col lg={2} xl={2} style={controlStyle}>
-            {controls}
-          </Col>
-          <Col lg={10} xl={10}>
+        <Row className={controlClass} style={{ marginRight: '0', marginLeft: '0' }}>
+          {wrapControls(controls)}
+          <Col lg={10} xl={10} style={{ width: '100%', marginRight: '0', marginLeft: '0', paddingLeft: '0', paddingRight: '0' }}>
             {content}
           </Col>
         </Row>

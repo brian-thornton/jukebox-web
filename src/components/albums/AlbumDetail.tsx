@@ -14,6 +14,8 @@ import RestrictionModes from '../settings/content/RestrictionModes';
 import { topMargin } from '../../lib/styleHelper';
 import { getQueue } from '../../lib/queue-client';
 import AlbumCoverAndButtons from './AlbumCoverAndButtons';
+import { ITrack } from '../interface';
+import TrackActions from '../TrackActions';
 
 const AlbumDetail = () => {
   const { state } = useLocation();
@@ -27,6 +29,7 @@ const AlbumDetail = () => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall } = settings;
   const [queue, setQueue] = useState({ tracks: [], totalTracks: 0 });
+  const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
 
   const loadTracks = () => {
     getAlbumTracks(album.path).then((data) => {
@@ -66,7 +69,7 @@ const AlbumDetail = () => {
   return (
     <>
       {album && (
-        <Row className="coverRow" style={{ marginTop: isScreenSmall ? '40px' : topMargin(settings) }}>
+        <Row className="coverRow" style={{ marginTop: topMargin(settings) }}>
           <AlbumCoverAndButtons
             queue={queue}
             setQueue={setQueue}
@@ -74,29 +77,33 @@ const AlbumDetail = () => {
             setIsCustomSearchOpen={setIsCustomSearchOpen}
             setIsConfirmRemoveCoverArtOpen={setIsConfirmRemoveCoverArtOpen}
             setConfirmRestriction={setConfirmRestriction}
+            clickedTrack={clickedTrack}
           />
-          <Col lg={9} xl={9}>
-            {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
-              <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} />
-            )}
-            {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
-              <Confirm
-                text={intl.formatMessage({ id: 'remove_cover_text' })}
-                onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
-                onConfirm={() => {
-                  removeCoverArt(album);
-                  setIsConfirmRemoveCoverArtOpen(false);
-                  window.location.reload();
-                }}
-              />
-            )}
-            {isCustomSearchOpen && (
-              <CoverArtSearchModal
-                album={album}
-                handleClose={() => setIsCustomSearchOpen(false)}
-              />
-            )}
-          </Col>
+          {clickedTrack && <TrackActions applyPadding={false} track={clickedTrack} onClose={() => setClickedTrack(undefined)} />}
+          {!clickedTrack && (
+            <Col lg={9} xl={9}>
+              {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
+                <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} clickedTrack={clickedTrack} setClickedTrack={setClickedTrack} />
+              )}
+              {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
+                <Confirm
+                  text={intl.formatMessage({ id: 'remove_cover_text' })}
+                  onCancel={() => setIsConfirmRemoveCoverArtOpen(false)}
+                  onConfirm={() => {
+                    removeCoverArt(album);
+                    setIsConfirmRemoveCoverArtOpen(false);
+                    window.location.reload();
+                  }}
+                />
+              )}
+              {isCustomSearchOpen && (
+                <CoverArtSearchModal
+                  album={album}
+                  handleClose={() => setIsCustomSearchOpen(false)}
+                />
+              )}
+            </Col>
+          )}
         </Row>
       )}
     </>

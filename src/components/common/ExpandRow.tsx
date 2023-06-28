@@ -52,14 +52,16 @@ const ExpandRow: FC<IExpandRow> = ({
   }
 
   return (
-    <Accordion activeKey={activeKey} className="accordion">
+    <Accordion activeKey={activeKey} className="accordion" >
       <CustomToggle eventKey="0" setIsExpanded={() => {
         if (setIsExpanded) {
           setIsExpanded();
         }
-      }}>{text}</CustomToggle>
+      }}>
+        {text}
+      </CustomToggle>
       <Accordion.Collapse eventKey="0">
-        <div onClick={() => setActiveKey(null)}>
+        <div onClick={() => setActiveKey(null)} className="expanded" >
           {buttons}
         </div>
       </Accordion.Collapse>

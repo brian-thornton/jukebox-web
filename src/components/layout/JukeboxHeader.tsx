@@ -1,6 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import JukeboxNavLeft from './JukeboxNavLeft';
 import JukeboxNavRight from './JukeboxNavRight';
@@ -32,12 +32,14 @@ const JukeboxHeader: FC<IJukeboxHeader> = ({
   clearSearch,
 }) => {
   const settings = useContext(SettingsContext);
+  const { screen } = settings;
   const showBrand = (settings?.styles?.navButtonSize !== 'large' && settings?.styles?.navButtonSize !== 'medium');
+  const [isHamburgerClicked, setIsHamburgerClicked] = useState(false);
 
   return (
     <Navbar className="header-nav-bar" style={{ background: settings?.styles?.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
-        {showBrand && (
+        {showBrand && !screen?.isMobile && (
           <Navbar.Brand
             style={
               {
@@ -50,10 +52,11 @@ const JukeboxHeader: FC<IJukeboxHeader> = ({
             {settings?.preferences?.name}
           </Navbar.Brand>
         )}
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav" >
+        <Navbar.Toggle aria-controls="responsive-navbar-nav"  onClick={() => setIsHamburgerClicked(true)} />
+        <Navbar.Collapse id="responsive-navbar-nav">
           <JukeboxNavLeft />
-          <JukeboxNavRight
+        </Navbar.Collapse>
+        <JukeboxNavRight
             search={search}
             setSearch={setSearch}
             selectedLibraries={selectedLibraries}
@@ -62,8 +65,8 @@ const JukeboxHeader: FC<IJukeboxHeader> = ({
             display={display}
             setDisplay={setDisplay}
             clearSearch={clearSearch}
+            isHamburgerClicked={isHamburgerClicked}
           />
-        </Navbar.Collapse>
       </Container>
     </Navbar>
   );

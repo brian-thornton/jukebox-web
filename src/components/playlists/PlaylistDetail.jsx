@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
@@ -17,6 +17,7 @@ import PlaylistControls from './PlaylistControls';
 import PlaylistButtons from './PlaylistButtons';
 import './PlaylistDetail.scss';
 import PaginatedList from '../common/PaginatedList';
+import PlaylistTrackActions from './PlaylistTrackActions';
 
 const propTypes = {
   handleBackToPlaylists: PropTypes.func.isRequired,
@@ -33,13 +34,15 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [realPageSize, setRealPageSize] = useState();
   const [selectedPlaylist, setSelectedPlaylist] = useState();
   let renderTracks = [];
-  const { isScreenSmall } = settings;
+  const { isScreenSmall, screen } = settings;
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   const { controlButtonSize } = settings.styles;
   const trackHeight = controlButtonSize === 'small' ? 55 : 85;
+  const [clickedTrack, setClickedTrack] = useState();
+  const [clickedIndex, setClickedIndex] = useState();
 
   useEffect(() => {
-    const itemHeight = isScreenSmall ? 90 : trackHeight;
+    const itemHeight = isScreenSmall ? 40 : trackHeight;
     const viewPortHeight = Math.floor(window.innerHeight - 200);
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
@@ -83,6 +86,10 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     {
       text: track.name,
       buttons: itemButtons(track, index),
+      onItemClick: () => {
+        setClickedTrack(track);
+        setClickedIndex(index);
+      },
     }
   ));
 
@@ -117,27 +124,23 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
       );
     }
 
-    return (
-      <>
-        {isSaveAsOpen && (
-          <AddNew
-            fields={{ name: 'Name' }}
-            onCancel={() => setIsSaveAsOpen(false)}
-            onConfirm={data => handleSave(data)}
-            confirmText='Add'
-            cancelText='Cancel'
-          />
-        )}
-        {!isSaveAsOpen && (
-          <PaginatedList
-            items={items()}
-            selectedPage={selectedPage}
-            setSelectedPage={setSelectedPage}
-            pageSize={realPageSize}
-            totalItems={tracks.length}
-          />
-        )}
-      </>
+    return isSaveAsOpen ? (
+      <AddNew
+        fields={{ name: 'Name' }}
+        onCancel={() => setIsSaveAsOpen(false)}
+        onConfirm={data => handleSave(data)}
+        confirmText='Add'
+        cancelText='Cancel'
+      />
+    ) : (
+      <PaginatedList
+        items={items()}
+        selectedPage={selectedPage}
+        setSelectedPage={setSelectedPage}
+        pageSize={realPageSize}
+        totalItems={tracks.length}
+        hideButtons={screen.isMobile}
+      />
     );
   };
 
@@ -151,7 +154,18 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
   return (
     <>
-      {!showDeleteModal && (
+      {screen.isMobile && clickedTrack && (
+        <PlaylistTrackActions
+          track={clickedTrack}
+          onClose={() => {
+            setClickedTrack(undefined);
+            loadTracks(name);
+          }}
+          index={clickedIndex}
+          playlistName={name}
+        />
+      )}
+      {!showDeleteModal && !clickedTrack && (
         <>
           {!isScreenSmall && (
             <ContentWithControls
@@ -168,6 +182,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
               setSelectedPage={setSelectedPage}
               pageSize={realPageSize}
               totalItems={tracks.length}
+              hideButtons={screen.isMobile}
             />
           )}
         </>

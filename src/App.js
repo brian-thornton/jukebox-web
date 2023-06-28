@@ -35,6 +35,13 @@ function App() {
   const [startsWithFilter, setStartsWithFilter] = useState();
   const navigate = useNavigate();
   const isScreenSmall = window.innerWidth < 700;
+  console.log(window.outerWidth);
+  const screen = {
+    isMobile: window.outerWidth <= 480,
+    isTablet: window.outerWidth > 480 && window.outerWidth <= 1180,
+    isDesktop: window.outerWidth > 1180,
+    isTabletOrSmaller: window.outerWidth <= 1180,
+  }
 
   const onIdle = () => {
     setSearch('');
@@ -152,7 +159,7 @@ function App() {
 
   return (
     <Suspense>
-      <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, }}>
+      <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, screen }}>
         {settings && isPinOpen && (
           <JukeboxRoot>
             <PinEntry

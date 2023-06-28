@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -7,7 +7,6 @@ import PaginatedList from '../../common/PaginatedList';
 import Button from '../../Button';
 import CategoryDetail from './CategoryDetail';
 import { updateSettings } from '../../../lib/settings-client';
-import { update } from 'lodash';
 
 const CategoryList = () => {
   const settings = useContext(SettingsContext);
@@ -50,25 +49,20 @@ const CategoryList = () => {
     ))
   );
 
-  return (
-    <>
-      {selectedCategory && (
-        <CategoryDetail
-          category={selectedCategory}
-          setCategory={setSelectedCategory}
-          onClose={() => setSelectedCategory(null)}
-        />
-      )}
-      {!selectedCategory && (
-        <PaginatedList
-          items={items()}
-          totalItems={settings.categories.length}
-          selectedPage={selectedPage}
-          setSelectedPage={setSelectedPage}
-          pageSize={itemsPerPage}
-        />
-      )}
-    </>
+  return selectedCategory ? (
+    <CategoryDetail
+      category={selectedCategory}
+      setCategory={setSelectedCategory}
+      onClose={() => setSelectedCategory(null)}
+    />
+  ) : (
+    <PaginatedList
+      items={items()}
+      totalItems={settings.categories.length}
+      selectedPage={selectedPage}
+      setSelectedPage={setSelectedPage}
+      pageSize={itemsPerPage}
+    />
   );
 };
 

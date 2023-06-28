@@ -10,6 +10,7 @@ import AlbumCover from './AlbumCover';
 import './AlbumDetail.scss';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { IQueue, ITrack } from '../interface';
+import styles from './AlbumCoverAndButtons.module.css';
 
 interface IAlbumCoverAndButtons {
   queue: IQueue,
@@ -18,12 +19,14 @@ interface IAlbumCoverAndButtons {
   setIsCustomSearchOpen: Function,
   setIsConfirmRemoveCoverArtOpen: Function,
   setConfirmRestriction: Function,
+  clickedTrack: ITrack | undefined,
 }
 
-const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({queue, setQueue, tracks, setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction}) => {
+const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({ queue, setQueue, tracks, setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction, clickedTrack }) => {
   const { state } = useLocation();
   const album = state.currentAlbum;
   const settings = useContext(SettingsContext);
+  const { screen } = settings;
 
   const albumButtons = (
     <Container className="buttonContainer">
@@ -47,16 +50,30 @@ const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({queue, setQueue, track
     fontFamily: settings?.styles?.buttonFont,
   };
 
-  return (
+  return screen?.isMobile ? (
+    <Container className="albumContainer">
+      <Row className={styles.centeredRow}>
+        <Col xs="9" sm="9">
+          <AlbumCover album={album} />
+        </Col>
+        <Col>
+          {albumButtons}
+        </Col>
+      </Row>
+      <Row className={styles.centeredRow} style={albumNameStyle}>
+        {album.name}
+      </Row>
+    </Container>
+  ) : (
     <Col lg={3} xl={3}>
       <Container className="albumContainer">
-        <Row>
+        <Row className={styles.centeredRow}>
           <AlbumCover album={album} />
         </Row>
-        <Row className="albumName" style={albumNameStyle}>
+        <Row className={styles.centeredRow} style={albumNameStyle}>
           {album.name}
         </Row>
-        <Row>{albumButtons}</Row>
+        {!clickedTrack && <Row className={styles.centeredRow}>{albumButtons}</Row>}
       </Container>
     </Col>
   );

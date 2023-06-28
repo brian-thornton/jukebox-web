@@ -26,6 +26,7 @@ interface IJukeboxNavRight {
   display: string,
   search: string,
   clearSearch: Function,
+  isHamburgerClicked: boolean,
 };
 
 const JukeboxNavRight: FC<IJukeboxNavRight> = ({
@@ -37,9 +38,10 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
   display,
   search,
   clearSearch,
+  isHamburgerClicked,
 }) => {
   const settings = useContext(SettingsContext);
-  const { features, isScreenSmall, preferences } = settings;
+  const { features, isScreenSmall, preferences, screen } = settings;
   const navigate = useNavigate();
   const { pathname } = window.location;
   const { navButtonSize } = settings.styles || {};
@@ -60,7 +62,7 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
   return (
     <Nav className="ml-auto">
       {!applyWidth && search && !isScreenSmall && <div className="search-result"><FormattedMessage id="search_results" values={{ search }} /></div>}
-      {(features?.albums || features?.tracks) && (
+      {(features?.albums || features?.tracks) && !isHamburgerClicked && (
         <JukeboxNavSearchButtons
           search={search}
           setSearch={setSearch}
@@ -86,14 +88,16 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
           content={display === 'grid' ? <Grid style={{ fontSize }} /> : <Grid3x3 style={{ fontSize }} />}
         />
       )}
-      <Button
-        width={applyWidth ? height : ''}
-        height={height}
-        onClick={() => {
-          setIsPinOpen(true);
-        }}
-        content={features?.isLocked ? locked : unlocked}
-      />
+      {!screen?.isMobile && (
+        <Button
+          width={applyWidth ? height : ''}
+          height={height}
+          onClick={() => {
+            setIsPinOpen(true);
+          }}
+          content={features?.isLocked ? locked : unlocked}
+        />
+      )}
     </Nav>
   );
 };

@@ -15,14 +15,17 @@ import EnqueueButton from '../EnqueueButton';
 import Item from '../common/Item';
 import Paginator from '../common/Paginator';
 import PlayNowButton from '../PlayNowButton';
+import TrackActions from '../TrackActions';
 
 interface IAlbumTracks {
   tracks: Array<ITrack>,
   queue?: IQueue,
   setQueue: Function,
+  setClickedTrack: Function,
+  clickedTrack: ITrack | undefined,
 };
 
-const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue }) => {
+const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, setClickedTrack }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
@@ -83,6 +86,10 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue }) => {
     />
   ));
 
+  if (isScreenSmall && clickedTrack) {
+    return <TrackActions track={clickedTrack} onClose={() => setClickedTrack(undefined)} />;
+  }
+
   return (
     <Container {...swipe} fluid style={{ marginBottom: isScreenSmall ? '90px' : '' }}>
       <Row>
@@ -106,7 +113,7 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue }) => {
           <Row className="d-block d-sm-none">
             {tracks.map(track => (
               <Item
-                onClick={() => { }}
+                onClick={() => setClickedTrack(track)}
                 text={track.name}
                 buttons={albumModeButtons(track)}
               />

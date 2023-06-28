@@ -27,7 +27,6 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const loadStations = async () => {
-    console.log('in load');
     const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
     const data = await getStations(selectedCategory, realStart, realPageSize);
     setStations(data);
@@ -72,7 +71,7 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
   ));
 
   return (
-    <Container className="stationsContainer" fluid style={{ marginTop: topMargin(settings) }}>
+    <Container className="stationsContainer" fluid style={{ marginTop: topMargin(settings), paddingLeft: '0', paddingRight: '0' }}>
       <Row>
         <Col lg="1" xl="1" md="1" sm="1">
           <RadioCategories category={selectedCategory} setCategory={setSelectedCategory} />

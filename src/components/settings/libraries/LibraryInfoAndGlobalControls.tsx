@@ -19,6 +19,8 @@ interface ILibraryInfoAndGlobalControls {
   currentScan: string,
   totalTracks: number,
   isScanning: boolean,
+  showOnline: boolean,
+  setShowOnline: Function,
 };
 
 const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
@@ -30,6 +32,8 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
   currentScan,
   totalTracks,
   isScanning,
+  showOnline,
+  setShowOnline,
 }) => {
   const intl = useIntl();
   const [isDeleteAllConfirmOpen, setIsDeleteAllConfirmOpen] = useState(false);
@@ -37,6 +41,14 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
 
   const categories = (
     <Button disabled={isScanning} onClick={() => setIsCategoryConfigOpen(true)} content={<FormattedMessage id="categories" />} />
+  );
+
+  const showOnlineButton = (
+    <Button
+      disabled={isScanning}
+      onClick={() => setShowOnline(!showOnline)}
+      content={<FormattedMessage id={showOnline ? "show_all" : "show_online"} />}
+    />
   );
 
   const scanAllButton = (
@@ -57,7 +69,7 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
     <>
       {isDeleteAllConfirmOpen && (
         <Confirm
-          text={intl.formatMessage({id: 'delete_libraries_text'})}
+          text={intl.formatMessage({ id: 'delete_libraries_text' })}
           onCancel={() => setIsDeleteAllConfirmOpen(false)}
           onConfirm={() => {
             onDeleteAll();
@@ -75,11 +87,9 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
               </div>
             </Col>
             <Col lg="8" md="8">
-              <div className="libraryButton">{addButton}</div>
-              <div className="libraryButton">{discoverButton}</div>
-              <div className="libraryButton">{deleteAllButton}</div>
-              <div className="libraryButton">{scanAllButton}</div>
-              <div className="libraryButton">{categories}</div>
+              {[addButton, discoverButton, deleteAllButton, scanAllButton, categories, showOnlineButton].map((b) => (
+                <div className="libraryButton">{b}</div>
+              ))}
             </Col>
           </Row>
         </Container>

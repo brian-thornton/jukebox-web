@@ -3,7 +3,7 @@ import { FC, useContext, useState, useEffect } from 'react';
 
 import { coverArtUrl } from '../../lib/librarian-client';
 import { IAlbum } from '../interface';
-import './AlbumCover.scss';
+import styles from './AlbumCover.module.css';
 import { SettingsContext } from '../layout/SettingsProvider';
 
 interface IAlbumCover {
@@ -20,7 +20,7 @@ const AlbumCover: FC<IAlbumCover> = ({ album }) => {
   };
 
   useEffect(() => loadCoverArt(), []);
-  return <Card.Img src={coverArt} className="albumCover" />;
+  return <Card.Img src={coverArt} className={settings.screen?.isMobile ? styles.albumCoverMobile : styles.albumCover} />;
 };
 
 export default AlbumCover;

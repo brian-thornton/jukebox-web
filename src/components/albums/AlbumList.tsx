@@ -32,7 +32,7 @@ const AlbumList: FC<IAlbumList> = ({
   display, search, selectedLibraries, setStartsWithFilter, startsWithFilter,
 }) => {
   const settings = useContext(SettingsContext);
-  const { preferences } = settings;
+  const { preferences, screen } = settings;
   const { startsWithLocation } = preferences || {};
   const [albums, setAlbums] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -130,7 +130,7 @@ const AlbumList: FC<IAlbumList> = ({
         <Container {...swipe} fluid className="albumListContainer">
           <Row className="containerRow">
             <>
-              {startsWithLocation === 'left' && !isScreenSmall && !search && startsWithCol}
+              {startsWithLocation === 'left' && !screen?.isTabletOrSmaller && !search && startsWithCol}
               <Col lg={cols} xl={cols} md={cols} sm={cols} className="centerCol">
                 {display !== 'grid' && (
                   <Container fluid>
@@ -138,18 +138,18 @@ const AlbumList: FC<IAlbumList> = ({
                       {albums.map(album => <Album album={album} coverArtOnly={false} />)}
                     </Row>
                     <Row className="albumRow">
-                      {(totalAlbums > pageSize) && startsWithLocation !== 'none' && !search && paginator}
+                      {(totalAlbums > pageSize) && startsWithLocation !== 'none' && !search && !screen?.isTabletOrSmaller && paginator}
                     </Row>
                   </Container>
                 )}
                 {display === 'grid' && <AlbumTable albums={albums} />}
               </Col>
-              {startsWithLocation === 'right' && !isScreenSmall && !search && startsWithCol }
+              {startsWithLocation === 'right' && !screen?.isTabletOrSmaller && !search && startsWithCol }
             </>
           </Row>
           {(startsWithLocation === 'none' || search) && (
             <FullWidthRow>
-              {(totalAlbums > pageSize) && paginator}
+              {(totalAlbums > pageSize) && !screen?.isTabletOrSmaller && paginator}
             </FullWidthRow>
           )}
         </Container>

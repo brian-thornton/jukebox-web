@@ -39,32 +39,29 @@ const Item: FC<IItem> = ({
     fontFamily: font || styles?.listFont,
   };
 
-  if (isScreenSmall && allowToggle) {
-    return <ExpandRow text={text} buttons={buttons} setIsExpanded={() => {}} isExpanded={false} />;
-  }
-
   return (
-    <ListGroupItem className="itemStyle" style={itemStyle} onClick={(e) => {
-      if (onClick) {
-        onClick();
-      }
-    }}
-      >
-      <Container fluid>
-        <Row>
-          <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">
-            <div className="itemText">
-              {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
-              {text}
-            </div>
-          </Col>
-          <Col>
-            <div className="itemButtons">
-              {buttons}
-            </div>
-          </Col>
-        </Row>
-      </Container>
+    <ListGroupItem
+      className="itemStyle"
+      style={itemStyle}
+      onClick={(e) => {
+        if (onClick) {
+          onClick();
+        }
+      }}
+    >
+      <Row>
+        <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">
+          <div className="itemText">
+            {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
+            {text}
+          </div>
+        </Col>
+        <Col>
+          <div className="itemButtons">
+            {!settings.isScreenSmall && buttons}
+          </div>
+        </Col>
+      </Row>
     </ListGroupItem>
   );
 };

@@ -20,11 +20,13 @@ import { calculatePageSize } from '../../lib/styleHelper';
 import PaginatedList from '../common/PaginatedList';
 import FullWidthRow from '../common/FullWidthRow';
 import QueueControls from './QueueControls';
+import { ITrack } from '../interface';
+import QueueTrackActions from './QueueTrackActions';
 
 const Queue = () => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
+  const { isScreenSmall, screen } = settings;
   const [tracks, setTracks] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -37,6 +39,7 @@ const Queue = () => {
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
 
   const loadQueue = () => {
     const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
@@ -96,6 +99,9 @@ const Queue = () => {
   const items = () => (
     tracks.map((track: any) => (
       {
+        onItemClick: () => {
+          setClickedTrack(track)
+        },
         text: track.name,
         buttons: itemButtons(track),
       }
@@ -127,15 +133,25 @@ const Queue = () => {
   };
 
   return isScreenSmall ? (
-    <Container fluid className="queueContainer">
+    <Container fluid className="queueContainer" style={{ paddingLeft: 0, paddingRight: 0 }}>
       {!clearConfirm && (
         <FullWidthRow>
           <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
         </FullWidthRow>
       )}
-      <FullWidthRow>
-        {content()}
-      </FullWidthRow>
+      {clickedTrack && (
+        <QueueTrackActions
+          onClose={() => {
+            setClickedTrack(undefined);
+            loadQueue();
+          }}
+          track={clickedTrack} />
+      )}
+      {!clickedTrack && (
+        <FullWidthRow>
+          {content()}
+        </FullWidthRow>
+      )}
     </Container>
   ) : (
     <ContentWithControls

@@ -9,21 +9,21 @@ import NoResults from './common/NoResults';
 import TrackList from './TrackList';
 import Paginator from './common/Paginator';
 import Loading from './common/Loading';
-import './Tracks.scss';
+
+import styles from './Tracks.module.css';
 import { applyLighting } from '../lib/lightingHelper';
 import { handlers } from '../lib/gesture-helper';
 import { bigButtons, headerFooterReserve, topMargin } from '../lib/styleHelper';
 import FullWidthRow from './common/FullWidthRow';
 
 interface ITracks {
-  setCurrentAlbum?: Function,
   search?: string,
 };
 
-const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
+const Tracks: FC<ITracks> = ({ search }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
+  const { isScreenSmall, screen } = settings;
   const [tracks, setTracks] = useState([]);
   const [searchInProgress, setSearchInProgress] = useState(false);
   const [totalTracks, setTotalTracks] = useState();
@@ -59,9 +59,7 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
       if (search) {
         findTracks(realStart, (realStart + realPageSize));
       } else {
-        console.log(realStart, (realStart + realPageSize));
         getTracks(realStart, (realStart + realPageSize)).then((data) => {
-          console.log(data);
           setTotalTracks(data.totalTracks);
           setTracks(data.tracks);
           setTracksLoaded(true);
@@ -86,25 +84,21 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
     />
   );
 
-  const trackList = () => {
-    if (realPageSize && totalTracks) {
-      return (
-        <Container className="tracksContainer" {...swipe} fluid style={{ marginTop: topMargin(settings) }}>
-          <FullWidthRow>{content}</FullWidthRow>
-          <FullWidthRow>
-            <Paginator
-              onPageChange={(page: any) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={totalTracks}
-              pageSize={realPageSize}
-            />
-          </FullWidthRow>
-        </Container>
-      );
-    }
-
-    return <></>;
-  };
+  const trackList = () => realPageSize && totalTracks ? (
+    <Container fluid className={styles.tracksContainer} {...swipe} style={{ marginTop: topMargin(settings) }}>
+      <FullWidthRow>{content}</FullWidthRow>
+      {!screen?.isMobile && (
+        <FullWidthRow>
+          <Paginator
+            onPageChange={(page: any) => setSelectedPage(page)}
+            selectedPage={selectedPage}
+            totalItems={totalTracks}
+            pageSize={realPageSize}
+          />
+        </FullWidthRow>
+      )}
+    </Container>
+  ) : <></>;
 
   return (
     <>
@@ -112,7 +106,7 @@ const Tracks: FC<ITracks> = ({ setCurrentAlbum, search }) => {
         <NoResults title={intl.formatMessage({ id: 'no_tracks_title' })} text={intl.formatMessage({ id: 'no_tracks_text' })} />
       )}
       {tracksLoaded && noResults && (
-        <div className="no-albums">
+        <div>
           <NoResults title={intl.formatMessage({ id: 'no_search_results_title' })} text={intl.formatMessage({ id: 'no_search_results_text' })} />
         </div>
       )}

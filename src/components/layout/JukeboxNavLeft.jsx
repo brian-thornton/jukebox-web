@@ -8,7 +8,7 @@ import NavButton from './NavButton';
 
 const JukeboxNavLeft = () => {
   const settings = useContext(SettingsContext);
-  const { isScreenSmall, styles, features } = settings;
+  const { isScreenSmall, styles, features, screen } = settings;
   const { playlists, tracks, queue, albums } = features || {};
   const { navButtonSize } = settings.styles;
   const navLink = feature => <NavLink feature={feature} />;
@@ -34,8 +34,6 @@ const JukeboxNavLeft = () => {
       {playlists && generator('radio')}
       {queue && generator('queue')}
       {features.settings && generator('settings')}
-      {albums && isScreenSmall && generator('filters')}
-      {(albums || features.tracks) && isScreenSmall && generator('search')}
     </>
   );
 

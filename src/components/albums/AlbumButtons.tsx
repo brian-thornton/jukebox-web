@@ -67,7 +67,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
     <>
       {isScreenSmall && (
         <>
-          <Row className="buttonRow">
+          <Row className="centeredRow">
             {features?.play && (
               <Button
                 icon={<PlayFill />}

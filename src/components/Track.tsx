@@ -4,22 +4,15 @@ import Container from 'react-bootstrap/Container';
 import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import AddToPlaylistButton from './common/AddToPlaylistButton';
 import TrackAlbum from './TrackAlbum';
 import { ITrack as TrackShape, IAlbum } from './interface';
-import DownloadButton from './DownloadButton';
-import ExpandRow from './common/ExpandRow';
-import GoToAlbumButton from './GoToAlbumButton';
-import PlayNowButton from './PlayNowButton';
-import EnqueueButton from './EnqueueButton';
 import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
-import TrackActions from './TrackActions';
 import Item from './common/Item';
 import './Track.scss';
+import TrackButtons from './TrackButtons';
 
 interface ITrack {
-  setCurrentAlbum?: Function,
   showAlbumCovers: boolean,
   track: TrackShape,
   trackAlbums: Array<IAlbum>,
@@ -29,7 +22,6 @@ interface ITrack {
 
 const Track: FC<ITrack> = ({
   showAlbumCovers,
-  setCurrentAlbum,
   track,
   trackAlbums,
   trackAlbumsLoaded,
@@ -79,16 +71,6 @@ const Track: FC<ITrack> = ({
   const pathParts = track.path.split('/');
   const albumFolder = pathParts[pathParts.length - 2];
 
-  const buttons = (
-    <>
-      {features?.albums && <GoToAlbumButton album={getAlbum(track)} />}
-      {features?.playlists && <AddToPlaylistButton track={track} />}
-      {features?.play && <PlayNowButton track={track} />}
-      {features?.queue && <EnqueueButton track={track} mode="Tracks" />}
-      {features?.downloadTrack && <DownloadButton track={track} />}
-    </>
-  );
-
   if (isScreenSmall) {
     return (
       <>
@@ -106,7 +88,7 @@ const Track: FC<ITrack> = ({
       {!clicked && (
         <Card className="trackCard" style={trackCardSkin}>
           <Container className="trackContainer" fluid>
-            <Row>
+            <Row style={{marginRight: '0'}}>
               <Col className="d-none d-sm-block" lg={1} md={1}>
                 {album(track)}
               </Col>
@@ -116,7 +98,7 @@ const Track: FC<ITrack> = ({
                 </div>
               </Col>
               <Col lg={3} md={3}>
-                {buttons}
+                <TrackButtons track={track} trackAlbums={trackAlbums} trackAlbumsLoaded={trackAlbumsLoaded} />
               </Col>
             </Row>
           </Container>

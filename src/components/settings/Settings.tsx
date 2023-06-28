@@ -16,6 +16,8 @@ import { applyLighting } from '../../lib/lightingHelper';
 import './Settings.scss';
 import LogList from './logs/LogList';
 import Metadata from './metadata/Metadata';
+import SettingsActions from './SettingsActions';
+import Button from '../Button';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -26,7 +28,8 @@ const Settings = () => {
   const [controls, setControls] = useState([]);
   const [searchParams] = useSearchParams();
   const { controlButtonSize } = settings.styles || {};
-  const { preferences } = settings || {};
+  const { preferences, screen } = settings || {};
+  const [actionsOpen, setActionsOpen] = useState(false);
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
@@ -98,6 +101,16 @@ const Settings = () => {
   if ((isAuthorized || !preferences?.pinEnabled) && !controls) {
     // @ts-ignore
     setControls(leftControls());
+  }
+
+  if (screen?.isMobile) {
+    return (
+      <div style={{paddingTop: '60px'}}>
+        {!actionsOpen && <Button style={{fontSize: '20px'}} content="..." onClick={() => setActionsOpen(true)} />}
+        {actionsOpen && <SettingsActions setMode={setMode} onClose={() => setActionsOpen(false)} />}
+        {!actionsOpen && content()}
+      </div>
+    );
   }
 
   if (isAuthorized || !preferences?.pinEnabled) {

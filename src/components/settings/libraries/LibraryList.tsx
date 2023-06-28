@@ -4,12 +4,14 @@ import LibraryRow from './LibraryRow';
 import { calculatePageSize } from '../../../lib/styleHelper';
 import PaginatedList from '../../common/PaginatedList';
 import { ILibrary } from '../../interface';
+import { clone, cloneDeep } from 'lodash';
 
 interface ILibraryList {
   libraries: Array<ILibrary>,
   reloadLibraries: Function,
   setCurrentScan: Function,
   setSelectedLibrary: Function,
+  showOnline: boolean,
 };
 
 const LibraryList: FC<ILibraryList> = ({
@@ -17,14 +19,21 @@ const LibraryList: FC<ILibraryList> = ({
   reloadLibraries,
   setCurrentScan,
   setSelectedLibrary,
+  showOnline,
 }) => {
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState(0);
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
 
-  const items = (): JSX.Element[] => (
-    libraries.slice(realStart, (realStart + realPageSize)).map(library => (
+  const items = (): JSX.Element[] => {
+    let filteredLibraries = libraries;
+
+    if (showOnline) {
+      filteredLibraries = filteredLibraries.filter(library => library.enabled);
+    }
+
+    return filteredLibraries.slice(realStart, (realStart + realPageSize)).map(library => (
       <LibraryRow
         library={library}
         reloadLibraries={reloadLibraries}
@@ -32,7 +41,7 @@ const LibraryList: FC<ILibraryList> = ({
         setSelectedLibrary={setSelectedLibrary}
       />
     ))
-  );
+  };
 
   return (
     <PaginatedList
@@ -42,7 +51,7 @@ const LibraryList: FC<ILibraryList> = ({
       setSelectedPage={setSelectedPage}
       pageSize={realPageSize}
       totalItems={libraries.length}
-      onItemClick={() => {}}
+      onItemClick={() => { }}
     />
   );
 };

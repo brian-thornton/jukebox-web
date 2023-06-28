@@ -22,6 +22,18 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   const { coverSize, showAlbumName } = preferences || { coverSize: 'medium' };
   const [coverArt, setCoverArt] = useState(defaultCover);
   const isMediumCover = coverSize === 'medium';
+  let albumImageClass, albumCardClass;
+
+  if (isMediumCover) {
+    albumImageClass = 'mediumAlbumImage';
+    albumCardClass = 'mediumAlbumCard';
+  } else if (coverSize === 'large') {
+    albumImageClass = 'largeAlbumImage';
+    albumCardClass = 'largeAlbumCard';
+  } else {
+    albumImageClass = 'smallAlbumImage';
+    albumCardClass = 'smallAlbumCard';
+  }
 
   const loadCoverArt = () => {
     if (album.coverArtExists || settings?.features?.admin) {
@@ -42,13 +54,6 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
     fontFamily: styles?.buttonFont,
   };
 
-  const albumImageStyle = {
-    width: isMediumCover ? '300px' : '200px',
-    height: isMediumCover ? '300px' : '200px',
-    maxWidth: isMediumCover ? '300px' : '200px',
-    maxHeight: isMediumCover ? '300px' : '200px',
-  };
-
   const albumCardStyle = {
     width: isMediumCover ? '303px' : '203px',
     height: isMediumCover ? '320px' : '220px',
@@ -57,10 +62,6 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   };
 
   if (coverSize === 'large') {
-    albumImageStyle.width = '400px';
-    albumImageStyle.height = '400px';
-    albumImageStyle.maxWidth = '400px';
-    albumImageStyle.maxHeight = '400px';
     albumCardStyle.width = '400px';
     albumCardStyle.height = '420px';
     albumCardStyle.maxWidth = '400px';
@@ -77,7 +78,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
         }
       }}
     >
-      <Card.Img src={coverArt} style={albumImageStyle} />
+      <Card.Img src={coverArt} className={albumImageClass} />
       {!coverArtOnly && (
         <Card.Body className="albumCardBody" style={albumNameStyle}>
           {showAlbumName && album.name}

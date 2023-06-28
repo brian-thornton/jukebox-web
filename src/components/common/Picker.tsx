@@ -9,6 +9,7 @@ import { SettingsContext } from '../layout/SettingsProvider';
 
 interface IPicker {
   applyPadding: boolean,
+  itemHeight?: string,
   items: Array<{
     title?: string,
     description?: string,
@@ -18,7 +19,7 @@ interface IPicker {
   }>,
 };
 
-const Picker: FC<IPicker> = ({ items, applyPadding }) => {
+const Picker: FC<IPicker> = ({ items, applyPadding, itemHeight }) => {
   const settings = useContext(SettingsContext);
 
   const pickerCardStyle = (item: any) => {
@@ -33,10 +34,12 @@ const Picker: FC<IPicker> = ({ items, applyPadding }) => {
       style.height = '110px';
     }
 
+    if (itemHeight) {
+      style.height = itemHeight;
+    }
+
     return style;
   };
-
-
 
   return (
     <Container fluid style={{ paddingTop: applyPadding ? '80px' : '' }}>
@@ -45,7 +48,7 @@ const Picker: FC<IPicker> = ({ items, applyPadding }) => {
           <Col lg="3" xl="3" md="3" sm="12">
             <Card style={pickerCardStyle(item)}>
               {item.title && <Card.Title>{item.title}</Card.Title>}
-              <Card.Body>
+              <Card.Body style={{paddingTop: '5px'}}>
                 {item.description && <Card.Text>{item.description}</Card.Text>}
                 <Button width={item.buttonWidth} onClick={item.onClick} content={item.buttonText} />
               </Card.Body>

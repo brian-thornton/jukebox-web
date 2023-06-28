@@ -1,0 +1,8 @@
+.centeredRow {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.contentContainer {
+  margin-top: 60px !important;
+}

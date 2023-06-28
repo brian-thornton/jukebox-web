@@ -27,6 +27,7 @@ const Libraries = () => {
   const settings = useContext(SettingsContext);
   const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
+  const [showOnline, setShowOnline] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
   const [currentScan, setCurrentScan] = useState();
@@ -174,6 +175,7 @@ const Libraries = () => {
       {noPrompts && !isLoading && libraries.length && (
         <>
           <LibraryInfoAndGlobalControls
+            setShowOnline={setShowOnline}
             onScanAll={onScanAll}
             onDeleteAll={onDeleteAll}
             handleDiscover={handleDiscover}
@@ -182,12 +184,14 @@ const Libraries = () => {
             totalTracks={totalTracks}
             isScanning={isScanning}
             setIsCategoryConfigOpen={setIsCategoryConfigOpen}
+            showOnline={showOnline}
           />
           <LibraryList
             libraries={libraries}
             reloadLibraries={loadLibraries}
             setCurrentScan={setCurrentScan}
             setSelectedLibrary={setSelectedLibrary}
+            showOnline={showOnline}
           />
         </>
       )}

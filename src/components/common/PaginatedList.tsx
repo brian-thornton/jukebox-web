@@ -10,7 +10,7 @@ import { topMargin } from '../../lib/styleHelper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { IItem } from '../interface';
 import FullWidthRow from './FullWidthRow';
-import './PaginatedList.scss';
+import styles from './PaginatedList.module.css';
 
 interface IPaginatedList {
   topLevelControls?: any,
@@ -21,6 +21,7 @@ interface IPaginatedList {
   pageSize: number,
   applyTopMargin?: boolean,
   onItemClick: Function,
+  hideButtons?: boolean,
 };
 
 const PaginatedList: FC<IPaginatedList> = ({
@@ -32,19 +33,20 @@ const PaginatedList: FC<IPaginatedList> = ({
   pageSize,
   applyTopMargin = false,
   onItemClick,
+  hideButtons = false,
 }) => {
   const swipe = useSwipeable(
     handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)),
   );
   const standardItems = items && items.length > 0 && !isValidElement(items[0]);
-  
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
+  const { isScreenSmall, screen } = settings;
+  const controlClass = screen?.isMobile ? styles.centeredRow : '';
 
   return (
-    <Container fluid className="paginated-list-container" {...swipe} style={{ marginTop: applyTopMargin ? topMargin(settings) : '' }}>
+    <Container fluid className="paginated-list-container" {...swipe} style={{ paddingLeft: 0, paddingRight: 0, marginTop: applyTopMargin ? topMargin(settings) : '' }}>
       {topLevelControls && (
-        <FullWidthRow>{topLevelControls}</FullWidthRow>
+        <FullWidthRow className={styles.controlClass}>{topLevelControls}</FullWidthRow>
       )}
       {items && items.length > 0 && (
         <>
@@ -53,38 +55,37 @@ const PaginatedList: FC<IPaginatedList> = ({
               <>
                 {standardItems && items.map(item => (
                   <>
-                    {isScreenSmall && <ExpandRow text={item.text} buttons={item.buttons} setIsExpanded={() => { }} isExpanded={false} />}
-                    {!isScreenSmall && (
-                      <Item
-                        text={item.text}
-                        buttons={item.buttons || <></>}
-                        onClick={() => {
-                          if (onItemClick) {
-                            onItemClick(item);
-                          }
-                        }}
-                        onCheck={() => { }}
-                        checked={false}
-                        actionVisible={false}
-                      />
-                    )}
+                    <Item
+                      text={item.text}
+                      buttons={item.buttons || <></>}
+                      onClick={(a: any) => {
+                        if (item.onItemClick) {
+                          item.onItemClick();
+                        }
+                      }}
+                      onCheck={() => { }}
+                      checked={false}
+                      actionVisible={false}
+                    />
                   </>
                 ))}
                 {!standardItems && items}
               </>
             </ListGroup>
           </FullWidthRow>
-          <FullWidthRow>
-            {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
-              <Paginator
-                disableRandom
-                onPageChange={(page: any) => setSelectedPage(page)}
-                selectedPage={selectedPage}
-                totalItems={totalItems || items.length}
-                pageSize={pageSize}
-              />
-            )}
-          </FullWidthRow>
+          {!hideButtons && (
+            <FullWidthRow>
+              {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
+                <Paginator
+                  disableRandom
+                  onPageChange={(page: any) => setSelectedPage(page)}
+                  selectedPage={selectedPage}
+                  totalItems={totalItems || items.length}
+                  pageSize={pageSize}
+                />
+              )}
+            </FullWidthRow>
+          )}
         </>
       )}
     </Container>
