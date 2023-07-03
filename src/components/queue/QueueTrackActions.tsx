@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
 import { ITrack } from '../interface';
 import Picker from '../common/Picker';
 import { enqueueTop, next, removeTracksFromQueue } from '../../lib/queue-client';
 import { useIntl } from 'react-intl';
+import SideBySide from '../common/SideBySide';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 interface IQueueTrackActions {
   track?: ITrack,
@@ -12,40 +14,45 @@ interface IQueueTrackActions {
 };
 
 const QueueTrackActions: FC<IQueueTrackActions> = ({ track, onClose, applyPadding = false }) => {
+  const settings = useContext(SettingsContext);
   const intl = useIntl();
   const playNow = () => {
     enqueueTop(track);
     next();
   };
 
+  const itemStyle = {
+    background: settings?.styles?.trackBackgroundColor,
+    color: settings?.styles?.fontColor,
+    margin: '3px',
+  };
+
+  const actions = [
+    [
+      {
+        text: intl.formatMessage({ id: 'play' }),
+        action: () => {
+          playNow();
+          onClose();
+        },
+        style: itemStyle
+      },
+      {
+        text: intl.formatMessage({ id: 'delete' }),
+        action: async () => {
+          await removeTracksFromQueue([track]);
+          onClose();
+        },
+        style: itemStyle
+      },
+    ],
+    [
+      { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
+    ]
+  ];
+
   return (
-    <Picker
-      itemHeight='60px'
-      applyPadding={false}
-      items={[
-        {
-          buttonText: intl.formatMessage({ id: 'play' }),
-          buttonWidth: "100%",
-          onClick: () => {
-            playNow();
-            onClose();
-          },
-        },
-        {
-          buttonText: intl.formatMessage({ id: 'delete' }),
-          buttonWidth: "100%",
-          onClick: async () => {
-            await removeTracksFromQueue([track]);
-            onClose();
-          },
-        },
-        {
-          buttonText: intl.formatMessage({ id: 'cancel' }),
-          buttonWidth: "100%",
-          onClick: () => onClose(),
-        },
-      ]}
-    />
+    <SideBySide data={actions} />
   );
 };
 

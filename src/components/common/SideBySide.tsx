@@ -15,7 +15,7 @@ const SideBySide: FC<ISideBySide> = ({ data }) => (
         {row.map((item: any) => (
           <Col>
             <Card style={item.style} onClick={() => item.action()}>
-              <Card.Body>{item.text}</Card.Body>
+              <Card.Body style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{item.text}</Card.Body>
             </Card>
           </Col>
         ))}

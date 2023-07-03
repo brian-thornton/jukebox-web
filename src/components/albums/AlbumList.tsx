@@ -19,6 +19,7 @@ import StartsWithFilter from './StartsWithFilter';
 import NoAlbumsLoaded from './NoAlbumsLoaded';
 import NoAlbumSearchResults from './NoAlbumsSearchResults';
 import { usePageSize } from './album-hooks';
+import VerticalAlbumList from './VerticalAlbumList';
 
 interface IAlbumList {
   selectedLibraries?: Array<string>,
@@ -47,7 +48,7 @@ const AlbumList: FC<IAlbumList> = ({
   const cols = startsWithLocation === 'none' ? '12' : '11';
   let category = state?.category;
   const { pathname } = window.location;
-  const pageSize = usePageSize(display, settings);
+  const pageSize = screen?.isMobile ? 6 : usePageSize(display, settings);
 
   if (!category && pathname.includes('/categories')) {
     category = pathname.slice(window.location.pathname.lastIndexOf('/') + 1, pathname.length);
@@ -126,7 +127,9 @@ const AlbumList: FC<IAlbumList> = ({
       {loadComplete && totalAlbums === 0 && <NoAlbumsLoaded />}
       {noResults && <NoAlbumSearchResults />}
       {isLoading && <Loading text="Loading..." />}
-      {!isLoading && !noResults && (
+      {!isLoading && !noResults && screen?.isMobile && <VerticalAlbumList albums={albums} selectedPage={selectedPage} setSelectedPage={setSelectedPage}
+      />}
+      {!isLoading && !noResults && !screen?.isMobile && (
         <Container {...swipe} fluid className="albumListContainer">
           <Row className="containerRow">
             <>
@@ -144,7 +147,7 @@ const AlbumList: FC<IAlbumList> = ({
                 )}
                 {display === 'grid' && <AlbumTable albums={albums} />}
               </Col>
-              {startsWithLocation === 'right' && !screen?.isTabletOrSmaller && !search && startsWithCol }
+              {startsWithLocation === 'right' && !screen?.isTabletOrSmaller && !search && startsWithCol}
             </>
           </Row>
           {(startsWithLocation === 'none' || search) && (

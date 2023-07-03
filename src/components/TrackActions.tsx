@@ -3,12 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import { ITrack } from './interface';
 import './TrackAlbum.scss';
-import Picker from './common/Picker';
 import { enqueue } from '../lib/queue-client';
 import { enqueueTop, next } from '../lib/queue-client';
 import { useIntl } from 'react-intl';
 import SideBySide from './common/SideBySide';
-import { on } from 'events';
 import { SettingsContext } from './layout/SettingsProvider';
 
 interface ITrackActions {
@@ -26,7 +24,7 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false })
     background: settings?.styles?.trackBackgroundColor,
     color: settings?.styles?.fontColor,
     margin: '3px',
-  }
+  };
 
   const playNow = () => {
     enqueueTop(track);

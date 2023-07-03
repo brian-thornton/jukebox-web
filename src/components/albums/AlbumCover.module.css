@@ -13,3 +13,13 @@
   align-items: center;
   justify-content: center;
 }
+
+.albumCoverList {
+  height: 75px;
+  width: 75px;
+  max-height: 75px;
+  max-width: 75px;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+}
