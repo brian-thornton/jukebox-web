@@ -43,7 +43,7 @@ const Discover: FC<IDiscover> = ({
       <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
         <Container fluid>
           <Row>
-            <NameInput placeholder={intl.formatMessage({ id: 'path' })} />
+            <NameInput name="Path" placeholder={intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker

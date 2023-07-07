@@ -1,0 +1,13 @@
+.sideBySideBody {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.sideBySideTitle {
+  align-items: center;
+  display: flex;
+  font-size: 25px;
+  justify-content: center; 
+  margin-bottom: 10px;
+}

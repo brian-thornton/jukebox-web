@@ -49,7 +49,7 @@ const LibraryAdd: FC<ILibraryAdd> = ({
       <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
         <Container fluid className="addContainer">
           <Row>
-            <NameInput placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
+            <NameInput name="Path" placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
           </Row>
           <Row>
             <CategoryPicker

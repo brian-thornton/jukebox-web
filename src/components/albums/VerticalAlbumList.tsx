@@ -1,26 +1,17 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { FC, useContext, useState, useEffect } from 'react';
+import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import './AlbumList.scss';
-import { applyLighting } from '../../lib/lightingHelper';
-import { getAlbums, searchAlbums } from '../../lib/librarian-client';
 import { handlers } from '../../lib/gesture-helper';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AlbumCover from './AlbumCover';
-import AlbumTable from './AlbumTable';
-import FullWidthRow from '../common/FullWidthRow';
-import Loading from '../common/Loading';
-import Paginator from '../common/Paginator';
-import StartsWithFilter from './StartsWithFilter';
-import NoAlbumsLoaded from './NoAlbumsLoaded';
-import NoAlbumSearchResults from './NoAlbumsSearchResults';
-import { usePageSize } from './album-hooks';
 import { IAlbum } from '../interface';
 import { ListGroup } from 'react-bootstrap';
+import styles from './VerticalAlbumList.module.css';
 
 interface IAlbumList {
   albums?: Array<IAlbum>,
@@ -45,11 +36,11 @@ const AlbumList: FC<IAlbumList> = ({
   };
 
   return (
-    <Container {...swipe} style={{ marginTop: '60px', marginLeft: '0px', paddingLeft: '0px', paddingRight: '0px' }}>
+    <Container {...swipe} className={styles.verticalAlbumContainer}>
       <ListGroup>
         {albums?.map((album: IAlbum) => (
           <ListGroup.Item key={album.path} style={itemStyle}>
-            <Container fluid style={{ marginLeft: '0px', paddingLeft: '0px', paddingRight: '0px' }}>
+            <Container fluid className={styles.listContainer}>
               <Row
                 onClick={() => {
                   navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });

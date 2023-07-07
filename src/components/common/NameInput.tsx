@@ -9,15 +9,17 @@ interface INameInput {
   placeholder?: string,
   onEnter?: Function,
   disabled?: boolean,
+  name?: string,
 }
 
 const NameInput: FC<INameInput> = ({
-  defaultValue, onChange, placeholder, onEnter, disabled,
+  defaultValue, onChange, placeholder, onEnter, disabled, name,
 }) => {
   const intl = useIntl();
 
   return (
     <InputGroup className="mb-3">
+      <InputGroup.Text id="basic-addon1">{name}</InputGroup.Text>
       <FormControl
         id="name"
         placeholder={placeholder || intl.formatMessage({ id: "name" })}

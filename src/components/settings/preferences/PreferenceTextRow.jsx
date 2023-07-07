@@ -18,6 +18,7 @@ const propTypes = {
 
 const PreferenceTextRow = ({ rowName, value }) => {
   const settings = useContext(SettingsContext);
+  const { screen } = settings || {};
 
   const rowLabel = (labelText) => {
     const result = labelText.replace(/([A-Z])/g, ' $1');
@@ -41,13 +42,11 @@ const PreferenceTextRow = ({ rowName, value }) => {
 
   return (
     <ListGroupItem style={itemStyle}>
-      <Container fluid className="preference-text-row-container">
+      <Container fluid className="preference-text-row-container" style={{paddingLeft: 0, marginLeft: 0}}>
         <Row>
-          <Col lg="2">
-            {rowLabel(rowName)}
-          </Col>
-          <Col lg="8">
+          <Col lg="12">
             <NameInput
+              name={rowLabel(rowName)}
               defaultValue={value}
               onChange={debouncedUpdate}
             />
