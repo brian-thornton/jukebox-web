@@ -12,6 +12,10 @@ interface ISideBySide {
 const SideBySide: FC<ISideBySide> = ({ data, title }) => {
   const settings = useContext(SettingsContext);
 
+  const activeStyle = {
+    border: `2px solid ${settings?.styles?.fontColor}`,
+  }
+
   return (
     <Container fluid style={{ paddingTop: '80px' }}>
       {title && <div className={styles.sideBySideTitle} style={{ color:  settings.styles?.fontColor }}>{title}</div>}
@@ -20,7 +24,7 @@ const SideBySide: FC<ISideBySide> = ({ data, title }) => {
           {row.map((item: any) => (
             <Col>
               <Card style={item.style} onClick={() => item.action()}>
-                <Card.Body className={styles.sideBySideBody}>{item.text}</Card.Body>
+                <Card.Body className={styles.sideBySideBody} style={item.active ? activeStyle : undefined}>{item.text}</Card.Body>
               </Card>
             </Col>
           ))}

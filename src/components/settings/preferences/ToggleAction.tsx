@@ -8,11 +8,11 @@ import { updatePreference } from '../../../lib/preferenceHelper';
 interface IToggleActions {
   onClose: Function,
   applyPadding?: boolean,
-  value: string,
+  value: boolean,
   name: string,
 };
 
-const ToggleActions: FC<IToggleActions> = ({name, onClose, applyPadding = false, value }) => {
+const ToggleActions: FC<IToggleActions> = ({ name, onClose, value }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
 
@@ -29,18 +29,29 @@ const ToggleActions: FC<IToggleActions> = ({name, onClose, applyPadding = false,
 
   const actions = [
     [
-      { text: intl.formatMessage({ id: 'on' }), action: () => updatePreferenceAndClose(), style: itemStyle },
-      { text: intl.formatMessage({ id: 'off' }), action: () => updatePreferenceAndClose(), style: itemStyle },
+      {
+        text: intl.formatMessage({ id: 'on' }),
+        active: value === true,
+        action: () => updatePreferenceAndClose(),
+        style: itemStyle
+      },
+      {
+        text: intl.formatMessage({ id: 'off' }),
+        active: value === false,
+        action: () => updatePreferenceAndClose(),
+        style: itemStyle
+      },
     ],
     [
-      { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
+      {
+        text: intl.formatMessage({ id: 'cancel' }),
+        action: () => onClose(),
+        style: itemStyle
+      },
     ],
   ]
 
-
-  return (
-    <SideBySide data={actions} title={name} />
-  );
+  return <SideBySide data={actions} title={name} />;
 };
 
 export default ToggleActions;

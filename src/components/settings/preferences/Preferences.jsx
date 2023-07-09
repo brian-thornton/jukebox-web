@@ -78,7 +78,7 @@ const Preferences = () => {
           setSelectedPage={setSelectedPage}
           pageSize={itemsPerPage}
           totalItems={14}
-          hideButtons
+          hideButtons={screen.isMobile}
         />
       )}
     </>

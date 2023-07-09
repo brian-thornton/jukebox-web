@@ -35,11 +35,15 @@ const Queue = () => {
   const { controlButtonSize } = settings.styles || {};
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
   const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 300 : 250;
-  const itemsPerPage = calculatePageSize('item', reserve, trackHeight);
+  let itemsPerPage = calculatePageSize('item', reserve, trackHeight);
   const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
+
+  if (screen?.isMobile) {
+    itemsPerPage = 11;
+  }
 
   const loadQueue = () => {
     const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
@@ -53,16 +57,16 @@ const Queue = () => {
     });
   };
 
-  const monitorQueue = () => {
-    setTimeout(() => monitorQueue(), 10000);
-    loadQueue();
-  };
+  // const monitorQueue = () => {
+  //   setTimeout(() => monitorQueue(), 10000);
+  //   loadQueue();
+  // };
 
   const clear = () => clearQueue().then(() => loadQueue());
 
   useEffect(() => {
     applyLighting(settings, 'Queue');
-    monitorQueue();
+    //monitorQueue();
   }, []);
 
   useEffect(loadQueue, [selectedPage]);
@@ -125,6 +129,7 @@ const Queue = () => {
             pageSize={itemsPerPage}
             totalItems={totalTracks}
             onItemClick={() => { }}
+            hideButtons={screen?.isMobile}
           />
         )}
         {clearConfirm && confirm}
