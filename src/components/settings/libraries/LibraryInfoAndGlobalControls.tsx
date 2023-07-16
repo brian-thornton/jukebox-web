@@ -3,6 +3,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
+import { MenuAppFill } from 'react-bootstrap-icons';
 
 import Button from '../../Button';
 import Confirm from '../../common/Confirm';
@@ -21,6 +22,7 @@ interface ILibraryInfoAndGlobalControls {
   isScanning: boolean,
   showOnline: boolean,
   setShowOnline: Function,
+  setIsMenuOpen: Function,
 };
 
 const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
@@ -34,10 +36,12 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
   isScanning,
   showOnline,
   setShowOnline,
+  setIsMenuOpen,
 }) => {
   const intl = useIntl();
   const [isDeleteAllConfirmOpen, setIsDeleteAllConfirmOpen] = useState(false);
   const settings = useContext(SettingsContext);
+  const { screen } = settings;
 
   const categories = (
     <Button disabled={isScanning} onClick={() => setIsCategoryConfigOpen(true)} content={<FormattedMessage id="categories" />} />
@@ -77,7 +81,15 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
           }}
         />
       )}
-      {!isDeleteAllConfirmOpen && (
+      {screen?.isMobile && (
+        <Button
+          onClick={() => {
+            setIsMenuOpen(true)
+          }}
+          content={<MenuAppFill />}
+        />
+      )}
+      {!screen?.isMobile && !isDeleteAllConfirmOpen && (
         <Container fluid>
           <Row>
             <Col lg="4" md="4">

@@ -61,7 +61,6 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
 
   return (
     <Nav className="ml-auto">
-      {!applyWidth && search && !isScreenSmall && <div className="search-result"><FormattedMessage id="search_results" values={{ search }} /></div>}
       {(features?.albums || features?.tracks) && !isHamburgerClicked && (
         <JukeboxNavSearchButtons
           search={search}

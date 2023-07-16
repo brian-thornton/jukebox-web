@@ -21,6 +21,7 @@ import LibraryInfoAndGlobalControls from './LibraryInfoAndGlobalControls';
 import LibraryList from './LibraryList';
 import Categories from './Categories';
 import Discover from './Discover';
+import LibraryMenuMobile from './LibraryMenuMobile';
 
 const Libraries = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -33,6 +34,7 @@ const Libraries = () => {
   const [currentScan, setCurrentScan] = useState();
   const [isCategoryConfigOpen, setIsCategoryConfigOpen] = useState(false);
   const [selectedLibrary, setSelectedLibrary] = useState();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
 
@@ -163,7 +165,7 @@ const Libraries = () => {
   return (
     <>
       {noPrompts && isLoading && <Loading />}
-      {noPrompts && !isLoading && !libraries.length && (
+      {noPrompts && !isLoading && !libraries.length && !isMenuOpen && (
         <NoResults
           applyMargin={false}
           className="fullWidth"
@@ -172,7 +174,10 @@ const Libraries = () => {
           controls={noResultsButtons}
         />
       )}
-      {noPrompts && !isLoading && libraries.length && (
+      {noPrompts && !isLoading && libraries.length && isMenuOpen && (
+        <LibraryMenuMobile onClose={() => setIsMenuOpen(false)} />
+      )}
+      {noPrompts && !isLoading && libraries.length && !isMenuOpen && (
         <>
           <LibraryInfoAndGlobalControls
             setShowOnline={setShowOnline}
@@ -185,6 +190,7 @@ const Libraries = () => {
             isScanning={isScanning}
             setIsCategoryConfigOpen={setIsCategoryConfigOpen}
             showOnline={showOnline}
+            setIsMenuOpen={setIsMenuOpen}
           />
           <LibraryList
             libraries={libraries}

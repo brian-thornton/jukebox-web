@@ -1,5 +1,5 @@
 import { FC, useContext } from 'react';
-import { ArrowClockwise, Search } from 'react-bootstrap-icons';
+import { Search, X } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,7 +14,7 @@ interface IJukeboxNavSearchButtons {
   lastModule: string,
 };
 
-const JukeboxNavSearchButtons: FC<IJukeboxNavSearchButtons> = ({search, setSearch, clearSearch, lastModule}) => {
+const JukeboxNavSearchButtons: FC<IJukeboxNavSearchButtons> = ({ search, setSearch, clearSearch, lastModule }) => {
   const settings = useContext(SettingsContext);
   const { features } = settings;
   const navigate = useNavigate();
@@ -59,9 +59,16 @@ const JukeboxNavSearchButtons: FC<IJukeboxNavSearchButtons> = ({search, setSearc
               navigate('/albums');
             } else if (lastModule === 'Tracks') {
               navigate('/tracks');
+            } else {
+              navigate('/albums');
             }
           }}
-          content={<ArrowClockwise style={{ fontSize }} />}
+          content={(
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <div style={{paddingTop: '2px'}}>{search}</div>
+              <div><X style={{ fontSize: '25px', marginLeft: '3px' }} /></div>
+            </div>
+          )}
         />
         {!search && (
           <Button
