@@ -49,6 +49,7 @@ interface IPreferences {
   coverSize: string,
   experimentalMode: boolean,
   restrictionGroup: string,
+  offlineLibraries: boolean,
 }
 
 interface IStyles {

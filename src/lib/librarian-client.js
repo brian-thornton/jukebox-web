@@ -14,28 +14,28 @@ export const add = (library) => post(`${path}/add`, library);
 export const saveCoverArt = (cover) => post(`${path}/saveCoverArt`, cover);
 export const removeCoverArt = (album) => post(`${path}/removeCoverArt`, album);
 
-export const getAlbums = (start, limit, category, selectedLibraries, restriction, genre) => {
+export const getAlbums = (start, limit, category, selectedLibraries, restriction, genre, offlineLibraries) => {
   if (category) {
-    return getData(`${path}/albums?${page(start, limit)}&category=${category}&restriction=${restriction}`);
+    return getData(`${path}/albums?${page(start, limit)}&category=${category}&restriction=${restriction}&offlineLibraries=${offlineLibraries}`);
   };
 
   if (genre) {
-    return getData(`${path}/albums?${page(start, limit)}&genre=${genre}&restriction=${restriction}`);
+    return getData(`${path}/albums?${page(start, limit)}&genre=${genre}&restriction=${restriction}&offlineLibraries=${offlineLibraries}`);
   };
 
   if (selectedLibraries?.length) {
-    return getData(`${path}/albums?${page(start, limit)}&filters=${selectedLibraries.map((lib) => lib.path)}`);
+    return getData(`${path}/albums?${page(start, limit)}&filters=${selectedLibraries.map((lib) => lib.path)}&offlineLibraries=${offlineLibraries}`);
   }
 
-  return getData(`${path}/albums?${page(start, limit)}&restriction=${restriction}`);
+  return getData(`${path}/albums?${page(start, limit)}&restriction=${restriction}&offlineLibraries=${offlineLibraries}`);
 };
 
 export const getTrackAlbum = async (track) => {
   return await getData(`${path}/getTrackAlbum?track=${track}`);
 };
 
-export const searchAlbums = (search, start, limit, startsWithFilter) => {
-  let url = `${path}/search?search=${search}&type=albums&${page(start, limit)}`;
+export const searchAlbums = (search, start, limit, startsWithFilter, offlineLibraries) => {
+  let url = `${path}/search?search=${search}&type=albums&${page(start, limit)}&offlineLibraries=${offlineLibraries}`;
 
   if (startsWithFilter) {
     url += `&startsWithFilter=${startsWithFilter}`;

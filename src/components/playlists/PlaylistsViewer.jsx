@@ -102,13 +102,17 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   ));
 
   const controls = (
-    <ControlButton
-      text={<FormattedMessage id="add" />}
-      width="100%"
-      onClick={() => setAddMode(true)}
-      height={buttonHeight}
-      style={{ fontSize }}
-    />
+    <>
+      {!addMode && (
+        <ControlButton
+          text={<FormattedMessage id="add" />}
+          width="100%"
+          onClick={() => setAddMode(true)}
+          height={buttonHeight}
+          style={{ fontSize }}
+        />
+      )}
+    </>
   );
 
   const content = () => (

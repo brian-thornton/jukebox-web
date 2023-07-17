@@ -10,6 +10,7 @@ interface IToggleRow {
   keys: [string],
   onSetKey: Function,
   selectedKey: string,
+  onClick?: Function,
 };
 
 const ToggleRow: FC<IToggleRow> = ({
@@ -17,10 +18,15 @@ const ToggleRow: FC<IToggleRow> = ({
   keys,
   onSetKey,
   selectedKey,
+  onClick,
 }) => (
   <Row>
     <Item
-      onClick={() => {}}
+      onClick={() => {
+        if (onClick) {
+          onClick();
+        }
+      }}
       buttons={(
         <ButtonGroup>
           {keys.map(key => (

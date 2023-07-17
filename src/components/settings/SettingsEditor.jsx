@@ -6,14 +6,23 @@ import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { calculatePageSize } from '../../lib/styleHelper';
 import ToggleRow from './ToggleRow';
+import AccessActions from './AccessActions';
 
 const SettingsEditor = () => {
   const [features, setFeatures] = useState();
   const settings = useContext(SettingsContext);
+  const { screen } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
+  const [selectedFeature, setSelectedFeature] = useState();
 
-  useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
+  useEffect(() => {
+    if (screen.isMobile) {
+      setRealPageSize(11);
+    } else {
+      setRealPageSize(calculatePageSize('item', 300));
+    }
+  }, []);
 
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
 
@@ -62,6 +71,11 @@ const SettingsEditor = () => {
         keys={['on', 'off']}
         selectedKey={settings.features[name] === true ? 'on' : 'off'}
         onSetKey={updatedValue => updateFeature(name, updatedValue === 'on')}
+        onClick={() => {
+          if (screen.isMobile) {
+            setSelectedFeature(name)
+          }
+        }}
       />
     );
   };
@@ -69,15 +83,22 @@ const SettingsEditor = () => {
   if (features) {
     return (
       <>
-        {features.slice(realStart, (realStart + realPageSize)).map(key => (
-          settingRow(key)))}
-        <Paginator
-          disableRandom
-          onPageChange={page => setSelectedPage(page)}
-          selectedPage={selectedPage}
-          totalItems={features.length}
-          pageSize={realPageSize}
-        />
+        {!selectedFeature && (
+          <>
+            {features.slice(realStart, (realStart + realPageSize)).map(key => (
+              settingRow(key)))}
+            <Paginator
+              disableRandom
+              onPageChange={page => setSelectedPage(page)}
+              selectedPage={selectedPage}
+              totalItems={features.length}
+              pageSize={realPageSize}
+            />
+          </>
+        )}
+        {selectedFeature && (
+          <AccessActions name={selectedFeature} value={settings.features[selectedFeature]} onClose={() => setSelectedFeature(null)} />
+        )}
       </>
     );
   }

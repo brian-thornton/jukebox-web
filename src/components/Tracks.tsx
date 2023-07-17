@@ -45,6 +45,10 @@ const Tracks: FC<ITracks> = ({ search }) => {
 
   const findTracks = async (start: any, limit: any) => {
     searchTracks(search, start, limit).then((data) => {
+      console.log(search)
+      console.log(start)
+      console.log(limit)
+      console.log(data)
       setTotalTracks(data.totalTracks);
       setTracks(data.tracks);
       setTracksLoaded(true);

@@ -114,6 +114,7 @@ export interface ISettings {
   preferences?: {
     name: string,
     startsWithLocation: string,
+    offlineLibraries: boolean,
   },
   pin?: string,
   styles?: {

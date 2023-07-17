@@ -53,6 +53,7 @@ const Preferences = () => {
 
   const items = [
     <PreferenceTextRow rowName="name" value={preferences.name} />,
+    <PreferenceToggleRow {...toggleProps} name="offlineLibraries" value={preferences.offlineLibraries} />,
     <PreferenceToggleRow {...toggleProps} name="useLightingControllers" value={preferences.useLightingControllers} />,
     <PreferenceToggleRow {...toggleProps} name="showAlbumName" value={preferences.showAlbumName} />,
     <PreferenceToggleRow {...toggleProps} name="showAlbumsWithoutCoverArt" value={preferences.showAlbumsWithoutCoverArt} />,

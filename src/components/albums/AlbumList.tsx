@@ -59,7 +59,7 @@ const AlbumList: FC<IAlbumList> = ({
   }, []);
 
   const findAlbums = async (start: number, limit: number) => {
-    searchAlbums(search, start, limit, startsWithFilter).then((data) => {
+    searchAlbums(search, start, limit, startsWithFilter, preferences?.offlineLibraries).then((data) => {
       if (data.albums.length) {
         setTotalAlbums(data.totalAlbums);
         setAlbums(data.albums);
@@ -86,7 +86,7 @@ const AlbumList: FC<IAlbumList> = ({
       } else {
         const musicCategory = category === 'Albums' ? null : category;
 
-        getAlbums(start, end, musicCategory, selectedLibraries, preferences?.restrictionGroup)
+        getAlbums(start, end, musicCategory, selectedLibraries, preferences?.restrictionGroup, null, preferences?.offlineLibraries)
           .then((data) => {
             setTotalAlbums(data.totalAlbums);
             setAlbums(data.albums);
