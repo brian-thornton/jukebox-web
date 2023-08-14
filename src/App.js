@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
 import { gql, useQuery } from "@apollo/client";
 
-import './App.css';
+// import './App.css';
 import { getSettings } from './lib/settings-client';
 import { getStatus } from './lib/status-client';
 import { SettingsContext } from './components/layout/SettingsProvider'
@@ -14,8 +14,8 @@ import { updateSettings } from './lib/settings-client';
 import JukeboxRoutes from './components/layout/JukeboxRoutes';
 
 const JukeboxFooter = React.lazy(() => import("./components/layout/JukeboxFooter"));
-const JukeboxHeader = React.lazy(() => import("./components/layout/JukeboxHeader"));
-const PinEntry = React.lazy(() => import("./components/common/PinEntry"));
+const JukeboxHeader = React.lazy(() => import("./components/layout/JukeboxHeader/JukeboxHeader"));
+const PinEntry = React.lazy(() => import("./components/common/PinEntry/PinEntry"));
 
 function App() {
   const [isPinOpen, setIsPinOpen] = useState(false);
@@ -35,7 +35,6 @@ function App() {
   const [startsWithFilter, setStartsWithFilter] = useState();
   const navigate = useNavigate();
   const isScreenSmall = window.innerWidth < 700;
-  console.log(window.outerWidth);
   const screen = {
     isMobile: window.outerWidth <= 480,
     isTablet: window.outerWidth > 480 && window.outerWidth <= 1180,

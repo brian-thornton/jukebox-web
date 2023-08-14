@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
-import SideBySide from '../common/SideBySide';
+import SideBySide from '../common/SideBySide/SideBySide';
 import { updateSettings } from '../../lib/settings-client';
 
 interface IAccessActions {

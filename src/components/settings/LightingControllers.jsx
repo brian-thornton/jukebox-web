@@ -21,16 +21,16 @@ import {
 } from '../../lib/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/settings-client';
-import AddNew from '../common/AddNew';
+import AddNew from '../common/AddNew/AddNew';
 import Button from '../Button';
 import CloneController from './CloneController';
 import ControllerDetail from './ControllerDetail';
-import Item from '../common/Item';
-import Loading from '../common/Loading';
-import NameInput from '../common/NameInput';
+import Item from '../common/Item/Item';
+import Loading from '../common/Loading/Loading';
+import NameInput from '../common/NameInput/NameInput';
 import Presets from './Presets';
 import { Skin } from '../shapes';
-import FullWidthRow from '../common/FullWidthRow';
+import FullWidthRow from '../common/FullWidthRow/FullWidthRow';
 
 const propTypes = {
   allowAdd: PropTypes.bool,

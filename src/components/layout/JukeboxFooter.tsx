@@ -5,8 +5,8 @@ import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
 
-import ControlButtons from './ControlButtons';
-import AnimatedMeter from '../common/AnimatedMeter';
+import ControlButtons from './ControlButtons/ControlButtons';
+import AnimatedMeter from '../common/AnimatedMeter/AnimatedMeter';
 import { SettingsContext } from './SettingsProvider';
 import Button from '../Button';
 

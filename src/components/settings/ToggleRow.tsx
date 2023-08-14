@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 import Button from '../Button';
-import Item from '../common/Item';
+import Item from '../common/Item/Item';
 
 interface IToggleRow {
   description: string,

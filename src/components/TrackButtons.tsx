@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 
-import AddToPlaylistButton from './common/AddToPlaylistButton';
+import AddToPlaylistButton from './common/AddToPlaylistButton/AddToPlaylistButton';
 import { ITrack as TrackShape, IAlbum } from './interface';
 import DownloadButton from './DownloadButton';
 import GoToAlbumButton from './GoToAlbumButton';

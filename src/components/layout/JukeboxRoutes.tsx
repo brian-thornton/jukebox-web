@@ -1,14 +1,14 @@
 import React, { FC } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-const AlbumDetail = React.lazy(() => import('../albums/AlbumDetail'));
-const AlbumList = React.lazy(() => import('../albums/AlbumList'));
-const Filters = React.lazy(() => import('./Filters'));
-const Genres = React.lazy(() => import('../genres/Genres'));
-const PlaylistsViewer = React.lazy(() => import('../playlists/PlaylistsViewer'));
-const Queue = React.lazy(() => import('../queue/Queue'));
-const RadioList = React.lazy(() => import('../radio/RadioList'));
-const Search = React.lazy(() => import('../common/Search'));
+const AlbumDetail = React.lazy(() => import('../albums/AlbumDetail/AlbumDetail'));
+const AlbumList = React.lazy(() => import('../albums/AlbumList/AlbumList'));
+const Filters = React.lazy(() => import('./Filters/Filters'));
+const Genres = React.lazy(() => import('../genres/Genres/Genres'));
+const PlaylistsViewer = React.lazy(() => import('../playlists/PlaylistViewer/PlaylistsViewer'));
+const Queue = React.lazy(() => import('../queue/Queue/Queue'));
+const RadioList = React.lazy(() => import('../radio/RadioList/RadioList'));
+const Search = React.lazy(() => import('../common/Search/Search'));
 const Settings = React.lazy(() => import('../settings/Settings'));
 const Tracks = React.lazy(() => import('../Tracks'));
 const WithKeyboardInput = React.lazy(() => import('./WithKeyboardInput'));

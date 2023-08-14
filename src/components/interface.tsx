@@ -163,3 +163,8 @@ export interface IPage {
   limit: number,
 };
 
+export interface IRestrictionGroup {
+  name?: string,
+  type?: string,
+  content?: Array<string>,
+}

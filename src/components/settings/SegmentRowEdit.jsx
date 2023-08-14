@@ -6,7 +6,7 @@ import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
-import Item from '../common/Item';
+import Item from '../common/Item/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import {
   Event,

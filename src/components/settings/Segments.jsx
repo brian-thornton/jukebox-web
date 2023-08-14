@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import AddNew from '../common/AddNew';
+import AddNew from '../common/AddNew/AddNew';
 import { updateSettings } from '../../lib/settings-client';
 import './Segments.scss';
 import { createSegment, removeSegment } from '../../lib/lighting-client';
@@ -18,7 +18,7 @@ import SegmentRowInfo from './SegmentRowInfo';
 import {
   Event, LightingController, Segments as SegmentsShape, Skin,
 } from '../shapes';
-import FullWidthRow from '../common/FullWidthRow';
+import FullWidthRow from '../common/FullWidthRow/FullWidthRow';
 
 const propTypes = {
   controller: LightingController.isRequired,

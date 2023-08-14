@@ -16,7 +16,7 @@ import {
 } from '../../lib/lighting-client';
 import { deleteSkin, createSkin } from '../../lib/style-client';
 import Button from '../Button';
-import ColorPicker from './skins/ColorPicker';
+import ColorPicker from './skins/ColorPicker/ColorPicker';
 import ControllerEffects from './ControllerEffects';
 import ControllerPalettes from './ControllerPalettes';
 import './SegmentColorSelection.scss';

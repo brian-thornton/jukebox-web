@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Paginator from '../common/Paginator';
+import Paginator from '../common/Paginator/Paginator';
 import { updateSettings } from '../../lib/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { calculatePageSize } from '../../lib/styleHelper';

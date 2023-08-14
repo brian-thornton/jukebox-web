@@ -4,9 +4,9 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { calculatePageSize } from '../../lib/styleHelper';
-import Item from '../common/Item';
+import Item from '../common/Item/Item';
 import { applyPreset, getPresets, getCurrentState } from '../../lib/lighting-client';
-import PaginatedList from '../common/PaginatedList';
+import PaginatedList from '../common/PaginatedList/PaginatedList';
 import { Controller } from '../shapes';
 
 const propTypes = {

@@ -8,7 +8,7 @@ import TrackAlbum from './TrackAlbum';
 import { ITrack as TrackShape, IAlbum } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import { bigButtons } from '../lib/styleHelper';
-import Item from './common/Item';
+import Item from './common/Item/Item';
 import './Track.scss';
 import TrackButtons from './TrackButtons';
 
@@ -88,7 +88,7 @@ const Track: FC<ITrack> = ({
       {!clicked && (
         <Card className="trackCard" style={trackCardSkin}>
           <Container className="trackContainer" fluid>
-            <Row style={{marginRight: '0'}}>
+            <Row className="trackRow">
               <Col className="d-none d-sm-block" lg={1} md={1}>
                 {album(track)}
               </Col>

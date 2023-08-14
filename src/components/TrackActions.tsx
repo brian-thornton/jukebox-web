@@ -6,7 +6,7 @@ import './TrackAlbum.scss';
 import { enqueue } from '../lib/queue-client';
 import { enqueueTop, next } from '../lib/queue-client';
 import { useIntl } from 'react-intl';
-import SideBySide from './common/SideBySide';
+import SideBySide from './common/SideBySide/SideBySide';
 import { SettingsContext } from './layout/SettingsProvider';
 
 interface ITrackActions {

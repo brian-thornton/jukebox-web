@@ -5,16 +5,16 @@ import { useIntl } from 'react-intl';
 
 import { getTracks, searchTracks } from '../lib/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
-import NoResults from './common/NoResults';
+import NoResults from './common/NoResults/NoResults';
 import TrackList from './TrackList';
-import Paginator from './common/Paginator';
-import Loading from './common/Loading';
+import Paginator from './common/Paginator/Paginator';
+import Loading from './common/Loading/Loading';
 
 import styles from './Tracks.module.css';
 import { applyLighting } from '../lib/lightingHelper';
 import { handlers } from '../lib/gesture-helper';
 import { bigButtons, headerFooterReserve, topMargin } from '../lib/styleHelper';
-import FullWidthRow from './common/FullWidthRow';
+import FullWidthRow from './common/FullWidthRow/FullWidthRow';
 
 interface ITracks {
   search?: string,
