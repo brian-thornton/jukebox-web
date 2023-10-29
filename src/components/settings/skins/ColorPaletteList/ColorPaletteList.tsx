@@ -1,6 +1,8 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useState, useMemo } from 'react';
 
 import { generateComplementaryColorPalettes, shuffle } from '../../../../lib/helper/palette';
+import Paginator from '../../../common/Paginator/Paginator';
+
 import styles from './ColorPaletteList.module.css';
 
 interface IColorPaletteList {
@@ -12,7 +14,16 @@ interface ColorPalette {
 }
 
 const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
-  const colorPallets = useMemo(() => generateComplementaryColorPalettes(100), []);
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [realPageSize, setRealPageSize] = useState(Number);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const colorPallets = useMemo(() => generateComplementaryColorPalettes(1000), []);
+
+  useEffect(() => {
+    const itemHeight = 35;
+    const viewPortHeight = Math.floor(window.innerHeight - 200);
+    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
+  }, []);
 
   const onClick = (palette: any) => {
     palette.colors = shuffle(palette.colors);
@@ -24,9 +35,9 @@ const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
     onSelect(obj);
   };
 
-  return (
+  const colorPalletPanels = (
     <div className={styles.paletteContainer}>
-      {colorPallets.map((colorPallet: ColorPalette) => (
+      {colorPallets.slice(realStart, (realStart + realPageSize)).map((colorPallet: ColorPalette) => (
         <div className={styles.colorsContainer}>
           {colorPallet.colors.map((color: string) => (
             <div className={styles.color} style={{ backgroundColor: color }} onClick={() => onClick(colorPallet)} />
@@ -34,6 +45,19 @@ const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
         </div>
       ))}
     </div>
+  );
+
+  return (
+    <>
+      {colorPalletPanels}
+      <Paginator
+        disableRandom
+        onPageChange={(page: any) => setSelectedPage(page)}
+        selectedPage={selectedPage}
+        totalItems={colorPallets.length}
+        pageSize={realPageSize}
+      />
+    </>
   );
 };
 

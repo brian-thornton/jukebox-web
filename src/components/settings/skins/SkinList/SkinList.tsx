@@ -25,33 +25,25 @@ const SkinList: FC<ISkinList> = ({
     setRealPageSize(Math.floor(viewPortHeight / itemHeight));
   }, []);
 
-  const skinRows = () => {
-    if (skins && skins.length) {
-      return skins.slice(realStart, (realStart + realPageSize)).map(skin => (
-        <SkinRow
-          skin={skin}
-          setEditSkin={setEditSkin}
-          setSelectedSkin={setSelectedSkin}
-        />
-      ));
-    }
-
-    return <></>;
-  };
-
-  if (skins && skins.length > 0) {
-    return (
-      <PaginatedList
-        // @ts-ignore
-        items={skinRows()}
-        selectedPage={selectedPage}
-        setSelectedPage={setSelectedPage}
-        pageSize={realPageSize}
+  const skinRows = skins && skins.length > 0 ?
+    skins.slice(realStart, (realStart + realPageSize)).map(skin => (
+      <SkinRow
+        skin={skin}
+        setEditSkin={setEditSkin}
+        setSelectedSkin={setSelectedSkin}
       />
-    );
-  }
+    )) : <></>;
 
-  return <></>;
+  return skins && skins.length > 0 ? (
+    <PaginatedList
+      // @ts-ignore
+      items={skinRows}
+      selectedPage={selectedPage}
+      setSelectedPage={setSelectedPage}
+      pageSize={realPageSize}
+      totalItems={skins.length}
+    />
+  ) : <></>;
 };
 
 export default SkinList;

@@ -58,6 +58,21 @@ const getRandomHexColor = () => {
   return color;
 }
 
+export const hexToRgb = (hex: any) => {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+export const gradientString = (start: any, end: any) => {
+  const startRgb = hexToRgb(start);
+  const endRgb = hexToRgb(end);
+  return `linear-gradient(180deg, rgba(${startRgb?.r}, ${startRgb?.g}, ${startRgb?.b}, 1) 0%, rgba(${endRgb?.r}, ${endRgb?.g}, ${endRgb?.b}, 1) 100%)`;
+};
+
 export const shuffle = (array: string[]) => {
   return array.sort(() => Math.random() - 0.5);
 };
