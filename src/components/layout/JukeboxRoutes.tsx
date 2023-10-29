@@ -12,6 +12,7 @@ const Search = React.lazy(() => import('../common/Search/Search'));
 const Settings = React.lazy(() => import('../settings/Settings'));
 const Tracks = React.lazy(() => import('../Tracks'));
 const WithKeyboardInput = React.lazy(() => import('./WithKeyboardInput'));
+const Info = React.lazy(() => import('./Info/Info'));
 
 interface IJukeboxRoutes {
   display: string,
@@ -24,7 +25,7 @@ interface IJukeboxRoutes {
   setTempSearch: Function,
   startsWithFilter: string,
   tempSearch: string,
-};
+}
 
 const JukeboxRoutes: FC<IJukeboxRoutes> = ({
   display,
@@ -91,6 +92,7 @@ const JukeboxRoutes: FC<IJukeboxRoutes> = ({
       <Route path="/tracks" element={wrapWithKeyboard(<Tracks search={search} />)} />
       <Route path="/radio" element={wrapWithKeyboard(<RadioList setMediaType={setMediaType} />)} />
       <Route path="/genres" element={<Genres />} />
+      <Route path="/info" element={<Info />} />
     </Routes>
   );
 };

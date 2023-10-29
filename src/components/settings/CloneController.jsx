@@ -7,8 +7,8 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { updateSettings } from '../../lib/settings-client';
-import { createSkin, deleteSkin, getSkins } from '../../lib/style-client';
+import { updateSettings } from '../../lib/service-clients/settings-client';
+import { createSkin, deleteSkin, getSkins } from '../../lib/service-clients/style-client';
 import { LightingController } from '../shapes';
 
 const propTypes = {

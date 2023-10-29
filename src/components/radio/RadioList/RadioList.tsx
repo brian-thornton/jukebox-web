@@ -4,36 +4,30 @@ import { Col, Row } from 'react-bootstrap';
 import { PlayFill } from 'react-bootstrap-icons';
 
 import Button from '../../Button';
-import { getStations, play } from '../../../lib/radio-client';
+import { play } from '../../../lib/service-clients/radio-client';
 import RadioCategories from '../RadioCategories/RadioCategories';
 import RadioCategoriesMobile from '../RadioCategoriesMobile/RadioCategoriesMobile';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './RadioList.scss';
-import { bigButtons, headerFooterReserve, topMargin } from '../../../lib/styleHelper';
+import { bigButtons, headerFooterReserve, topMargin } from '../../../lib/helper/styleHelper';
 import PaginatedList from '../../common/PaginatedList/PaginatedList';
+import { useStations } from '../../../hooks/use-stations';
 
 interface IRadioList {
   setMediaType: Function,
-};
+}
 
-const RadioList: FC<IRadioList> = ({ setMediaType }) => {
+const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
   const { preferences, screen } = settings;
   const [selectedCategory, setSelectedCategory] = useState('rock');
-  const [stations, setStations] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(0);
+  const [realPageSize, setRealPageSize] = useState(12);
   const heightAndWidth = bigButtons(settings) ? '60' : '';
   const fontSize = bigButtons(settings) ? '30px' : '';
   const [isLoaded, setIsLoaded] = useState(false);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
-
-  const loadStations = async () => {
-    const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-    const data = await getStations(selectedCategory, realStart, realPageSize);
-    setStations(data);
-    setIsLoaded(true)
-  };
+  const { stations } = useStations(selectedCategory, selectedPage, realPageSize);
 
   useEffect(() => {
     if (realPageSize === 0 && !isLoaded) {
@@ -49,12 +43,6 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
       }
     }
   }, []);
-
-  useEffect(() => {
-    if (realPageSize) {
-      loadStations();
-    }
-  }, [selectedCategory, selectedPage, realPageSize]);
 
   const tune = (station: any) => {
     setMediaType('stream');

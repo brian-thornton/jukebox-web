@@ -5,10 +5,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { FormattedMessage } from 'react-intl';
 
 import './PlaylistsViewer.scss';
-import { applyLighting } from '../../../lib/lightingHelper';
-import { getPlaylists, add, addTracksToPlaylist } from '../../../lib/playlist-client';
-import { getStatus, updateStatus } from '../../../lib/status-client';
-import { headerFooterReserve } from '../../../lib/styleHelper';
+import { applyLighting } from '../../../lib/helper/lightingHelper';
+import { getPlaylists, add, addTracksToPlaylist } from '../../../lib/service-clients/playlist-client';
+import { getStatus, updateStatus } from '../../../lib/service-clients/status-client';
+import { headerFooterReserve } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import AddNew from '../../common/AddNew/AddNew';
 import ContentWithControls from '../../common/ContentWithControls/ContentWithControls';
@@ -17,6 +17,7 @@ import PaginatedList from '../../common/PaginatedList/PaginatedList';
 import PlaylistDetail from '../PlaylistDetail/PlaylistDetail';
 import PlaylistRow from '../PlaylistRow/PlaylistRow';
 import NoPlaylists from '../NoPlaylists/NoPlaylists';
+import { usePlaylists } from '../../../hooks/use-playlists';
 
 const propTypes = {
   currentPlaylist: PropTypes.string,
@@ -28,27 +29,15 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const tracks = state?.tracks;
   const settings = useContext(SettingsContext);
   const [name, setName] = useState('');
-  const [playlists, setPlaylists] = useState([]);
   const [addMode, setAddMode] = useState(false);
   const [added, setAdded] = useState(false);
-  const [isEmpty, setIsEmpty] = useState(false);
   const selectPlaylist = playlistName => setName(playlistName);
   const [selectedPage, setSelectedPage] = useState(1);
   const [pageSize, setPageSize] = useState();
-  const [totalPlaylists, setTotalPlaylists] = useState(0);
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
-
-  const loadPlaylists = () => {
-    const start = selectedPage === 1 ? 0 : ((selectedPage * pageSize) - pageSize);
-
-    getPlaylists(start, (start + pageSize)).then((data) => {
-      setPlaylists(data.playlists);
-      setTotalPlaylists(data.totalPlaylists);
-      setIsEmpty(data.playlists.length === 0);
-    });
-  };
+  const { playlists, totalPlaylists, isEmpty } = usePlaylists(selectedPage, pageSize)
 
   useEffect(() => {
     const itemHeight = 70;
@@ -57,12 +46,6 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     setPageSize(Math.floor(viewPortHeight / itemHeight));
     applyLighting(settings, 'Playlists');
   }, []);
-
-  useEffect(() => {
-    if (pageSize) {
-      loadPlaylists();
-    }
-  }, [selectedPage, pageSize]);
 
   const handleBackToPlaylists = () => {
     setName('');
@@ -139,12 +122,9 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     </>
   );
 
-  if (!currentPlaylist.name && !name) {
-    return (
-      <ContentWithControls content={content()} controls={controls} />
-    );
-  }
-  return (
+  return !currentPlaylist.name && !name ? (
+    <ContentWithControls content={content()} controls={controls} />
+  ) : (
     <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} />
   );
 };

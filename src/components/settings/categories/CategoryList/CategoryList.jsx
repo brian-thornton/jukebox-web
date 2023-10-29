@@ -1,12 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Button from '../../../Button';
 import CategoryDetail from '../CategoryDetail/CategoryDetail';
-import { updateSettings } from '../../../../lib/settings-client';
+import { updateSettings } from '../../../../lib/service-clients/settings-client';
 
 const CategoryList = () => {
   const settings = useContext(SettingsContext);

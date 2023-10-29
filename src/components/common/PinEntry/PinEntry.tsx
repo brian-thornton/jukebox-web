@@ -7,13 +7,13 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './PinEntry.scss';
+import styles from './PinEntry.module.css';
 
 interface IPinEntry {
   onAuthorize: Function,
   onCancel: Function,
   title?: string,
-};
+}
 
 const PinEntry: FC<IPinEntry> = ({ onAuthorize, onCancel, title }) => {
   const settings = useContext(SettingsContext);
@@ -42,14 +42,14 @@ const PinEntry: FC<IPinEntry> = ({ onAuthorize, onCancel, title }) => {
   return (
     <>
       {settings && (
-        <Card className="pinCard" style={pinStyle}>
+        <Card className={styles.pinCard} style={pinStyle}>
           <Card.Body>
-            <Card.Title className="pinTitle">{title}</Card.Title>
+            <Card.Title className={styles.pinTitle}>{title}</Card.Title>
             <Container fluid>
-              <Row className="pinText">{row([1, 2, 3])}</Row>
-              <Row className="pinText">{row([4, 5, 6])}</Row>
-              <Row className="pinText">{row([7, 8, 9])}</Row>
-              <Row className="pinText">
+              <Row className={styles.pinText}>{row([1, 2, 3])}</Row>
+              <Row className={styles.pinText}>{row([4, 5, 6])}</Row>
+              <Row className={styles.pinText}>{row([7, 8, 9])}</Row>
+              <Row className={styles.pinText}>
                 {numberButton('0')}
                 <Col lg="1" md="1" sm="3" xs="3">
                   <Button height="75" width="75" onClick={() => setPin('')} content={<FormattedMessage id="clear" />} />

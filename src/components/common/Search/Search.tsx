@@ -10,12 +10,12 @@ import { FormattedMessage } from 'react-intl';
 import Button from '../../Button';
 import './Search.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { applyLighting } from '../../../lib/lightingHelper';
-import { topMargin } from '../../../lib/styleHelper';
+import { applyLighting } from '../../../lib/helper/lightingHelper';
+import { topMargin } from '../../../lib/helper/styleHelper';
 
 interface ISearch {
   setSearchText: Function,
-};
+}
 
 const Search: FC<ISearch> = ({ setSearchText }) => {
   const [lightingApplied, setLightingApplied] = useState(false);

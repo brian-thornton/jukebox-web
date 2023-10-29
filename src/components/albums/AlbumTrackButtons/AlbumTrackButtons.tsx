@@ -9,7 +9,7 @@ import PlayNowButton from '../../PlayNowButton';
 
 interface IAlbumTrackButtons {
   track: ITrack,
-};
+}
 
 const AlbumTrackButtons: FC<IAlbumTrackButtons> = ({ track }) => {
   const settings = useContext(SettingsContext);

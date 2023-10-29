@@ -13,8 +13,8 @@ import {
   powerOff,
   setSolidColor,
   demoEffect,
-} from '../../lib/lighting-client';
-import { deleteSkin, createSkin } from '../../lib/style-client';
+} from '../../lib/service-clients/lighting-client';
+import { deleteSkin, createSkin } from '../../lib/service-clients/style-client';
 import Button from '../Button';
 import ColorPicker from './skins/ColorPicker/ColorPicker';
 import ControllerEffects from './ControllerEffects';

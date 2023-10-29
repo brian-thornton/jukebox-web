@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import { IAlbum } from '../../interface';
 import Button from '../../Button';
 import NameInput from '../../common/NameInput/NameInput';
-import { saveCoverArt } from '../../../lib/librarian-client';
+import { saveCoverArt } from '../../../lib/service-clients/librarian-client';
 import './CoverArtSearchModal.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
 
@@ -17,7 +17,7 @@ const albumArt = require('album-art');
 interface ICoverArtSearchModal {
   handleClose: Function,
   album: IAlbum,
-};
+}
 
 const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
   handleClose, album,

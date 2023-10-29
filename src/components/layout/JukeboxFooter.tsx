@@ -4,6 +4,7 @@ import { FC, useState, useCallback, useContext } from 'react';
 import { debounce } from 'lodash';
 import { XSquare } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
+    import QRCode from "react-qr-code";
 
 import ControlButtons from './ControlButtons/ControlButtons';
 import AnimatedMeter from '../common/AnimatedMeter/AnimatedMeter';
@@ -17,7 +18,7 @@ interface IJukeboxFooter {
   setSearch: Function,
   mediaType: string,
   setMediaType: Function,
-};
+}
 
 const JukeboxFooter: FC<IJukeboxFooter> = ({
   setSearch,

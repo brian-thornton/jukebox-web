@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../../../Button';
-import { getCurrentState } from '../../../../lib/lighting-client';
+import { getCurrentState } from '../../../../lib/service-clients/lighting-client';
 import { Segments } from '../../Segments';
 import SegmentColorSelection from '../../SegmentColorSelection';
 import './SkinSegmentDetail.scss';

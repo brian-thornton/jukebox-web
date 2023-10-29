@@ -13,7 +13,7 @@ import { SettingsContext } from '../../../layout/SettingsProvider';
 interface IDiscover {
   handleHide: Function,
   handleSave: Function,
-};
+}
 
 const Discover: FC<IDiscover> = ({
   handleHide,

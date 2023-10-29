@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import { SettingsContext } from './layout/SettingsProvider';
 import { IAlbum } from './interface';
-import { bigButtons } from '../lib/styleHelper';
+import { bigButtons } from '../lib/helper/styleHelper';
 
 interface IGoToAlbumButton {
   album?: IAlbum,
-};
+}
 
 const GoToAlbumButton:FC<IGoToAlbumButton> = ({ album }) => {
   const navigate = useNavigate();

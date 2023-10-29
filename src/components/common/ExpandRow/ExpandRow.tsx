@@ -10,7 +10,7 @@ interface IExpandRow {
   text: string,
   isExpanded?: boolean,
   setIsExpanded?: Function,
-};
+}
 
 const ExpandRow: FC<IExpandRow> = ({
   buttons, text, isExpanded, setIsExpanded,
@@ -23,7 +23,7 @@ const ExpandRow: FC<IExpandRow> = ({
     children: any,
     eventKey: string,
     setIsExpanded: Function,
-  };
+  }
 
   const CustomToggle: FC<ICustomToggle> = ({ children, eventKey }) => {
     const decoratedOnClick = useAccordionButton(eventKey, () => {

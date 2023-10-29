@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
@@ -7,12 +7,12 @@ import {
   getPlaylist,
   deletePlaylist,
   add,
-} from '../../../lib/playlist-client';
+} from '../../../lib/service-clients/playlist-client';
 import ContentWithControls from '../../common/ContentWithControls/ContentWithControls';
 import NoResults from '../../common/NoResults/NoResults';
 import AddNew from '../../common/AddNew/AddNew';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { applyLighting } from '../../../lib/lightingHelper';
+import { applyLighting } from '../../../lib/helper/lightingHelper';
 import PlaylistControls from '../PlaylistControls/PlaylistControls';
 import PlaylistButtons from '../PlaylistButtons/PlaylistButtons';
 import './PlaylistDetail.scss';

@@ -12,7 +12,7 @@ import RestrictionModes from './content/RestrictionModes/RestrictionModes';
 import CategoryList from './categories/CategoryList/CategoryList';
 import Skins from './skins/Skins/Skins';
 import PinEntry from '../common/PinEntry/PinEntry';
-import { applyLighting } from '../../lib/lightingHelper';
+import { applyLighting } from '../../lib/helper/lightingHelper';
 import './Settings.scss';
 import LogList from './logs/LogList/LogList';
 import Metadata from './metadata/Metadata/Metadata';

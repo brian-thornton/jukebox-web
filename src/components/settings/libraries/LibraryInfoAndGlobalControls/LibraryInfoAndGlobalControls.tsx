@@ -22,7 +22,7 @@ interface ILibraryInfoAndGlobalControls {
   showOnline: boolean,
   setShowOnline: Function,
   setIsMenuOpen: Function,
-};
+}
 
 const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
   setIsCategoryConfigOpen,

@@ -16,7 +16,8 @@ interface IItem {
   actionVisible?: boolean,
   font?: string,
   allowToggle?: boolean,
-};
+  background?: string,
+}
 
 const Item: FC<IItem> = ({
   buttons,
@@ -27,6 +28,7 @@ const Item: FC<IItem> = ({
   checked,
   actionVisible,
   font,
+  background,
   allowToggle = true,
 }) => {
   const settings = useContext(SettingsContext);
@@ -34,7 +36,7 @@ const Item: FC<IItem> = ({
 
   const itemStyle = {
     color: styles?.fontColor,
-    background: styles?.trackBackgroundColor,
+    background: background || styles?.trackBackgroundColor,
     fontFamily: font || styles?.listFont,
   };
 

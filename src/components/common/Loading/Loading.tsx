@@ -9,7 +9,7 @@ import './Loading.scss';
 
 interface ILoading {
   text: string,
-};
+}
 
 const Loading: FC<ILoading> = ({ text }) => {
   const settings = useContext(SettingsContext);

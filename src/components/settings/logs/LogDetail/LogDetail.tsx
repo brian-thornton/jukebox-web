@@ -12,7 +12,7 @@ import { ILog } from '../../../interface';
 interface ILogDetail {
   log: ILog,
   onClose: Function,
-};
+}
 
 const LogList: FC<ILogDetail> = ({ log, onClose }) => {
   const settings = useContext(SettingsContext);

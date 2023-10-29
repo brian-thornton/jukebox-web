@@ -7,7 +7,7 @@ import './InRowDeleteConfirmation.scss';
 interface IInRowDeleteConfirmation {
   onCancel: Function,
   onConfirm: Function,
-};
+}
 
 const InRowDeleteConfirmation: FC<IInRowDeleteConfirmation> = ({ onCancel, onConfirm }) => (
   <>

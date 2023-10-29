@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 
 import LibraryRow from '../LibraryRow/LibraryRow';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { ILibrary } from '../../../interface';
 import { SettingsContext } from '../../../layout/SettingsProvider';
@@ -13,7 +13,7 @@ interface ILibraryList {
   setCurrentScan: Function,
   setSelectedLibrary: Function,
   showOnline: boolean,
-};
+}
 
 const LibraryList: FC<ILibraryList> = ({
   libraries,

@@ -3,11 +3,11 @@ import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import SideBySide from '../../../common/SideBySide/SideBySide';
-import { updateSettings } from '../../../../lib/settings-client';
+import { updateSettings } from '../../../../lib/service-clients/settings-client';
 
 interface IRestrictionActions {
   onClose: Function,
-};
+}
 
 const RestrictionActions: FC<IRestrictionActions> = ({ onClose }) => {
   const intl = useIntl();

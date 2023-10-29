@@ -3,7 +3,7 @@ import { FC, useContext } from 'react';
 import { useIntl } from 'react-intl';
 
 import ControlButton from '../../common/ControlButton/ControlButton';
-import { clearQueue, enqueueTracks } from '../../../lib/queue-client';
+import { clearQueue, enqueueTracks } from '../../../lib/service-clients/queue-client';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';
 
@@ -12,7 +12,7 @@ interface IQueueControls {
   loadQueue: Function,
   setClearConfirm: Function,
   clearConfirm: boolean,
-};
+}
 
 const QueueControls: FC<IQueueControls> = ({
   tracks, loadQueue, setClearConfirm, clearConfirm,

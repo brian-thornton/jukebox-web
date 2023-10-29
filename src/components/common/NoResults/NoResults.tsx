@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './NoResults.scss';
-import { topMargin } from '../../../lib/styleHelper';
+import { topMargin } from '../../../lib/helper/styleHelper';
 import Button from '../../Button';
 
 interface INoResults {

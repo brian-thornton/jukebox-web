@@ -15,7 +15,7 @@ interface IAlbumGrid {
   totalAlbums: number,
   pageSize: number,
   disableRandom: boolean,
-};
+}
 
 const AlbumGrid: FC<IAlbumGrid> = ({
   albums, setSelectedPage, selectedPage, totalAlbums, pageSize, disableRandom,

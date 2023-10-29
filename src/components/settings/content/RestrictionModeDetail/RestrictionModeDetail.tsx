@@ -4,9 +4,9 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../../Button';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import NoResults from '../../../common/NoResults/NoResults';
-import { updateRestrictionGroup } from '../../../../lib/settings-client';
+import { updateRestrictionGroup } from '../../../../lib/service-clients/settings-client';
 import { IRestrictionMode } from '../../../interface';
 
 interface IRestrictionModeDetail {

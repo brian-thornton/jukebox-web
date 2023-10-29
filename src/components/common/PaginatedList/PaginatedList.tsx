@@ -2,11 +2,11 @@ import { FC, useContext, isValidElement } from 'react';
 import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 
-import { handlers } from '../../../lib/gesture-helper';
+import { handlers } from '../../../lib/helper/gesture-helper';
 import ExpandRow from '../ExpandRow/ExpandRow';
 import Item from '../Item/Item';
 import Paginator from '../Paginator/Paginator';
-import { topMargin } from '../../../lib/styleHelper';
+import { topMargin } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { IItem } from '../../interface';
 import FullWidthRow from '../FullWidthRow/FullWidthRow';
@@ -22,7 +22,7 @@ interface IPaginatedList {
   applyTopMargin?: boolean,
   onItemClick: Function,
   hideButtons?: boolean,
-};
+}
 
 const PaginatedList: FC<IPaginatedList> = ({
   topLevelControls,

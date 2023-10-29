@@ -2,11 +2,11 @@ import { FC, useContext } from 'react';
 
 import { ITrack } from '../../interface';
 import Picker from '../../common/Picker/Picker';
-import { enqueueTop, next } from '../../../lib/queue-client';
+import { enqueueTop, next } from '../../../lib/service-clients/queue-client';
 import {
   addTrackAtPosition,
   removeTracksFromPlaylist,
-} from '../../../lib/playlist-client';
+} from '../../../lib/service-clients/playlist-client';
 import { useIntl } from 'react-intl';
 import SideBySide from '../../common/SideBySide/SideBySide';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -17,7 +17,7 @@ interface IPlaylistTrackActions {
   applyPadding?: boolean,
   index: number,
   playlistName: string,
-};
+}
 
 const PlaylistTrackActions: FC<IPlaylistTrackActions> = ({ track, onClose, applyPadding = false, index, playlistName }) => {
   const intl = useIntl();

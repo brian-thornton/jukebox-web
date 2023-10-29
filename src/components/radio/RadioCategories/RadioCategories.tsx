@@ -7,12 +7,12 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
 import ExpandRow from '../../common/ExpandRow/ExpandRow';
 import './RadioCategories.scss';
-import { bigButtons } from '../../../lib/styleHelper';
+import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IRadioCategories {
   category: string,
   setCategory: Function,
-};
+}
 
 const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
   const intl = useIntl();

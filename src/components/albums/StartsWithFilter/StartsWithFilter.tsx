@@ -9,7 +9,7 @@ import Button from '../../Button';
 interface IStartsWithFilter {
   startsWithFilter?: string,
   setStartsWithFilter?: Function,
-};
+}
 
 const StartsWithFilter: FC<IStartsWithFilter> = ({ startsWithFilter, setStartsWithFilter }) => {
   const settings = useContext(SettingsContext);
@@ -21,6 +21,8 @@ const StartsWithFilter: FC<IStartsWithFilter> = ({ startsWithFilter, setStartsWi
   const buttonStyle = {
     marginTop: availableHeight < 700 ? '0px' : '5px',
     marginBottom: availableHeight < 700 ? '0px' : '5px',
+    marginLeft: '0',
+    marginRight: '5px',
   };
 
   const filterStyle = {
@@ -55,6 +57,7 @@ const StartsWithFilter: FC<IStartsWithFilter> = ({ startsWithFilter, setStartsWi
           }}
           width="86%"
           height="45"
+          style={{marginLeft: '0'}}
           content={<FormattedMessage id="all" />}
         />
       </Row>

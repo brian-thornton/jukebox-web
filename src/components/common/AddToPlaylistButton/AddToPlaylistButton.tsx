@@ -5,7 +5,7 @@ import React, { FC, useContext } from 'react';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
 import { ITrack } from '../../interface';
-import { bigButtons } from '../../../lib/styleHelper';
+import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IAddToPlaylistButton {
   track: ITrack,

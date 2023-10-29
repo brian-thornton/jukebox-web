@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import TrackAlbum from './TrackAlbum';
 import { ITrack as TrackShape, IAlbum } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
-import { bigButtons } from '../lib/styleHelper';
+import { bigButtons } from '../lib/helper/styleHelper';
 import Item from './common/Item/Item';
 import './Track.scss';
 import TrackButtons from './TrackButtons';
@@ -18,7 +18,7 @@ interface ITrack {
   trackAlbums: Array<IAlbum>,
   trackAlbumsLoaded: boolean,
   setTrackClicked?: Function,
-};
+}
 
 const Track: FC<ITrack> = ({
   showAlbumCovers,

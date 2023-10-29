@@ -18,7 +18,7 @@ interface IJukeboxHeader {
   display: string,
   search: string,
   clearSearch: Function,
-};
+}
 
 const JukeboxHeader: FC<IJukeboxHeader> = ({
   setSearch,

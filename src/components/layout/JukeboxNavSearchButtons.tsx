@@ -12,7 +12,7 @@ interface IJukeboxNavSearchButtons {
   search: string,
   clearSearch: Function,
   lastModule: string,
-};
+}
 
 const JukeboxNavSearchButtons: FC<IJukeboxNavSearchButtons> = ({ search, setSearch, clearSearch, lastModule }) => {
   const settings = useContext(SettingsContext);

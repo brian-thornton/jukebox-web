@@ -6,13 +6,13 @@ import Row from 'react-bootstrap/Row';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './ContentWithControls.module.css';
-import { topMargin } from '../../../lib/styleHelper';
+import { topMargin } from '../../../lib/helper/styleHelper';
 
 interface IContentWithControls {
   alertText?: string,
   content: any,
   controls: any,
-};
+}
 
 const ContentWithControls: FC<IContentWithControls> = ({ controls, content, alertText }) => {
   const settings = useContext(SettingsContext);

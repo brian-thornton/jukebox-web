@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { updatePreference } from '../../../../lib/preferenceHelper';
+import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 import { Options } from '../../../shapes';
 
 const propTypes = {

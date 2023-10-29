@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { getCurrentState } from '../../lib/lighting-client';
+import { getCurrentState } from '../../lib/service-clients/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { Segments } from './Segments';
 import './ControllerDetail.scss';

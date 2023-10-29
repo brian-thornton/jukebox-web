@@ -11,8 +11,8 @@ import { SettingsContext } from '../../../layout/SettingsProvider';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import Button from '../../../Button';
 import Paginator from '../../../common/Paginator/Paginator';
-import { deleteSkin, createSkin } from '../../../../lib/style-client';
-import { handlers } from '../../../../lib/gesture-helper';
+import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
+import { handlers } from '../../../../lib/helper/gesture-helper';
 import { Skin } from '../../../shapes';
 import FullWidthRow from '../../../common/FullWidthRow/FullWidthRow';
 

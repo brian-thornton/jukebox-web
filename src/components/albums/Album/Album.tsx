@@ -1,42 +1,25 @@
 import { useNavigate } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
-import { FC, useEffect, useContext, useState } from 'react';
+import { FC, useContext } from 'react';
 
 import { IAlbum as AlbumInterface } from '../../interface';
-import { coverArtUrl, saveCoverArt } from '../../../lib/librarian-client';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import classes from './Album.module.css';
-
-// @ts-ignore
-import defaultCover from './default_album.jpg';
+import { useCoverArt } from './album-hooks';
 
 interface IAlbum {
   album: AlbumInterface,
   coverArtOnly: boolean,
-};
+}
 
 const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
-  const navigate = useNavigate();
   const settings = useContext(SettingsContext);
+  const { coverArt, loading: coverArtLoading } = useCoverArt(album, settings);
+  const navigate = useNavigate();
   const { styles, preferences, features } = settings || {};
   const { coverSize, showAlbumName } = preferences || { coverSize: 'medium' };
-  const [coverArt, setCoverArt] = useState(defaultCover);
   const isMediumCover = coverSize === 'medium';
   let albumImageClass;
-
-  const loadCoverArt = () => {
-    if (album.coverArtExists || settings?.features?.admin) {
-      coverArtUrl(album, settings?.styles?.defaultAlbumCover).then((data) => {
-        setCoverArt(data.url);
-
-        if (!data.isLocal && !data.isDefault) {
-          saveCoverArt({ album, url: data.url });
-        }
-      });
-    }
-  };
-
-  useEffect(() => loadCoverArt(), []);
 
   const albumNameStyle = {
     color: styles?.fontColor,
@@ -57,7 +40,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
     albumCardStyle.maxHeight = '420px';
   }
 
-  return (
+  return !coverArtLoading ? (
     <Card
       className={classes.albumCard}
       style={albumCardStyle}
@@ -74,7 +57,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
         </Card.Body>
       )}
     </Card>
-  );
+  ) : null;
 };
 
 export default Album;

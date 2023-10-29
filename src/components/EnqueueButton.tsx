@@ -2,12 +2,12 @@ import { FC, useContext } from 'react';
 import { ListOl } from 'react-bootstrap-icons';
 
 import Button from './Button';
-import { enqueue } from '../lib/queue-client';
+import { enqueue } from '../lib/service-clients/queue-client';
 import { ITrack } from './interface';
 import './EnqueueButton.css';
-import { applyLighting } from '../lib/lightingHelper';
+import { applyLighting } from '../lib/helper/lightingHelper';
 import { SettingsContext } from './layout/SettingsProvider';
-import { bigButtons } from '../lib/styleHelper';
+import { bigButtons } from '../lib/helper/styleHelper';
 
 interface IEnqueueButton {
   mode?: string,
@@ -15,7 +15,7 @@ interface IEnqueueButton {
   isSelected?: boolean,
   onComplete?: Function,
   disabled?: boolean,
-};
+}
 
 const EnqueueButton: FC<IEnqueueButton> = ({
   track, mode, isSelected, onComplete, disabled,

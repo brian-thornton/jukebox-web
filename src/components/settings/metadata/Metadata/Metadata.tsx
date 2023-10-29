@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 
-import { getArtistsByGenre, linkGenereToLibrary } from '../../../../lib/metadata-client';
+import { getArtistsByGenre, linkGenereToLibrary } from '../../../../lib/service-clients/metadata-client';
 import Button from '../../../Button';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Loading from '../../../common/Loading/Loading';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 
 const Metadata = () => {

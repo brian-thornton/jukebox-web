@@ -17,7 +17,7 @@ interface ILibraryAdd {
   setSelectedLibrary: Function,
   handleSave: Function,
   library: ILibrary,
-};
+}
 
 const LibraryAdd: FC<ILibraryAdd> = ({
   setShow,

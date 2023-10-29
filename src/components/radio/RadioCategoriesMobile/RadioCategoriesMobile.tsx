@@ -1,5 +1,4 @@
 import { FC, useContext } from 'react';
-import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import SideBySide from '../../common/SideBySide/SideBySide';
@@ -8,10 +7,9 @@ interface IRadioCategoriesMobile {
   category: string,
   setCategory: Function,
   onClose: Function,
-};
+}
 
 const RadioCategoriesMobile: FC<IRadioCategoriesMobile> = ({ setCategory, category, onClose }) => {
-  const intl = useIntl();
   const settings = useContext(SettingsContext);
 
   const itemStyle = {

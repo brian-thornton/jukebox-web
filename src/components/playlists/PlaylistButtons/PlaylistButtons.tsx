@@ -5,18 +5,18 @@ import PlayNowButton from '../../PlayNowButton';
 import {
   addTrackAtPosition,
   removeTracksFromPlaylist,
-} from '../../../lib/playlist-client';
+} from '../../../lib/service-clients/playlist-client';
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';
-import { bigButtons } from '../../../lib/styleHelper';
+import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPlaylistButtons {
   name: string,
   track: ITrack,
   index: number,
   reloadTracks: Function,
-};
+}
 
 const PlaylistButtons: FC<IPlaylistButtons> = ({
   name,

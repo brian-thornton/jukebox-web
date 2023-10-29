@@ -9,7 +9,7 @@ import Item from '../../common/Item/Item';
 
 interface IAlbumTable {
   albums: Array<IAlbum>,
-};
+}
 
 const AlbumTable: FC<IAlbumTable> = ({ albums }) => {
   const navigate = useNavigate();

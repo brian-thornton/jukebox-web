@@ -6,18 +6,18 @@ import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
 import { useIntl } from 'react-intl';
 
 import Button from '../../Button';
-import { enqueueTracks, enqueueTracksTop, next } from '../../../lib/queue-client';
+import { enqueueTracks, enqueueTracksTop, next } from '../../../lib/service-clients/queue-client';
 import { ITrack, IQueue } from '../../interface';
 import ControlButton from '../../common/ControlButton/ControlButton';
 import './AlbumButtons.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { applyLighting } from '../../../lib/lightingHelper';
+import { applyLighting } from '../../../lib/helper/lightingHelper';
 
 interface IAlbumButtons {
   tracks: Array<ITrack>,
   queue: IQueue,
   setQueue: Function,
-};
+}
 
 const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);

@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
-import { createSegment, removeSegment } from '../../lib/lighting-client';
+import { createSegment, removeSegment } from '../../lib/service-clients/lighting-client';
 import Item from '../common/Item/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import {

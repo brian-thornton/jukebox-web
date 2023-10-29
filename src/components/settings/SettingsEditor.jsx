@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Paginator from '../common/Paginator/Paginator';
-import { updateSettings } from '../../lib/settings-client';
+import { updateSettings } from '../../lib/service-clients/settings-client';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { calculatePageSize } from '../../lib/styleHelper';
+import { calculatePageSize } from '../../lib/helper/styleHelper';
 import ToggleRow from './ToggleRow';
 import AccessActions from './AccessActions';
 

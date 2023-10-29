@@ -11,14 +11,14 @@ interface IAlbumAdminButtons {
   setIsCustomSearchOpen: Function,
   setIsConfirmRemoveCoverArtOpen: Function,
   setConfirmRestriction: Function,
-};
+}
 
 const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
   setIsCustomSearchOpen, setIsConfirmRemoveCoverArtOpen, setConfirmRestriction,
 }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall, styles } = settings || {};
-  const {controlButtonSize} = styles || {};
+  const { controlButtonSize } = styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
@@ -36,6 +36,13 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
     </Col>
   );
 
+  const coverControls = (
+    <>
+      {albumButton(() => setIsCustomSearchOpen(true), <FormattedMessage id="cover_search" />)}
+      {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), <FormattedMessage id="remove_cover" />)}
+    </>
+  );
+
   return (
     <>
       {settings?.features?.admin && !isScreenSmall && (
@@ -43,8 +50,7 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
           {colLayout && (
             <>
               <Row>
-                {albumButton(() => setIsCustomSearchOpen(true), <FormattedMessage id="cover_search" />)}
-                {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), <FormattedMessage id="remove_cover" />)}
+                {coverControls}
               </Row>
               <Row>
                 {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
@@ -53,8 +59,7 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
           )}
           {!colLayout && (
             <Row>
-              {albumButton(() => setIsCustomSearchOpen(true), <FormattedMessage id="cover_search" />)}
-              {albumButton(() => setIsConfirmRemoveCoverArtOpen(true), <FormattedMessage id="remove_cover" />)}
+              {coverControls}
               {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
             </Row>
           )}

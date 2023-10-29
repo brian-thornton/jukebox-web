@@ -10,11 +10,11 @@ import Item from '../../../common/Item/Item';
 import './SkinSegmentConfiguration.scss';
 import Paginator from '../../../common/Paginator/Paginator';
 import SkinSegmentDetail from '../SkinSegmentDetail/SkinSegmentDetail';
-import { calculatePageSize } from '../../../../lib/styleHelper';
-import { handlers } from '../../../../lib/gesture-helper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
+import { handlers } from '../../../../lib/helper/gesture-helper';
 import { Controller, Skin } from '../../../shapes';
 import Presets from '../../Presets';
-import { deleteSkin, createSkin } from '../../../../lib/style-client';
+import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 
 const propTypes = {
   controller: Controller.isRequired,

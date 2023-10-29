@@ -3,14 +3,14 @@ import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import SideBySide from '../../../common/SideBySide/SideBySide';
-import { updatePreference } from '../../../../lib/preferenceHelper';
+import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 
 interface IToggleActions {
   onClose: Function,
   applyPadding?: boolean,
   value: boolean,
   name: string,
-};
+}
 
 const ToggleActions: FC<IToggleActions> = ({ name, onClose, value }) => {
   const intl = useIntl();

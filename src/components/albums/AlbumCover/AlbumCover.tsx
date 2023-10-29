@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import { FC, useContext, useState, useEffect } from 'react';
 
-import { coverArtUrl } from '../../../lib/librarian-client';
+import { coverArtUrl } from '../../../lib/service-clients/librarian-client';
 import { IAlbum } from '../../interface';
 import styles from './AlbumCover.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -9,7 +9,7 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 interface IAlbumCover {
   album: IAlbum,
   isListCover?: boolean,
-};
+}
 
 const AlbumCover: FC<IAlbumCover> = ({ album, isListCover = false }) => {
   const [coverArt, setCoverArt] = useState('');
@@ -22,11 +22,7 @@ const AlbumCover: FC<IAlbumCover> = ({ album, isListCover = false }) => {
 
   useEffect(() => loadCoverArt(), []);
 
-  let coverClass = settings.screen?.isMobile ? styles.albumCoverMobile : styles.albumCover;
-  if (isListCover) {
-    coverClass = styles.albumCoverList;
-  }
-  
+  let coverClass = isListCover ? styles.albumCoverList : styles.albumCover;
   return <Card.Img src={coverArt} className={coverClass} />;
 };
 

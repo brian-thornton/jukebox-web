@@ -18,9 +18,9 @@ import {
   createSegment,
   reset,
   powerOff,
-} from '../../lib/lighting-client';
+} from '../../lib/service-clients/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
-import { updateSettings } from '../../lib/settings-client';
+import { updateSettings } from '../../lib/service-clients/settings-client';
 import AddNew from '../common/AddNew/AddNew';
 import Button from '../Button';
 import CloneController from './CloneController';

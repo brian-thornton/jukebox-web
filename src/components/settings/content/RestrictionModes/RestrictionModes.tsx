@@ -4,7 +4,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import AddNew from '../../../common/AddNew/AddNew';
 import Button from '../../../Button';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import RestrictionModeDetail from '../RestrictionModeDetail/RestrictionModeDetail';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import {
@@ -12,8 +12,8 @@ import {
   deleteRestrictionGroup,
   getRestrictionGroups,
   updateRestrictionGroup,
-} from '../../../../lib/settings-client';
-import { updatePreference } from '../../../../lib/preferenceHelper';
+} from '../../../../lib/service-clients/settings-client';
+import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { IAlbum, IRestrictionMode } from '../../../interface';
 import NoResults from '../../../common/NoResults/NoResults';

@@ -7,11 +7,11 @@ import {
   StopFill,
 } from 'react-bootstrap-icons';
 
-import { up, down } from '../../../lib/volume-client';
+import { up, down } from '../../../lib/service-clients/volume-client';
 import Button from '../../Button';
-import { next, stop } from '../../../lib/queue-client';
+import { next, stop } from '../../../lib/service-clients/queue-client';
 import { SettingsContext } from '../SettingsProvider';
-import { stop as radioStop } from '../../../lib/radio-client';
+import { stop as radioStop } from '../../../lib/service-clients/radio-client';
 
 interface IControlButtons {
   mediaType: string,

@@ -7,11 +7,11 @@ import Item from '../common/Item/Item';
 
 interface IToggleRow {
   description: string,
-  keys: [string],
+  keys: Array<string>,
   onSetKey: Function,
   selectedKey: string,
   onClick?: Function,
-};
+}
 
 const ToggleRow: FC<IToggleRow> = ({
   description,

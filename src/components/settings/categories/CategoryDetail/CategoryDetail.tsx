@@ -1,17 +1,17 @@
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import NameInput from '../../../common/NameInput/NameInput';
 import Button from '../../../Button';
-import { getByCategory } from '../../../../lib/librarian-client';
+import { getByCategory } from '../../../../lib/service-clients/librarian-client';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Item from '../../../common/Item/Item';
 import {
   add,
   getLibraries,
   deleteLibrary,
-} from '../../../../lib/librarian-client';
+} from '../../../../lib/service-clients/librarian-client';
 
 import { ILibrary } from '../../../interface';
 
@@ -21,7 +21,7 @@ interface ICategoryDetail {
   },
   setCategory: Function,
   onClose: Function,
-};
+}
 
 const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
   const settings = useContext(SettingsContext);

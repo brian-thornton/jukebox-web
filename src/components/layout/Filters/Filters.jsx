@@ -1,17 +1,17 @@
 import Container from 'react-bootstrap/Container';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PropTypes } from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import { FormattedMessage } from 'react-intl';
 
-import { getLibraries } from '../../../lib/librarian-client';
+import { getLibraries } from '../../../lib/service-clients/librarian-client';
 import Item from '../../common/Item/Item';
 import Loading from '../../common/Loading/Loading';
 import Paginator from '../../common/Paginator/Paginator';
 import Button from '../../Button';
 import './Filters.scss';
-import { handlers } from '../../../lib/gesture-helper';
+import { handlers } from '../../../lib/helper/gesture-helper';
 import { Libraries } from '../../shapes';
 import FullWidthRow from '../../common/FullWidthRow/FullWidthRow';
 

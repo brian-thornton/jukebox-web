@@ -9,7 +9,7 @@ import {
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { runPlaylist, enqueuePlaylist, shuffle } from '../../../lib/playlist-helper';
+import { runPlaylist, enqueuePlaylist, shuffle } from '../../../lib/helper/playlist-helper';
 import Button from '../../Button';
 import ControlButton from '../../common/ControlButton/ControlButton';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -24,7 +24,7 @@ interface IPlaylistControls {
   setShowDeleteModal: Function,
   showDeleteModal: boolean,
   tracks: [ITrack],
-};
+}
 
 const PlaylistControls: FC<IPlaylistControls> = ({
   handleBackToPlaylists,

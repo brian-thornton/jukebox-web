@@ -1,17 +1,14 @@
 import { FormattedMessage } from 'react-intl';
 import { useContext, useEffect, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
 
-import { getStatus, updateStatus } from '../../../../lib/status-client';
 import Loading from '../../../common/Loading/Loading';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import {
   add,
-  getLibraries,
   discover,
   deleteLibrary,
   scan,
-} from '../../../../lib/librarian-client';
+} from '../../../../lib/service-clients/librarian-client';
 
 import Button from '../../../Button';
 import LibraryAdd from '../LibraryAdd/LibraryAdd';
@@ -22,11 +19,10 @@ import LibraryList from '../LibraryList/LibraryList';
 import Categories from '../Categories/Categories';
 import Discover from '../Discover/Discover';
 import LibraryMenuMobile from '../LibraryMenuMobile/LibraryMenuMobile';
+import { useLibraries } from '../../../../hooks/use-libraries';
 
 const Libraries = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const settings = useContext(SettingsContext);
-  const [libraries, setLibraries] = useState([]);
   const [show, setShow] = useState(false);
   const [showOnline, setShowOnline] = useState(false);
   const [showDiscover, setShowDiscover] = useState(false);
@@ -37,73 +33,7 @@ const Libraries = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
-
-  const GET_LIBRARIES = gql`
-    query GetLibraries {
-      libraries {
-        name
-      }
-    }
-`;
-
-  const { loading, error, data } = useQuery(GET_LIBRARIES);
-  useEffect(() => console.log(data), data);
-
-  const updateTotals = (data) => {
-    let totalTracks = 0;
-    let totalAlbums = 0;
-
-    const categoryAlbums = {};
-    settings.categories.map(c => categoryAlbums[c] = 0);
-
-    if (data) {
-      data.forEach((lib) => {
-        if (lib.category && lib.albums?.length) {
-          categoryAlbums[lib.category] += lib.albums.length;
-        } else {
-          if (lib?.albums?.length) {
-            totalTracks += lib?.totalTracks;
-            totalAlbums += lib?.albums?.length;
-          }
-        }
-      });
-      getStatus().then((response) => {
-        updateStatus({
-          ...response,
-          totalTracks,
-          totalAlbums,
-          categoryAlbums,
-        });
-      });
-    }
-  };
-
-  const loadLibraries = () => {
-    setIsLoading(true);
-    getLibraries().then((data) => {
-      setLibraries(data);
-      updateTotals(data);
-      setIsLoading(false);
-    });
-  };
-
-  const handleClose = (path, category, allowCoverArtDownload = true) => {
-    if (!selectedLibrary && path) {
-      add({ path, category, allowCoverArtDownload });
-    } else if (selectedLibrary && (path || selectedLibrary)) {
-      deleteLibrary(selectedLibrary.name).then(() => {
-        add({
-          path: path || selectedLibrary.path,
-          category, allowCoverArtDownload,
-          albums: selectedLibrary?.albums || [],
-          tracks: selectedLibrary?.tracks || [],
-        });
-      });
-    }
-    setSelectedLibrary(null);
-    setShow(false);
-    loadLibraries();
-  };
+  const { libraries, isLoading, loadLibraries } = useLibraries(settings);
 
   const handleCloseDiscover = (path, category, downloadCoverArt) => {
     if (path) {

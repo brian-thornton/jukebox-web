@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Item from '../../../common/Item/Item';
 import Button from '../../../Button';
-import { deleteSkin, createSkin } from '../../../../lib/style-client';
+import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import FilePicker from '../../../common/FilePicker/FilePicker';
 import { Skin } from '../../../shapes';
 import FullWidthRow from '../../../common/FullWidthRow/FullWidthRow';

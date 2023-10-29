@@ -5,12 +5,12 @@ import WebFont from 'webfontloader';
 import { gql, useQuery } from "@apollo/client";
 
 // import './App.css';
-import { getSettings } from './lib/settings-client';
-import { getStatus } from './lib/status-client';
+import { getSettings } from './lib/service-clients/settings-client';
+import { getStatus } from './lib/service-clients/status-client';
 import { SettingsContext } from './components/layout/SettingsProvider'
-import { status } from './lib/radio-client';
-import { supportedFonts } from './lib/styleHelper';
-import { updateSettings } from './lib/settings-client';
+import { status } from './lib/service-clients/radio-client';
+import { supportedFonts } from './lib/helper/styleHelper';
+import { updateSettings } from './lib/service-clients/settings-client';
 import JukeboxRoutes from './components/layout/JukeboxRoutes';
 
 const JukeboxFooter = React.lazy(() => import("./components/layout/JukeboxFooter"));

@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import { handlers } from '../../../lib/gesture-helper';
+import { handlers } from '../../../lib/helper/gesture-helper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import AlbumCover from '../AlbumCover/AlbumCover';
 import { IAlbum } from '../../interface';
@@ -16,7 +16,7 @@ interface IAlbumList {
   albums?: Array<IAlbum>,
   selectedPage: number,
   setSelectedPage: Function,
-};
+}
 
 const AlbumList: FC<IAlbumList> = ({
   albums,

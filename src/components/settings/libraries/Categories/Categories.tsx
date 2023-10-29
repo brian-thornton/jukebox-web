@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl';
 
 import CategoryRow from '../CategoryRow/CategoryRow';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { calculatePageSize } from '../../../../lib/styleHelper';
+import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Button from '../../../Button';
 

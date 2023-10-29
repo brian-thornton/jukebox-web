@@ -11,7 +11,7 @@ import InRowDeleteConfirmation from '../../../common/InRowDeleteConfirmation/InR
 import {
   deleteLibrary,
   scan,
-} from '../../../../lib/librarian-client';
+} from '../../../../lib/service-clients/librarian-client';
 
 import Button from '../../../Button';
 import Item from '../../../common/Item/Item';

@@ -5,6 +5,7 @@ import {
   FunnelFill,
   Grid,
   Grid3x3,
+  InfoCircle,
   LockFill,
   UnlockFill,
 } from 'react-bootstrap-icons';
@@ -27,7 +28,7 @@ interface IJukeboxNavRight {
   search: string,
   clearSearch: Function,
   isHamburgerClicked: boolean,
-};
+}
 
 const JukeboxNavRight: FC<IJukeboxNavRight> = ({
   setSearch,
@@ -58,6 +59,7 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
   const unlocked = <UnlockFill style={{ fontSize }} />;
   const funnelFill = <FunnelFill style={{ fontSize }} />;
   const funnel = <Funnel style={{ fontSize }} />;
+  const info = <InfoCircle style={{ fontSize }} />;
 
   return (
     <Nav className="ml-auto">
@@ -95,6 +97,15 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
             setIsPinOpen(true);
           }}
           content={features?.isLocked ? locked : unlocked}
+        />
+      )}
+      {!isScreenSmall && !applyWidth && (
+        <Button
+          width={applyWidth ? height : ''}
+          height={height}
+          disabled={features?.isLocked}
+          onClick={() => navigate('/info', { state: { selectedLibraries } })}
+          content={info}
         />
       )}
     </Nav>

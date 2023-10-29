@@ -5,15 +5,14 @@ import Button from '../../../Button';
 import Item from '../../../common/Item/Item';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import './PreferenceToggleRow.scss';
-import { updatePreference } from '../../../../lib/preferenceHelper';
-import ToggleActions from '../ToggleAction/ToggleAction';
+import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 
 interface IPreferenceToggleRow {
   name: string,
-  value: string,
+  value: string | boolean | undefined,
   openToggle: Function,
-  onClose: Function,
-};
+  onClose?: Function,
+}
 
 const PreferenceToggleRow: FC<IPreferenceToggleRow> = ({ name, value, openToggle, onClose }) => {
   const settings = useContext(SettingsContext);

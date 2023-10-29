@@ -3,34 +3,31 @@ import Container from 'react-bootstrap/Container';
 import { useContext, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import { applyLighting } from '../../../lib/lightingHelper';
+import { applyLighting } from '../../../lib/helper/lightingHelper';
 import Button from '../../Button';
 import Confirm from '../../common/Confirm/Confirm';
 import {
   clearQueue,
-  getQueue,
   removeTracksFromQueue,
-} from '../../../lib/queue-client';
+} from '../../../lib/service-clients/queue-client';
 import ContentWithControls from '../../common/ContentWithControls/ContentWithControls';
 import PlayNowButton from '../../PlayNowButton';
 import NoResults from '../../common/NoResults/NoResults';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './Queue.scss';
-import { calculatePageSize } from '../../../lib/styleHelper';
+import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import PaginatedList from '../../common/PaginatedList/PaginatedList';
 import FullWidthRow from '../../common/FullWidthRow/FullWidthRow';
 import QueueControls from '../QueueControls/QueueControls';
 import { ITrack } from '../../interface';
 import QueueTrackActions from '../QueueTrackActions/QueueTrackActions';
+import { useQueue } from '../../../hooks/use-queue';
 
 const Queue = () => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
   const { isScreenSmall, screen } = settings;
-  const [tracks, setTracks] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [isEmpty, setIsEmpty] = useState(false);
-  const [totalTracks, setTotalTracks] = useState();
   const [clearConfirm, setClearConfirm] = useState(false);
   const { controlButtonSize } = settings.styles || {};
   const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
@@ -40,27 +37,11 @@ const Queue = () => {
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
   const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
+  const { tracks, totalTracks, isLoaded, isEmpty, loadQueue } = useQueue(selectedPage, itemsPerPage);
 
   if (screen?.isMobile) {
     itemsPerPage = 11;
   }
-
-  const loadQueue = () => {
-    const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
-
-    getQueue(start, (start + itemsPerPage)).then((data) => {
-      setTracks(data.tracks);
-      setTotalTracks(data.totalTracks);
-      if (data.tracks.length === 0) {
-        setIsEmpty(true);
-      }
-    });
-  };
-
-  // const monitorQueue = () => {
-  //   setTimeout(() => monitorQueue(), 10000);
-  //   loadQueue();
-  // };
 
   const clear = () => clearQueue().then(() => loadQueue());
 
@@ -68,8 +49,6 @@ const Queue = () => {
     applyLighting(settings, 'Queue');
     //monitorQueue();
   }, []);
-
-  useEffect(loadQueue, [selectedPage]);
 
   const remove = (track: any) => {
     removeTracksFromQueue([track]);

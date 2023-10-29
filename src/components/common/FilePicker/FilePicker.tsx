@@ -13,7 +13,7 @@ interface IFilePicker {
   title: string,
   confirmText: string,
   cancelText: string,
-};
+}
 
 const FilePicker: FC<IFilePicker> = ({
   onConfirm, onSelectFile, onCancel, title, confirmText, cancelText,

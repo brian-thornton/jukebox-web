@@ -3,14 +3,14 @@ import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../layout/SettingsProvider';
 import SideBySide from '../common/SideBySide/SideBySide';
-import { updateSettings } from '../../lib/settings-client';
+import { updateSettings } from '../../lib/service-clients/settings-client';
 
 interface IAccessActions {
   onClose: Function,
   applyPadding?: boolean,
   value: boolean,
   name: string,
-};
+}
 
 const AccessActions: FC<IAccessActions> = ({ name, onClose, value }) => {
   const intl = useIntl();

@@ -10,9 +10,9 @@ import { FormattedMessage } from 'react-intl';
 import Button from '../Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew/AddNew';
-import { updateSettings } from '../../lib/settings-client';
+import { updateSettings } from '../../lib/service-clients/settings-client';
 import './Segments.scss';
-import { createSegment, removeSegment } from '../../lib/lighting-client';
+import { createSegment, removeSegment } from '../../lib/service-clients/lighting-client';
 import SegmentRowEdit from './SegmentRowEdit';
 import SegmentRowInfo from './SegmentRowInfo';
 import {

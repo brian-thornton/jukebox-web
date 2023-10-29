@@ -17,7 +17,7 @@ interface IButton {
   id?: string,
   style?: IStyle,
   hideOnSmall?: boolean
-};
+}
 
 const Button: FC<IButton> = ({
   onClick, content, icon, disabled, isToggle, isToggled, isSelected, height, width, style, id,
@@ -29,6 +29,8 @@ const Button: FC<IButton> = ({
   const {
     marginTop,
     marginBottom,
+    marginLeft,
+    marginRight,
     buttonBackgroundColor,
     fontSize,
     fontFamily,
@@ -50,6 +52,8 @@ const Button: FC<IButton> = ({
     minWidth: '',
     maxWidth: '',
     minHeight: '',
+    marginLeft,
+    marginRight,
   };
 
   if (isSelected) {

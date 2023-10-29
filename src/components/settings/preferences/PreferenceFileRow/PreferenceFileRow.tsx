@@ -9,11 +9,11 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../../../Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { getBase64 } from '../../../../lib/localStorageHelper';
+import { getBase64 } from '../../../../lib/helper/localStorageHelper';
 
 interface IPreferenceFileRow {
   name: string,
-};
+}
 
 const PreferenceFileRow: FC<IPreferenceFileRow> = ({ name }) => {
   const navigate = useNavigate();

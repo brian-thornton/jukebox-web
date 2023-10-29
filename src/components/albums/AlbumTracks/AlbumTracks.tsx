@@ -1,12 +1,8 @@
 import { useSwipeable } from 'react-swipeable';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import { FC, useEffect, useState, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 
-import './AlbumTracks.scss';
-import { handlers } from '../../../lib/gesture-helper';
-import { calculatePageSize } from '../../../lib/styleHelper';
+import { handlers } from '../../../lib/helper/gesture-helper';
+import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack, IQueue } from '../../interface';
 import AddToPlaylistButton from '../../common/AddToPlaylistButton/AddToPlaylistButton';
@@ -17,6 +13,7 @@ import Paginator from '../../common/Paginator/Paginator';
 import PlayNowButton from '../../PlayNowButton';
 import TrackActions from '../../TrackActions';
 import AlbumTrackButtons from '../AlbumTrackButtons/AlbumTrackButtons';
+import classes from './AlbumTracks.module.css';
 
 interface IAlbumTracks {
   tracks: Array<ITrack>,
@@ -24,7 +21,7 @@ interface IAlbumTracks {
   setQueue: Function,
   setClickedTrack: Function,
   clickedTrack: ITrack | undefined,
-};
+}
 
 const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, setClickedTrack }) => {
   const settings = useContext(SettingsContext);
@@ -111,29 +108,21 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, 
   );
 
   return (
-    <Container {...swipe} fluid style={{ marginBottom: isScreenSmall ? '90px' : '' }}>
-      <Row>
-        <Col lg="12" xl="12" md="12" sm="12">
-          <Row>
-            {trackRows()}
-          </Row>
-        </Col>
-      </Row>
-      {tracks.length > pageSize && (
-        <Row className="d-none d-md-block d-lg-block album-tracks-paginator">
-          <Col lg="12" xl="12" md="12" sm="12">
-            <Paginator
-              disableRandom
-              onPageChange={(page: any) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={tracks.length}
-              pageSize={pageSize}
-            />
-          </Col>
-        </Row>
-      )}
-    </Container>
-  );
+    <div className={classes.container}>
+      <div className={classes.trackContainer} {...swipe} >
+        {trackRows()}
+        {tracks.length > pageSize && (
+          <Paginator
+            disableRandom
+            onPageChange={(page: any) => setSelectedPage(page)}
+            selectedPage={selectedPage}
+            totalItems={tracks.length}
+            pageSize={pageSize}
+          />
+        )}
+      </div>
+    </div>
+  )
 };
 
 export default AlbumTracks;

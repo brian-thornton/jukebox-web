@@ -7,11 +7,11 @@ import { SettingsContext } from '../../../layout/SettingsProvider';
 import InRowDeleteConfirmation from '../../../common/InRowDeleteConfirmation/InRowDeleteConfirmation';
 import Button from '../../../Button';
 import Item from '../../../common/Item/Item';
-import { updateSettings } from '../../../../lib/settings-client';
+import { updateSettings } from '../../../../lib/service-clients/settings-client';
 
 interface ICategoryRow {
   category: string,
-};
+}
 
 const CategoryRow: FC<ICategoryRow> = ({ category }) => {
   const settings = useContext(SettingsContext);

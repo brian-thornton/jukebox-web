@@ -1,0 +1,28 @@
+.skinDetailCard {
+  background: transparent !important;
+  width: 100% !important;
+}
+
+.skinDetailCardContainer {
+  width: 100% !important;
+};
+
+.skinDetailCardTitle {
+  margin-top: 5px !important;
+};
+
+.skinDetailSave {
+  margin-top: 0 !important;
+}
+
+.skinNameLabel {
+  margin-top: 10px !important;
+}
+
+.skinNameRow {
+  margin-bottom: 0 !important;
+}
+
+.styleEditorContent {
+  width: 100% !important;
+}

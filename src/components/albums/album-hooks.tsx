@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation } from 'react-router-dom';
 
 import { ISettings } from "../interface";
-import { headerFooterReserve } from "../../lib/styleHelper";
-import { coverDimensions } from "../../lib/styleHelper";
+import { headerFooterReserve } from "../../lib/helper/styleHelper";
+import { coverDimensions } from "../../lib/helper/styleHelper";
 
 export const usePageSize = (display: string, settings: ISettings) => {
   const [pageSize, setPageSize] = useState(0);

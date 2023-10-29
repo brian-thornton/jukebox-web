@@ -1,15 +1,15 @@
 import { FC, useContext, useEffect, useState } from 'react';
 
 import './GenreAlbums.scss';
-import { getAlbums } from '../../../lib/librarian-client';
-import { coverDimensions, headerFooterReserve } from '../../../lib/styleHelper';
+import { getAlbums } from '../../../lib/service-clients/librarian-client';
+import { coverDimensions, headerFooterReserve } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Loading from '../../common/Loading/Loading';
 import AlbumGrid from '../../albums/AlbumGrid/AlbumGrid';
 
 interface IGenreAlbums {
   genre: string,
-};
+}
 
 const GenreAlbums: FC<IGenreAlbums> = ({ genre }) => {
   const settings = useContext(SettingsContext);

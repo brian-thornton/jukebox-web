@@ -1,0 +1,15 @@
+.color {
+  height: 100px;
+  width: 50px;
+}
+
+.colorsContainer {
+  display: flex;
+  flex-direction: row;
+  padding: 5px;
+}
+
+.paletteContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

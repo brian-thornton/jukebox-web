@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import './Paginator.scss';
-import { bigButtons } from '../../../lib/styleHelper';
+import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPaginator {
   onPageChange: Function,
@@ -18,7 +18,7 @@ interface IPaginator {
   totalItems: number,
   pageSize: number,
   disableRandom?: boolean,
-};
+}
 
 const Paginator: FC<IPaginator> = ({
   onPageChange,

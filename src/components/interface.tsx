@@ -2,7 +2,7 @@ export interface ITrack {
   name: string,
   path: string,
   id: string,
-};
+}
 
 export interface IAlbum {
   id: string,
@@ -10,31 +10,37 @@ export interface IAlbum {
   path: string,
   coverArtExists: boolean,
   trackCount: number,
-};
+}
 
 export interface IController {
   ip: string,
-};
+}
 
 export interface IControllerState {
   effects: Array<string>,
   palettes: Array<string>,
-};
+}
 
 export interface ILog {
   text: string,
-};
+  message: string,
+}
+
+export interface ILogs {
+  messages: Array<ILog>,
+  totalLogs: number,
+}
 
 export interface IPlaylist {
   id: string,
   name: string,
   tracks: Array<ITrack>,
-};
+}
 
 export interface IOption {
   display: string,
   value: string,
-};
+}
 
 export interface ILibrary {
   path: string,
@@ -45,53 +51,64 @@ export interface ILibrary {
   scanStatus: string,
   albums: Array<IAlbum>,
   totalTracks: number,
-};
+}
 
 export interface IEvent {
   target: {
     value: string,
   },
-};
+}
 
 export interface IItem {
   text: string,
   buttons: [any],
-};
+}
 
 export interface ILightingController {
   ip: string,
   info: {
     ip: string,
   },
-};
+}
 
 export interface ISkin {
   name: string,
-  isEditable: boolean,
-  headerColor: string,
-  footerColor: string,
-  fontColor: string,
-  fontWeight: string,
-  backgroundColor: string,
-  popupBackgroundColor: string,
-  buttonBackgroundColor: string,
-  buttonFontColor: string,
-  buttonFontWeight: string,
-  trackBackgroundColor: string,
-  lighting: {
+  isEditable?: boolean,
+  headerColor?: string,
+  footerColor?: string,
+  fontColor?: string,
+  fontWeight?: string,
+  backgroundColor?: string,
+  popupBackgroundColor?: string,
+  buttonBackgroundColor?: string,
+  buttonFontColor?: string,
+  buttonFontWeight?: string,
+  trackBackgroundColor?: string,
+  navButtonType?: string,
+  navButtonSize?: string,
+  buttonShape?: string,
+  controlButtonSize?: string,
+  controlUseBackground?: boolean,
+  headerFont?: string,
+  footerFont?: string,
+  activeButtonColor?: string,
+  buttonFont?: string,
+  listFont?: string,
+  lighting?: {
     controllers: [ILightingController],
   }
-};
+}
 
 export interface IRestrictionMode {
   content: [string],
   name: string,
-};
+}
 
 export interface ISegment {
+  id: string,
   start: number,
   stop: number,
-};
+}
 
 export interface ISettings {
   features?: {
@@ -126,7 +143,8 @@ export interface ISettings {
     buttonBackgroundColor: string,
   },
   search?: string,
-};
+  ip?: string,
+}
 
 export interface IColors {
   headerColor: string,
@@ -135,7 +153,7 @@ export interface IColors {
   backgroundColor: string,
   popupBackgroundColor: string,
   buttonBackgroundColor: string,
-};
+}
 
 export interface IStyle {
   headerColor?: string,
@@ -144,6 +162,8 @@ export interface IStyle {
   backgroundColor?: string,
   popupBackgroundColor?: string,
   buttonBackgroundColor?: string,
+  marginLeft?: string,
+  marginRight?: string,
   marginTop?: string,
   marginBottom?: string,
   fontSize?: string,
@@ -151,17 +171,17 @@ export interface IStyle {
   defaultAlbumCover?: string,
   headerFont?: string,
   navButtonSize?: string,
-};
+}
 
 export interface IQueue {
   tracks: Array<ITrack>,
   totalTracks: number,
-};
+}
 
 export interface IPage {
   start: number,
   limit: number,
-};
+}
 
 export interface IRestrictionGroup {
   name?: string,

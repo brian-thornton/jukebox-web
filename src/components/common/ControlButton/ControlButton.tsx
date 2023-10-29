@@ -12,7 +12,7 @@ interface IControlButton {
   width: string,
   isSelected?: boolean,
   style?: IStyle,
-};
+}
 
 const ControlButton: FC<IControlButton> = ({
   disabled, height, width = '275', onClick, text, isSelected, style,

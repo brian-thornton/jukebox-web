@@ -50,6 +50,10 @@ interface IPreferences {
   experimentalMode: boolean,
   restrictionGroup: string,
   offlineLibraries: boolean,
+  useLightingControllers: boolean,
+  infoHeading?: string,
+  infoContent1?: string,
+  infoContent2?: string,
 }
 
 interface IStyles {
@@ -87,6 +91,7 @@ interface ISettings {
   controllers?: [IController],
   isScreenSmall?: boolean,
   search?: string,
+  ip? : string,
   screen?: {
     isMobile: boolean,
     isTablet: boolean,

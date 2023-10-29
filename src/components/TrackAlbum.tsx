@@ -3,20 +3,20 @@ import { FC, useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { IAlbum } from './interface';
-import { coverArtUrl } from '../lib/librarian-client';
+import { coverArtUrl } from '../lib/service-clients/librarian-client';
 import { SettingsContext } from './layout/SettingsProvider';
 import './TrackAlbum.scss';
-import { bigButtons } from '../lib/styleHelper';
+import { bigButtons } from '../lib/helper/styleHelper';
 
 interface ITrackAlbum {
   album: IAlbum,
-};
+}
 
 const TrackAlbum: FC<ITrackAlbum> = ({ album }) => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
   const [coverArt, setCoverArt] = useState();
-  const heightAndWidth = bigButtons(settings) ? '60px' : '';
+  const heightAndWidth = bigButtons(settings) ? '60px' : '50px';
 
   const loadCoverArt = () => {
     coverArtUrl(album).then(data => setCoverArt(data.url));

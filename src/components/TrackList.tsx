@@ -1,7 +1,7 @@
 import Container from 'react-bootstrap/Container';
 import { FC, useState, useContext } from 'react';
 
-import { getTrackAlbums } from '../lib/librarian-client';
+import { getTrackAlbums } from '../lib/service-clients/librarian-client';
 import { ITrack } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
@@ -11,7 +11,7 @@ import TrackActions from './TrackActions';
 interface ITrackList {
   tracks: Array<ITrack>,
   showAlbumCovers: boolean,
-};
+}
 
 const TrackList: FC<ITrackList> = ({
   tracks,

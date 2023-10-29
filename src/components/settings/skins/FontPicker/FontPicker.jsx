@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Item from '../../../common/Item/Item';
-import { calculatePageSize, supportedFonts } from '../../../../lib/styleHelper';
-import { deleteSkin, createSkin } from '../../../../lib/style-client';
+import { calculatePageSize, supportedFonts } from '../../../../lib/helper/styleHelper';
+import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { Skin } from '../../../shapes';
 import Button from '../../../Button';

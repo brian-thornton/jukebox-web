@@ -2,14 +2,14 @@ import { FC, useContext } from 'react';
 import { Download } from 'react-bootstrap-icons';
 
 import Button from './Button';
-import { downloadTrack } from '../lib/librarian-client';
+import { downloadTrack } from '../lib/service-clients/librarian-client';
 import { ITrack } from './interface';
 import './DownloadButton.css';
 import { SettingsContext } from './layout/SettingsProvider';
 
 interface IDownloadButton {
   track: ITrack,
-};
+}
 
 const DownloadButton: FC<IDownloadButton> = ({ track }) => {
   const settings = useContext(SettingsContext);

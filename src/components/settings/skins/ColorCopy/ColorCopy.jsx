@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
-import { deleteSkin, createSkin } from '../../../../lib/style-client';
+import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import Button from '../../../Button';
 import './ColorCopy.scss';
 import { Skin } from '../../../shapes';

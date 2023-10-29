@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
-import { calculatePageSize } from '../../lib/styleHelper';
+import { calculatePageSize } from '../../lib/helper/styleHelper';
 import Item from '../common/Item/Item';
-import { applyPreset, getPresets, getCurrentState } from '../../lib/lighting-client';
+import { applyPreset, getPresets, getCurrentState } from '../../lib/service-clients/lighting-client';
 import PaginatedList from '../common/PaginatedList/PaginatedList';
 import { Controller } from '../shapes';
 

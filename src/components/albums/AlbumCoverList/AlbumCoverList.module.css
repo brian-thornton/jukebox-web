@@ -1,0 +1,21 @@
+.albumContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.container {
+  max-width: 100%;
+  margin: 65px auto;
+}
+
+.row {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}
+
+.startsWith {
+  margin-right: 0;
+  width: 275px;
+}

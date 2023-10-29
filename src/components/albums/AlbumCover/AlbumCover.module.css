@@ -1,17 +1,11 @@
 .albumCover {
-  height: 100%;
-  max-height: 100%;
-  max-width: 100%;
-}
-
-.albumCoverMobile {
-  height: 50%;
-  width: 50%;
-  max-height: 50%;
-  max-width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  height: 50% !important;
+  width: 50% !important;
+  max-height: 50% !important;
+  max-width: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .albumCoverList {
@@ -22,4 +16,13 @@
   display: flex;
   align-items: left;
   justify-content: left;
+}
+
+@media (min-width: 600px) {
+  .albumCover {
+    height: 100% !important;
+    width: 100% !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+  }
 }

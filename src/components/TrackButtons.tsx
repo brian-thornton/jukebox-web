@@ -13,7 +13,7 @@ interface ITrackButtons {
   track: TrackShape,
   trackAlbums: Array<IAlbum>,
   trackAlbumsLoaded: boolean,
-};
+}
 
 const TrackButtons: FC<ITrackButtons> = ({
   track,

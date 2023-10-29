@@ -17,7 +17,7 @@ interface IPicker {
     buttonWidth?: string,
     onClick: Function,
   }>,
-};
+}
 
 const Picker: FC<IPicker> = ({ items, applyPadding, itemHeight }) => {
   const settings = useContext(SettingsContext);

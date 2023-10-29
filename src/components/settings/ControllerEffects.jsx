@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Item from '../common/Item/Item';
 import Paginator from '../common/Paginator/Paginator';
-import { handlers } from '../../lib/gesture-helper';
+import { handlers } from '../../lib/helper/gesture-helper';
 import { ControllerState } from '../shapes';
 
 const propTypes = {

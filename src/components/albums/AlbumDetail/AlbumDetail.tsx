@@ -7,12 +7,12 @@ import { useIntl } from 'react-intl';
 import AlbumTracks from '../AlbumTracks/AlbumTracks';
 import Confirm from '../../common/Confirm/Confirm';
 import CoverArtSearchModal from '../CoverArtSearchModal/CoverArtSearchModal';
-import { getAlbumTracks, removeCoverArt } from '../../../lib/librarian-client';
+import { getAlbumTracks, removeCoverArt } from '../../../lib/service-clients/librarian-client';
 import './AlbumDetail.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import RestrictionModes from '../../settings/content/RestrictionModes/RestrictionModes';
-import { topMargin } from '../../../lib/styleHelper';
-import { getQueue } from '../../../lib/queue-client';
+import { topMargin } from '../../../lib/helper/styleHelper';
+import { getQueue } from '../../../lib/service-clients/queue-client';
 import AlbumCoverAndButtons from '../AlbumCoverAndButtons/AlbumCoverAndButtons';
 import { ITrack } from '../../interface';
 import TrackActions from '../../TrackActions';
@@ -27,7 +27,6 @@ const AlbumDetail = () => {
   const [reload, setReload] = useState(false);
   const [confirmRestriction, setConfirmRestriction] = useState(false);
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
   const [queue, setQueue] = useState({ tracks: [], totalTracks: 0 });
   const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
 

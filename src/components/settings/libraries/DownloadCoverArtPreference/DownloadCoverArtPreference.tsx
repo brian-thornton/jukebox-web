@@ -9,7 +9,7 @@ import { ILibrary } from '../../../interface';
 interface IDownloadCoverArtPreference {
   onSelect: Function,
   library?: ILibrary,
-};
+}
 
 const DownloadCoverArtPreference: FC<IDownloadCoverArtPreference> = ({ library, onSelect }) => (
   <Container fluid>

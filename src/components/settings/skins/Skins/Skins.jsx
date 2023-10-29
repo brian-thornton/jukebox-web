@@ -1,15 +1,17 @@
 import { PropTypes } from 'prop-types';
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
 import AddNew from '../../../common/AddNew/AddNew';
-import { createSkin, getSkins } from '../../../../lib/style-client';
-import { updateSettings } from '../../../../lib/settings-client';
+import { createSkin, getSkins } from '../../../../lib/service-clients/style-client';
+import { updateSettings } from '../../../../lib/service-clients/settings-client';
 import SkinDetail from '../SkinDetail/SkinDetail';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { deepCloneSkin } from '../../../../lib/styleHelper';
+import { deepCloneSkin } from '../../../../lib/helper/styleHelper';
 import SkinList from '../SkinList/SkinList';
+import SkinGenerator from '../SkinGenerator/SkinGenerator';
+import Button from '../../../Button';
 
 const propTypes = {
   resetControls: PropTypes.func.isRequired,
@@ -26,6 +28,7 @@ const Skins = ({ resetControls, setControls }) => {
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [copySkinBase, setCopySkinBase] = useState();
   const [searchParams] = useSearchParams();
+  const [generateSkin, setGenerateSkin] = useState(false);
 
   if (!skinsLoaded && !skinsLoading) {
     setSkinsLoading(true);
@@ -121,16 +124,22 @@ const Skins = ({ resetControls, setControls }) => {
   if (skins && skins.length > 0) {
     return (
       <>
-        {!isSaveAsOpen && (
-          <SkinList
-            skins={skins}
-            reloadSkins={loadSkins}
-            onCopy={makeCopy}
-            setEditSkin={setEditSkin}
-            setSelectedSkin={setSelectedSkin}
-          />
+        {!generateSkin && !isSaveAsOpen && (
+          <Button onClick={() => setGenerateSkin(true)} content={<FormattedMessage id="generate_skin" />} />
         )}
-        {isSaveAsOpen && (
+        {generateSkin && <SkinGenerator />}
+        {!isSaveAsOpen && !generateSkin && (
+          <>
+            <SkinList
+              skins={skins}
+              reloadSkins={loadSkins}
+              onCopy={makeCopy}
+              setEditSkin={setEditSkin}
+              setSelectedSkin={setSelectedSkin}
+            />
+          </>
+        )}
+        {isSaveAsOpen && !generateSkin && (
           <AddNew
             title={<FormattedMessage id="save_skin_as" values={{ name: copySkinBase.name }} />}
             defaultValue={<FormattedMessage id="skin_copy" values={{ name: copySkinBase.name }} />}

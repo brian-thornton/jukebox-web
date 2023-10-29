@@ -8,7 +8,7 @@ interface ISettingsActions {
   onClose: Function,
   applyPadding?: boolean,
   setMode: Function,
-};
+}
 
 const SettingsActions: FC<ISettingsActions> = ({ setMode, onClose, applyPadding = false }) => {
   const intl = useIntl();

@@ -6,14 +6,14 @@ import Button from '../../Button';
 import Item from '../../common/Item/Item';
 import { IPlaylist } from '../../interface';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { bigButtons } from '../../../lib/styleHelper';
+import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPlaylistRow {
   playlist: IPlaylist,
   addMode: boolean,
   onAdd: Function,
   onSelect: Function,
-};
+}
 
 const PlaylistRow: FC<IPlaylistRow> = ({
   playlist,

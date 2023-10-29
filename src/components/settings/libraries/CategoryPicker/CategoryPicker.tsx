@@ -8,13 +8,13 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../../Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { updateSettings } from '../../../../lib/settings-client';
+import { updateSettings } from '../../../../lib/service-clients/settings-client';
 
 interface ICategoryPicker {
   selectedCategory?: string,
   onSelectCategory: Function,
   category: string,
-};
+}
 
 const CategoryPicker: FC<ICategoryPicker> = ({
   category,

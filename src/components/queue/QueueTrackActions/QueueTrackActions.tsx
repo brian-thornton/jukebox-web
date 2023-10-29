@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 
 import { ITrack } from '../../interface';
 import Picker from '../../common/Picker/Picker';
-import { enqueueTop, next, removeTracksFromQueue } from '../../../lib/queue-client';
+import { enqueueTop, next, removeTracksFromQueue } from '../../../lib/service-clients/queue-client';
 import { useIntl } from 'react-intl';
 import SideBySide from '../../common/SideBySide/SideBySide';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -11,7 +11,7 @@ interface IQueueTrackActions {
   track?: ITrack,
   onClose: Function,
   applyPadding?: boolean,
-};
+}
 
 const QueueTrackActions: FC<IQueueTrackActions> = ({ track, onClose, applyPadding = false }) => {
   const settings = useContext(SettingsContext);

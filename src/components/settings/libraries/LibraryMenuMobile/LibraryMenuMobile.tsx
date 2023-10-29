@@ -1,5 +1,4 @@
 import { FC, useContext } from 'react';
-import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import SideBySide from '../../../common/SideBySide/SideBySide';
@@ -8,10 +7,9 @@ interface ILibraryMenuMobile {
   onClose: Function,
   setShowOnline: Function,
   showOnline: boolean,
-};
+}
 
 const LibraryMenuMobile: FC<ILibraryMenuMobile> = ({ onClose, showOnline, setShowOnline }) => {
-  const intl = useIntl();
   const settings = useContext(SettingsContext);
 
   const itemStyle = {

@@ -1,3 +1,20 @@
 .adminRow {
   padding: 0 !important;;  
 }
+
+.buttonContainer {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.container {
+  max-width: 100%;
+  margin: 65px auto;
+}
+
+.row {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+}

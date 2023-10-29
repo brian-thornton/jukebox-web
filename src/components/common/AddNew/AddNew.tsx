@@ -17,7 +17,7 @@ interface IAddNew {
   onConfirm: Function,
   title: string,
   dropdowns?: Array<any>,
-};
+}
 
 const AddNew: FC<IAddNew> = ({
   cancelText, confirmText, fields, onCancel, onConfirm, title, dropdowns,
