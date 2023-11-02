@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../../../Button';
-import './LogDetail.scss';
+import styles from './LogDetail.module.css';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { ILog } from '../../../interface';
 
@@ -27,7 +27,7 @@ const LogList: FC<ILogDetail> = ({ log, onClose }) => {
         <Button content={<FormattedMessage id="go_back" />} onClick={onClose} />
       </Row>
       <Row>
-        <Card className="logCard" style={logDetailStyle}>
+        <Card className={styles.logCard} style={logDetailStyle}>
           <Card.Body>
             <Card.Text>
               {log.text}

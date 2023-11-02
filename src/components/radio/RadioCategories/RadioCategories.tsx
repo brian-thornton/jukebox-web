@@ -6,7 +6,7 @@ import { useIntl } from 'react-intl';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
 import ExpandRow from '../../common/ExpandRow/ExpandRow';
-import './RadioCategories.scss';
+import styles from './RadioCategories.module.css';
 import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IRadioCategories {
@@ -58,7 +58,7 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
   }
 
   return (
-    <Container fluid className="categoriesContainer">
+    <Container fluid className={styles.categoriesContainer}>
       <Row>
         {buttons}
       </Row>

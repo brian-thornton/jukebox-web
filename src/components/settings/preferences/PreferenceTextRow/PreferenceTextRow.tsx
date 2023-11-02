@@ -7,7 +7,7 @@ import { debounce } from 'lodash';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import NameInput from '../../../common/NameInput/NameInput';
-import './PreferenceTextRow.scss';
+import classes from './PreferenceTextRow.module.css';
 import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 
 interface IPreferenceTextRow {
@@ -42,7 +42,7 @@ const PreferenceTextRow: FC<IPreferenceTextRow> = ({ rowName, value }) => {
 
   return (
     <ListGroupItem style={itemStyle}>
-      <Container fluid className="preference-text-row-container" style={{paddingLeft: 0, marginLeft: 0}}>
+      <Container fluid className={classes.preferenceTextRowContainer} style={{paddingLeft: 0, marginLeft: 0}}>
         <Row>
           <Col lg="12">
             <NameInput

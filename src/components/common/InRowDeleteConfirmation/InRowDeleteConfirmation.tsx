@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
-import './InRowDeleteConfirmation.scss';
+import styles from './InRowDeleteConfirmation.module.css';
 
 interface IInRowDeleteConfirmation {
   onCancel: Function,
@@ -11,7 +11,7 @@ interface IInRowDeleteConfirmation {
 
 const InRowDeleteConfirmation: FC<IInRowDeleteConfirmation> = ({ onCancel, onConfirm }) => (
   <>
-    <div className="delete-confirm-are-you-sure"><FormattedMessage id="are_you_sure" /></div>
+    <div className={styles.deleteConfirmAreYouSure}><FormattedMessage id="are_you_sure" /></div>
     <Button onClick={onCancel} content={<FormattedMessage id="cancel" />} />
     <Button onClick={onConfirm} content={<FormattedMessage id="delete" />} />
   </>

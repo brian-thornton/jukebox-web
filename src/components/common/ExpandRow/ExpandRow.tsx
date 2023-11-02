@@ -3,7 +3,7 @@ import { Accordion } from 'react-bootstrap';
 import { useAccordionButton } from 'react-bootstrap/AccordionButton';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './ExpandRow.scss';
+import classes from './ExpandRow.module.css';
 
 interface IExpandRow {
   buttons: any,
@@ -52,7 +52,7 @@ const ExpandRow: FC<IExpandRow> = ({
   }
 
   return (
-    <Accordion activeKey={activeKey} className="accordion" >
+    <Accordion activeKey={activeKey} className={classes.accordion} >
       <CustomToggle eventKey="0" setIsExpanded={() => {
         if (setIsExpanded) {
           setIsExpanded();
@@ -61,7 +61,7 @@ const ExpandRow: FC<IExpandRow> = ({
         {text}
       </CustomToggle>
       <Accordion.Collapse eventKey="0">
-        <div onClick={() => setActiveKey(null)} className="expanded" >
+        <div onClick={() => setActiveKey(null)} className={classes.expanded} >
           {buttons}
         </div>
       </Accordion.Collapse>

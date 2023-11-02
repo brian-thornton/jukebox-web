@@ -13,7 +13,6 @@ import {
 import Button from '../../../Button';
 import LibraryAdd from '../LibraryAdd/LibraryAdd';
 import NoResults from '../../../common/NoResults/NoResults';
-import './Libraries.scss';
 import LibraryInfoAndGlobalControls from '../LibraryInfoAndGlobalControls/LibraryInfoAndGlobalControls';
 import LibraryList from '../LibraryList/LibraryList';
 import Categories from '../Categories/Categories';
@@ -98,7 +97,6 @@ const Libraries = () => {
       {noPrompts && !isLoading && !libraries.length && !isMenuOpen && (
         <NoResults
           applyMargin={false}
-          className="fullWidth"
           title={<FormattedMessage id="no_libraries_title" />}
           text={<FormattedMessage id="no_libraries_text" />}
           controls={noResultsButtons}

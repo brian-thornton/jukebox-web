@@ -1,7 +1,6 @@
 import { useLocation } from 'react-router-dom';
 import { FC, useContext, useState, useEffect } from 'react';
 
-import './AlbumList.scss';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Loading from '../../common/Loading/Loading';

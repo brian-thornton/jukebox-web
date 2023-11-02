@@ -6,7 +6,7 @@ import JukeboxNavLeft from '../JukeboxNavLeft';
 import JukeboxNavRight from '../JukeboxNavRight';
 import { SettingsContext } from '../SettingsProvider';
 import { ILibrary } from '../../interface';
-import './JukeboxHeader.scss';
+import styles from './JukeboxHeader.module.css';
 
 interface IJukeboxHeader {
   setSearch: Function,
@@ -37,7 +37,7 @@ const JukeboxHeader: FC<IJukeboxHeader> = ({
   const [isHamburgerClicked, setIsHamburgerClicked] = useState(false);
 
   return (
-    <Navbar className="header-nav-bar" style={{ background: settings?.styles?.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
+    <Navbar className={styles.headerNavBar} style={{ background: settings?.styles?.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container fluid>
         {showBrand && !screen?.isMobile && (
           <Navbar.Brand

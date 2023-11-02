@@ -9,7 +9,7 @@ import CategoryPicker from '../CategoryPicker/CategoryPicker';
 import DownloadCoverArtPreference from '../DownloadCoverArtPreference/DownloadCoverArtPreference';
 import NameInput from '../../../common/NameInput/NameInput';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import './LibraryAdd.scss';
+import styles from './LibraryAdd.module.css';
 import { ILibrary } from '../../../interface';
 
 interface ILibraryAdd {
@@ -44,10 +44,10 @@ const LibraryAdd: FC<ILibraryAdd> = ({
   };
 
   return (
-    <Card className="addNewCard" style={confirmStyle}>
+    <Card className={styles.addNewCard} style={confirmStyle}>
       <Card.Title><FormattedMessage id={library ? 'edit_library' : 'add_library'} /></Card.Title>
       <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
-        <Container fluid className="addContainer">
+        <Container fluid className={styles.addContainer}>
           <Row>
             <NameInput name="Path" placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
           </Row>

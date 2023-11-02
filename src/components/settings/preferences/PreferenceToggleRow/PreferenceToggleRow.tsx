@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import Button from '../../../Button';
 import Item from '../../../common/Item/Item';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import './PreferenceToggleRow.scss';
 import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 
 interface IPreferenceToggleRow {

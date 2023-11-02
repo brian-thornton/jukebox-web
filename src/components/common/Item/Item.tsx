@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 
 import CheckToggle from '../CheckToggle/CheckToggle';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './Item.scss';
+import classes from './Item.module.css';
 
 interface IItem {
   buttons?: any,
@@ -42,7 +42,7 @@ const Item: FC<IItem> = ({
 
   return (
     <ListGroupItem
-      className="itemStyle"
+      className={classes.itemStyle}
       style={itemStyle}
       onClick={(e) => {
         if (onClick) {
@@ -52,13 +52,13 @@ const Item: FC<IItem> = ({
     >
       <Row>
         <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">
-          <div className="itemText">
+          <div className={classes.itemText}>
             {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
             {text}
           </div>
         </Col>
         <Col>
-          <div className="itemButtons">
+          <div className={classes.itemButtons}>
             {!settings.isScreenSmall && buttons}
           </div>
         </Col>

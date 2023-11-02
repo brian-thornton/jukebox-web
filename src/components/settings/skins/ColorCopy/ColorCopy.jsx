@@ -8,7 +8,6 @@ import { FormattedMessage } from 'react-intl';
 
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import Button from '../../../Button';
-import './ColorCopy.scss';
 import { Skin } from '../../../shapes';
 
 const propTypes = {

@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { FC, useContext, useState } from 'react';
 
-import './AddNew.scss';
+import styles from './AddNew.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
 import NameInput from '../NameInput/NameInput';
@@ -41,10 +41,10 @@ const AddNew: FC<IAddNew> = ({
   };
 
   return (
-    <Card className="addNewCard" style={confirmStyle}>
+    <Card className={styles.addNewCard} style={confirmStyle}>
       <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
-        <Card.Title className="addNewTitle">{title}</Card.Title>
-        <Card.Text className="addNewText">
+        <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
+        <Card.Text className={styles.addNewText}>
           <Container fluid>
             <Row>
               {Object.keys(fieldValues).map(f => (
@@ -67,7 +67,7 @@ const AddNew: FC<IAddNew> = ({
               <>
                 {localDropdowns?.map(dropdown => (
                   <Form.Group>
-                    <Form.Label className="addNewFormLabel">{dropdown.name}</Form.Label>
+                    <Form.Label className={styles.addNewFormLabel}>{dropdown.name}</Form.Label>
                     <Form.Select onChange={e => onDrodownValueSet(dropdown, e.target.value)}>
                       {dropdown.options.map((o: string) => <option>{o}</option>)}
                     </Form.Select>
@@ -77,7 +77,7 @@ const AddNew: FC<IAddNew> = ({
             </Row>
           </Container>
         </Card.Text>
-        <div className="addNewText">
+        <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />
           <Button onClick={() => {
             onConfirm(fieldValues, localDropdowns);

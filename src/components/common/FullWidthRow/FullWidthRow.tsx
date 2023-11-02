@@ -2,8 +2,6 @@ import Col from 'react-bootstrap/Col';
 import { FC } from 'react';
 import Row from 'react-bootstrap/Row';
 
-import './FullWidthRow.scss';
-
 interface IFullWidthRow {
   children: any,
   className?: string,

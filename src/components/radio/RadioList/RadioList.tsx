@@ -8,7 +8,7 @@ import { play } from '../../../lib/service-clients/radio-client';
 import RadioCategories from '../RadioCategories/RadioCategories';
 import RadioCategoriesMobile from '../RadioCategoriesMobile/RadioCategoriesMobile';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './RadioList.scss';
+import styles from './RadioList.module.css';
 import { bigButtons, headerFooterReserve, topMargin } from '../../../lib/helper/styleHelper';
 import PaginatedList from '../../common/PaginatedList/PaginatedList';
 import { useStations } from '../../../hooks/use-stations';
@@ -86,7 +86,7 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
       {screen?.isMobile && !isGenreOpen && (
         <>
           <Button style={{ fontSize: '20px' }} content="..." onClick={() => setIsGenreOpen(true)} />
-          <Container className="stationsContainer" fluid style={{ marginTop: topMargin(settings), paddingLeft: '0', paddingRight: '0' }}>
+          <Container className={styles.stationsContainer} fluid style={{ marginTop: topMargin(settings), paddingLeft: '0', paddingRight: '0' }}>
             <Row>
               {stations?.length > 0 && (
                 <StationList />
@@ -99,7 +99,7 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
         <RadioCategoriesMobile category={selectedCategory} setCategory={setSelectedCategory} onClose={() => setIsGenreOpen(false)} />
       )}
       {!screen?.isMobile && !isGenreOpen && (
-        <Container className="stationsContainer" fluid style={{ marginTop: topMargin(settings), paddingLeft: '0', paddingRight: '0' }}>
+        <Container className={styles.stationsContainer} fluid style={{ marginTop: topMargin(settings), paddingLeft: '0', paddingRight: '0' }}>
           <Row>
             <Col lg="1" xl="1" md="1" sm="1">
               <RadioCategories category={selectedCategory} setCategory={setSelectedCategory} />

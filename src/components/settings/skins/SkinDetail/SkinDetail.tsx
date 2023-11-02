@@ -11,7 +11,7 @@ import SkinColors from '../SkinColors/SkinColors';
 import SkinFonts from '../SkinFonts/SkinFonts';
 import SkinGraphics from '../SkinGraphics/SkinGraphics';
 import SkinLights from '../SkinLights/SkinLights';
-import './SkinDetail.scss';
+import styles from './SkinDetail.module.css';
 import SkinPreferences from '../SkinPreferences/SkinPreferences';
 import Button from '../../../Button';
 import Picker from '../../../common/Picker/Picker';
@@ -43,7 +43,7 @@ const SkinDetail: FC<ISkinDetail> = ({
   }, []);
 
   const controls = (
-    <Container fluid className="skin-container">
+    <Container fluid className={styles.skinContainer}>
       <Row>
         <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
         <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />

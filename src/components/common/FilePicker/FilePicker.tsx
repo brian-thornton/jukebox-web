@@ -4,7 +4,7 @@ import { FC, useContext } from 'react';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './FilePicker.scss';
+import styles from './FilePicker.module.css';
 
 interface IFilePicker {
   onConfirm: Function,
@@ -27,13 +27,13 @@ const FilePicker: FC<IFilePicker> = ({
   };
 
   return (
-    <Card style={confirmStyle} className="addNewCard">
+    <Card style={confirmStyle} className={styles.addNewCard}>
       <Card.Body>
-        <Card.Title className="addNewTitle">{title}</Card.Title>
-        <Card.Text className="addNewText">
-          <Form.Control className="fileControl" type="file" onChange={(e) => onSelectFile()} />
+        <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
+        <Card.Text className={styles.addNewText}>
+          <Form.Control className={styles.fileControl} type="file" onChange={(e) => onSelectFile()} />
         </Card.Text>
-        <div className="addNewText">
+        <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />
           <Button onClick={onConfirm} content={confirmText} />
         </div>

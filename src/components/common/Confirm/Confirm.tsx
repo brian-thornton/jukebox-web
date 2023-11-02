@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './Confirm.scss';
+import classes from './Confirm.module.css';
 
 interface IConfirm {
   onConfirm: Function,
@@ -32,13 +32,13 @@ const Confirm: FC<IConfirm> = ({ onConfirm, onCancel, text }) => {
     );
 
     return (
-      <Card className="confirmCard" style={{ color: fontColor, marginTop }}>
+      <Card className={classes.confirmCard} style={{ color: fontColor, marginTop }}>
         <Card.Body style={{ background: trackBackgroundColor }}>
-          <Card.Title className="confirmTitle">
+          <Card.Title className={classes.confirmTitle}>
             <FormattedMessage id="are_you_sure" />
           </Card.Title>
-          <Card.Text className="confirmText">{text}</Card.Text>
-          <div className="confirmText">
+          <Card.Text className={classes.confirmText}>{text}</Card.Text>
+          <div className={classes.confirmText}>
             {button(<FormattedMessage id="no" />, onCancel)}
             {button(<FormattedMessage id="yes" />, onConfirm)}
           </div>

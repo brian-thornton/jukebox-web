@@ -13,7 +13,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../../../Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import './ColorPicker.scss';
+import styles from './ColorPicker.module.css';
 
 interface IColorPicker {
   onChange: Function,
@@ -83,7 +83,7 @@ const ColorPicker: FC<IColorPicker> = ({
   return (
     <>
       {!solidOnly && (
-        <Card className="transparentCardStyle">
+        <Card className={styles.transparentCardStyle}>
           <Card.Body>
             <Tabs onSelect={e => setColorType(e)}>
               <Tab eventKey="solid" title="Solid Color">
@@ -112,7 +112,7 @@ const ColorPicker: FC<IColorPicker> = ({
                     </Col>
                   </Row>
                   <Row>
-                    <Form.Label className="formLabel" style={formLabelStyle}>
+                    <Form.Label className={styles.formLabel} style={formLabelStyle}>
                       <FormattedMessage id="opacity" />
                     </Form.Label>
                     <Form.Range onChange={e => setOpacity(parseInt(e.target.value))} />
@@ -120,10 +120,10 @@ const ColorPicker: FC<IColorPicker> = ({
                 </Container>
               </Tab>
               <Tab eventKey="transparent" title="Transparent">
-                <Card className="transparentCardStyle" style={transparentCardSkin}>
-                  <Card.Title className="colorPickerTitle"><FormattedMessage id="transparent_title" /></Card.Title>
+                <Card className={styles.transparentCardStyle} style={transparentCardSkin}>
+                  <Card.Title className={styles.colorPickerTitle}><FormattedMessage id="transparent_title" /></Card.Title>
                   <Card.Body>
-                    <Card.Text className="colorPickerText">
+                    <Card.Text className={styles.colorPickerText}>
                       <FormattedMessage id="transparent_text" />
                     </Card.Text>
                   </Card.Body>

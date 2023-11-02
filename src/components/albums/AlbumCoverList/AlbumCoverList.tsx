@@ -1,7 +1,6 @@
 import { useSwipeable } from 'react-swipeable';
 import { FC, useContext } from 'react';
 
-import './AlbumCoverList.scss';
 import { handlers } from '../../../lib/helper/gesture-helper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Album from '../Album/Album';

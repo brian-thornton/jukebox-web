@@ -9,7 +9,7 @@ import Button from '../../Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../../lib/service-clients/queue-client';
 import { ITrack, IQueue } from '../../interface';
 import ControlButton from '../../common/ControlButton/ControlButton';
-import './AlbumButtons.scss';
+import styles from './AlbumButtons.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
 
@@ -51,7 +51,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   };
 
   const albumButton = (onClick: Function, name: string, enabled = true) => (
-    <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className="albumButton">
+    <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className={styles.albumButton}>
       <ControlButton
         disabled={!enabled}
         text={name}
@@ -67,7 +67,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
     <>
       {isScreenSmall && (
         <>
-          <Row className="centeredRow">
+          <Row className={styles.centeredRow}>
             {features?.play && (
               <Button
                 icon={<PlayFill />}
@@ -91,11 +91,11 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
       )}
       {!isScreenSmall && (
         <>
-          <Row className="buttonRow">
+          <Row className={styles.buttonRow}>
             {albumButton(() => navigate(-1), backText())}
             {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), features?.play)}
           </Row>
-          <Row className="buttonRow">
+          <Row className={styles.buttonRow}>
             {albumButton(() => {
               applyLighting(settings, 'Enqueue');
               enqueueTracks(tracks);

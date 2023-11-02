@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { FC, useContext, useState } from 'react';
 import Table from 'react-bootstrap/Table';
 
-import './AlbumTable.scss';
+import styles from './AlbumTable.module.css';
 import { IAlbum } from '../../interface';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Item from '../../common/Item/Item';
@@ -66,7 +66,7 @@ const AlbumTable: FC<IAlbumTable> = ({ albums }) => {
   };
 
   return (
-    <Table size="sm" striped bordered variant="dark" className="albumTable">
+    <Table size="sm" striped bordered variant="dark" className={styles.albumTable}>
       <tbody>
         {table()}
       </tbody>

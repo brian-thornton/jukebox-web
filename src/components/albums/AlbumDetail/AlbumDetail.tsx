@@ -8,7 +8,7 @@ import AlbumTracks from '../AlbumTracks/AlbumTracks';
 import Confirm from '../../common/Confirm/Confirm';
 import CoverArtSearchModal from '../CoverArtSearchModal/CoverArtSearchModal';
 import { getAlbumTracks, removeCoverArt } from '../../../lib/service-clients/librarian-client';
-import './AlbumDetail.scss';
+import styles from './AlbumDetail.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import RestrictionModes from '../../settings/content/RestrictionModes/RestrictionModes';
 import { topMargin } from '../../../lib/helper/styleHelper';
@@ -68,7 +68,7 @@ const AlbumDetail = () => {
   return (
     <>
       {album && (
-        <Row className="coverRow" style={{ marginTop: topMargin(settings) }}>
+        <Row className={styles.coverRow}>
           <AlbumCoverAndButtons
             queue={queue}
             setQueue={setQueue}
@@ -82,7 +82,9 @@ const AlbumDetail = () => {
           {!clickedTrack && (
             <Col lg={9} xl={9}>
               {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
-                <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} clickedTrack={clickedTrack} setClickedTrack={setClickedTrack} />
+                <div style={{ marginTop: topMargin(settings) }}>
+                  <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} clickedTrack={clickedTrack} setClickedTrack={setClickedTrack} />
+                </div>
               )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
                 <Confirm

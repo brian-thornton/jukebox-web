@@ -10,7 +10,7 @@ import Item from '../../common/Item/Item';
 import Loading from '../../common/Loading/Loading';
 import Paginator from '../../common/Paginator/Paginator';
 import Button from '../../Button';
-import './Filters.scss';
+import styles from './Filters.module.css';
 import { handlers } from '../../../lib/helper/gesture-helper';
 import { Libraries } from '../../shapes';
 import FullWidthRow from '../../common/FullWidthRow/FullWidthRow';
@@ -55,7 +55,7 @@ const Filters = ({ selectedLibraries, setSelectedLibraries }) => {
     <>
       {isLoading && <Loading />}
       {!isLoading && libraries.length && (
-        <Container {...swipe} fluid className="filter-container">
+        <Container {...swipe} fluid className={styles.filterContainer}>
           <FullWidthRow>
             {libraries.slice(realStart, (realStart + realPageSize)).map((library) => {
               const checked = selectedLibraries.find(lib => lib.path === library.path);

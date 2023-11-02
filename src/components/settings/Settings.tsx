@@ -13,7 +13,7 @@ import CategoryList from './categories/CategoryList/CategoryList';
 import Skins from './skins/Skins/Skins';
 import PinEntry from '../common/PinEntry/PinEntry';
 import { applyLighting } from '../../lib/helper/lightingHelper';
-import './Settings.scss';
+import styles from './Settings.module.css';
 import LogList from './logs/LogList/LogList';
 import Metadata from './metadata/Metadata/Metadata';
 import SettingsActions from './SettingsActions';
@@ -118,7 +118,7 @@ const Settings = () => {
   }
 
   return (!isAuthorized && (
-    <div className="settings-pin-container">
+    <div className={styles.settingsPinContainer}>
       <PinEntry
         onAuthorize={() => {
           setIsAuthorized(true);

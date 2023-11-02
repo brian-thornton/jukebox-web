@@ -9,7 +9,7 @@ import { IAlbum } from '../../interface';
 import Button from '../../Button';
 import NameInput from '../../common/NameInput/NameInput';
 import { saveCoverArt } from '../../../lib/service-clients/librarian-client';
-import './CoverArtSearchModal.scss';
+import styles from './CoverArtSearchModal.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 
 const albumArt = require('album-art');
@@ -62,22 +62,22 @@ const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
   };
 
   return (
-    <div className="cover-art-search">
+    <div className={styles.coverArtSearch}>
       <Container>
-        <Row className="cover-art-search-center">
+        <Row className={styles.coverArtSearchCenter}>
           <NameInput defaultValue={album.name} onChange={(e: any) => setQuery(e.target.value)} />
         </Row>
         {!isLoading && results && (
-          <Row className="cover-art-search-center">
+          <Row className={styles.coverArtSearchCenter}>
             <Col>
-              <Card className="cover-art-search-center albumCover" style={resultsStyle}>
+              <Card className={`${styles.coverArtSearchCenter} ${styles.albumCover}`} style={resultsStyle}>
                 <Card.Title><FormattedMessage id="results" /></Card.Title>
-                <Card.Img className="cover-art-search-album-cover" src={results} onClick={handleSave} />
+                <Card.Img className={styles.coverArtSearchAlbumCover} src={results} onClick={handleSave} />
               </Card>
             </Col>
           </Row>
         )}
-        <Row className="cover-art-search-center">
+        <Row className={styles.coverArtSearchCenter}>
           <Button disabled={isLoading} onClick={handleSearch} content={<FormattedMessage id="search" />} />
           <Button disabled={isLoading} onClick={handleClose} content={<FormattedMessage id="cancel" />} />
         </Row>

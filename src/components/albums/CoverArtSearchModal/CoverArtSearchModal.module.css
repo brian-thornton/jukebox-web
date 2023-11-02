@@ -1,13 +1,13 @@
-.cover-art-search {
+.coverArtSearch {
   margin-top: 60px !important;
 }
 
-.cover-art-search-album-cover {
+.coverArtSearchAlbumCover {
   width: 250px !important;
   max-width: 250px !important;
 }
 
-.cover-art-search-center {
+.coverArtSearchCenter {
   align-items: center;
   display: flex; 
   justify-content: center;

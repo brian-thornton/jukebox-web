@@ -8,13 +8,3 @@
   height: 100% !important;
   border-color: black !important;
 }
-
-.addNewText {
-  align-items: center;
-  display: flex; 
-  justify-content: center;
-}
-
-.addNewTitle {
-  text-align: center;
-}
