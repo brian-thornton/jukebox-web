@@ -1,5 +1,24 @@
 .centeredRow {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    max-height: 130px;
+  }
+}
+
+.buttonContainer {
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin-top: 0px;
+  }
+}
+
+.albumContainer {
+  @media (max-width: 768px) {
+    max-height: 160px;
+  }
 }

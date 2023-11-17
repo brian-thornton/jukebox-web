@@ -6,7 +6,6 @@ import Row from 'react-bootstrap/Row';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './ContentWithControls.module.css';
-import { topMargin } from '../../../lib/helper/styleHelper';
 
 interface IContentWithControls {
   alertText?: string,
@@ -23,7 +22,6 @@ const ContentWithControls: FC<IContentWithControls> = ({ controls, content, aler
     const controlClass = screen?.isMobile ? styles.centeredRow : '';
 
     const controlStyle = {
-      paddingTop: '10px',
       paddingBottom: '20px',
       background: controlUseBackground ? headerColor : '',
       borderBottomRightRadius: '35px',
@@ -35,15 +33,15 @@ const ContentWithControls: FC<IContentWithControls> = ({ controls, content, aler
     };
 
     return (
-      <Container fluid style={{ marginTop: topMargin(settings), marginRight: '0', marginLeft: '0', paddingLeft: '0', paddingRight: '0' }}>
-        <Row style={{ marginRight: '0', marginLeft: '0' }}>
+      <Container fluid className={styles.parentContainer}>
+        <Row className={styles.alertRow}>
           <Col lg={12} xl={12}>
             {alertText && <Alert variant="primary">{alertText}</Alert>}
           </Col>
         </Row>
-        <Row className={controlClass} style={{ marginRight: '0', marginLeft: '0' }}>
+        <Row className={`${controlClass} ${styles.mainRow}`}>
           {wrapControls(controls)}
-          <Col lg={10} xl={10} style={{ width: '100%', marginRight: '0', marginLeft: '0', paddingLeft: '0', paddingRight: '0' }}>
+          <Col lg={10} xl={10} className={styles.content}>
             {content}
           </Col>
         </Row>

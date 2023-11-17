@@ -108,7 +108,7 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, 
   );
 
   return (
-    <div className={classes.container}>
+    <div className={classes.albumTrackContainer}>
       <div className={classes.trackContainer} {...swipe} >
         {trackRows()}
         {tracks.length > pageSize && (

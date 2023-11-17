@@ -11,7 +11,6 @@ import { getAlbumTracks, removeCoverArt } from '../../../lib/service-clients/lib
 import styles from './AlbumDetail.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import RestrictionModes from '../../settings/content/RestrictionModes/RestrictionModes';
-import { topMargin } from '../../../lib/helper/styleHelper';
 import { getQueue } from '../../../lib/service-clients/queue-client';
 import AlbumCoverAndButtons from '../AlbumCoverAndButtons/AlbumCoverAndButtons';
 import { ITrack } from '../../interface';
@@ -82,7 +81,7 @@ const AlbumDetail = () => {
           {!clickedTrack && (
             <Col lg={9} xl={9}>
               {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
-                <div style={{ marginTop: topMargin(settings) }}>
+                <div className={styles.albumTracks}>
                   <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} clickedTrack={clickedTrack} setClickedTrack={setClickedTrack} />
                 </div>
               )}

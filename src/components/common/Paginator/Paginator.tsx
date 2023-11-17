@@ -9,7 +9,7 @@ import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './Paginator.scss';
+import classes from './Paginator.module.css';
 import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPaginator {
@@ -48,7 +48,7 @@ const Paginator: FC<IPaginator> = ({
   };
 
   return (
-    <div className="paginator">
+    <div className={classes.paginator}>
       {totalItems > 0 && (
         <Button
           {...buttonProps}

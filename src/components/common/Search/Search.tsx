@@ -8,10 +8,9 @@ import { BackspaceFill } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../../Button';
-import './Search.scss';
+import styles from './Search.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
-import { topMargin } from '../../../lib/helper/styleHelper';
 
 interface ISearch {
   setSearchText: Function,
@@ -87,10 +86,10 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
         }}
       /> */}
 
-      <Container style={{ marginTop: topMargin(settings) }}>
+      <Container>
         <Row>
           <FormControl
-            className="searchForm"
+            className={styles.searchForm}
             id="name"
             placeholder={localSearch || ''}
             aria-label="Name"
@@ -107,24 +106,24 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
         </Row>
         <Row>
           <Container fluid className="d-none d-sm-block">
-            <Row className="keyboardRow firstKeyboardRow">
+            <Row className={`${styles.keyboardRow} ${styles.firstKeyboardRow}`}>
               {inputButton(1)}
               {row([2, 3, 4, 5, 6, 7, 8, 9, '0'])}
               {backspace()}
             </Row>
-            <Row className="keyboardRow">
+            <Row className={styles.keyboardRow}>
               {inputButton('Q')}
               {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
             </Row>
-            <Row className="keyboardRow">
+            <Row className={styles.keyboardRow}>
               {inputButton('A')}
               {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
             </Row>
-            <Row className="keyboardRow">
+            <Row className={styles.keyboardRow}>
               {inputButton('Z')}
               {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
             </Row>
-            <Row className="keyboardRow">
+            <Row className={styles.keyboardRow}>
               <Button
                 hideOnSmall
                 width="500"
@@ -144,7 +143,7 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
             </Row>
           </Container>
         </Row>
-        <Row className="keyboardRow">
+        <Row className={styles.keyboardRow}>
           {searchButton(<FormattedMessage id="search_albums" />, '/albums')}
           {searchButton(<FormattedMessage id="search_tracks" />, '/tracks')}
         </Row>

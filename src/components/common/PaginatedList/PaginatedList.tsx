@@ -3,12 +3,9 @@ import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 
 import { handlers } from '../../../lib/helper/gesture-helper';
-import ExpandRow from '../ExpandRow/ExpandRow';
 import Item from '../Item/Item';
 import Paginator from '../Paginator/Paginator';
-import { topMargin } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { IItem } from '../../interface';
 import FullWidthRow from '../FullWidthRow/FullWidthRow';
 import styles from './PaginatedList.module.css';
 
@@ -44,7 +41,7 @@ const PaginatedList: FC<IPaginatedList> = ({
   const controlClass = screen?.isMobile ? styles.centeredRow : '';
 
   return (
-    <Container fluid className="paginated-list-container" {...swipe} style={{ paddingLeft: 0, paddingRight: 0, marginTop: applyTopMargin ? topMargin(settings) : '' }}>
+    <Container fluid className="paginated-list-container" {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>
       {topLevelControls && (
         <FullWidthRow className={styles.controlClass}>{topLevelControls}</FullWidthRow>
       )}

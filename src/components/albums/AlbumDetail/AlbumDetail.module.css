@@ -3,3 +3,9 @@
   padding-bottom: 0;
   background: transparent;
 }
+
+.albumTracks {
+  @media (max-width: 768px) {
+    margin-top: 0 !important;
+  }
+}

@@ -64,7 +64,7 @@ const JukeboxNavLeft = () => {
         </Nav>
       )}
       {styles.navButtonType === 'buttons' && !isScreenSmall && (
-        <Nav className="me-auto" style={{ marginBottom: '0' }}>
+        <Nav className="me-auto" style={{ marginBottom: '0', marginTop: '5px' }}>
           {albums && (
             <>
               {navButton('albums')}

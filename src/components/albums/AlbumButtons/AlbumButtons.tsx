@@ -12,6 +12,7 @@ import ControlButton from '../../common/ControlButton/ControlButton';
 import styles from './AlbumButtons.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
+import { isAlbumInQueue } from '../../../lib/helper/album-helper';
 
 interface IAlbumButtons {
   tracks: Array<ITrack>,
@@ -36,20 +37,6 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
     next();
   };
 
-  const isAlbumInQueue = () => {
-    let allTracksInQueue = queue?.tracks?.length > 0;
-
-    if (tracks?.length > 0 && queue?.tracks?.length > 0) {
-      tracks.map((track) => {
-        if (!queue.tracks.find(t => t.path === track.path)) {
-          allTracksInQueue = false;
-        }
-      });
-    }
-
-    return allTracksInQueue;
-  };
-
   const albumButton = (onClick: Function, name: string, enabled = true) => (
     <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className={styles.albumButton}>
       <ControlButton
@@ -66,28 +53,26 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   return (
     <>
       {isScreenSmall && (
-        <>
-          <Row className={styles.centeredRow}>
-            {features?.play && (
-              <Button
-                icon={<PlayFill />}
-                onClick={playAlbum}
-              />
-            )}
-            {features?.queue && (
-              <Button
-                icon={<ListOl />}
-                onClick={() => enqueueTracks(tracks)}
-              />
-            )}
-            {features?.playlists && (
-              <Button
-                icon={<PlusSquare />}
-                onClick={() => navigate('/playlists', { state: { tracks } })}
-              />
-            )}
-          </Row>
-        </>
+        <Row className={styles.centeredRow}>
+          {features?.play && (
+            <Button
+              icon={<PlayFill />}
+              onClick={playAlbum}
+            />
+          )}
+          {features?.queue && (
+            <Button
+              icon={<ListOl />}
+              onClick={() => enqueueTracks(tracks)}
+            />
+          )}
+          {features?.playlists && (
+            <Button
+              icon={<PlusSquare />}
+              onClick={() => navigate('/playlists', { state: { tracks } })}
+            />
+          )}
+        </Row>
       )}
       {!isScreenSmall && (
         <>
@@ -107,7 +92,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
               setQueue(clone);
 
               setTimeout(() => applyLighting(settings, 'Albums'), 700);
-            }, intl.formatMessage({ id: 'enqueue_album' }), (features?.queue && !isAlbumInQueue()))}
+            }, intl.formatMessage({ id: 'enqueue_album' }), (features?.queue && !isAlbumInQueue(queue, tracks)))} 
             {albumButton(() => {
               navigate('/playlists', { state: { tracks } });
             }, intl.formatMessage({ id: 'add_to_playlist' }), features?.playlists)}

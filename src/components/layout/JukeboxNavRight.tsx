@@ -62,7 +62,7 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
   const info = <InfoCircle style={{ fontSize }} />;
 
   return (
-    <Nav className="ml-auto">
+    <div>
       {(features?.albums || features?.tracks) && !isHamburgerClicked && (
         <JukeboxNavSearchButtons
           search={search}
@@ -108,7 +108,7 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
           content={info}
         />
       )}
-    </Nav>
+    </div>
   );
 };
 

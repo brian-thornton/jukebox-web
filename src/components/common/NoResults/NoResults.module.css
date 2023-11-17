@@ -1,4 +1,4 @@
-.no-results-card {
+.noResultsCard {
   background: transparent !important;
   border-color: black !important;
   height: 100% !important;
@@ -6,20 +6,20 @@
   
 }
 
-.no-results-container {
+.noResultsContainer {
   width: 100% !important;
 }
 
-.no-results-row {
+.noResultsRow {
   width: 100% !important;
 }
 
-.no-results-text {
+.noResultsText {
   align-items: center;
   display: flex; 
   justify-content: center;
 }
 
-.no-results-title {
+.noResultsTitle {
   text-align: center;
 }

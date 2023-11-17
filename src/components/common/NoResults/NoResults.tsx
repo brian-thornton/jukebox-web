@@ -5,8 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './NoResults.scss';
-import { topMargin } from '../../../lib/helper/styleHelper';
+import styles from './NoResults.module.css';
 import Button from '../../Button';
 
 interface INoResults {
@@ -24,25 +23,24 @@ const NoResults: FC<INoResults> = ({
 
   const noResultsStyle = {
     color: settings?.styles?.fontColor,
-    marginTop: applyMargin ? topMargin(settings) : '',
     width: '100%',
   };
 
   return (
-    <Container fluid className="no-results-container">
+    <Container fluid className={styles.noResultsContainer}>
       {onGoBack && (
         <Row>
           <Button onClick={onGoBack} content={<FormattedMessage id="go_back" />} />
         </Row>
       )}
-      <Row className="no-results-row">
-        <Card className="no-results-card" style={noResultsStyle}>
+      <Row className={styles.noResultsRow}>
+        <Card className={styles.noResultsCard} style={noResultsStyle}>
           <Card.Body>
-            <Card.Title className="no-results-title">{title}</Card.Title>
-            <Card.Text className="no-results-text">
+            <Card.Title className={styles.noResultsTitle}>{title}</Card.Title>
+            <Card.Text className={styles.noResultsText}>
               {text}
             </Card.Text>
-            <div className="no-results-text">
+            <div className={styles.noResultsText}>
               {controls}
             </div>
           </Card.Body>

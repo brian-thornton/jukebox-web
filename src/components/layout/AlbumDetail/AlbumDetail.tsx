@@ -11,7 +11,6 @@ import { getAlbumTracks, removeCoverArt } from '../../../lib/service-clients/lib
 import './AlbumDetail.scss';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import RestrictionModes from '../../settings/content/RestrictionModes/RestrictionModes';
-import { topMargin } from '../../../lib/helper/styleHelper';
 import { getQueue } from '../../../lib/service-clients/queue-client';
 import AlbumCoverAndButtons from '../../../components/albums/AlbumCoverAndButtons/AlbumCoverAndButtons';
 import { ITrack } from '../../interface';
@@ -68,7 +67,7 @@ const AlbumDetail = () => {
   return (
     <>
       {album && (
-        <Row className="coverRow" style={{ marginTop: topMargin(settings) }}>
+        <Row className="coverRow">
           <AlbumCoverAndButtons
             queue={queue}
             setQueue={setQueue}

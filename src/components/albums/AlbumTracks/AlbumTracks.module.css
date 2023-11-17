@@ -2,11 +2,12 @@
   display: flex;
   flex-flow: column wrap;
   justify-content: center;
+  margin-top: 0;
 }
 
-.container {
+.albumTrackContainer {
   max-width: 100%;
-  margin: 0 auto;
+  margin: 0 auto !important;
 }
 
 .row {

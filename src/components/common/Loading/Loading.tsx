@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import Spinner from 'react-bootstrap/Spinner';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './Loading.scss';
+import styles from './Loading.module.css';
 
 interface ILoading {
   text: string,
@@ -20,15 +20,15 @@ const Loading: FC<ILoading> = ({ text }) => {
   };
 
   return (
-    <Card className="loadingInProgress" style={loadingInProgressSkin}>
+    <Card className={styles.loadingInProgress} style={loadingInProgressSkin}>
       <Card.Body>
-        <Container className="loadingContainer">
-          <Row className="animationRow">
+        <Container className={styles.loadingContainer}>
+          <Row className={styles.animationRow}>
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="secondary" />
             <Spinner animation="grow" variant="secondary" />
           </Row>
-          <Row className="textRow">
+          <Row className={styles.textRow}>
             {text}
           </Row>
         </Container>

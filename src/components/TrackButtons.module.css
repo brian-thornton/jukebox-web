@@ -1,0 +1,15 @@
+.trackButtons {
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+.trackMenu {
+  display: flex;
+  margin-top: 20px;
+  justify-content: end;
+
+  @media (min-width: 1024px) {
+    display: none;
+  }
+}

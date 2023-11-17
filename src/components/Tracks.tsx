@@ -23,7 +23,7 @@ const Tracks: FC<ITracks> = ({ search }) => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall, screen } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(1);
+  const [realPageSize, setRealPageSize] = useState(10);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let trackHeight = bigButtons(settings) ? 70 : 50;
   trackHeight = isScreenSmall ? 35 : trackHeight;

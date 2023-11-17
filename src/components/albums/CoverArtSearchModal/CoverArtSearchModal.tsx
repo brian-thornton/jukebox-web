@@ -57,7 +57,6 @@ const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
   };
 
   const resultsStyle = {
-    marginTop: isScreenSmall ? '60px' : '0px',
     color: settings?.styles?.fontColor,
   };
 

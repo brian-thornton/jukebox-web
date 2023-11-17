@@ -71,26 +71,6 @@ const supportedFonts = {
   },
 };
 
-const topMargin = (settings) => {
-  if (settings) {
-    const { navButtonSize } = settings.styles;
-
-    let headerReserve = 63;
-
-    if (navButtonSize === 'medium') {
-      headerReserve = 105;
-    }
-
-    if (navButtonSize === 'large') {
-      headerReserve = 120;
-    }
-
-    return headerReserve;
-  }
-
-  return 60;
-};
-
 const headerFooterReserve = (settings) => {
   const { navButtonSize, controlButtonSize } = settings.styles;
 
@@ -284,7 +264,6 @@ export {
   supportedFonts,
   calculatePageSize,
   headerFooterReserve,
-  topMargin,
   coverDimensions,
   bigButtons,
 }

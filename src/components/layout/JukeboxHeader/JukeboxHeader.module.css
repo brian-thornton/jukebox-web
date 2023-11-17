@@ -1,3 +1,10 @@
+.brand {
+  @media (max-width: 1000px) {
+    display: none;
+  }
+}
+
 .headerNavBar {
+  display: flex;
   margin-bottom: 0;
 }

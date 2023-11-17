@@ -7,6 +7,8 @@ import JukeboxNavRight from '../JukeboxNavRight';
 import { SettingsContext } from '../SettingsProvider';
 import { ILibrary } from '../../interface';
 import styles from './JukeboxHeader.module.css';
+import Header from '../Header/Header';
+import NavLink from '../NavLink';
 
 interface IJukeboxHeader {
   setSearch: Function,
@@ -37,38 +39,30 @@ const JukeboxHeader: FC<IJukeboxHeader> = ({
   const [isHamburgerClicked, setIsHamburgerClicked] = useState(false);
 
   return (
-    <Navbar className={styles.headerNavBar} style={{ background: settings?.styles?.headerColor }} fixed="top" collapseOnSelect expand="lg" bg="dark" variant="dark">
-      <Container fluid>
-        {showBrand && !screen?.isMobile && (
-          <Navbar.Brand
-            style={
-              {
-                color: settings?.styles?.fontColor,
-                fontFamily: settings?.styles?.headerFont,
-              }
-            }
-            href="#home"
-          >
-            {settings?.preferences?.name}
-          </Navbar.Brand>
-        )}
-        <Navbar.Toggle aria-controls="responsive-navbar-nav"  onClick={() => setIsHamburgerClicked(true)} />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <JukeboxNavLeft />
-        </Navbar.Collapse>
-        <JukeboxNavRight
-            search={search}
-            setSearch={setSearch}
-            selectedLibraries={selectedLibraries}
-            lastModule={lastModule}
-            setIsPinOpen={setIsPinOpen}
-            display={display}
-            setDisplay={setDisplay}
-            clearSearch={clearSearch}
-            isHamburgerClicked={isHamburgerClicked}
-          />
-      </Container>
-    </Navbar>
+    <Header
+      brand={settings?.preferences?.name}
+      leftContent={<JukeboxNavLeft />}
+      mobileContent={<>
+        <NavLink feature='Albums' />
+        <NavLink feature='Tracks' />
+        <NavLink feature='Genres' />
+        <NavLink feature='Playlists' />
+        <NavLink feature='Radio' />
+        <NavLink feature='Queue' />
+        <NavLink feature='Settings' />
+      </>}
+      rightContent={<JukeboxNavRight
+        search={search}
+        setSearch={setSearch}
+        selectedLibraries={selectedLibraries}
+        lastModule={lastModule}
+        setIsPinOpen={setIsPinOpen}
+        display={display}
+        setDisplay={setDisplay}
+        clearSearch={clearSearch}
+        isHamburgerClicked={isHamburgerClicked}
+      />}
+    />
   );
 };
 

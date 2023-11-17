@@ -4,14 +4,13 @@ import Button from '../../Button';
 
 import classes from  './Info.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { topMargin } from '../../../lib/helper/styleHelper';
 
 const AlbumDetail = () => {
   const settings = useContext(SettingsContext);
   const { preferences, styles } = settings;
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: topMargin(settings) }}>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{color: styles?.fontColor}} className={classes.headline}>{preferences?.infoHeading}</div>
         <div style={{color: styles?.fontColor}}>{preferences?.infoContent1}</div>
         <div style={{color: styles?.fontColor}}>{preferences?.infoContent2}</div>

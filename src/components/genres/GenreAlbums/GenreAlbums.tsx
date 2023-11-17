@@ -1,6 +1,5 @@
 import { FC, useContext, useEffect, useState } from 'react';
 
-import './GenreAlbums.scss';
 import { getAlbums } from '../../../lib/service-clients/librarian-client';
 import { coverDimensions, headerFooterReserve } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';

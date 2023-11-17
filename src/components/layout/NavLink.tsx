@@ -16,7 +16,7 @@ const NavLink: FC<INavLink> = ({ feature }) => {
   return (
     <Nav.Link
       disabled={features?.isLocked}
-      style={{ fontFamily: headerFont }}
+      style={{ fontFamily: headerFont, color: styles?.fontColor}}
       href={`/${feature}`}
     >
       <FormattedMessage id={feature} />
