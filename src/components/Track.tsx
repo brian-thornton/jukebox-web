@@ -11,6 +11,7 @@ import { bigButtons } from '../lib/helper/styleHelper';
 import Item from './common/Item/Item';
 import './Track.scss';
 import TrackButtons from './TrackButtons';
+import MobileTrackActions from './albums/MobileTrackActions/MobileTrackActions';
 
 interface ITrack {
   showAlbumCovers: boolean,
@@ -74,11 +75,14 @@ const Track: FC<ITrack> = ({
   if (isScreenSmall) {
     return (
       <>
-        {<Item text={`${albumFolder} - ${track.name}`} allowToggle={false} onClick={() => {
-          if (settings?.isScreenSmall && setTrackClicked) {
-            setTrackClicked(track);
-          }
-        }} />}
+        {<Item
+          mobileActions={<MobileTrackActions track={track} />}
+          mobileOffset="60px"
+          text={`${albumFolder} - ${track.name}`} allowToggle={false} onClick={() => {
+            if (settings?.isScreenSmall && setTrackClicked) {
+              setTrackClicked(track);
+            }
+          }} />}
       </>
     );
   }

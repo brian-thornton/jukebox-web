@@ -1,14 +1,11 @@
 import { FC, useContext } from 'react';
-import { ListOl } from 'react-bootstrap-icons';
 
-import Button from './Button';
 import { enqueue } from '../lib/service-clients/queue-client';
 import { ITrack } from './interface';
 import { applyLighting } from '../lib/helper/lightingHelper';
 import { SettingsContext } from './layout/SettingsProvider';
-import { bigButtons } from '../lib/helper/styleHelper';
 
-interface IEnqueueButton {
+interface IEnqueueLink {
   mode?: string,
   track: ITrack,
   isSelected?: boolean,
@@ -16,20 +13,14 @@ interface IEnqueueButton {
   disabled?: boolean,
 }
 
-const EnqueueButton: FC<IEnqueueButton> = ({
-  track, mode, isSelected, onComplete, disabled,
+const EnqueueLink: FC<IEnqueueLink> = ({
+  track, mode, onComplete
 }) => {
   const settings = useContext(SettingsContext);
-  const heightAndWidth = bigButtons(settings) ? '60' : '';
-  const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
-    <Button
-      disabled={disabled}
-      isSelected={isSelected}
-      style={{ fontSize }}
-      width={heightAndWidth}
-      height={heightAndWidth}
+    <div
+      style={{ marginTop: '20px' }}
       onClick={() => {
         applyLighting(settings, 'Enqueue');
         enqueue(track);
@@ -38,9 +29,10 @@ const EnqueueButton: FC<IEnqueueButton> = ({
           onComplete();
         }
       }}
-      content={<ListOl />}
-    />
+    >
+      Add to Queue
+    </div>
   );
 };
 
-export default EnqueueButton;
+export default EnqueueLink;

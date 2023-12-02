@@ -1,11 +1,13 @@
 .albumCover {
-  height: 50% !important;
-  width: 50% !important;
-  max-height: 50% !important;
-  max-width: 50% !important;
+  height: 25% !important;
+  width: 25% !important;
+  max-height: 25% !important;
+  max-width: 25% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
+  margin-left: 20px !important;
+  margin-bottom: 10px;
 }
 
 .albumCoverList {

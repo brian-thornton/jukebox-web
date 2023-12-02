@@ -1,5 +1,6 @@
 .coverRow {
   margin-bottom: 0;
+  margin-right: 0;
   padding-bottom: 0;
   background: transparent;
 }
@@ -8,4 +9,12 @@
   @media (max-width: 768px) {
     margin-top: 0 !important;
   }
+}
+
+@media (max-width: 768px) {
+  .coverRow {
+    background: transparent;
+    margin: 0;
+    padding: 0;
+  };
 }

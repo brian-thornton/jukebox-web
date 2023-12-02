@@ -1,5 +1,13 @@
 .paginator {
-  align-items: center !important;
-  display: flex !important;
-  justify-content: center !important;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .paginator {
+    display: flex !important;
+    align-items: center !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
 }

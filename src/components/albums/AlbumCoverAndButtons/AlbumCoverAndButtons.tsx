@@ -50,19 +50,15 @@ const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({ queue, setQueue, trac
   };
 
   return screen?.isMobile ? (
-    <Container className={styles.albumContainer}>
-      <Row className={styles.centeredRow}>
-        <Col xs="9" sm="9">
-          <AlbumCover album={album} />
-        </Col>
-        <Col>
-          {albumButtons}
-        </Col>
-      </Row>
+    <div>
+      <div className={styles.centeredRow}>
+        <AlbumCover album={album} />
+        {albumButtons}
+      </div>
       <Row className={styles.centeredRow} style={albumNameStyle}>
         {album.name}
       </Row>
-    </Container>
+    </div>
   ) : (
     <Col lg={3} xl={3}>
       <Container className={styles.albumContainer}>

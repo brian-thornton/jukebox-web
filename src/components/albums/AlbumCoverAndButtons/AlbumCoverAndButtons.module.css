@@ -1,7 +1,12 @@
 .centeredRow {
   display: flex;
-  align-items: start;
+  align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  background-color: transparent;
+  margin-right: 0;
+  margin-left: 0;
 
   @media (max-width: 768px) {
     max-height: 130px;

@@ -27,7 +27,7 @@ const LibraryAdd: FC<ILibraryAdd> = ({
 }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
-  const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(true);
+  const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(library?.category || '');
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const { isScreenSmall } = settings;
@@ -71,7 +71,7 @@ const LibraryAdd: FC<ILibraryAdd> = ({
             setSelectedLibrary(null);
           }}
         />
-        <Button content={<FormattedMessage id="save" />} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
+        <Button content={<FormattedMessage id="save" />} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
       </Card.Body>
     </Card>
   );

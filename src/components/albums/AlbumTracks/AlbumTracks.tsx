@@ -6,7 +6,6 @@ import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack, IQueue } from '../../interface';
 import AddToPlaylistButton from '../../common/AddToPlaylistButton/AddToPlaylistButton';
-import DownloadButton from '../../DownloadButton';
 import EnqueueButton from '../../EnqueueButton';
 import Item from '../../common/Item/Item';
 import Paginator from '../../common/Paginator/Paginator';
@@ -14,6 +13,7 @@ import PlayNowButton from '../../PlayNowButton';
 import TrackActions from '../../TrackActions';
 import AlbumTrackButtons from '../AlbumTrackButtons/AlbumTrackButtons';
 import classes from './AlbumTracks.module.css';
+import MobileTrackActions from '../MobileTrackActions/MobileTrackActions';
 
 interface IAlbumTracks {
   tracks: Array<ITrack>,
@@ -84,24 +84,12 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, 
 
   const trackRows = () => (
     tracks.slice(realStart, (realStart + pageSize)).map(track => {
-      return screen?.isMobile ? (
+      return (
         <Item
-          onClick={() => setClickedTrack(track)}
+          onClick={screen?.isMobile ? () => setClickedTrack(track) : () => { }} 
           text={track.name}
           buttons={albumModeButtons(track)}
-        />
-      ) : (
-        <Item
-          onClick={() => { }}
-          text={track.name}
-          buttons={(
-            <>
-              {albumModeButtons(track)}
-              {features?.downloadTrack && (
-                <DownloadButton track={track} />
-              )}
-            </>
-          )}
+          mobileActions={<MobileTrackActions track={track} />}
         />
       )
     })

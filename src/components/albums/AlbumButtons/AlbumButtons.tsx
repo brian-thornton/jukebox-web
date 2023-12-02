@@ -53,7 +53,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   return (
     <>
       {isScreenSmall && (
-        <Row className={styles.centeredRow}>
+        <div>
           {features?.play && (
             <Button
               icon={<PlayFill />}
@@ -62,6 +62,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
           )}
           {features?.queue && (
             <Button
+              style={{ marginBottom: '0px' }}
               icon={<ListOl />}
               onClick={() => enqueueTracks(tracks)}
             />
@@ -72,7 +73,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
               onClick={() => navigate('/playlists', { state: { tracks } })}
             />
           )}
-        </Row>
+        </div>
       )}
       {!isScreenSmall && (
         <>

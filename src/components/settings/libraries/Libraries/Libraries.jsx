@@ -135,7 +135,9 @@ const Libraries = () => {
           setSelectedLibrary={setSelectedLibrary}
           setShow={setShow}
           handleHide={() => setShow(false)}
-          handleSave={(category, allowCoverArtDownload) => handleClose(document.getElementById('name').value, category, allowCoverArtDownload)}
+          handleSave={(category, allowCoverArtDownload) => {
+            add({ path: document.getElementById('name').value, category, allowCoverArtDownload });
+          }}
         />
       )}
       {!isCategoryConfigOpen && showDiscover && !(show || selectedLibrary) && (

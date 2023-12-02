@@ -96,6 +96,7 @@ export const coverArtUrl = async (album, skinDefaultCover) => {
 }
 
 export const scan = async (library) => {
+  console.log(library)
   // Clear tracks from previous scans so we are not sending a large
   // volume of data over the wire that will be overwritten.
   delete library.tracks;
