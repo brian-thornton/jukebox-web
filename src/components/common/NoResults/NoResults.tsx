@@ -2,11 +2,9 @@ import Card from 'react-bootstrap/Card';
 import { FC, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './NoResults.module.css';
-import Button from '../../Button';
 
 interface INoResults {
   text?: string,
@@ -28,11 +26,6 @@ const NoResults: FC<INoResults> = ({
 
   return (
     <Container fluid className={styles.noResultsContainer}>
-      {onGoBack && (
-        <Row>
-          <Button onClick={onGoBack} content={<FormattedMessage id="go_back" />} />
-        </Row>
-      )}
       <Row className={styles.noResultsRow}>
         <Card className={styles.noResultsCard} style={noResultsStyle}>
           <Card.Body>

@@ -34,7 +34,7 @@ const LogList = () => {
           setSelectedPage={setSelectedPage}
           totalItems={logs?.totalLogs}
           pageSize={itemsPerPage}
-          items={logs?.messages?.map(m => ({ text: JSON.stringify(m.message) }))}
+          items={logs?.messages?.map(m => ({ onItemClick: (m: ILog) => setSelectedLog(m), text: JSON.stringify(m.message) }))}
           onItemClick={(item: ILog) => setSelectedLog(item)}
           hideButtons={screen?.isMobile}
         />

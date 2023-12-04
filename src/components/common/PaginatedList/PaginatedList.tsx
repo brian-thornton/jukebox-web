@@ -1,11 +1,10 @@
-import { FC, useContext, isValidElement } from 'react';
+import { FC, isValidElement } from 'react';
 import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 
 import { handlers } from '../../../lib/helper/gesture-helper';
 import Item from '../Item/Item';
 import Paginator from '../Paginator/Paginator';
-import { SettingsContext } from '../../layout/SettingsProvider';
 import FullWidthRow from '../FullWidthRow/FullWidthRow';
 import styles from './PaginatedList.module.css';
 
@@ -28,17 +27,12 @@ const PaginatedList: FC<IPaginatedList> = ({
   totalItems,
   setSelectedPage,
   pageSize,
-  applyTopMargin = false,
-  onItemClick,
   hideButtons = false,
 }) => {
   const swipe = useSwipeable(
     handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)),
   );
   const standardItems = items && items.length > 0 && !isValidElement(items[0]);
-  const settings = useContext(SettingsContext);
-  const { isScreenSmall, screen } = settings;
-  const controlClass = screen?.isMobile ? styles.centeredRow : '';
 
   return (
     <Container fluid className="paginated-list-container" {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>

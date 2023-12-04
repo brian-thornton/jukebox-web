@@ -19,25 +19,19 @@ const LibraryMenuMobile: FC<ILibraryMenuMobile> = ({ onClose, showOnline, setSho
   }
 
   const actions = [
-    [
-      { text: 'Show Online', action: () => {
+    {
+      text: 'Show Online', action: () => {
         setShowOnline(!showOnline);
         onClose();
-      }, style: itemStyle },
-      { text: 'Categories', action: () => {}, style: itemStyle },
-    ],
-    [
-      { text: 'Scan All', action: () => {}, style: itemStyle },
-      { text: 'Delete All', action: () => {}, style: itemStyle },
-    ],
-    [
-      { text: 'Discover', action: () => {}, style: itemStyle },
-      { text: 'Add', action: () => {}, style: itemStyle },
-    ],
-    [
-      { text: 'Cancel', action: () => onClose(), style: itemStyle }, 
-    ]
-  ]
+      }, style: itemStyle
+    },
+    { text: 'Categories', action: () => { }, style: itemStyle },
+    { text: 'Scan All', action: () => { }, style: itemStyle },
+    { text: 'Delete All', action: () => { }, style: itemStyle },
+    { text: 'Discover', action: () => { }, style: itemStyle },
+    { text: 'Add', action: () => { }, style: itemStyle },
+    { text: 'Cancel', action: () => onClose(), style: itemStyle },
+  ];
 
   return (
     <SideBySide data={actions} />

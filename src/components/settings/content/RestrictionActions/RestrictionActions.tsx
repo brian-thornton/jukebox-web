@@ -20,35 +20,31 @@ const RestrictionActions: FC<IRestrictionActions> = ({ onClose }) => {
   }
 
   const actions = [
-    [
-      {
-        text: intl.formatMessage({ id: 'enable' }),
-        active: false,
-        action: () => {},
-        style: itemStyle
-      },
-      {
-        text: intl.formatMessage({ id: 'edit' }),
-        active: false,
-        action: () => {},
-        style: itemStyle
-      },
-    ],
-    [
-      {
-        text: intl.formatMessage({ id: 'delete' }),
-        action: () => onClose(),
-        style: itemStyle
-      },
-      {
-        text: intl.formatMessage({ id: 'cancel' }),
-        action: () => onClose(),
-        style: itemStyle
-      },
-    ],
-  ]
+    {
+      text: intl.formatMessage({ id: 'enable' }),
+      active: false,
+      action: () => { },
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'edit' }),
+      active: false,
+      action: () => { },
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'delete' }),
+      action: () => onClose(),
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'cancel' }),
+      action: () => onClose(),
+      style: itemStyle
+    },
+  ];
 
-  return <SideBySide data={actions}  />;
+  return <SideBySide data={actions} />;
 };
 
 export default RestrictionActions;

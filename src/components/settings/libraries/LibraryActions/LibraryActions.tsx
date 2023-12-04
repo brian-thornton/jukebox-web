@@ -33,28 +33,24 @@ const LibraryActions: FC<ILibraryActions> = ({ name, onClose, value }) => {
   };
 
   const actions = [
-    [
-      {
-        text: intl.formatMessage({ id: 'edit' }),
-        active: value === true,
-        action: () => updateFeatureAndClose(),
-        style: itemStyle
-      },
-      {
-        text: intl.formatMessage({ id: 'delete' }),
-        active: value === false,
-        action: () => updateFeatureAndClose(),
-        style: itemStyle
-      },
-    ],
-    [
-      {
-        text: intl.formatMessage({ id: 'cancel' }),
-        action: () => onClose(),
-        style: itemStyle
-      },
-    ],
-  ]
+    {
+      text: intl.formatMessage({ id: 'edit' }),
+      active: value === true,
+      action: () => updateFeatureAndClose(),
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'delete' }),
+      active: value === false,
+      action: () => updateFeatureAndClose(),
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'cancel' }),
+      action: () => onClose(),
+      style: itemStyle
+    },
+  ];
 
   return <SideBySide data={actions} title={name} />;
 };

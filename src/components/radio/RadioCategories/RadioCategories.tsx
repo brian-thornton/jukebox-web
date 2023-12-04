@@ -1,11 +1,9 @@
 import Container from 'react-bootstrap/Container';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext } from 'react';
 import Row from 'react-bootstrap/Row';
-import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
-import ExpandRow from '../../common/ExpandRow/ExpandRow';
 import styles from './RadioCategories.module.css';
 import { bigButtons } from '../../../lib/helper/styleHelper';
 
@@ -15,10 +13,8 @@ interface IRadioCategories {
 }
 
 const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
-  const intl = useIntl();
   const settings = useContext(SettingsContext);
-  const { features, isScreenSmall } = settings;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const { features } = settings;
   const { controlButtonSize } = settings?.styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
   const fontSize = bigButtons(settings) ? '30px' : '';
@@ -35,7 +31,6 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
           disabled={features?.isLocked}
           onClick={() => {
             setCategory(c);
-            setIsExpanded(false);
           }}
           isSelected={c === category}
           width="100%"
@@ -45,17 +40,6 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
       ))}
     </>
   );
-
-  if (isScreenSmall) {
-    return (
-      <ExpandRow
-        buttons={buttons}
-        isExpanded={isExpanded}
-        setIsExpanded={setIsExpanded}
-        text={intl.formatMessage({id: 'categories'})}
-      />
-    );
-  }
 
   return (
     <Container fluid className={styles.categoriesContainer}>

@@ -44,50 +44,42 @@ const PlaylistTrackActions: FC<IPlaylistTrackActions> = ({ track, onClose, apply
   };
 
   const actions = [
-    [
-      {
-        text: intl.formatMessage({ id: 'move_up' }),
-        action: async () => {
-          await moveTrack(track, (index - 1));
-          onClose();
-        },
-        style: itemStyle 
+    {
+      text: intl.formatMessage({ id: 'move_up' }),
+      action: async () => {
+        await moveTrack(track, (index - 1));
+        onClose();
       },
-      {
-        text: intl.formatMessage({ id: 'move_down' }),
-        action: async () => {
-          await moveTrack(track, (index + 1));
-          onClose();
-        },
-        style: itemStyle 
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'move_down' }),
+      action: async () => {
+        await moveTrack(track, (index + 1));
+        onClose();
       },
-    ],
-    [
-      {
-        text: intl.formatMessage({ id: 'play' }),
-        action: () => {
-          playNow();
-          onClose();
-        },
-        style: itemStyle 
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'play' }),
+      action: () => {
+        playNow();
+        onClose();
       },
-      {
-        text: intl.formatMessage({ id: 'delete' }),
-        action: async () => {
-          await deleteTrack(playlistName, track);
-          onClose();
-        },
-        style: itemStyle 
-      }
-    ],
-    [
-      { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
-    ],
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'delete' }),
+      action: async () => {
+        await deleteTrack(playlistName, track);
+        onClose();
+      },
+      style: itemStyle
+    },
+    { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
   ];
-  
-  return (
-    <SideBySide data={actions} />
-  );
+
+  return <SideBySide data={actions} />;
 };
 
 export default PlaylistTrackActions;

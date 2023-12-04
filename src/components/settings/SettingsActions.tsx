@@ -26,31 +26,18 @@ const SettingsActions: FC<ISettingsActions> = ({ setMode, onClose, applyPadding 
   };
 
   const actions = [
-    [
       { text: intl.formatMessage({ id: 'library' }), action: () => selectMode('LIBRARY'), style: itemStyle },
       { text: intl.formatMessage({ id: 'preferences' }), action: () => selectMode('PREFERENCES'), style: itemStyle },
-    ],
-    [
       { text: intl.formatMessage({ id: 'access' }), action: () => selectMode('ACCESS'), style: itemStyle },
       { text: intl.formatMessage({ id: 'style' }), action: () => selectMode('STYLE'), style: itemStyle },
-    ],
-    [
       { text: intl.formatMessage({ id: 'restrictions' }), action: () => selectMode('RESTRICTIONS'), style: itemStyle },
       { text: intl.formatMessage({ id: 'logs' }), action: () => selectMode('LOGS'), style: itemStyle },
-    ],
-    [
       { text: intl.formatMessage({ id: 'metadata' }), action: () => selectMode('METADATA'), style: itemStyle }, 
       { text: intl.formatMessage({ id: 'categories' }), action: () => selectMode('CATEGORIES'), style: itemStyle },
-    ],
-    [
       { text: intl.formatMessage({ id: 'cabinet' }), action: () => selectMode('CABINET'), style: itemStyle },
-    ]
-  ]
+  ];
 
-
-  return (
-    <SideBySide data={actions} />
-  );
+  return <SideBySide data={actions} />;
 };
 
 export default SettingsActions;

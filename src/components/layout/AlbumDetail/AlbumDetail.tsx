@@ -1,5 +1,5 @@
 import Col from 'react-bootstrap/Col';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
@@ -9,7 +9,6 @@ import Confirm from '../../common/Confirm/Confirm';
 import CoverArtSearchModal from '../../../components/albums/CoverArtSearchModal/CoverArtSearchModal';
 import { getAlbumTracks, removeCoverArt } from '../../../lib/service-clients/librarian-client';
 import './AlbumDetail.scss';
-import { SettingsContext } from '../../layout/SettingsProvider';
 import RestrictionModes from '../../settings/content/RestrictionModes/RestrictionModes';
 import { getQueue } from '../../../lib/service-clients/queue-client';
 import AlbumCoverAndButtons from '../../../components/albums/AlbumCoverAndButtons/AlbumCoverAndButtons';
@@ -25,7 +24,6 @@ const AlbumDetail = () => {
   const [isConfirmRemoveCoverArtOpen, setIsConfirmRemoveCoverArtOpen] = useState(false);
   const [reload, setReload] = useState(false);
   const [confirmRestriction, setConfirmRestriction] = useState(false);
-  const settings = useContext(SettingsContext);
   const [queue, setQueue] = useState({ tracks: [], totalTracks: 0 });
   const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
 

@@ -28,7 +28,6 @@ const QueueTrackActions: FC<IQueueTrackActions> = ({ track, onClose, applyPaddin
   };
 
   const actions = [
-    [
       {
         text: intl.formatMessage({ id: 'play' }),
         action: () => {
@@ -45,15 +44,10 @@ const QueueTrackActions: FC<IQueueTrackActions> = ({ track, onClose, applyPaddin
         },
         style: itemStyle
       },
-    ],
-    [
       { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
-    ]
   ];
 
-  return (
-    <SideBySide data={actions} />
-  );
+  return <SideBySide data={actions} />;
 };
 
 export default QueueTrackActions;

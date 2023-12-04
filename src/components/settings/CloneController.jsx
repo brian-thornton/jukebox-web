@@ -1,6 +1,6 @@
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';

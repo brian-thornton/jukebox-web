@@ -3,7 +3,6 @@ import { FC, useContext, useState, useEffect } from 'react';
 
 import { applyLighting } from '../../../lib/helper/lightingHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import Loading from '../../common/Loading/Loading';
 import NoAlbumsLoaded from '../NoAlbumsLoaded/NoAlbumsLoaded';
 import NoAlbumSearchResults from '../NoAlbumsSearchResults/NoAlbumsSearchResults';
 import { usePageSize } from '../album-hooks';
@@ -44,9 +43,8 @@ const AlbumList: FC<IAlbumList> = ({
 
   return (
     <>
-      {loadComplete && totalAlbums === 0 && <NoAlbumsLoaded />}
+      {loadComplete && totalAlbums === 0 && !noResults && <NoAlbumsLoaded />}
       {noResults && <NoAlbumSearchResults />}
-      {/* {isLoading && <Loading text="Loading..." />} */}
       {!isLoading && !noResults && screen?.isMobile && (
         <VerticalAlbumList
           albums={albums}

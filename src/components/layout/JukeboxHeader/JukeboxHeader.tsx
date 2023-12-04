@@ -1,5 +1,3 @@
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar';
 import { FC, useContext, useState } from 'react';
 
 import JukeboxNavLeft from '../JukeboxNavLeft';
@@ -34,8 +32,6 @@ const JukeboxHeader: FC<IJukeboxHeader> = ({
   clearSearch,
 }) => {
   const settings = useContext(SettingsContext);
-  const { screen } = settings;
-  const showBrand = (settings?.styles?.navButtonSize !== 'large' && settings?.styles?.navButtonSize !== 'medium');
   const [isHamburgerClicked, setIsHamburgerClicked] = useState(false);
 
   return (

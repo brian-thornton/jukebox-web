@@ -28,28 +28,24 @@ const ToggleActions: FC<IToggleActions> = ({ name, onClose, value }) => {
   }
 
   const actions = [
-    [
-      {
-        text: intl.formatMessage({ id: 'on' }),
-        active: value === true,
-        action: () => updatePreferenceAndClose(),
-        style: itemStyle
-      },
-      {
-        text: intl.formatMessage({ id: 'off' }),
-        active: value === false,
-        action: () => updatePreferenceAndClose(),
-        style: itemStyle
-      },
-    ],
-    [
-      {
-        text: intl.formatMessage({ id: 'cancel' }),
-        action: () => onClose(),
-        style: itemStyle
-      },
-    ],
-  ]
+    {
+      text: intl.formatMessage({ id: 'on' }),
+      active: value === true,
+      action: () => updatePreferenceAndClose(),
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'off' }),
+      active: value === false,
+      action: () => updatePreferenceAndClose(),
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'cancel' }),
+      action: () => onClose(),
+      style: itemStyle
+    },
+  ];
 
   return <SideBySide data={actions} title={name} />;
 };

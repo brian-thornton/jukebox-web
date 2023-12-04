@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 
 const AlbumDetail = React.lazy(() => import('../albums/AlbumDetail/AlbumDetail'));
 const AlbumList = React.lazy(() => import('../albums/AlbumList/AlbumList'));
-const Filters = React.lazy(() => import('./Filters/Filters'));
 const Genres = React.lazy(() => import('../genres/Genres/Genres'));
 const PlaylistsViewer = React.lazy(() => import('../playlists/PlaylistViewer/PlaylistsViewer'));
 const Queue = React.lazy(() => import('../queue/Queue/Queue'));
@@ -76,15 +75,6 @@ const JukeboxRoutes: FC<IJukeboxRoutes> = ({
       />
       <Route path="/albums/:id" element={<AlbumDetail />} />
       <Route path="/albums/categories/:id" element={<AlbumList search={search} display={display} />} />
-      <Route
-        path="/filters"
-        element={(
-          <Filters
-            selectedLibraries={selectedLibraries}
-            setSelectedLibraries={setSelectedLibraries}
-          />
-        )}
-      />
       <Route path="/playlists" element={<PlaylistsViewer />} />
       <Route path="/queue" element={<Queue />} />
       <Route path="/search" element={<Search setSearchText={setSearch} />} />

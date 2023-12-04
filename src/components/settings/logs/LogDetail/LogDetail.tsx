@@ -22,20 +22,16 @@ const LogList: FC<ILogDetail> = ({ log, onClose }) => {
   };
 
   return (
-    <Container fluid>
-      <Row>
-        <Button content={<FormattedMessage id="go_back" />} onClick={onClose} />
-      </Row>
-      <Row>
-        <Card className={styles.logCard} style={logDetailStyle}>
-          <Card.Body>
-            <Card.Text>
-              {log.text}
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </Row>
-    </Container>
+    <div className={styles.logContainer}>
+      <Button content={<FormattedMessage id="go_back" />} onClick={onClose} />
+      <Card className={styles.logCard} style={logDetailStyle}>
+        <Card.Body>
+          <Card.Text>
+            {log.text}
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </div>
   );
 };
 

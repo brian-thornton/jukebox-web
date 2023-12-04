@@ -1,5 +1,5 @@
 import Nav from 'react-bootstrap/Nav';
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 
 import { SettingsContext } from './SettingsProvider';
 import Button from '../Button';

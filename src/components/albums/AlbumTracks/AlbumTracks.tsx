@@ -13,7 +13,6 @@ import PlayNowButton from '../../PlayNowButton';
 import TrackActions from '../../TrackActions';
 import AlbumTrackButtons from '../AlbumTrackButtons/AlbumTrackButtons';
 import classes from './AlbumTracks.module.css';
-import MobileTrackActions from '../MobileTrackActions/MobileTrackActions';
 
 interface IAlbumTracks {
   tracks: Array<ITrack>,
@@ -89,7 +88,6 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, 
           onClick={screen?.isMobile ? () => setClickedTrack(track) : () => { }} 
           text={track.name}
           buttons={albumModeButtons(track)}
-          mobileActions={<MobileTrackActions track={track} />}
         />
       )
     })

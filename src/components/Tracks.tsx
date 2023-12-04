@@ -27,7 +27,7 @@ const Tracks: FC<ITracks> = ({ search }) => {
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   let trackHeight = bigButtons(settings) ? 70 : 50;
   trackHeight = isScreenSmall ? 35 : trackHeight;
-  const { totalTracks, tracks, tracksLoaded, searchInProgress } = useTracks(selectedPage, realPageSize, search); 
+  const { totalTracks, tracks, tracksLoaded, searchInProgress } = useTracks(selectedPage, realPageSize, search);
   const noResults = search && !tracks.length;
 
   useEffect(() => {
@@ -63,15 +63,19 @@ const Tracks: FC<ITracks> = ({ search }) => {
 
   return (
     <>
-      {tracksLoaded && totalTracks === 0 && (
-        <NoResults title={intl.formatMessage({ id: 'no_tracks_title' })} text={intl.formatMessage({ id: 'no_tracks_text' })} />
+      {searchInProgress && <Loading text="Loading..." />}
+      {tracksLoaded && totalTracks === 0 && !noResults && (
+        <NoResults
+          title={intl.formatMessage({ id: 'no_tracks_title' })}
+          text={intl.formatMessage({ id: 'no_tracks_text' })}
+        />
       )}
       {tracksLoaded && noResults && (
-        <div>
-          <NoResults title={intl.formatMessage({ id: 'no_search_results_title' })} text={intl.formatMessage({ id: 'no_search_results_text' })} />
-        </div>
+        <NoResults
+          title={intl.formatMessage({ id: 'no_search_results_title' })}
+          text={intl.formatMessage({ id: 'no_search_results_text' })}
+        />
       )}
-      {searchInProgress && <Loading text="Loading..." />}
       {!noResults && !searchInProgress && trackList()}
     </>
   );

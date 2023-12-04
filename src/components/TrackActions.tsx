@@ -32,33 +32,29 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false })
   };
 
   const actions = [
-    [
-      {
-        text: intl.formatMessage({ id: 'play' }),
-        action: () => {
-          playNow();
-          onClose();
-        },
-        style: itemStyle
+    {
+      text: intl.formatMessage({ id: 'play' }),
+      action: () => {
+        playNow();
+        onClose();
       },
-      {
-        text: intl.formatMessage({ id: 'enqueue' }),
-        action: () => {
-          enqueue(track);
-          onClose();
-        },
-        style: itemStyle
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'enqueue' }),
+      action: () => {
+        enqueue(track);
+        onClose();
       },
-    ],
-    [
-      {
-        text: intl.formatMessage({ id: 'add_to_playlist' }),
-        action: () => { navigate('/playlists', { state: { tracks: [track] } }); },
-        style: itemStyle
-      },
-      { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
-    ]
-  ]
+      style: itemStyle
+    },
+    {
+      text: intl.formatMessage({ id: 'add_to_playlist' }),
+      action: () => { navigate('/playlists', { state: { tracks: [track] } }); },
+      style: itemStyle
+    },
+    { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
+  ];
 
   return (
     <SideBySide data={actions} />

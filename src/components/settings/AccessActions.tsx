@@ -33,7 +33,6 @@ const AccessActions: FC<IAccessActions> = ({ name, onClose, value }) => {
   };
 
   const actions = [
-    [
       {
         text: intl.formatMessage({ id: 'on' }),
         active: value === true,
@@ -46,15 +45,12 @@ const AccessActions: FC<IAccessActions> = ({ name, onClose, value }) => {
         action: () => updateFeatureAndClose(),
         style: itemStyle
       },
-    ],
-    [
       {
         text: intl.formatMessage({ id: 'cancel' }),
         action: () => onClose(),
         style: itemStyle
       },
-    ],
-  ]
+  ];
 
   return <SideBySide data={actions} title={name} />;
 };

@@ -1,8 +1,5 @@
-import Nav from 'react-bootstrap/Nav';
 import { FC, useContext } from 'react';
 import {
-  Funnel,
-  FunnelFill,
   Grid,
   Grid3x3,
   InfoCircle,
@@ -10,7 +7,6 @@ import {
   UnlockFill,
 } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import { FormattedMessage } from 'react-intl';
 
 import Button from '../Button';
 import './Jukebox.scss';
@@ -57,8 +53,6 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
 
   const locked = <LockFill style={{ fontSize }} />;
   const unlocked = <UnlockFill style={{ fontSize }} />;
-  const funnelFill = <FunnelFill style={{ fontSize }} />;
-  const funnel = <Funnel style={{ fontSize }} />;
   const info = <InfoCircle style={{ fontSize }} />;
 
   return (
@@ -69,15 +63,6 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
           setSearch={setSearch}
           lastModule={lastModule}
           clearSearch={clearSearch}
-        />
-      )}
-      {!isScreenSmall && !search && !applyWidth && features?.albums && pathname.includes('/albums') && preferences?.showLibraryFilter && (
-        <Button
-          width={applyWidth ? height : ''}
-          height={height}
-          disabled={features.isLocked}
-          onClick={() => navigate('/filters', { state: { selectedLibraries } })}
-          content={selectedLibraries?.length ? funnelFill : funnel}
         />
       )}
       {!isScreenSmall && settings?.features?.albums && !applyWidth && !search && pathname === '/albums' && preferences?.showAlbumTable && (

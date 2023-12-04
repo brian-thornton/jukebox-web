@@ -18,17 +18,15 @@ const AddToPlaylistButton: FC<IAddToPlaylistButton> = ({ track }) => {
   const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
-    <>
-      <Button
-        style={{ fontSize }}
-        width={heightAndWidth}
-        height={heightAndWidth}
-        onClick={() => {
-          navigate('/playlists', { state: { tracks: [track] } });
-        }}
-        icon={<PlusSquare />}
-      />
-    </>
+    <Button
+      style={{ fontSize }}
+      width={heightAndWidth}
+      height={heightAndWidth}
+      onClick={() => {
+        navigate('/playlists', { state: { tracks: [track] } });
+      }}
+      icon={<PlusSquare />}
+    />
   );
 };
 

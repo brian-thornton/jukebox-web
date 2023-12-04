@@ -1,7 +1,4 @@
-import { FC, useContext, useState } from 'react';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import { Row, Col } from 'react-bootstrap';
-import { ThreeDotsVertical } from 'react-bootstrap-icons';
+import { FC, useContext } from 'react';
 
 import CheckToggle from '../CheckToggle/CheckToggle';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -29,12 +26,8 @@ const Item: FC<IItem> = ({
   includeCheckbox,
   onCheck,
   checked,
-  actionVisible,
   font,
-  background,
-  allowToggle = true,
-  mobileActions,
-  mobileOffset,
+  background
 }) => {
   const settings = useContext(SettingsContext);
   const { styles } = settings || {};
@@ -45,36 +38,12 @@ const Item: FC<IItem> = ({
     fontFamily: font || styles?.listFont,
   };
 
-  // return (
-  //   <ListGroupItem
-  //     className={classes.itemStyle}
-  //     style={itemStyle}
-  //     onClick={(e) => {
-  //       if (onClick) {
-  //         onClick();
-  //       }
-  //     }}
-  //   >
-  //     <Row>
-  //       <Col lg={actionVisible ? '6' : '8'} xl={actionVisible ? '6' : '8'} md="6">
-  //         <div className={classes.itemText}>
-  //           {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
-  //           {text}
-  //         </div>
-  //       </Col>
-  //       <Col>
-  //         <div className={classes.itemButtons}>
-  //           {!settings.isScreenSmall && buttons}
-  //         </div>
-  //       </Col>
-  //     </Row>
-  //   </ListGroupItem>
-  // );
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
-    <div className={classes.itemContainer} style={itemStyle}>
+    <div className={classes.itemContainer} style={itemStyle} onClick={(e) => {
+      if (onClick) {
+        onClick();
+      }
+    }}>
       <div className={classes.itemLeft}>
         {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
         {text}
@@ -82,16 +51,6 @@ const Item: FC<IItem> = ({
       <div className={classes.buttons}>
         {buttons}
       </div>
-      <div className={classes.kebob}>
-        <ThreeDotsVertical onClick={() => setIsMenuOpen(!isMenuOpen)} />
-      </div>
-      {isMenuOpen && (
-        <div className={classes.tooltipContainer}>
-          <div className={classes.tooltip} style={{top: mobileOffset}} onClick={() => setIsMenuOpen(false)}>
-            {mobileActions}
-          </div>
-        </div>
-      )}
     </div >
   )
 };
