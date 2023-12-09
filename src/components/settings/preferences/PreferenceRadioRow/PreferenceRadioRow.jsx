@@ -2,7 +2,7 @@ import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
 

@@ -44,18 +44,13 @@ const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({ queue, setQueue, trac
     </Container>
   );
 
-  const albumNameStyle = {
-    color: settings?.styles?.fontColor,
-    fontFamily: settings?.styles?.buttonFont,
-  };
-
   return screen?.isMobile ? (
     <div>
       <div className={styles.centeredRow}>
         <AlbumCover album={album} />
         {albumButtons}
       </div>
-      <Row className={styles.centeredRow} style={albumNameStyle}>
+      <Row className={styles.centeredRow}>
         {album.name}
       </Row>
     </div>
@@ -65,7 +60,7 @@ const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({ queue, setQueue, trac
         <Row className={styles.centeredRow}>
           <AlbumCover album={album} />
         </Row>
-        <Row className={styles.centeredRow} style={albumNameStyle}>
+        <Row className={styles.centeredRow}>
           {album.name}
         </Row>
         {!clickedTrack && <Row className={styles.centeredRow}>{albumButtons}</Row>}

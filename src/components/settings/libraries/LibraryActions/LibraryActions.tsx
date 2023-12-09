@@ -16,12 +16,6 @@ const LibraryActions: FC<ILibraryActions> = ({ name, onClose, value }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
 
-  const itemStyle = {
-    background: settings?.styles?.trackBackgroundColor,
-    color: settings?.styles?.fontColor,
-    margin: '3px',
-  }
-
   const updateFeatureAndClose = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.features[name] = !value;
@@ -36,19 +30,16 @@ const LibraryActions: FC<ILibraryActions> = ({ name, onClose, value }) => {
     {
       text: intl.formatMessage({ id: 'edit' }),
       active: value === true,
-      action: () => updateFeatureAndClose(),
-      style: itemStyle
+      action: () => updateFeatureAndClose()
     },
     {
       text: intl.formatMessage({ id: 'delete' }),
       active: value === false,
-      action: () => updateFeatureAndClose(),
-      style: itemStyle
+      action: () => updateFeatureAndClose()
     },
     {
       text: intl.formatMessage({ id: 'cancel' }),
-      action: () => onClose(),
-      style: itemStyle
+      action: () => onClose()
     },
   ];
 

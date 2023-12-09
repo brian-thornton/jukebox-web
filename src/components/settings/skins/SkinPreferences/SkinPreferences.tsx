@@ -2,11 +2,10 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
-import { SettingsContext } from '../../../layout/SettingsProvider';
 import Button from '../../../Button';
 import NameInput from '../../../common/NameInput/NameInput';
 import { ISkin } from '../../../interface';
@@ -27,9 +26,6 @@ const SkinPreferences: FC<ISkinPreferences> = ({ skin, onClose }) => {
   const [controlButtonSize, setControlButtonSize] = useState(skin.controlButtonSize || 'small');
   const [controlUseBackground, setControlUseBackground] = useState(skin.controlUseBackground || false);
   const [updatedName, setUpdatedName] = useState();
-  const settings = useContext(SettingsContext);
-  const { styles } = settings;
-  const { trackBackgroundColor, fontColor } = styles || {}
 
   const saveSkin = (newName = skin.name) => {
     deleteSkin(skin.name).then(() => {
@@ -58,9 +54,9 @@ const SkinPreferences: FC<ISkinPreferences> = ({ skin, onClose }) => {
         <Button content={<FormattedMessage id="back_to_skin" />} onClick={onClose} />
       </Row>
       <Row>
-        <Card className={classes.skinDetailCard} style={{ background: trackBackgroundColor }}>
-          <Card.Title className={classes.skinDetailCardTitle} style={{ color: fontColor }}>
-            <Container fluid className="skin-detail-card-container" style={{ background: trackBackgroundColor }}>
+        <Card className={classes.skinDetailCard}>
+          <Card.Title className={classes.skinDetailCardTitle}>
+            <Container fluid className={classes.skinDetailCardContainer}>
               <Row className={classes.skinNameRow}>
                 <Col lg="2" md="2" sm="2">
                   <div className={classes.skinNameLabel}><FormattedMessage id="skin_name" /></div>

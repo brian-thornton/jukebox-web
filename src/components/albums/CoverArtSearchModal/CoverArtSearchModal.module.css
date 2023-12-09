@@ -9,6 +9,7 @@
 
 .coverArtSearchCenter {
   align-items: center;
+  color: var(--font-color);
   display: flex; 
   justify-content: center;
   background: transparent !important;

@@ -32,12 +32,10 @@ const RestrictionModeDetail: FC<IRestrictionModeDetail> = ({ restrictionMode, on
       {
         text: albumPath,
         buttons: (
-          <>
-            <Button
-              content={<TrashFill />}
-              onClick={() => removeRestriction(albumPath)}
-            />
-          </>
+          <Button
+            content={<TrashFill />}
+            onClick={() => removeRestriction(albumPath)}
+          />
         ),
       }
     ))
@@ -48,8 +46,8 @@ const RestrictionModeDetail: FC<IRestrictionModeDetail> = ({ restrictionMode, on
       {restrictionMode.content?.length < 1 && (
         <NoResults
           applyMargin={false}
-          title={intl.formatMessage({id: "no_restrictions_title"})}
-          text={intl.formatMessage({id: "no_restrictions_text"})}
+          title={intl.formatMessage({ id: "no_restrictions_title" })}
+          text={intl.formatMessage({ id: "no_restrictions_text" })}
           onGoBack={onClose}
         />
       )}
@@ -60,7 +58,7 @@ const RestrictionModeDetail: FC<IRestrictionModeDetail> = ({ restrictionMode, on
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
           pageSize={realPageSize}
-          onItemClick={() => {}}
+          onItemClick={() => { }}
         />
       )}
     </>

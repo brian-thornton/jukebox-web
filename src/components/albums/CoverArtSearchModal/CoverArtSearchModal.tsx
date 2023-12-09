@@ -1,7 +1,7 @@
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { FC, useContext, useState } from 'react';
+import { FC, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 
@@ -10,7 +10,6 @@ import Button from '../../Button';
 import NameInput from '../../common/NameInput/NameInput';
 import { saveCoverArt } from '../../../lib/service-clients/librarian-client';
 import styles from './CoverArtSearchModal.module.css';
-import { SettingsContext } from '../../layout/SettingsProvider';
 
 const albumArt = require('album-art');
 
@@ -26,8 +25,6 @@ const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
   const [results, setResults] = useState();
   const [query, setQuery] = useState(album.name);
   const saveCoverArtToLibrary = () => saveCoverArt({ album, url: results });
-  const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
 
   const handleResult = (data: any) => {
     if (data.toString().includes('http')) {
@@ -56,10 +53,6 @@ const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
     handleClose();
   };
 
-  const resultsStyle = {
-    color: settings?.styles?.fontColor,
-  };
-
   return (
     <div className={styles.coverArtSearch}>
       <Container>
@@ -69,7 +62,7 @@ const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
         {!isLoading && results && (
           <Row className={styles.coverArtSearchCenter}>
             <Col>
-              <Card className={`${styles.coverArtSearchCenter} ${styles.albumCover}`} style={resultsStyle}>
+              <Card className={`${styles.coverArtSearchCenter} ${styles.albumCover}`}>
                 <Card.Title><FormattedMessage id="results" /></Card.Title>
                 <Card.Img className={styles.coverArtSearchAlbumCover} src={results} onClick={handleSave} />
               </Card>

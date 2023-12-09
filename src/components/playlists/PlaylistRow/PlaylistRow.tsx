@@ -30,24 +30,19 @@ const PlaylistRow: FC<IPlaylistRow> = ({
     <Item
       onClick={() => onSelect(playlist.name)}
       text={playlist.name}
-      buttons={(
-        <>
-          {addMode && (
-            <Button
-              height={buttonHeight.toString()}
-              onClick={() => onAdd(playlist.name)}
-              content={<FormattedMessage id="add" />}
-            />
-          )}
-          {!addMode && (
-            <Button
-              style={{ fontSize }}
-              height={buttonHeight.toString()}
-              onClick={() => onSelect(playlist.name)}
-              content={<PencilSquare />}
-            />
-          )}
-        </>
+      buttons={addMode ? (
+        <Button
+          height={buttonHeight.toString()}
+          onClick={() => onAdd(playlist.name)}
+          content={<FormattedMessage id="add" />}
+        />
+      ) : (
+        <Button
+          style={{ fontSize }}
+          height={buttonHeight.toString()}
+          onClick={() => onSelect(playlist.name)}
+          content={<PencilSquare />}
+        />
       )}
     />
   );

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
@@ -113,6 +113,15 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     />
   );
 
+  const paginatorProps = {
+    items: items(),
+    selectedPage,
+    setSelectedPage,
+    pageSize: realPageSize,
+    totalItems: tracks.length,
+    hideButtons: screen.isMobile,
+  }
+
   const content = () => {
     if (isEmpty) {
       return (
@@ -133,14 +142,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
         cancelText='Cancel'
       />
     ) : (
-      <PaginatedList
-        items={items()}
-        selectedPage={selectedPage}
-        setSelectedPage={setSelectedPage}
-        pageSize={realPageSize}
-        totalItems={tracks.length}
-        hideButtons={screen.isMobile}
-      />
+      <PaginatedList {...paginatorProps} />
     );
   };
 
@@ -177,12 +179,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
             <PaginatedList
               applyTopMargin
               topLevelControls={controls}
-              items={items()}
-              selectedPage={selectedPage}
-              setSelectedPage={setSelectedPage}
-              pageSize={realPageSize}
-              totalItems={tracks.length}
-              hideButtons={screen.isMobile}
+              {...paginatorProps}
             />
           )}
         </>

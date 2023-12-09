@@ -1,0 +1,8 @@
+.skinGeneratorContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.skinPreview {
+  width: 50vw;
+}

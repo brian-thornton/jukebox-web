@@ -1,4 +1,6 @@
 .centeredRow {
+  color: var(--font-color);
+  font-family: var(--button-font);
   display: flex;
   align-items: center;
   justify-content: center;

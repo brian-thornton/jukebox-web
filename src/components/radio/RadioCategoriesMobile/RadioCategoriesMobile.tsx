@@ -1,6 +1,5 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 
-import { SettingsContext } from '../../layout/SettingsProvider';
 import SideBySide from '../../common/SideBySide/SideBySide';
 
 interface IRadioCategoriesMobile {
@@ -10,29 +9,21 @@ interface IRadioCategoriesMobile {
 }
 
 const RadioCategoriesMobile: FC<IRadioCategoriesMobile> = ({ setCategory, category, onClose }) => {
-  const settings = useContext(SettingsContext);
-
-  const itemStyle = {
-    background: settings?.styles?.trackBackgroundColor,
-    color: settings?.styles?.fontColor,
-    margin: '3px',
-  }
-
   const selectCategory = (selectedCategory: string) => {
     setCategory(selectedCategory);
     onClose();
   };
 
   const actions = [
-      { text: 'Rock', action: () => selectCategory('Rock'), style: itemStyle },
-      { text: 'Pop', action: () => selectCategory('Pop'), style: itemStyle },
-      { text: '70s', action: () => selectCategory('70s'), style: itemStyle },
-      { text: '80s', action: () => selectCategory('80s'), style: itemStyle },
-      { text: '90s', action: () => selectCategory('90s'), style: itemStyle },
-      { text: 'Oldies', action: () => selectCategory('Oldies'), style: itemStyle },
-      { text: 'Country', action: () => selectCategory('Country'), style: itemStyle }, 
-      { text: 'Rap', action: () => selectCategory('Rap'), style: itemStyle },
-      { text: 'Dance', action: () => selectCategory('Dance'), style: itemStyle }, 
+      { text: 'Rock', action: () => selectCategory('Rock')},
+      { text: 'Pop', action: () => selectCategory('Pop')},
+      { text: '70s', action: () => selectCategory('70s')},
+      { text: '80s', action: () => selectCategory('80s')},
+      { text: '90s', action: () => selectCategory('90s')},
+      { text: 'Oldies', action: () => selectCategory('Oldies')},
+      { text: 'Country', action: () => selectCategory('Country')}, 
+      { text: 'Rap', action: () => selectCategory('Rap')},
+      { text: 'Dance', action: () => selectCategory('Dance')}, 
   ];
 
   return <SideBySide data={actions} />;

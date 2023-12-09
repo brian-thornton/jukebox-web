@@ -37,13 +37,11 @@ const CategoryRow: FC<ICategoryRow> = ({ category }) => {
             />
           )}
           {deleteConfirmCategory !== category && (
-            <>
-              <Button
-                disabled={category === 'Albums'}
-                onClick={() => setDeleteConfirmCategory(category)}
-                content={<Trash />}
-              />
-            </>
+            <Button
+              disabled={category === 'Albums'}
+              onClick={() => setDeleteConfirmCategory(category)}
+              content={<Trash />}
+            />
           )}
         </>
       )}

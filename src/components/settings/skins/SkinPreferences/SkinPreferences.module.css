@@ -1,13 +1,15 @@
 .skinDetailCard {
-  background: transparent !important;
+  background: var(--track-background-color) !important;
   width: 100% !important;
 }
 
 .skinDetailCardContainer {
+  background: var(--track-background-color) !important;
   width: 100% !important;
 };
 
 .skinDetailCardTitle {
+  color: var(--font-color) !important;
   margin-top: 5px !important;
 };
 

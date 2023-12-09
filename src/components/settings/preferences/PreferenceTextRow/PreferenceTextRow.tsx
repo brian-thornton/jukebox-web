@@ -17,21 +17,11 @@ interface IPreferenceTextRow {
 
 const PreferenceTextRow: FC<IPreferenceTextRow> = ({ rowName, value }) => {
   const settings = useContext(SettingsContext);
-  const styles = settings?.styles;
-  const { screen } = settings || {};
 
   const rowLabel = (labelText: string) => {
     const result = labelText.replace(/([A-Z])/g, ' $1');
     const finalResult = result.charAt(0).toUpperCase() + result.slice(1);
     return finalResult;
-  };
-
-  const itemStyle = {
-    color: styles?.fontColor,
-    background: styles?.trackBackgroundColor,
-    fontFamily: styles?.listFont,
-    width: '100%',
-    height: '60px',
   };
 
   const debouncedUpdate = useCallback(
@@ -41,8 +31,8 @@ const PreferenceTextRow: FC<IPreferenceTextRow> = ({ rowName, value }) => {
   );
 
   return (
-    <ListGroupItem style={itemStyle}>
-      <Container fluid className={classes.preferenceTextRowContainer} style={{paddingLeft: 0, marginLeft: 0}}>
+    <ListGroupItem className={classes.preferenceItem}>
+      <Container fluid className={classes.preferenceTextRowContainer}>
         <Row>
           <Col lg="12">
             <NameInput
@@ -56,6 +46,5 @@ const PreferenceTextRow: FC<IPreferenceTextRow> = ({ rowName, value }) => {
     </ListGroupItem>
   );
 };
-
 
 export default PreferenceTextRow;

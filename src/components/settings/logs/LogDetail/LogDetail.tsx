@@ -1,7 +1,5 @@
 import { FC, useContext } from 'react';
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../../../Button';

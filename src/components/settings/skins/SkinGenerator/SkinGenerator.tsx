@@ -1,18 +1,20 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 
 import ColorPaletteList from "../ColorPaletteList/ColorPaletteList";
 import SkinPreview from "../SkinPreview/SkinPreview";
+
+import styles from './SkinGenerator.module.css';
 
 const SkinGenerator: FC = () => {
   const [selectedPalette, setSelectedPalette] = useState();
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div className={styles.skinGeneratorContainer}>
       <div>
         <ColorPaletteList onSelect={(palette: any): any => setSelectedPalette(palette)} />
       </div>
       {selectedPalette && (
-        <div style={{ width: '50vw' }}>
+        <div className={styles.skinPreview}>
           <SkinPreview palette={selectedPalette} />
         </div>
       )}

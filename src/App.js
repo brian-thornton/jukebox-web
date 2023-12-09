@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
 import { gql, useQuery } from "@apollo/client";
 
-// import './App.css';
+import './App.css';
 import { getSettings } from './lib/service-clients/settings-client';
 import { getStatus } from './lib/service-clients/status-client';
 import { SettingsContext } from './components/layout/SettingsProvider'
@@ -156,66 +156,86 @@ function App() {
     </div>
   );
 
+  const theme = {
+    "--background-color": settings?.styles?.backgroundColor,
+    "--header-color": settings?.styles?.headerColor,
+    "--header-font": settings?.styles?.headerFont,
+    "--footer-color": settings?.styles?.footerColor,
+    "--font-color": settings?.styles?.fontColor,
+    "--font-weight": "normal",
+    "--background-color": settings?.styles?.backgroundColor,
+    "--popup-background-color": settings?.styles?.popupBackgroundColor,
+    "--button-background-color": settings?.styles?.buttonBackgroundColor,
+    "--active-button-color": settings?.styles?.activeButtonColor,
+    "--button-font": settings?.styles?.buttonFont,
+    "--button-font-color": settings?.styles?.buttonFontColor,
+    "--button-font-weight": settings?.styles?.buttonFontWeight,
+    "--track-background-color": settings?.styles?.trackBackgroundColor,
+    "--list-font": settings?.styles?.listFont,
+  }
+
   return (
-    <Suspense>
-      <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, screen }}>
-        {settings && isPinOpen && (
-          <JukeboxRoot>
-            <PinEntry
-              onAuthorize={() => {
-                getSettings().then((data) => {
-                  updateFeature('isLocked', !data.features.isLocked, '/albums');
-                  setIsPinOpen(false)
-                });
-              }}
-              onCancel={() => setIsPinOpen(false)}
-            />
-          </JukeboxRoot>
-        )}
-        {settings && !isPinOpen && (
-          <JukeboxRoot>
-            <JukeboxHeader
-              display={display}
-              setDisplay={setDisplay}
-              setSelectedLibraries={setSelectedLibraries}
-              selectedLibraries={selectedLibraries}
-              search={search}
-              setSearch={setSearch}
-              setLastModule={setLastModule}
-              clearSearch={() => {
-                setSearch('');
-                setTempSearch('');
-              }}
-              lastModule={lastModule}
-              setIsLocked={(value) => {
-                setIsLocked(value);
-                updateFeature('isLocked', value);
-              }}
-              setIsPinOpen={setIsPinOpen}
-            />
-            <JukeboxRoutes
-              display={display}
-              search={search}
-              selectedLibraries={selectedLibraries}
-              setMediaType={setMediaType}
-              setSearch={setSearch}
-              setSelectedLibraries={setSelectedLibraries}
-              setStartsWithFilter={setStartsWithFilter}
-              setTempSearch={setTempSearch}
-              startsWithFilter={startsWithFilter}
-              tempSearch={tempSearch}
-            />
-            <JukeboxFooter
-              mediaType={mediaType}
-              setMediaType={setMediaType}
-              search={search}
-              setSearch={setSearch}
-              nowPlaying={nowPlaying}
-            />
-          </JukeboxRoot>
-        )}
-      </SettingsContext.Provider>
-    </Suspense>
+    <div style={theme}>
+      <Suspense>
+        <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, screen }}>
+          {settings && isPinOpen && (
+            <JukeboxRoot>
+              <PinEntry
+                onAuthorize={() => {
+                  getSettings().then((data) => {
+                    updateFeature('isLocked', !data.features.isLocked, '/albums');
+                    setIsPinOpen(false)
+                  });
+                }}
+                onCancel={() => setIsPinOpen(false)}
+              />
+            </JukeboxRoot>
+          )}
+          {settings && !isPinOpen && (
+            <JukeboxRoot>
+              <JukeboxHeader
+                display={display}
+                setDisplay={setDisplay}
+                setSelectedLibraries={setSelectedLibraries}
+                selectedLibraries={selectedLibraries}
+                search={search}
+                setSearch={setSearch}
+                setLastModule={setLastModule}
+                clearSearch={() => {
+                  setSearch('');
+                  setTempSearch('');
+                }}
+                lastModule={lastModule}
+                setIsLocked={(value) => {
+                  setIsLocked(value);
+                  updateFeature('isLocked', value);
+                }}
+                setIsPinOpen={setIsPinOpen}
+              />
+              <JukeboxRoutes
+                display={display}
+                search={search}
+                selectedLibraries={selectedLibraries}
+                setMediaType={setMediaType}
+                setSearch={setSearch}
+                setSelectedLibraries={setSelectedLibraries}
+                setStartsWithFilter={setStartsWithFilter}
+                setTempSearch={setTempSearch}
+                startsWithFilter={startsWithFilter}
+                tempSearch={tempSearch}
+              />
+              <JukeboxFooter
+                mediaType={mediaType}
+                setMediaType={setMediaType}
+                search={search}
+                setSearch={setSearch}
+                nowPlaying={nowPlaying}
+              />
+            </JukeboxRoot>
+          )}
+        </SettingsContext.Provider>
+      </Suspense>
+    </div>
   );
 }
 

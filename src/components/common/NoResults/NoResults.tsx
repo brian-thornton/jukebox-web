@@ -1,9 +1,8 @@
 import Card from 'react-bootstrap/Card';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
-import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './NoResults.module.css';
 
 interface INoResults {
@@ -16,31 +15,22 @@ interface INoResults {
 
 const NoResults: FC<INoResults> = ({
   text, title, controls, applyMargin = true, onGoBack,
-}) => {
-  const settings = useContext(SettingsContext);
-
-  const noResultsStyle = {
-    color: settings?.styles?.fontColor,
-    width: '100%',
-  };
-
-  return (
-    <Container fluid className={styles.noResultsContainer}>
-      <Row className={styles.noResultsRow}>
-        <Card className={styles.noResultsCard} style={noResultsStyle}>
-          <Card.Body>
-            <Card.Title className={styles.noResultsTitle}>{title}</Card.Title>
-            <Card.Text className={styles.noResultsText}>
-              {text}
-            </Card.Text>
-            <div className={styles.noResultsText}>
-              {controls}
-            </div>
-          </Card.Body>
-        </Card>
-      </Row>
-    </Container>
-  );
-};
+}) => (
+  <Container fluid className={styles.noResultsContainer}>
+    <Row className={styles.noResultsRow}>
+      <Card className={styles.noResultsCard}>
+        <Card.Body>
+          <Card.Title className={styles.noResultsTitle}>{title}</Card.Title>
+          <Card.Text className={styles.noResultsText}>
+            {text}
+          </Card.Text>
+          <div className={styles.noResultsText}>
+            {controls}
+          </div>
+        </Card.Body>
+      </Card>
+    </Row>
+  </Container>
+);
 
 export default NoResults;

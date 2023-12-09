@@ -16,15 +16,10 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   const settings = useContext(SettingsContext);
   const { coverArt, loading: coverArtLoading } = useCoverArt(album, settings);
   const navigate = useNavigate();
-  const { styles, preferences, features } = settings || {};
+  const { preferences, features } = settings || {};
   const { coverSize, showAlbumName } = preferences || { coverSize: 'medium' };
   const isMediumCover = coverSize === 'medium';
   let albumImageClass;
-
-  const albumNameStyle = {
-    color: styles?.fontColor,
-    fontFamily: styles?.buttonFont,
-  };
 
   const albumCardStyle = {
     width: isMediumCover ? '303px' : '203px',
@@ -52,7 +47,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
     >
       <Card.Img src={coverArt} className={albumImageClass} />
       {!coverArtOnly && (
-        <Card.Body className={classes.albumCardBody} style={albumNameStyle}>
+        <Card.Body className={classes.albumCardBody}>
           {showAlbumName && album.name}
         </Card.Body>
       )}

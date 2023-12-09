@@ -1,9 +1,10 @@
 .noResultsCard {
   background: transparent !important;
   border-color: black !important;
+  color: var(--font-color) !important;
   height: 100% !important;
   min-height: 200px !important;
-  
+  width: 100% !important;
 }
 
 .noResultsContainer {

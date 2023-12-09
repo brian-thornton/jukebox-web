@@ -24,8 +24,10 @@
 .headerRight {}
 
 .leftWrapper {
+  color: var(--font-color);
   display: flex;
   flex-direction: row;
+  font-family: var(--header-font);
 }
 
 .brand {
