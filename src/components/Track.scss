@@ -1,5 +1,7 @@
 .trackCard {
   border-color: #708090 !important;
+  color: var(--font-color) !important;
+  background: var(--track-background-color) !important;
 }
 
 .trackContainer {
@@ -15,6 +17,8 @@
   text-overflow: ellipsis !important;
   white-space: nowrap;
   width: 100% !important;
+  font-family: var(--list-font) !important;
+  margin-top: 15px !important;
 }
 
 .trackRow {

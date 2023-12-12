@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { ITrack } from './interface';
@@ -7,7 +7,6 @@ import { enqueue } from '../lib/service-clients/queue-client';
 import { enqueueTop, next } from '../lib/service-clients/queue-client';
 import { useIntl } from 'react-intl';
 import SideBySide from './common/SideBySide/SideBySide';
-import { SettingsContext } from './layout/SettingsProvider';
 
 interface ITrackActions {
   track?: ITrack,
@@ -18,13 +17,6 @@ interface ITrackActions {
 const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false }) => {
   const navigate = useNavigate();
   const intl = useIntl();
-  const settings = useContext(SettingsContext);
-
-  const itemStyle = {
-    background: settings?.styles?.trackBackgroundColor,
-    color: settings?.styles?.fontColor,
-    margin: '3px',
-  };
 
   const playNow = () => {
     enqueueTop(track);
@@ -38,7 +30,6 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false })
         playNow();
         onClose();
       },
-      style: itemStyle
     },
     {
       text: intl.formatMessage({ id: 'enqueue' }),
@@ -46,14 +37,12 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false })
         enqueue(track);
         onClose();
       },
-      style: itemStyle
     },
     {
       text: intl.formatMessage({ id: 'add_to_playlist' }),
       action: () => { navigate('/playlists', { state: { tracks: [track] } }); },
-      style: itemStyle
     },
-    { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose(), style: itemStyle },
+    { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose() },
   ];
 
   return (

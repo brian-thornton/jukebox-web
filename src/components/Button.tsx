@@ -61,8 +61,7 @@ const Button: FC<IButton> = ({
   }
 
   if (isHover || (isToggle && isToggled)) {
-    // TODO: Make these colors configurable.
-    buttonStyle.background = styles?.activeButtonColor;
+    buttonStyle.background = styles?.trackBackgroundColor;
   } else if (isToggle && !isToggled) {
     buttonStyle.background = styles?.buttonBackgroundColor;
   }

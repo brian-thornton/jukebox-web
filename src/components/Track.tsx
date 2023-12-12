@@ -7,7 +7,6 @@ import Row from 'react-bootstrap/Row';
 import TrackAlbum from './TrackAlbum';
 import { ITrack as TrackShape, IAlbum } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
-import { bigButtons } from '../lib/helper/styleHelper';
 import Item from './common/Item/Item';
 import './Track.scss';
 import TrackButtons from './TrackButtons';
@@ -29,7 +28,6 @@ const Track: FC<ITrack> = ({
 }) => {
   const settings = useContext(SettingsContext);
   const { features, isScreenSmall } = settings;
-  const fontSize = bigButtons(settings) ? '25px' : '';
   const [clicked, setClicked] = useState(false);
 
   const getAlbum = (albumTrack: any) => {
@@ -57,16 +55,6 @@ const Track: FC<ITrack> = ({
     return <></>;
   };
 
-  const trackCardSkin = {
-    color: settings?.styles?.fontColor,
-    background: settings?.styles?.trackBackgroundColor,
-  };
-
-  const trackNameSkin = {
-    fontFamily: settings?.styles?.listFont,
-    fontSize,
-  };
-
   // TODO: Make this work with \
   const pathParts = track.path.split('/');
   const albumFolder = pathParts[pathParts.length - 2];
@@ -75,7 +63,7 @@ const Track: FC<ITrack> = ({
     return (
       <>
         {<Item
-          text={`${albumFolder} - ${track.name}`} allowToggle={false} onClick={() => {
+          text={`${albumFolder} - ${track.name}`} onClick={() => {
             if (settings?.isScreenSmall && setTrackClicked) {
               setTrackClicked(track);
             }
@@ -87,14 +75,14 @@ const Track: FC<ITrack> = ({
   return (
     <>
       {!clicked && (
-        <Card className="trackCard" style={trackCardSkin}>
+        <Card className="trackCard">
           <Container className="trackContainer" fluid>
             <Row className="trackRow">
               <Col className="d-none d-sm-block" lg={1} md={1}>
                 {album(track)}
               </Col>
               <Col lg={8} md={8}>
-                <div className="trackName" style={trackNameSkin}>
+                <div className="trackName">
                   {`${albumFolder} - ${track.name}`}
                 </div>
               </Col>

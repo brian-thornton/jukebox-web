@@ -1,6 +1,4 @@
-import Container from 'react-bootstrap/Container';
 import { FC, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
@@ -23,8 +21,8 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
     'Rock', 'Pop', '70s', '80s', '90s', 'Oldies', 'Country', 'Rap', 'Dance',
   ];
 
-  const buttons = (
-    <>
+  return (
+    <div className={styles.categoriesContainer}>
       {categories.map(c => (
         <Button
           style={{ fontSize }}
@@ -38,15 +36,7 @@ const RadioCategories: FC<IRadioCategories> = ({ category, setCategory }) => {
           content={c}
         />
       ))}
-    </>
-  );
-
-  return (
-    <Container fluid className={styles.categoriesContainer}>
-      <Row>
-        {buttons}
-      </Row>
-    </Container>
+    </div>
   );
 };
 

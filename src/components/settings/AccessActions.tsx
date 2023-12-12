@@ -16,12 +16,6 @@ const AccessActions: FC<IAccessActions> = ({ name, onClose, value }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
 
-  const itemStyle = {
-    background: settings?.styles?.trackBackgroundColor,
-    color: settings?.styles?.fontColor,
-    margin: '3px',
-  }
-
   const updateFeatureAndClose = () => {
     const deepClone = JSON.parse(JSON.stringify(settings));
     deepClone.features[name] = !value;
@@ -37,18 +31,15 @@ const AccessActions: FC<IAccessActions> = ({ name, onClose, value }) => {
         text: intl.formatMessage({ id: 'on' }),
         active: value === true,
         action: () => updateFeatureAndClose(),
-        style: itemStyle
       },
       {
         text: intl.formatMessage({ id: 'off' }),
         active: value === false,
         action: () => updateFeatureAndClose(),
-        style: itemStyle
       },
       {
         text: intl.formatMessage({ id: 'cancel' }),
         action: () => onClose(),
-        style: itemStyle
       },
   ];
 

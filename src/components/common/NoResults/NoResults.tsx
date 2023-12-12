@@ -1,7 +1,5 @@
 import Card from 'react-bootstrap/Card';
 import { FC } from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 
 import styles from './NoResults.module.css';
 
@@ -16,8 +14,8 @@ interface INoResults {
 const NoResults: FC<INoResults> = ({
   text, title, controls, applyMargin = true, onGoBack,
 }) => (
-  <Container fluid className={styles.noResultsContainer}>
-    <Row className={styles.noResultsRow}>
+  <div className={styles.noResultsContainer}>
+    <div className={styles.noResultsRow}>
       <Card className={styles.noResultsCard}>
         <Card.Body>
           <Card.Title className={styles.noResultsTitle}>{title}</Card.Title>
@@ -29,8 +27,8 @@ const NoResults: FC<INoResults> = ({
           </div>
         </Card.Body>
       </Card>
-    </Row>
-  </Container>
+    </div>
+  </div>
 );
 
 export default NoResults;

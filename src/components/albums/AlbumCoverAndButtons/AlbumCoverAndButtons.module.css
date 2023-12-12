@@ -16,6 +16,7 @@
 }
 
 .buttonContainer {
+  min-width: 100%;
   @media (max-width: 768px) {
     display: flex;
     align-items: start;
@@ -25,7 +26,12 @@
 }
 
 .albumContainer {
+  min-width: 100%;
   @media (max-width: 768px) {
     max-height: 160px;
   }
+}
+
+.container {
+  max-width: 25%;
 }

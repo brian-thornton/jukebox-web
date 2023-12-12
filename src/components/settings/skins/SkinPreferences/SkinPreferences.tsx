@@ -10,7 +10,7 @@ import Button from '../../../Button';
 import NameInput from '../../../common/NameInput/NameInput';
 import { ISkin } from '../../../interface';
 
-import ToggleRow from '../../ToggleRow';
+import ToggleRow from '../../features/FeatureToggleRow/FeatureToggleRow';
 import classes from './SkinPreferences.module.css';
 
 interface ISkinPreferences {

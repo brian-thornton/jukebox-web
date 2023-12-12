@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Paginator from '../common/Paginator/Paginator';
-import { updateSettings } from '../../lib/service-clients/settings-client';
-import { SettingsContext } from '../layout/SettingsProvider';
-import { calculatePageSize } from '../../lib/helper/styleHelper';
-import ToggleRow from './ToggleRow';
-import AccessActions from './AccessActions';
+import Paginator from '../../common/Paginator/Paginator';
+import { updateSettings } from '../../../lib/service-clients/settings-client';
+import { SettingsContext } from '../../layout/SettingsProvider';
+import { calculatePageSize } from '../../../lib/helper/styleHelper';
+import ToggleRow from './FeatureToggleRow/FeatureToggleRow';
+import AccessActions from '../AccessActions';
 
-const SettingsEditor = () => {
+const Features = () => {
   const [features, setFeatures] = useState();
   const settings = useContext(SettingsContext);
   const { screen } = settings;
@@ -46,6 +46,7 @@ const SettingsEditor = () => {
     { key: 'albums', value: <FormattedMessage id="view_albums" /> },
     { key: 'tracks', value: <FormattedMessage id="view_tracks" /> },
     { key: 'playlists', value: <FormattedMessage id="view_run_playlists" /> },
+    { key: 'genres', value: <FormattedMessage id="view_genres" /> },
     { key: 'radio', value: <FormattedMessage id="play_radio" /> },
     { key: 'queue', value: <FormattedMessage id="view_update_queue" /> },
     { key: 'settings', value: <FormattedMessage id="view_settings" /> },
@@ -106,4 +107,4 @@ const SettingsEditor = () => {
   return <></>;
 };
 
-export default SettingsEditor;
+export default Features;

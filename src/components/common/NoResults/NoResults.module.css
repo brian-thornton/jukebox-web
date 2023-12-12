@@ -7,14 +7,6 @@
   width: 100% !important;
 }
 
-.noResultsContainer {
-  width: 100% !important;
-}
-
-.noResultsRow {
-  width: 100% !important;
-}
-
 .noResultsText {
   align-items: center;
   display: flex; 
@@ -23,4 +15,18 @@
 
 .noResultsTitle {
   text-align: center;
+}
+
+.noResultsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100% !important;
+}
+
+.noResultsRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100% !important;
 }

@@ -1,16 +1,11 @@
-.pinCard {
-  background: transparent !important;
-  min-height: 200px !important;
-  height: 100% !important;
-  border-color: black !important;
+.pinContainer {
+  display: flex;
+  flex-direction: column;
 }
 
-.pinText {
-  align-items: center;
-  display: flex; 
+.pinRow {
+  display: flex;
+  flex-direction: row;
   justify-content: center;
-}
-
-.pinTitle {
-  text-align: center;
+  width: 100%;
 }

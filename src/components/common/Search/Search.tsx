@@ -1,8 +1,5 @@
-import Container from 'react-bootstrap/Container';
 import FormControl from 'react-bootstrap/FormControl';
-//import KeyboardEventHandler from 'react-keyboard-event-handler';
 import { FC, useContext, useState } from 'react';
-import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { BackspaceFill } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
@@ -69,25 +66,8 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
   );
 
   return (
-    <>
-      {/* <KeyboardEventHandler
-        handleKeys={['alphanumeric', 'space', 'backspace', 'cmd+v', '-', '.', 'enter']}
-        onKeyEvent={(key) => {
-          if (key === 'space') {
-            setLocalSearch(`${localSearch} `);
-          } else if (key === 'backspace') {
-            setLocalSearch(`${localSearch.substring(0, localSearch.length - 1)}`);
-          } else if (key === 'enter') {
-            setSearchText(localSearch);
-            navigate('/albums');
-          } else {
-            setLocalSearch(`${localSearch}${key}`);
-          }
-        }}
-      /> */}
-
-      <Container>
-        <Row>
+      <div className={styles.searchContainer}>
+        <div className={styles.searchRow}>
           <FormControl
             className={styles.searchForm}
             id="name"
@@ -103,52 +83,46 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
               }
             }}
           />
-        </Row>
-        <Row>
-          <Container fluid className="d-none d-sm-block">
-            <Row className={`${styles.keyboardRow} ${styles.firstKeyboardRow}`}>
-              {inputButton(1)}
-              {row([2, 3, 4, 5, 6, 7, 8, 9, '0'])}
-              {backspace()}
-            </Row>
-            <Row className={styles.keyboardRow}>
-              {inputButton('Q')}
-              {row(['W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
-            </Row>
-            <Row className={styles.keyboardRow}>
-              {inputButton('A')}
-              {row(['S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
-            </Row>
-            <Row className={styles.keyboardRow}>
-              {inputButton('Z')}
-              {row(['X', 'C', 'V', 'B', 'N', 'M', '.'])}
-            </Row>
-            <Row className={styles.keyboardRow}>
-              <Button
-                hideOnSmall
-                width="500"
-                height="55"
-                onClick={() => setLocalSearch(`${localSearch} `)}
-                content={<FormattedMessage id="space" />}
-              />
-              <Button
-                hideOnSmall
-                width="150"
-                height="55"
-                onClick={() => {
-                  setSearchText('');
-                }}
-                content={<FormattedMessage id="clear" />}
-              />
-            </Row>
-          </Container>
-        </Row>
-        <Row className={styles.keyboardRow}>
+        </div>
+        <div className={styles.searchRow}>
+          {row([1, 2, 3, 4, 5, 6, 7, 8, 9, '0'])}
+          {backspace()}
+        </div>
+        <div className={styles.searchRow}>
+          {row(['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
+        </div>
+        <div className={styles.searchRow}>
+          {row(['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
+        </div>
+        <div className={styles.searchRow}>
+          {row(['Z', 'X', 'C', 'V', 'B', 'N', 'M', '.'])}
+        </div>
+        <div className={styles.searchRow}>
+          {row(['Z', 'X', 'C', 'V', 'B', 'N', 'M', '.'])}
+        </div>
+        <div className={styles.searchRow}>
+          <Button
+            hideOnSmall
+            width="500"
+            height="55"
+            onClick={() => setLocalSearch(`${localSearch} `)}
+            content={<FormattedMessage id="space" />}
+          />
+          <Button
+            hideOnSmall
+            width="150"
+            height="55"
+            onClick={() => {
+              setSearchText('');
+            }}
+            content={<FormattedMessage id="clear" />}
+          />
+        </div>
+        <div className={styles.searchRow}>
           {searchButton(<FormattedMessage id="search_albums" />, '/albums')}
           {searchButton(<FormattedMessage id="search_tracks" />, '/tracks')}
-        </Row>
-      </Container>
-    </>
+        </div>
+      </div>
   );
 };
 

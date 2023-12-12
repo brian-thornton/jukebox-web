@@ -6,7 +6,7 @@ import ContentWithControls from '../common/ContentWithControls/ContentWithContro
 import ControlButton from '../common/ControlButton/ControlButton';
 import Libraries from './libraries/Libraries/Libraries';
 import Preferences from './preferences/Preferences/Preferences';
-import SettingsEditor from './SettingsEditor';
+import Features from './features/Features';
 import { SettingsContext } from '../layout/SettingsProvider';
 import RestrictionModes from './content/RestrictionModes/RestrictionModes';
 import CategoryList from './categories/CategoryList/CategoryList';
@@ -61,7 +61,7 @@ const Settings = () => {
     />
   );
 
-  const modes = ['LIBRARY', 'PREFERENCES', 'ACCESS', 'STYLE', 'RESTRICTIONS',
+  const modes = ['LIBRARY', 'PREFERENCES', 'FEATURES', 'STYLE', 'RESTRICTIONS',
     'CABINET', 'LOGS', 'METADATA', 'CATEGORIES'];
 
   const leftControls = () => {
@@ -77,7 +77,7 @@ const Settings = () => {
       return (
         <>
           {mode === 'LIBRARY' && <Libraries />}
-          {mode === 'ACCESS' && <SettingsEditor />}
+          {mode === 'FEATURES' && <Features />}
           {mode === 'PREFERENCES' && <Preferences />}
           {mode === 'RESTRICTIONS' && <RestrictionModes />}
           {mode === 'CABINET' && <CabinetConfiguration />}

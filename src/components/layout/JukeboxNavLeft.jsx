@@ -9,7 +9,7 @@ import NavButton from './NavButton';
 const JukeboxNavLeft = () => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall, styles, features, screen } = settings;
-  const { playlists, tracks, queue, albums } = features || {};
+  const { playlists, tracks, queue, albums, genres } = features || {};
   const { navButtonSize } = settings.styles;
   const navLink = feature => <NavLink feature={feature} />;
   let height = navButtonSize === 'large' ? '100' : '35';
@@ -29,7 +29,7 @@ const JukeboxNavLeft = () => {
   const navItems = (generator) => (
     <>
       {tracks && generator('tracks')}
-      {tracks && generator('genres')}
+      {genres && generator('genres')}
       {playlists && generator('playlists')}
       {playlists && generator('radio')}
       {queue && generator('queue')}
