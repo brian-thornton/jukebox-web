@@ -47,11 +47,6 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
     applyLighting(settings, 'Playlists');
   }, []);
 
-  const handleBackToPlaylists = () => {
-    setName('');
-    loadPlaylists();
-  };
-
   const handleClose = (data) => {
     if ((typeof data) === 'string') {
       add({
@@ -62,13 +57,13 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
         getPlaylists().then((playlistData) => {
           getStatus().then((status) => {
             updateStatus({ ...status, totalPlaylists: playlistData.length });
-            loadPlaylists();
+            navigate('/playlists');
           });
         });
       });
     }
+    navigate('/playlists');
     setAddMode(false);
-    loadPlaylists();
   };
 
   const items = () => playlists.map(playlist => (
@@ -125,7 +120,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   return !currentPlaylist.name && !name ? (
     <ContentWithControls content={content()} controls={controls} />
   ) : (
-    <PlaylistDetail name={name} handleBackToPlaylists={handleBackToPlaylists} />
+    <PlaylistDetail name={name} />
   );
 };
 

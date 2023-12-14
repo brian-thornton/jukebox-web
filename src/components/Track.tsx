@@ -1,14 +1,10 @@
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import { FC, useContext, useState } from 'react';
-import Row from 'react-bootstrap/Row';
 
 import TrackAlbum from './TrackAlbum';
 import { ITrack as TrackShape, IAlbum } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import Item from './common/Item/Item';
-import './Track.scss';
+import styles from './Track.module.css';
 import TrackButtons from './TrackButtons';
 
 interface ITrack {
@@ -75,23 +71,17 @@ const Track: FC<ITrack> = ({
   return (
     <>
       {!clicked && (
-        <Card className="trackCard">
-          <Container className="trackContainer" fluid>
-            <Row className="trackRow">
-              <Col className="d-none d-sm-block" lg={1} md={1}>
-                {album(track)}
-              </Col>
-              <Col lg={8} md={8}>
-                <div className="trackName">
-                  {`${albumFolder} - ${track.name}`}
-                </div>
-              </Col>
-              <Col lg={3} md={3}>
-                <TrackButtons track={track} trackAlbums={trackAlbums} trackAlbumsLoaded={trackAlbumsLoaded} />
-              </Col>
-            </Row>
-          </Container>
-        </Card>
+        <div className={styles.trackRow}>
+          <div className={styles.coverAndName}>
+            <div className={styles.albumCover}>
+              {album(track)}
+            </div>
+            <div className={styles.trackName}>
+              {`${albumFolder} - ${track.name}`}
+            </div>
+          </div>
+          <TrackButtons track={track} trackAlbums={trackAlbums} trackAlbumsLoaded={trackAlbumsLoaded} />
+        </div>
       )}
     </>
   );

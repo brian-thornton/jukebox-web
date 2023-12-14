@@ -18,3 +18,12 @@
   flex-flow: row;
   justify-content: center;
 }
+
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  margin-left: 25px;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  padding-bottom: 0 !important;
+}

@@ -1,6 +1,5 @@
 import Col from 'react-bootstrap/Col';
 import { FC, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
 import { useIntl } from 'react-intl';
@@ -77,11 +76,11 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
       )}
       {!isScreenSmall && (
         <>
-          <Row className={styles.buttonRow}>
+          <div className={styles.buttonRow}>
             {albumButton(() => navigate(-1), backText())}
             {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), features?.play)}
-          </Row>
-          <Row className={styles.buttonRow}>
+          </div>
+          <div className={styles.buttonRow}>
             {albumButton(() => {
               applyLighting(settings, 'Enqueue');
               enqueueTracks(tracks);
@@ -97,7 +96,7 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
             {albumButton(() => {
               navigate('/playlists', { state: { tracks } });
             }, intl.formatMessage({ id: 'add_to_playlist' }), features?.playlists)}
-          </Row>
+          </div>
         </>
       )}
     </>

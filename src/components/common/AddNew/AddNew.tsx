@@ -1,7 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
 import { FC, useContext, useState } from 'react';
 
 import styles from './AddNew.module.css';
@@ -45,37 +43,31 @@ const AddNew: FC<IAddNew> = ({
       <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
         <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
         <Card.Text className={styles.addNewText}>
-          <Container fluid>
-            <Row>
-              {Object.keys(fieldValues).map(f => (
-                <NameInput
-                  onChange={(event: any) => {
-                    console.log(event)
-                    setFieldValues({
-                      ...fieldValues,
-                      [f]: event.target.value,
-                    });
-                  }}
-                  // @ts-ignore
-                  placeholder={fieldValues[f]}
-                  //@ts-ignore
-                  defaultValue={fieldValues[f]}
-                />
-              ))}
-            </Row>
-            <Row>
-              <>
-                {localDropdowns?.map(dropdown => (
-                  <Form.Group>
-                    <Form.Label className={styles.addNewFormLabel}>{dropdown.name}</Form.Label>
-                    <Form.Select onChange={e => onDrodownValueSet(dropdown, e.target.value)}>
-                      {dropdown.options.map((o: string) => <option>{o}</option>)}
-                    </Form.Select>
-                  </Form.Group>
-                ))}
-              </>
-            </Row>
-          </Container>
+          <div className={styles.contentContainer}>
+            {Object.keys(fieldValues).map(f => (
+              <NameInput
+                onChange={(event: any) => {
+                  console.log(event)
+                  setFieldValues({
+                    ...fieldValues,
+                    [f]: event.target.value,
+                  });
+                }}
+                // @ts-ignore
+                placeholder={fieldValues[f]}
+                //@ts-ignore
+                defaultValue={fieldValues[f]}
+              />
+            ))}
+            {localDropdowns?.map(dropdown => (
+              <Form.Group>
+                <Form.Label className={styles.addNewFormLabel}>{dropdown.name}</Form.Label>
+                <Form.Select onChange={e => onDrodownValueSet(dropdown, e.target.value)}>
+                  {dropdown.options.map((o: string) => <option>{o}</option>)}
+                </Form.Select>
+              </Form.Group>
+            ))}
+          </div>
         </Card.Text>
         <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />

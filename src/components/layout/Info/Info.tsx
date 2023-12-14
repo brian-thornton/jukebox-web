@@ -7,15 +7,13 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 
 const AlbumDetail = () => {
   const settings = useContext(SettingsContext);
-  const { preferences, styles } = settings;
+  const { styles } = settings;
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{color: styles?.fontColor}} className={classes.headline}>{preferences?.infoHeading}</div>
-        <div style={{color: styles?.fontColor}}>{preferences?.infoContent1}</div>
-        <div style={{color: styles?.fontColor}}>{preferences?.infoContent2}</div>
-        <QRCode value={`http://${settings?.ip}:3000` || ''} size={500} style={{marginTop: '30px'}}/>
-        <Button content="Go Back" onClick={() => window.history.back()} height="100" width="200"  />
+    <div className={classes.infoContainer}>
+        <div style={{color: styles?.fontColor}} className={classes.headline}>Scan to Connect to Jukebox</div>
+        <QRCode value={`http://${settings?.ip}:3000` || ''} size={500} className={classes.qrCode}/>
+        <Button style={{marginTop: '20px'}} content="Go Back" onClick={() => window.history.back()} height="60" width="200"  />
     </div>
   );
 };

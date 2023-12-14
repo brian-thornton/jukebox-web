@@ -8,6 +8,7 @@ import {
 } from 'react-bootstrap-icons';
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { runPlaylist, enqueuePlaylist, shuffle } from '../../../lib/helper/playlist-helper';
 import Button from '../../Button';
@@ -16,7 +17,6 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';
 
 interface IPlaylistControls {
-  handleBackToPlaylists: Function,
   isEmpty: boolean,
   name: string,
   reloadTracks: Function,
@@ -27,7 +27,6 @@ interface IPlaylistControls {
 }
 
 const PlaylistControls: FC<IPlaylistControls> = ({
-  handleBackToPlaylists,
   isEmpty,
   name,
   reloadTracks,
@@ -37,6 +36,7 @@ const PlaylistControls: FC<IPlaylistControls> = ({
   tracks,
 }) => {
   const settings = useContext(SettingsContext);
+  const navigate = useNavigate();
   const { features, isScreenSmall } = settings;
   const { controlButtonSize } = settings?.styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
@@ -62,7 +62,7 @@ const PlaylistControls: FC<IPlaylistControls> = ({
     <>
       {!isScreenSmall && (
         <>
-          {controlButton(<FormattedMessage id="go_back" />, handleBackToPlaylists)}
+          {controlButton(<FormattedMessage id="go_back" />, () => navigate('/playlists'))}
           {controlButton(<FormattedMessage id="run" />, () => runPlaylist(tracks), features?.play)}
           {controlButton(<FormattedMessage id="enqueue" />, () => enqueuePlaylist(tracks), features?.queue)}
           {controlButton(<FormattedMessage id="shuffle" />, () => shuffle(name, tracks, reloadTracks))}
@@ -72,7 +72,7 @@ const PlaylistControls: FC<IPlaylistControls> = ({
       )}
       {isScreenSmall && (
         <>
-          <Button disabled={showDeleteModal} onClick={handleBackToPlaylists} icon={<ArrowLeft />} />
+          <Button disabled={showDeleteModal} onClick={() => navigate('/playlists')} icon={<ArrowLeft />} />
           {features?.play && (
             <Button
               disabled={showDeleteModal || isEmpty}

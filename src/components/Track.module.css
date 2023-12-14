@@ -1,0 +1,31 @@
+.trackName {
+  margin-top: 15px !important;
+}
+
+.trackRow {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+  width: 100%;
+  justify-content: space-between;
+  align-items: start;
+  background-color: var(--track-background-color);
+  font-family: var(--list-font);
+  color: var(--font-color);
+}
+
+.coverAndName {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  background-color: var(--track-background-color);
+}
+
+.albumCover {
+
+  border: none;
+}
+

@@ -111,7 +111,7 @@ const SkinDetail: FC<ISkinDetail> = ({
           {activeKey === 'colors' && <SkinColors skin={skin} onClose={() => setActiveKey('')} />}
           {activeKey === 'fonts' && <SkinFonts skin={skin} onClose={() => setActiveKey('')} />}
           {activeKey === 'graphics' && <SkinGraphics skin={skin} onClose={() => setActiveKey('')} />}
-          {activeKey === 'lights' && <SkinLights skin={skin} onClose={() => setActiveKey('')} loadSkins={() => {}} />}
+          {activeKey === 'lights' && <SkinLights skin={skin} onClose={() => setActiveKey('')} loadSkins={() => { }} />}
           {!activeKey && (
             <Picker
               applyPadding={false}

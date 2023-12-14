@@ -1,14 +1,11 @@
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import { useContext, useState } from 'react';
-import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 import { Options } from '../../../shapes';
+import classes from './PreferenceRadioRow.module.css';
 
 const propTypes = {
   rowName: PropTypes.string.isRequired,
@@ -31,39 +28,29 @@ const PreferenceRadioRow = ({ rowName, preferenceName, options }) => {
     color: styles.fontColor,
     background: styles.trackBackgroundColor,
     fontFamily: styles.listFont,
-    width: '100%',
-    height: '60px',
   };
 
   return (
-    <ListGroupItem style={itemStyle}>
-      <Container fluid className="preference-text-row-container">
-        <Row>
-          <Col lg="2">
-            {rowLabel(rowName)}
-          </Col>
-          <Col lg="8">
-            <Form>
-              <div key={radioValue} className="mb-3">
-                {options.map(option => (
-                  <Form.Check
-                    inline
-                    label={option.display}
-                    name="group1"
-                    type="radio"
-                    checked={preferences[preferenceName] === option.value}
-                    onChange={() => {
-                      setRadioValue(option.value);
-                      updatePreference(settings, preferenceName, option.value, '/settings?mode=preferences');
-                    }}
-                  />
-                ))}
-              </div>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-    </ListGroupItem>
+    <div className={classes.radioRowContainer} style={itemStyle}>
+      {rowLabel(rowName)}
+      <Form>
+        <div key={radioValue}>
+          {options.map(option => (
+            <Form.Check
+              inline
+              label={option.display}
+              name="group1"
+              type="radio"
+              checked={preferences[preferenceName] === option.value}
+              onChange={() => {
+                setRadioValue(option.value);
+                updatePreference(settings, preferenceName, option.value, '/settings?mode=preferences');
+              }}
+            />
+          ))}
+        </div>
+      </Form>
+    </div>
   );
 };
 

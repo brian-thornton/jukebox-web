@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import Confirm from '../../common/Confirm/Confirm';
 import {
@@ -20,19 +21,18 @@ import PaginatedList from '../../common/PaginatedList/PaginatedList';
 import PlaylistTrackActions from '../PlaylistTrackActions/PlaylistTrackActions';
 
 const propTypes = {
-  handleBackToPlaylists: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
 };
 
 const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const settings = useContext(SettingsContext);
+  const navigate = useNavigate();
   const [tracks, setTracks] = useState([]);
   const [isEmpty, setIsEmpty] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState();
-  const [selectedPlaylist, setSelectedPlaylist] = useState();
   const { isScreenSmall, screen } = settings;
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
   const { controlButtonSize } = settings.styles;
@@ -54,8 +54,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
 
   const loadTracks = (playlistName) => {
     getPlaylist(playlistName).then((playlist) => {
-      setSelectedPlaylist(playlist);
-
+      setClickedTrack(undefined);
       if (!playlist.tracks.length) {
         setIsEmpty(true);
       } else {
@@ -70,7 +69,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
       tracks,
     });
     setIsSaveAsOpen(false);
-    handleBackToPlaylists();
+    navigate('/playlists');
   };
 
   if (!isEmpty && !tracks.length) {
@@ -95,7 +94,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const handleDelete = () => {
     deletePlaylist(name).then(() => {
       setShowDeleteModal(false);
-      handleBackToPlaylists();
+      navigate('/playlists');
     });
   };
 
@@ -103,7 +102,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     <PlaylistControls
       name={name}
       tracks={tracks}
-      handleBackToPlaylists={handleBackToPlaylists}
       setIsSaveAsOpen={setIsSaveAsOpen}
       setShowDeleteModal={setShowDeleteModal}
       reloadTracks={loadTracks}

@@ -1,8 +1,4 @@
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import { FC, useCallback, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 import { debounce } from 'lodash';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
@@ -31,19 +27,13 @@ const PreferenceTextRow: FC<IPreferenceTextRow> = ({ rowName, value }) => {
   );
 
   return (
-    <ListGroupItem className={classes.preferenceItem}>
-      <Container fluid className={classes.preferenceTextRowContainer}>
-        <Row>
-          <Col lg="12">
-            <NameInput
-              name={rowLabel(rowName)}
-              defaultValue={value}
-              onChange={debouncedUpdate}
-            />
-          </Col>
-        </Row>
-      </Container>
-    </ListGroupItem>
+    <div className={classes.preferenceTextRowContainer}>
+      <NameInput
+        name={rowLabel(rowName)}
+        defaultValue={value}
+        onChange={debouncedUpdate}
+      />
+    </div>
   );
 };
 

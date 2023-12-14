@@ -1,6 +1,5 @@
 import Col from 'react-bootstrap/Col';
 import { FC, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import ControlButton from '../../common/ControlButton/ControlButton';
@@ -49,19 +48,19 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
         <>
           {colLayout && (
             <>
-              <Row>
+              <div className={classes.buttonRow}>
                 {coverControls}
-              </Row>
-              <Row>
+              </div>
+              <div className={classes.buttonRow}>
                 {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
-              </Row>
+              </div>
             </>
           )}
           {!colLayout && (
-            <Row>
+            <div className={classes.buttonRow}>
               {coverControls}
               {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
-            </Row>
+            </div>
           )}
         </>
       )}

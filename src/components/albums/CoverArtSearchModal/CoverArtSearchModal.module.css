@@ -14,3 +14,11 @@
   justify-content: center;
   background: transparent !important;
 }
+
+.coverArtSearchContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}

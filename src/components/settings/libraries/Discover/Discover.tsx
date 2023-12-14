@@ -1,7 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
 import { FC, useContext, useState } from 'react';
-import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../../Button';
@@ -9,6 +7,7 @@ import CategoryPicker from '../CategoryPicker/CategoryPicker';
 import DownloadCoverArtPicker from '../DownloadCoverArtPreference/DownloadCoverArtPreference';
 import NameInput from '../../../common/NameInput/NameInput';
 import { SettingsContext } from '../../../layout/SettingsProvider';
+import styles from './Discover.module.css'
 
 interface IDiscover {
   handleHide: Function,
@@ -37,27 +36,25 @@ const Discover: FC<IDiscover> = ({
   };
 
   return (
-    <Card className="addNewCard" style={confirmStyle}>
+    <Card className={styles.discoverCard} style={confirmStyle}>
       <Card.Title><FormattedMessage id="discover" /></Card.Title>
       <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
-        <Container fluid>
-          <Row>
-            <NameInput name="Path" placeholder={intl.formatMessage({ id: 'path' })} />
-          </Row>
-          <Row>
-            <CategoryPicker
-              onSelectCategory={(category: any) => setSelectedCategory(category)}
-              category={selectedCategory}
-            />
-          </Row>
-          <Row>
-            <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
-          </Row>
-          <Row>
+        <div className={styles.discoverContent}>
+          <NameInput name="Path" placeholder={intl.formatMessage({ id: 'path' })} />
+          <CategoryPicker
+            onSelectCategory={(category: any) => setSelectedCategory(category)}
+            category={selectedCategory}
+          />
+          <DownloadCoverArtPicker onSelect={onSelectDownloadPreference} />
+          <div className={styles.discoverRow}>
             <Button content={<FormattedMessage id="cancel" />} onClick={handleHide} />
-            <Button content={<FormattedMessage id="save" />} disabled={!downloadCoverArtDirty} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
-          </Row>
-        </Container>
+            <Button
+              content={<FormattedMessage id="save" />}
+              disabled={!downloadCoverArtDirty}
+              onClick={() => handleSave(selectedCategory, allowCoverArtDownload)}
+            />
+          </div>
+        </div>
       </Card.Body>
     </Card>
   );

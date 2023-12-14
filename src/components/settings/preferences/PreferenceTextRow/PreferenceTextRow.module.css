@@ -2,12 +2,9 @@
   margin-bottom: 0;
   padding-left: 0;
   margin-left: 0;
-}
-
-.preferenceItem {
-  color: var(--font-color) !important;
-  background: var(--track-background-color) !important;
-  font-family: var(--list-font) !important;
-  width: 100% !important;
-  height: 60px !important;
+  color: var(--font-color);
+  background: var(--track-background-color);
+  font-family: var(--list-font);
+  width: 100%;
+  height: 60px;
 }

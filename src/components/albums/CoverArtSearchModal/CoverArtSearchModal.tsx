@@ -1,8 +1,5 @@
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import { FC, useState } from 'react';
-import { Container } from 'react-bootstrap';
 import { FormattedMessage } from 'react-intl';
 
 import { IAlbum } from '../../interface';
@@ -55,25 +52,23 @@ const CoverArtSearchModal: FC<ICoverArtSearchModal> = ({
 
   return (
     <div className={styles.coverArtSearch}>
-      <Container>
-        <Row className={styles.coverArtSearchCenter}>
+      <div className={styles.coverArtSearchContainer}>
+        <div className={styles.coverArtSearchCenter}>
           <NameInput defaultValue={album.name} onChange={(e: any) => setQuery(e.target.value)} />
-        </Row>
+        </div>
         {!isLoading && results && (
-          <Row className={styles.coverArtSearchCenter}>
-            <Col>
-              <Card className={`${styles.coverArtSearchCenter} ${styles.albumCover}`}>
-                <Card.Title><FormattedMessage id="results" /></Card.Title>
-                <Card.Img className={styles.coverArtSearchAlbumCover} src={results} onClick={handleSave} />
-              </Card>
-            </Col>
-          </Row>
+          <div className={styles.coverArtSearchCenter}>
+            <Card className={`${styles.coverArtSearchCenter} ${styles.albumCover}`}>
+              <Card.Title><FormattedMessage id="results" /></Card.Title>
+              <Card.Img className={styles.coverArtSearchAlbumCover} src={results} onClick={handleSave} />
+            </Card>
+          </div>
         )}
-        <Row className={styles.coverArtSearchCenter}>
+        <div className={styles.coverArtSearchCenter}>
           <Button disabled={isLoading} onClick={handleSearch} content={<FormattedMessage id="search" />} />
           <Button disabled={isLoading} onClick={handleClose} content={<FormattedMessage id="cancel" />} />
-        </Row>
-      </Container>
+        </div>
+      </div>
     </div>
   );
 };
