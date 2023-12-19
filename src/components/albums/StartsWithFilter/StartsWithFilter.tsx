@@ -1,10 +1,9 @@
-import Container from 'react-bootstrap/Container';
 import { FC, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Button from '../../Button';
+import styles from './StartsWithFilter.module.css';
 
 interface IStartsWithFilter {
   startsWithFilter?: string,
@@ -31,8 +30,7 @@ const StartsWithFilter: FC<IStartsWithFilter> = ({ startsWithFilter, setStartsWi
   };
 
   return (
-    <Container fluid style={filterStyle}>
-      <Row>
+    <div className={styles.startsWithFilterContainer} style={filterStyle}>
         {alphabet.map(letter => (
           <Button
             disabled={features?.isLocked}
@@ -60,8 +58,7 @@ const StartsWithFilter: FC<IStartsWithFilter> = ({ startsWithFilter, setStartsWi
           style={{marginLeft: '0'}}
           content={<FormattedMessage id="all" />}
         />
-      </Row>
-    </Container>
+    </div>
   );
 };
 

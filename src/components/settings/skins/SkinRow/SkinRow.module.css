@@ -1,0 +1,11 @@
+.skinRowContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  border-bottom: 1px solid #e0e0e0;
+  background: var(--track-background-color);
+  color: var(--font-color);
+  font-family: var(--list-font);
+}

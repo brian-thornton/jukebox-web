@@ -12,6 +12,7 @@ import { deepCloneSkin } from '../../../../lib/helper/styleHelper';
 import SkinList from '../SkinList/SkinList';
 import SkinGenerator from '../SkinGenerator/SkinGenerator';
 import Button from '../../../Button';
+import styles from './Skins.module.css';
 
 const propTypes = {
   resetControls: PropTypes.func.isRequired,
@@ -123,7 +124,7 @@ const Skins = ({ resetControls, setControls }) => {
 
   if (skins && skins.length > 0) {
     return (
-      <>
+      <div className={styles.skinListContainer}>
         {!generateSkin && !isSaveAsOpen && (
           <Button onClick={() => setGenerateSkin(true)} content={<FormattedMessage id="generate_skin" />} />
         )}
@@ -148,7 +149,7 @@ const Skins = ({ resetControls, setControls }) => {
             onConfirm={data => handleSkinSaveAs(data)}
           />
         )}
-      </>
+      </div>
     );
   }
 

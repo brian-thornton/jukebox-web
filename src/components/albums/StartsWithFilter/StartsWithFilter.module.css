@@ -1,0 +1,10 @@
+.startsWithFilterContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 0 0;
+  width: 150px;
+  max-width: 150px;
+}

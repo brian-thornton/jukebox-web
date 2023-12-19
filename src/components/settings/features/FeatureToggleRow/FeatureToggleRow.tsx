@@ -3,6 +3,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 import Button from '../../../Button';
 import Item from '../../../common/Item/Item';
+import styles from './FeatureToggleRow.module.css';
 
 interface IToggleRow {
   description: string,
@@ -19,26 +20,25 @@ const ToggleRow: FC<IToggleRow> = ({
   selectedKey,
   onClick,
 }) => (
-  <Item
+  <div className={styles.featureToggleRow}
     onClick={() => {
       if (onClick) {
         onClick();
       }
     }}
-    buttons={(
-      <ButtonGroup>
-        {keys.map(key => (
-          <Button
-            onClick={() => onSetKey(key)}
-            isToggle
-            isToggled={selectedKey === key}
-            content={key}
-          />
-        ))}
-      </ButtonGroup>
-    )}
-    text={description}
-  />
+  >
+    {description}
+    <ButtonGroup>
+      {keys.map(key => (
+        <Button
+          onClick={() => onSetKey(key)}
+          isToggle
+          isToggled={selectedKey === key}
+          content={key}
+        />
+      ))}
+    </ButtonGroup>
+  </div>
 );
 
 export default ToggleRow;

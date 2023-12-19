@@ -7,6 +7,7 @@ import { SettingsContext } from '../../layout/SettingsProvider';
 import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import ToggleRow from './FeatureToggleRow/FeatureToggleRow';
 import AccessActions from '../AccessActions';
+import styles from './Feature.module.css';
 
 const Features = () => {
   const [features, setFeatures] = useState();
@@ -83,7 +84,7 @@ const Features = () => {
 
   if (features) {
     return (
-      <>
+      <div className={styles.featuresContainer}>
         {!selectedFeature && (
           <>
             {features.slice(realStart, (realStart + realPageSize)).map(key => (
@@ -100,7 +101,7 @@ const Features = () => {
         {selectedFeature && (
           <AccessActions name={selectedFeature} value={settings.features[selectedFeature]} onClose={() => setSelectedFeature(null)} />
         )}
-      </>
+      </div >
     );
   }
 

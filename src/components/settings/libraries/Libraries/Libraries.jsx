@@ -19,6 +19,7 @@ import Categories from '../Categories/Categories';
 import Discover from '../Discover/Discover';
 import LibraryMenuMobile from '../LibraryMenuMobile/LibraryMenuMobile';
 import { useLibraries } from '../../../../hooks/use-libraries';
+import styles from './Libraries.module.css';
 
 const Libraries = () => {
   const settings = useContext(SettingsContext);
@@ -106,7 +107,7 @@ const Libraries = () => {
         <LibraryMenuMobile onClose={() => setIsMenuOpen(false)} setShowOnline={setShowOnline} showOnline={showOnline} />
       )}
       {noPrompts && !isLoading && libraries.length && !isMenuOpen && (
-        <>
+        <div className={styles.librariesContainer}>
           <LibraryInfoAndGlobalControls
             setShowOnline={setShowOnline}
             onScanAll={onScanAll}
@@ -127,7 +128,7 @@ const Libraries = () => {
             setSelectedLibrary={setSelectedLibrary}
             showOnline={showOnline}
           />
-        </>
+        </div>
       )}
       {!showDiscover && !isCategoryConfigOpen && (selectedLibrary || show) && (
         <LibraryAdd
