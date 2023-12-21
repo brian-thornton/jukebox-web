@@ -1,4 +1,3 @@
-import Col from 'react-bootstrap/Col';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useIntl } from 'react-intl';
@@ -76,7 +75,7 @@ const AlbumDetail = () => {
           />
           {clickedTrack && <TrackActions applyPadding={false} track={clickedTrack} onClose={() => setClickedTrack(undefined)} />}
           {!clickedTrack && (
-            <Col lg={9} xl={9}>
+            <div className={styles.albumTracks}>
               {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
                 <div className={styles.albumTracks}>
                   <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} clickedTrack={clickedTrack} setClickedTrack={setClickedTrack} />
@@ -99,7 +98,7 @@ const AlbumDetail = () => {
                   handleClose={() => setIsCustomSearchOpen(false)}
                 />
               )}
-            </Col>
+            </div>
           )}
         </div>
       )}

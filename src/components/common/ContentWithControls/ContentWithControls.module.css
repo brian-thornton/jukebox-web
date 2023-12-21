@@ -3,11 +3,22 @@
   margin-right: 0;
 }
 
+.controls {
+  border-bottom-right-radius: 35px;
+  width: 10%;
+}
+
 .mainRow {
   display: flex;
   flex-direction: row;
   margin-left: 0;
   margin-right: 0;
+}
+
+@media (max-width: 768px) {
+  .mainRow {
+    flex-direction: column;
+  }
 }
 
 .parentContainer {

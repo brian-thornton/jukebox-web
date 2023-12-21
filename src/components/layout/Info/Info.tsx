@@ -5,7 +5,7 @@ import Button from '../../Button';
 import classes from  './Info.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 
-const AlbumDetail = () => {
+const Info = () => {
   const settings = useContext(SettingsContext);
   const { styles } = settings;
 
@@ -18,4 +18,4 @@ const AlbumDetail = () => {
   );
 };
 
-export default AlbumDetail;
+export default Info;

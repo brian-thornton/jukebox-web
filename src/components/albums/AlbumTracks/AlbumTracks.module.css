@@ -1,17 +1,21 @@
 .trackContainer {
   display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
+  flex-flow: column;
   margin-top: 0;
+  width: 100%;
+  min-width: 100%;
+  background-color: transparent;
 }
 
 .albumTrackContainer {
+  width: 100%;
   max-width: 100%;
-  margin: 0 auto !important;
+  background-color: transparent;
 }
 
 .row {
   display: flex;
   flex-flow: row;
   justify-content: center;
+  width: 100%;
 }

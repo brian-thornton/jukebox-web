@@ -1,12 +1,10 @@
 import { FC, useContext, useState } from 'react';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MenuAppFill } from 'react-bootstrap-icons';
 
 import Button from '../../../Button';
 import Confirm from '../../../common/Confirm/Confirm';
+import styles from './LibraryInfoAndGlobalControls.module.css';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 
@@ -89,21 +87,17 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
         />
       )}
       {!screen?.isMobile && !isDeleteAllConfirmOpen && (
-        <Container fluid>
-          <Row>
-            <Col lg="4" md="4">
-              <div style={{ color: settings?.styles?.fontColor, marginTop: '20px' }}>
-                {!currentScan && <div><FormattedMessage id="library_total_tracks" values={{ totalTracks }} /></div>}
-                {currentScan && <div className="scanText"><FormattedMessage id="currently_scanning" values={{ currentScan }} /></div>}
-              </div>
-            </Col>
-            <Col lg="8" md="8">
+        <div className={styles.infoAndControlsContainer}>
+          <div className={styles.infoRow}>
+            {!currentScan && <div className={styles.text}><FormattedMessage id="library_total_tracks" values={{ totalTracks }} /></div>}
+            {currentScan && <div className={styles.text}><FormattedMessage id="currently_scanning" values={{ currentScan }} /></div>}
+            <div className={styles.buttonContainer}>
               {[addButton, discoverButton, deleteAllButton, scanAllButton, categories, showOnlineButton].map((b) => (
                 <div className="libraryButton">{b}</div>
               ))}
-            </Col>
-          </Row>
-        </Container>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

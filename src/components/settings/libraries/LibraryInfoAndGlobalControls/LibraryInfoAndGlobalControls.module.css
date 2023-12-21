@@ -1,0 +1,30 @@
+.infoAndControlsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
+
+.infoRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.text {
+  margin-top: 25px;
+  font-family: var(--list-font);
+  color: var(--font-color);
+  width: 30%;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 1rem;
+}

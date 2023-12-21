@@ -1,12 +1,12 @@
 .albumCover {
-  height: 25% !important;
-  width: 25% !important;
-  max-height: 25% !important;
-  max-width: 25% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  margin-left: 20px !important;
+  height: 25%;
+  width: 25%;
+  max-height: 25%;
+  max-width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 110px;
   margin-bottom: 10px;
 }
 
@@ -22,9 +22,11 @@
 
 @media (min-width: 600px) {
   .albumCover {
-    height: 100% !important;
-    width: 100% !important;
-    max-height: 100% !important;
-    max-width: 100% !important;
+    height: 100%;
+    min-width: 100%;
+    max-height: 100%;
+    max-width: 100%;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
