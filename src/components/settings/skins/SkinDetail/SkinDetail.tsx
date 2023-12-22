@@ -1,7 +1,5 @@
 import { FC, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import AddNew from '../../../common/AddNew/AddNew';
@@ -43,14 +41,12 @@ const SkinDetail: FC<ISkinDetail> = ({
   }, []);
 
   const controls = (
-    <Container fluid className={styles.skinContainer}>
-      <Row>
-        <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
-        <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />
-        <Button onClick={() => setIsSaveAsModalOpen(true)} content={<FormattedMessage id="save_as" />} />
-        <Button onClick={() => setIsDeleteConfirmOpen(true)} content={<FormattedMessage id="delete" />} disabled={!skin.isEditable} />
-      </Row>
-    </Container>
+    <div className={styles.buttonContainer}>
+      <Button onClick={goBackToThemeList} content={<FormattedMessage id="back_to_skins" />} />
+      <Button onClick={() => goBackToThemeList(true)} content={<FormattedMessage id="save_and_apply" />} />
+      <Button onClick={() => setIsSaveAsModalOpen(true)} content={<FormattedMessage id="save_as" />} />
+      <Button onClick={() => setIsDeleteConfirmOpen(true)} content={<FormattedMessage id="delete" />} disabled={!skin.isEditable} />
+    </div>
   );
 
   if (!isContextSet) {
@@ -86,7 +82,7 @@ const SkinDetail: FC<ISkinDetail> = ({
   });
 
   const content = () => (
-    <>
+    <div className={styles.skinContainer}>
       {!activeKey && controls}
       {isSaveAsModalOpen && (
         <AddNew
@@ -125,7 +121,7 @@ const SkinDetail: FC<ISkinDetail> = ({
           )}
         </>
       )}
-    </>
+    </div>
   );
 
   return content();

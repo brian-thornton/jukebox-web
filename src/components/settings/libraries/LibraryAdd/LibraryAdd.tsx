@@ -1,14 +1,10 @@
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import { FC, useContext, useState } from 'react';
-import Row from 'react-bootstrap/Row';
+import { FC, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../../Button';
 import CategoryPicker from '../CategoryPicker/CategoryPicker';
 import DownloadCoverArtPreference from '../DownloadCoverArtPreference/DownloadCoverArtPreference';
 import NameInput from '../../../common/NameInput/NameInput';
-import { SettingsContext } from '../../../layout/SettingsProvider';
 import styles from './LibraryAdd.module.css';
 import { ILibrary } from '../../../interface';
 
@@ -26,17 +22,10 @@ const LibraryAdd: FC<ILibraryAdd> = ({
   library,
 }) => {
   const intl = useIntl();
-  const settings = useContext(SettingsContext);
   const [allowCoverArtDownload, setAllowCoverArtDownload] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(library?.category || '');
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
-  const { isScreenSmall } = settings;
   const [editLibrary, setEditLibrary] = useState(library);
-
-  const confirmStyle = {
-    marginTop: isScreenSmall ? '60px' : '0px',
-    color: settings?.styles?.fontColor,
-  };
 
   const onSelectDownloadPreference = (value: any) => {
     setAllowCoverArtDownload(value);
@@ -44,26 +33,20 @@ const LibraryAdd: FC<ILibraryAdd> = ({
   };
 
   return (
-    <Card className={styles.addNewCard} style={confirmStyle}>
-      <Card.Title><FormattedMessage id={library ? 'edit_library' : 'add_library'} /></Card.Title>
-      <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
-        <Container fluid className={styles.addContainer}>
-          <Row>
-            <NameInput name="Path" placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
-          </Row>
-          <Row>
-            <CategoryPicker
-              onSelectCategory={(category: any) => {
-                setEditLibrary({ ...editLibrary, category });
-                setSelectedCategory(category);
-              }}
-              category={editLibrary?.category || library?.category}
-            />
-          </Row>
-          <Row>
-            <DownloadCoverArtPreference library={library} onSelect={onSelectDownloadPreference} />
-          </Row>
-        </Container>
+    <div className={styles.addContainer}>
+      <div className={styles.text}>
+        <FormattedMessage id={library ? 'edit_library' : 'add_library'} />
+      </div>
+      <NameInput name="Path" placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
+      <CategoryPicker
+        onSelectCategory={(category: any) => {
+          setEditLibrary({ ...editLibrary, category });
+          setSelectedCategory(category);
+        }}
+        category={editLibrary?.category || library?.category}
+      />
+      <DownloadCoverArtPreference library={library} onSelect={onSelectDownloadPreference} />
+      <div className={styles.buttonRow}>
         <Button
           content={<FormattedMessage id="cancel" />}
           onClick={() => {
@@ -72,8 +55,8 @@ const LibraryAdd: FC<ILibraryAdd> = ({
           }}
         />
         <Button content={<FormattedMessage id="save" />} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 

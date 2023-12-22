@@ -1,16 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import ListGroup from 'react-bootstrap/ListGroup';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Item from '../../../common/Item/Item';
 import Button from '../../../Button';
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import FilePicker from '../../../common/FilePicker/FilePicker';
 import { Skin } from '../../../shapes';
-import FullWidthRow from '../../../common/FullWidthRow/FullWidthRow';
+import styles from './SkinGraphics.module.css';
 
 const propTypes = {
   onClose: PropTypes.func.isRequired,
@@ -50,30 +46,28 @@ const SkinGraphics = ({ onClose, skin }) => {
   };
 
   const fileInputRow = (name, display) => (
-    <Item
-      text={display}
-      buttons={(
-        <>
-          <Button
-            disabled={!skin.isEditable}
-            style={{ float: 'right', width: '100px' }}
-            onClick={() => {
-              setImageKey(name);
-              setIsFilePickerOpen(true);
-            }}
-            content={<FormattedMessage id="select_image" />}
-          />
-          <Button
-            disabled={!skin.isEditable}
-            onClick={() => {
-              setImageKey(null);
-              setIsFilePickerOpen(false);
-            }}
-            content={<FormattedMessage id="clear_image" />}
-          />
-        </>
-      )}
-    />
+    <div className={styles.fileInputRow}>
+      {display}
+      <div>
+        <Button
+          disabled={!skin.isEditable}
+          style={{ float: 'right', width: '100px' }}
+          onClick={() => {
+            setImageKey(name);
+            setIsFilePickerOpen(true);
+          }}
+          content={<FormattedMessage id="select_image" />}
+        />
+        <Button
+          disabled={!skin.isEditable}
+          onClick={() => {
+            setImageKey(null);
+            setIsFilePickerOpen(false);
+          }}
+          content={<FormattedMessage id="clear_image" />}
+        />
+      </div>
+    </div>
   );
 
   const rows = [
@@ -98,16 +92,10 @@ const SkinGraphics = ({ onClose, skin }) => {
         />
       )}
       {!isFilePickerOpen && (
-        <Container fluid className="styleEditorContent">
-          <Row>
-            <Button content="Back to Skins" onClick={onClose} />
-          </Row>
-          <FullWidthRow>
-            <ListGroup className="styleEditorContent">
-              {rows}
-            </ListGroup>
-          </FullWidthRow>
-        </Container>
+        <div className={styles.skinGraphicsContainer}>
+          <Button content="Back to Skins" onClick={onClose} />
+          {rows}
+        </div>
       )}
     </>
   );

@@ -1,10 +1,22 @@
 .addContainer {
-  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  background: var(--track-background-color);
+  color: var(--font-color);
+  font-family: var(--list-font);
 }
 
-.addNewCard {
-  background: transparent !important;
-  min-height: 200px !important;
-  height: 100% !important;
-  border-color: black !important;
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  width: 100%;
+}
+
+.text {
+  margin-bottom: 10px;
 }

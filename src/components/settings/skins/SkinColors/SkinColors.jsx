@@ -1,7 +1,5 @@
-import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row';
-import React, { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useSwipeable } from 'react-swipeable';
 import { FormattedMessage } from 'react-intl';
 
@@ -14,7 +12,7 @@ import Paginator from '../../../common/Paginator/Paginator';
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import { handlers } from '../../../../lib/helper/gesture-helper';
 import { Skin } from '../../../shapes';
-import FullWidthRow from '../../../common/FullWidthRow/FullWidthRow';
+import styles from './SkinColors.module.css';
 
 const propTypes = {
   skin: Skin.isRequired,
@@ -137,25 +135,19 @@ const SkinColors = ({ skin, onClose }) => {
         />
       )}
       {!isColorCopyOpen && !isColorModalOpen && (
-        <Container fluid className="styleEditorContent" {...swipe}>
-          <Row>
-            <Button content="Back to Skin" onClick={onClose} />
-          </Row>
-          <FullWidthRow>
-            <ListGroup className="styleEditorContent">
-              {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
-            </ListGroup>
-          </FullWidthRow>
-          <FullWidthRow>
-            <Paginator
-              disableRandom
-              onPageChange={page => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={rows.length}
-              pageSize={realPageSize}
-            />
-          </FullWidthRow>
-        </Container>
+        <div className={styles.skinColorContainer} {...swipe}>
+          <Button content="Back to Skin" onClick={onClose} />
+          <ListGroup className="styleEditorContent">
+            {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
+          </ListGroup>
+          <Paginator
+            disableRandom
+            onPageChange={page => setSelectedPage(page)}
+            selectedPage={selectedPage}
+            totalItems={rows.length}
+            pageSize={realPageSize}
+          />
+        </div>
       )}
     </>
   );

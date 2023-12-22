@@ -1,15 +1,13 @@
-import ListGroup from 'react-bootstrap/ListGroup';
 import { FC, useState, useEffect } from 'react';
-import { Container, Row } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 
-import Item from '../../../common/Item/Item';
 import FontPicker from '../FontPicker/FontPicker';
 import Button from '../../../Button';
 import Paginator from '../../../common/Paginator/Paginator';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import { handlers } from '../../../../lib/helper/gesture-helper';
 import { ISkin } from '../../../interface';
+import styles from './SkinFonts.module.css';
 
 interface ISkinFonts {
   onClose: Function,
@@ -44,22 +42,20 @@ const SkinFonts: FC<ISkinFonts> = ({ onClose, skin }) => {
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
   const fontRow = (name: string, display: string) => (
-    <Item
-      text={display}
-      buttons={(
-        <Button
-          disabled={!skin.isEditable}
-          // @ts-ignore
-          style={{ fontFamily: colors[name] }}
-          onClick={() => {
-            setEditFont(name);
-            setIsFontModalOpen(true);
-          }}
-          // @ts-ignore
-          content={colors[name] ? colors[name] : name}
-        />
-      )}
-    />
+    <div className={styles.fontRow}>
+      {display}
+      <Button
+        disabled={!skin.isEditable}
+        // @ts-ignore
+        style={{ fontFamily: colors[name] }}
+        onClick={() => {
+          setEditFont(name);
+          setIsFontModalOpen(true);
+        }}
+        // @ts-ignore
+        content={colors[name] ? colors[name] : name}
+      />
+    </div>
   );
 
   const rows = [
@@ -83,25 +79,17 @@ const SkinFonts: FC<ISkinFonts> = ({ onClose, skin }) => {
         />
       )}
       {!isFontModalOpen && (
-        <Container fluid>
-          <Row>
-            <Button content="Back to Skin" onClick={onClose} />
-          </Row>
-          <Row>
-            <ListGroup className="styleEditorContent" {...swipe}>
-              {rows.slice(start, (start + itemsPerPage)).map(r => r)}
-            </ListGroup>
-          </Row>
-          <Row>
-            <Paginator
-              disableRandom
-              onPageChange={(page: number) => setSelectedPage(page)}
-              selectedPage={selectedPage}
-              totalItems={4}
-              pageSize={itemsPerPage}
-            />
-          </Row>
-        </Container>
+        <div className={styles.skinFontsContainer}>
+          <Button content="Back to Skin" onClick={onClose} />
+          {rows.slice(start, (start + itemsPerPage)).map(r => r)}
+          <Paginator
+            disableRandom
+            onPageChange={(page: number) => setSelectedPage(page)}
+            selectedPage={selectedPage}
+            totalItems={4}
+            pageSize={itemsPerPage}
+          />
+        </div>
       )}
     </>
   );

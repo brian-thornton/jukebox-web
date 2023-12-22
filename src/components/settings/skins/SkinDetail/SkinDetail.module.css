@@ -1,4 +1,16 @@
 .skinContainer {
-  margin-bottom: 20px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: start;
+  width: 100%;
+}
+
+.buttonRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
