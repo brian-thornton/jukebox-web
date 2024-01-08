@@ -1,15 +1,13 @@
 import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 
 import PlayNowButton from '../../PlayNowButton';
 import {
   addTrackAtPosition,
   removeTracksFromPlaylist,
 } from '../../../lib/service-clients/playlist-client';
-import Button from '../../Button';
-import { SettingsContext } from '../../layout/SettingsProvider';
+import Button from '../../common/Button/Button';
 import { ITrack } from '../../interface';
-import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPlaylistButtons {
   name: string,
@@ -24,12 +22,6 @@ const PlaylistButtons: FC<IPlaylistButtons> = ({
   index,
   reloadTracks,
 }) => {
-  const settings = useContext(SettingsContext);
-  const { controlButtonSize } = settings?.styles || {};
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const fontSize = bigButtons(settings) ? '30px' : '';
-
   const deleteTrack = async (trackName: any, trackToDelete: any) => {
     await removeTracksFromPlaylist(trackName, [trackToDelete]);
     reloadTracks(name);
@@ -43,9 +35,6 @@ const PlaylistButtons: FC<IPlaylistButtons> = ({
 
   const button = (onClick: any, icon: any) => (
     <Button
-      style={{ fontSize }}
-      height={buttonHeight}
-      width={buttonWidth}
       onClick={onClick}
       icon={icon}
     />

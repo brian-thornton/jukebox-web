@@ -1,8 +1,8 @@
 import { Button as ReactButton } from 'react-bootstrap';
 import { FC, useContext, useState } from 'react';
 
-import { SettingsContext } from './layout/SettingsProvider';
-import { IStyle } from './interface';
+import { SettingsContext } from '../../layout/SettingsProvider';
+import { IStyle } from '../../interface';
 
 interface IButton {
   onClick?: Function,
@@ -24,6 +24,7 @@ const Button: FC<IButton> = ({
   hideOnSmall,
 }) => {
   const settings = useContext(SettingsContext);
+  const { controlButtonSize } = settings.styles || {};
   const { styles } = settings || {};
   const [isHover, setIsHover] = useState(false);
   const {
@@ -32,7 +33,6 @@ const Button: FC<IButton> = ({
     marginLeft,
     marginRight,
     buttonBackgroundColor,
-    fontSize,
     fontFamily,
   } = style || {};
 
@@ -40,7 +40,7 @@ const Button: FC<IButton> = ({
     marginTop,
     marginBottom,
     background: buttonBackgroundColor || styles?.buttonBackgroundColor,
-    fontSize,
+    fontSize: "var(--font-size)",
     fontWeight: styles?.buttonFontWeight,
     color: styles?.buttonFontColor,
     fontFamily: fontFamily || styles?.buttonFont,
@@ -54,6 +54,8 @@ const Button: FC<IButton> = ({
     minHeight: '',
     marginLeft,
     marginRight,
+    width: (!controlButtonSize || controlButtonSize === 'small') ? '' : '60px',
+    height: (!controlButtonSize || controlButtonSize === 'small') ? '' : '60px',
   };
 
   if (isSelected) {

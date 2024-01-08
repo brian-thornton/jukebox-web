@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import { SettingsContext } from './SettingsProvider';
 
 interface INavButton {

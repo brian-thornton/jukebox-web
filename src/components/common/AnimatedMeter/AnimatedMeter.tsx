@@ -2,16 +2,9 @@ import './AnimatedMeter.scss';
 
 const AnimatedMeter = () => (
   <div id="bars">
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
-    <div className="bar" />
+    {Array(10).fill(null).map((_, index) => (
+      <div key={index} className="bar" />
+    ))}
   </div>
 );
 

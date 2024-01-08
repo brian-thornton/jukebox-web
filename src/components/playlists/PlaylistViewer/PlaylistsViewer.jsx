@@ -36,7 +36,6 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const [pageSize, setPageSize] = useState();
   const { controlButtonSize } = settings.styles;
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const { playlists, totalPlaylists, isEmpty } = usePlaylists(selectedPage, pageSize)
 
   useEffect(() => {
@@ -87,7 +86,6 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
           width="100%"
           onClick={() => setAddMode(true)}
           height={buttonHeight}
-          style={{ fontSize }}
         />
       )}
     </>

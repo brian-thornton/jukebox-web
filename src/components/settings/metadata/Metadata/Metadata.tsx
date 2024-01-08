@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 
 import { getArtistsByGenre, linkGenereToLibrary } from '../../../../lib/service-clients/metadata-client';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Loading from '../../../common/Loading/Loading';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';

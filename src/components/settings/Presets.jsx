@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import { calculatePageSize } from '../../lib/helper/styleHelper';
 import Item from '../common/Item/Item';
 import { applyPreset, getPresets, getCurrentState } from '../../lib/service-clients/lighting-client';

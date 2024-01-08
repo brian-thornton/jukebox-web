@@ -1,6 +1,6 @@
 import { FC, useContext } from 'react';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { IStyle } from '../../interface';
 

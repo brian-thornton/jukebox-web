@@ -2,11 +2,10 @@ import { PencilSquare } from 'react-bootstrap-icons';
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import Item from '../../common/Item/Item';
 import { IPlaylist } from '../../interface';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPlaylistRow {
   playlist: IPlaylist,
@@ -24,7 +23,6 @@ const PlaylistRow: FC<IPlaylistRow> = ({
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings?.styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : 50;
-  const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
     <Item
@@ -38,7 +36,6 @@ const PlaylistRow: FC<IPlaylistRow> = ({
         />
       ) : (
         <Button
-          style={{ fontSize }}
           height={buttonHeight.toString()}
           onClick={() => onSelect(playlist.name)}
           content={<PencilSquare />}

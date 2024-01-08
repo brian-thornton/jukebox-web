@@ -11,7 +11,7 @@ import SkinGraphics from '../SkinGraphics/SkinGraphics';
 import SkinLights from '../SkinLights/SkinLights';
 import styles from './SkinDetail.module.css';
 import SkinPreferences from '../SkinPreferences/SkinPreferences';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import Picker from '../../../common/Picker/Picker';
 import { ISkin } from '../../../interface';
 

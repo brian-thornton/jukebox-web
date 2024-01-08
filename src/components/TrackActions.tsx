@@ -10,11 +10,10 @@ import SideBySide from './common/SideBySide/SideBySide';
 
 interface ITrackActions {
   track?: ITrack,
-  onClose: Function,
-  applyPadding?: boolean,
+  onClose: Function
 }
 
-const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false }) => {
+const TrackAlbum: FC<ITrackActions> = ({ track, onClose }) => {
   const navigate = useNavigate();
   const intl = useIntl();
 
@@ -45,9 +44,7 @@ const TrackAlbum: FC<ITrackActions> = ({ track, onClose, applyPadding = false })
     { text: intl.formatMessage({ id: 'cancel' }), action: () => onClose() },
   ];
 
-  return (
-    <SideBySide data={actions} />
-  );
+  return <SideBySide data={actions} />;
 };
 
 export default TrackAlbum;

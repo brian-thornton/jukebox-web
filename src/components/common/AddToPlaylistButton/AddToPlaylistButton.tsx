@@ -1,11 +1,9 @@
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import React, { FC, useContext } from 'react';
+import { FC } from 'react';
 
-import { SettingsContext } from '../../layout/SettingsProvider';
-import Button from '../../Button';
+import Button from '../Button/Button';
 import { ITrack } from '../../interface';
-import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IAddToPlaylistButton {
   track: ITrack,
@@ -13,15 +11,9 @@ interface IAddToPlaylistButton {
 
 const AddToPlaylistButton: FC<IAddToPlaylistButton> = ({ track }) => {
   const navigate = useNavigate();
-  const settings = useContext(SettingsContext);
-  const heightAndWidth = bigButtons(settings) ? '60' : '';
-  const fontSize = bigButtons(settings) ? '30px' : '';
 
   return (
     <Button
-      style={{ fontSize }}
-      width={heightAndWidth}
-      height={heightAndWidth}
       onClick={() => {
         navigate('/playlists', { state: { tracks: [track] } });
       }}

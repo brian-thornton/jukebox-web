@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import styles from './InRowDeleteConfirmation.module.css';
 
 interface IInRowDeleteConfirmation {

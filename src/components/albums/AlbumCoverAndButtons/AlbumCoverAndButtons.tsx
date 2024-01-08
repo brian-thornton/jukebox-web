@@ -39,28 +39,29 @@ const AlbumCoverAndButtons: FC<IAlbumCoverAndButtons> = ({ queue, setQueue, trac
     </div>
   );
 
-  return screen?.isMobile ? (
-    <div>
-      <div className={styles.centeredRow}>
-        <AlbumCover album={album} />
-        {albumButtons}
-      </div>
-      <div className={styles.centeredRow}>
-        {album.name}
-      </div>
-    </div>
-  ) : (
-    <div className={styles.container}>
-      <div className={styles.albumContainer}>
+  return (
+    <>
+      <div className={styles.mobile}>
         <div className={styles.centeredRow}>
           <AlbumCover album={album} />
+          {albumButtons}
         </div>
         <div className={styles.centeredRow}>
           {album.name}
         </div>
-        {!clickedTrack && <div className={styles.centeredRow}>{albumButtons}</div>}
       </div>
-    </div>
+      <div className={styles.desktop}>
+        <div className={styles.albumContainer}>
+          <div className={styles.centeredRow}>
+            <AlbumCover album={album} />
+          </div>
+          <div className={styles.centeredRow}>
+            {album.name}
+          </div>
+          {!clickedTrack && <div className={styles.centeredRow}>{albumButtons}</div>}
+        </div>
+      </div>
+    </>
   );
 };
 

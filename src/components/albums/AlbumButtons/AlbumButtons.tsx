@@ -1,10 +1,9 @@
-import Col from 'react-bootstrap/Col';
 import { FC, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { ListOl, PlayFill, PlusSquare } from 'react-bootstrap-icons';
+import { PlusSquare } from 'react-bootstrap-icons';
 import { useIntl } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../../lib/service-clients/queue-client';
 import { ITrack, IQueue } from '../../interface';
 import ControlButton from '../../common/ControlButton/ControlButton';
@@ -12,6 +11,8 @@ import styles from './AlbumButtons.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
 import { isAlbumInQueue } from '../../../lib/helper/album-helper';
+import PlayButton from '../../../components/common/Buttons/PlayButton/PlayButton';
+import EnqueueButton from '../../../components/common/Buttons/EnqueueButton/EnqueueButton';
 
 interface IAlbumButtons {
   tracks: Array<ITrack>,
@@ -23,12 +24,10 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   const settings = useContext(SettingsContext);
   const { controlButtonSize } = settings?.styles || {};
   const intl = useIntl();
-  const { features, isScreenSmall } = settings || {};
+  const { features } = settings || {};
   const { state } = useLocation();
   const navigate = useNavigate();
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
-  const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
   const backText = () => intl.formatMessage({ id: state?.prevUrl.includes('tracks') ? 'back_to_tracks' : 'back_to_albums' });
 
   const playAlbum = () => {
@@ -37,68 +36,48 @@ const AlbumButtons: FC<IAlbumButtons> = ({ tracks, queue, setQueue }) => {
   };
 
   const albumButton = (onClick: Function, name: string, enabled = true) => (
-    <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className={styles.albumButton}>
+    <div className={styles.albumButton}>
       <ControlButton
         disabled={!enabled}
         text={name}
         onClick={onClick}
         width="100%"
         height={buttonHeight}
-        style={{ fontSize }}
       />
-    </Col>
+    </div>
   );
 
   return (
     <>
-      {isScreenSmall && (
-        <div>
-          {features?.play && (
-            <Button
-              icon={<PlayFill />}
-              onClick={playAlbum}
-            />
-          )}
-          {features?.queue && (
-            <Button
-              style={{ marginBottom: '0px' }}
-              icon={<ListOl />}
-              onClick={() => enqueueTracks(tracks)}
-            />
-          )}
-          {features?.playlists && (
-            <Button
-              icon={<PlusSquare />}
-              onClick={() => navigate('/playlists', { state: { tracks } })}
-            />
-          )}
-        </div>
-      )}
-      {!isScreenSmall && (
-        <>
-          <div className={styles.buttonRow}>
-            {albumButton(() => navigate(-1), backText())}
-            {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), features?.play)}
-          </div>
-          <div className={styles.buttonRow}>
-            {albumButton(() => {
-              applyLighting(settings, 'Enqueue');
-              enqueueTracks(tracks);
+      <div className={styles.mobile}>
+        <PlayButton tracks={tracks} />
+        <EnqueueButton tracks={tracks} />
+        {features?.playlists && (
+          <Button
+            icon={<PlusSquare />}
+            onClick={() => navigate('/playlists', { state: { tracks } })}
+          />
+        )}
+      </div>
+      <div className={styles.buttonRow}>
+        {albumButton(() => navigate(-1), backText())}
+        {albumButton(playAlbum, intl.formatMessage({ id: 'play_album' }), features?.play)}
+        {albumButton(() => {
+          applyLighting(settings, 'Enqueue');
+          enqueueTracks(tracks);
 
-              const clone = { ...queue };
+          const clone = { ...queue };
 
-              // @ts-ignore
-              clone.tracks = [...clone.tracks, ...tracks];
-              setQueue(clone);
+          // @ts-ignore
+          clone.tracks = [...clone.tracks, ...tracks];
+          setQueue(clone);
 
-              setTimeout(() => applyLighting(settings, 'Albums'), 700);
-            }, intl.formatMessage({ id: 'enqueue_album' }), (features?.queue && !isAlbumInQueue(queue, tracks)))} 
-            {albumButton(() => {
-              navigate('/playlists', { state: { tracks } });
-            }, intl.formatMessage({ id: 'add_to_playlist' }), features?.playlists)}
-          </div>
-        </>
-      )}
+          setTimeout(() => applyLighting(settings, 'Albums'), 700);
+        }, intl.formatMessage({ id: 'enqueue_album' }), (features?.queue && !isAlbumInQueue(queue, tracks)))}
+        {albumButton(() => {
+          navigate('/playlists', { state: { tracks } });
+        }, intl.formatMessage({ id: 'add_to_playlist' }), features?.playlists)}
+      </div>
     </>
   );
 };

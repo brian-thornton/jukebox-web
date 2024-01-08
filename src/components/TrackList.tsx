@@ -1,12 +1,11 @@
-import Container from 'react-bootstrap/Container';
 import { FC, useState, useContext } from 'react';
 
 import { getTrackAlbums } from '../lib/service-clients/librarian-client';
 import { ITrack } from './interface';
 import { SettingsContext } from './layout/SettingsProvider';
 import Track from './Track';
-import './TrackList.scss';
 import TrackActions from './TrackActions';
+import styles from './TrackList.module.css';
 
 interface ITrackList {
   tracks: Array<ITrack>,
@@ -39,7 +38,7 @@ const TrackList: FC<ITrackList> = ({
   return (
     <>
       {settings?.features && trackAlbumsLoaded && !isTrackClicked && (
-        <Container fluid className="trackListContainer">
+        <div className={styles.trackListContainer}>
           {tracks.map(track => (
             <Track
               track={track}
@@ -49,7 +48,7 @@ const TrackList: FC<ITrackList> = ({
               setTrackClicked={setIsTrackClicked}
             />
           ))}
-        </Container>
+        </div>
       )}
       {settings.isScreenSmall && settings?.features && trackAlbumsLoaded && isTrackClicked && <TrackActions track={isTrackClicked} onClose={() => setIsTrackClicked(undefined)} />}
     </>

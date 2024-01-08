@@ -3,7 +3,7 @@ import { FC, useEffect, useState, useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { PlayFill } from 'react-bootstrap-icons';
 
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import { play } from '../../../lib/service-clients/radio-client';
 import RadioCategories from '../RadioCategories/RadioCategories';
 import RadioCategoriesMobile from '../RadioCategoriesMobile/RadioCategoriesMobile';
@@ -23,8 +23,6 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [selectedPage, setSelectedPage] = useState(1);
   const [realPageSize, setRealPageSize] = useState(12);
-  const heightAndWidth = bigButtons(settings) ? '60' : '';
-  const fontSize = bigButtons(settings) ? '30px' : '';
   const [isLoaded, setIsLoaded] = useState(false);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
   const { stations } = useStations(selectedCategory, selectedPage, realPageSize);
@@ -52,10 +50,7 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
 
   const itemButtons = (station: any) => (
     <Button
-      height={heightAndWidth}
-      width={heightAndWidth}
       content={<PlayFill />}
-      style={{ fontSize }}
       onClick={() => tune(station)}
     />
   );

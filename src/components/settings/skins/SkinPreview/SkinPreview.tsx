@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 
-import Button from "../../../Button";
+import Button from "../../../common/Button/Button";
 
 import styles from './SkinPreview.module.css';
 import Item from "../../../common/Item/Item";

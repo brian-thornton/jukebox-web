@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/service-clients/settings-client';
 import { createSkin, deleteSkin, getSkins } from '../../lib/service-clients/style-client';

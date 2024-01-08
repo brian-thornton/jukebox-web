@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BackspaceFill } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import styles from './Search.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
@@ -65,41 +65,44 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
     />
   );
 
+  interface IKeyboardRowProps {
+    customButton?: any,
+    keys: Array<any>
+  }
+
+  const handleKeyDown = (event: any) => {
+    if (event.key === 'Enter') {
+      setSearchText(localSearch);
+      navigate('/albums');
+    }
+  };
+
+  const KeyboardRow: FC<IKeyboardRowProps> = ({ keys, customButton }) => (
+    <div className={styles.searchRow}>
+      {row(keys)}
+      {customButton}
+    </div>
+  );
+
   return (
-      <div className={styles.searchContainer}>
-        <div className={styles.searchRow}>
-          <FormControl
-            className={styles.searchForm}
-            id="name"
-            placeholder={localSearch || ''}
-            aria-label="Name"
-            defaultValue={localSearch}
-            aria-describedby="basic-addon1"
-            onChange={event => setLocalSearch(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                setSearchText(localSearch);
-                navigate('/albums');
-              }
-            }}
-          />
-        </div>
-        <div className={styles.searchRow}>
-          {row([1, 2, 3, 4, 5, 6, 7, 8, 9, '0'])}
-          {backspace()}
-        </div>
-        <div className={styles.searchRow}>
-          {row(['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'])}
-        </div>
-        <div className={styles.searchRow}>
-          {row(['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'])}
-        </div>
-        <div className={styles.searchRow}>
-          {row(['Z', 'X', 'C', 'V', 'B', 'N', 'M', '.'])}
-        </div>
-        <div className={styles.searchRow}>
-          {row(['Z', 'X', 'C', 'V', 'B', 'N', 'M', '.'])}
-        </div>
+    <div className={styles.searchContainer}>
+      <div className={styles.searchRow}>
+        <FormControl
+          className={styles.searchForm}
+          id="name"
+          placeholder={localSearch || ''}
+          aria-label="Name"
+          defaultValue={localSearch}
+          aria-describedby="basic-addon1"
+          onChange={event => setLocalSearch(event.target.value)}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+      <div className={styles.keyboard}>
+        <KeyboardRow keys={[1, 2, 3, 4, 5, 6, 7, 8, 9, '0']} customButton={backspace()} />
+        <KeyboardRow keys={['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']} />
+        <KeyboardRow keys={['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L']} />
+        <KeyboardRow keys={['Z', 'X', 'C', 'V', 'B', 'N', 'M', '.']} />
         <div className={styles.searchRow}>
           <Button
             hideOnSmall
@@ -118,11 +121,12 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
             content={<FormattedMessage id="clear" />}
           />
         </div>
-        <div className={styles.searchRow}>
-          {searchButton(<FormattedMessage id="search_albums" />, '/albums')}
-          {searchButton(<FormattedMessage id="search_tracks" />, '/tracks')}
-        </div>
       </div>
+      <div className={styles.typeRow}>
+        {searchButton(<FormattedMessage id="search_albums" />, '/albums')}
+        {searchButton(<FormattedMessage id="search_tracks" />, '/tracks')}
+      </div>
+    </div>
   );
 };
 

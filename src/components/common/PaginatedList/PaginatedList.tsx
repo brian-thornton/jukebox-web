@@ -1,11 +1,9 @@
 import { FC, isValidElement } from 'react';
-import { Container, ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 
 import { handlers } from '../../../lib/helper/gesture-helper';
 import Item from '../Item/Item';
 import Paginator from '../Paginator/Paginator';
-import FullWidthRow from '../FullWidthRow/FullWidthRow';
 import styles from './PaginatedList.module.css';
 
 interface IPaginatedList {
@@ -35,37 +33,31 @@ const PaginatedList: FC<IPaginatedList> = ({
   const standardItems = items && items.length > 0 && !isValidElement(items[0]);
 
   return (
-    <Container fluid className="paginated-list-container" {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>
+    <div className={styles.paginatedListContainer} {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>
       {topLevelControls && (
-        <FullWidthRow className={styles.controlClass}>{topLevelControls}</FullWidthRow>
+        {topLevelControls}
       )}
       {items && items.length > 0 && (
         <>
-          <FullWidthRow>
-            <ListGroup className="paginated-list-group">
-              <>
-                {standardItems && items.map(item => (
-                  <>
-                    <Item
-                      text={item.text}
-                      buttons={item.buttons || <></>}
-                      onClick={(a: any) => {
-                        if (item.onItemClick) {
-                          item.onItemClick();
-                        }
-                      }}
-                      onCheck={() => { }}
-                      checked={false}
-                      actionVisible={false}
-                    />
-                  </>
-                ))}
-                {!standardItems && items}
-              </>
-            </ListGroup>
-          </FullWidthRow>
+          <div className={styles.paginatedListGroup}>
+            {standardItems && items.map(item => (
+              <Item
+                text={item.text}
+                buttons={item.buttons || <></>}
+                onClick={(a: any) => {
+                  if (item.onItemClick) {
+                    item.onItemClick();
+                  }
+                }}
+                onCheck={() => { }}
+                checked={false}
+                actionVisible={false}
+              />
+            ))}
+            {!standardItems && items}
+          </div>
           {!hideButtons && (
-            <FullWidthRow>
+            <>
               {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
                 <Paginator
                   disableRandom
@@ -75,11 +67,11 @@ const PaginatedList: FC<IPaginatedList> = ({
                   pageSize={pageSize}
                 />
               )}
-            </FullWidthRow>
+            </>
           )}
         </>
       )}
-    </Container>
+    </div>
   );
 };
 

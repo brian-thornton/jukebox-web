@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import Card from 'react-bootstrap/Card';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import styles from './LogDetail.module.css';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { ILog } from '../../../interface';

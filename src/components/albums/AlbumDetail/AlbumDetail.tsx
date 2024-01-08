@@ -73,12 +73,18 @@ const AlbumDetail = () => {
             setConfirmRestriction={setConfirmRestriction}
             clickedTrack={clickedTrack}
           />
-          {clickedTrack && <TrackActions applyPadding={false} track={clickedTrack} onClose={() => setClickedTrack(undefined)} />}
+          {clickedTrack && <TrackActions track={clickedTrack} onClose={() => setClickedTrack(undefined)} />}
           {!clickedTrack && (
             <div className={styles.albumTracks}>
               {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
                 <div className={styles.albumTracks}>
-                  <AlbumTracks tracks={tracks} queue={queue} setQueue={setQueue} clickedTrack={clickedTrack} setClickedTrack={setClickedTrack} />
+                  <AlbumTracks
+                    clickedTrack={clickedTrack}
+                    queue={queue}
+                    setClickedTrack={setClickedTrack}
+                    setQueue={setQueue}
+                    tracks={tracks}
+                  />
                 </div>
               )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (

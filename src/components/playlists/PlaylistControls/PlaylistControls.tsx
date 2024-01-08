@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { runPlaylist, enqueuePlaylist, shuffle } from '../../../lib/helper/playlist-helper';
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import ControlButton from '../../common/ControlButton/ControlButton';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';
@@ -40,13 +40,11 @@ const PlaylistControls: FC<IPlaylistControls> = ({
   const { features, isScreenSmall } = settings;
   const { controlButtonSize } = settings?.styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
   const controlButton = (text: any, handler: any, flag = true) => (
     <>
       {flag && (
         <ControlButton
-          style={{fontSize}}
           height={buttonHeight}
           width="100%"
           disabled={showDeleteModal}

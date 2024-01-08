@@ -3,6 +3,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import { useNavigate } from 'react-router-dom';
 import WebFont from 'webfontloader';
 import { gql, useQuery } from "@apollo/client";
+import { bigButtons } from './lib/helper/styleHelper';
 
 import './App.css';
 import { getSettings } from './lib/service-clients/settings-client';
@@ -34,6 +35,7 @@ function App() {
   const [isLocked, setIsLocked] = useState();
   const [startsWithFilter, setStartsWithFilter] = useState();
   const navigate = useNavigate();
+  const [fontSize, setFontSize] = useState('');
   const isScreenSmall = window.innerWidth < 700;
   const screen = {
     isMobile: window.outerWidth <= 480,
@@ -114,6 +116,7 @@ function App() {
   useEffect(() => {
     if (settings) {
       startPlaybackWatchers();
+      setFontSize(bigButtons(settings) ? '30px' : '');
     }
   }, [settings]);
 
@@ -172,6 +175,7 @@ function App() {
     "--button-font-weight": settings?.styles?.buttonFontWeight,
     "--track-background-color": settings?.styles?.trackBackgroundColor,
     "--list-font": settings?.styles?.listFont,
+    "--font-size": fontSize,
   }
 
   return (

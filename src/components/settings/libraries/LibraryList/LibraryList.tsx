@@ -5,7 +5,6 @@ import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { ILibrary } from '../../../interface';
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { clone, cloneDeep } from 'lodash';
 
 interface ILibraryList {
   libraries: Array<ILibrary>,

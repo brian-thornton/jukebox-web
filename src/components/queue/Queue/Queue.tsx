@@ -1,10 +1,9 @@
 import { TrashFill, XLg } from 'react-bootstrap-icons';
-import Container from 'react-bootstrap/Container';
 import { useContext, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { applyLighting } from '../../../lib/helper/lightingHelper';
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import Confirm from '../../common/Confirm/Confirm';
 import {
   clearQueue,
@@ -14,14 +13,13 @@ import ContentWithControls from '../../common/ContentWithControls/ContentWithCon
 import PlayNowButton from '../../PlayNowButton';
 import NoResults from '../../common/NoResults/NoResults';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './Queue.scss';
 import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import PaginatedList from '../../common/PaginatedList/PaginatedList';
-import FullWidthRow from '../../common/FullWidthRow/FullWidthRow';
 import QueueControls from '../QueueControls/QueueControls';
 import { ITrack } from '../../interface';
 import QueueTrackActions from '../QueueTrackActions/QueueTrackActions';
 import { useQueue } from '../../../hooks/use-queue';
+import styles from './Queue.module.css';
 
 const Queue = () => {
   const intl = useIntl();
@@ -29,21 +27,14 @@ const Queue = () => {
   const { isScreenSmall, screen } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
   const [clearConfirm, setClearConfirm] = useState(false);
-  const { controlButtonSize } = settings.styles || {};
-  const trackHeight = (!controlButtonSize || controlButtonSize === 'small') ? 50 : 80;
-  const reserve = (!controlButtonSize || controlButtonSize === 'small') ? 300 : 250;
-  let itemsPerPage = calculatePageSize('item', reserve, trackHeight);
-  const buttonWidth = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '60';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
+  let itemsPerPage = calculatePageSize('item', 0, 63);
   const [clickedTrack, setClickedTrack] = useState<ITrack | undefined>(undefined);
   const { tracks, totalTracks, isLoaded, isEmpty, loadQueue } = useQueue(selectedPage, itemsPerPage);
+  const clear = () => clearQueue().then(() => loadQueue());
 
   if (screen?.isMobile) {
     itemsPerPage = 11;
   }
-
-  const clear = () => clearQueue().then(() => loadQueue());
 
   useEffect(() => {
     applyLighting(settings, 'Queue');
@@ -70,9 +61,6 @@ const Queue = () => {
     <>
       {settings?.features?.play && <PlayNowButton track={track} />}
       <Button
-        style={{ fontSize }}
-        width={buttonWidth}
-        height={buttonHeight}
         onClick={() => remove(track)}
         icon={<TrashFill />}
       />
@@ -117,11 +105,9 @@ const Queue = () => {
   };
 
   return isScreenSmall ? (
-    <Container fluid className="queueContainer" style={{ paddingLeft: 0, paddingRight: 0 }}>
+    <div className={styles.queueContainer}>
       {!clearConfirm && (
-        <FullWidthRow>
           <Button icon={<XLg />} onClick={() => setClearConfirm(true)} />
-        </FullWidthRow>
       )}
       {clickedTrack && (
         <QueueTrackActions
@@ -131,12 +117,8 @@ const Queue = () => {
           }}
           track={clickedTrack} />
       )}
-      {!clickedTrack && (
-        <FullWidthRow>
-          {content()}
-        </FullWidthRow>
-      )}
-    </Container>
+      {!clickedTrack && content()}
+    </div>
   ) : (
     <ContentWithControls
       controls={(

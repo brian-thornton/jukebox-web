@@ -2,7 +2,7 @@ import Nav from 'react-bootstrap/Nav';
 import { useContext } from 'react';
 
 import { SettingsContext } from './SettingsProvider';
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import NavLink from './NavLink';
 import NavButton from './NavButton';
 
@@ -75,8 +75,6 @@ const JukeboxNavLeft = () => {
                       style={{
                         fontSize,
                         fontFamily: settings.buttonFont,
-                        marginTop: '0',
-                        marginBottom: '0',
                       }}
                       disabled={features.isLocked}
                       content={c.category}

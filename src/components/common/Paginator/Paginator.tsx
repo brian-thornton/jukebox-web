@@ -7,10 +7,9 @@ import {
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import classes from './Paginator.module.css';
-import { bigButtons } from '../../../lib/helper/styleHelper';
 
 interface IPaginator {
   onPageChange: Function,
@@ -30,7 +29,6 @@ const Paginator: FC<IPaginator> = ({
   const settings = useContext(SettingsContext);
   const { styles, features } = settings || {};
   const pages = Math.floor(totalItems / pageSize);
-  const fontSize = bigButtons(settings) ? '30px' : '';
   let height;
 
   if (styles?.controlButtonSize === 'large') {
@@ -42,7 +40,6 @@ const Paginator: FC<IPaginator> = ({
   }
 
   const buttonProps = {
-    style: { fontSize },
     height,
     width: height,
   };
@@ -65,7 +62,6 @@ const Paginator: FC<IPaginator> = ({
       />
       {!disableRandom && (
         <Button
-          style={{ fontSize }}
           height={height}
           hideOnSmall
           disabled={features?.isLocked}

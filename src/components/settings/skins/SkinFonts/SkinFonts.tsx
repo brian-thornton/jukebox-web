@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { useSwipeable } from 'react-swipeable';
 
 import FontPicker from '../FontPicker/FontPicker';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import Paginator from '../../../common/Paginator/Paginator';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import { handlers } from '../../../../lib/helper/gesture-helper';

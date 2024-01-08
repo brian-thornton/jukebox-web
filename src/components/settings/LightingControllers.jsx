@@ -22,7 +22,7 @@ import {
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/service-clients/settings-client';
 import AddNew from '../common/AddNew/AddNew';
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import CloneController from './CloneController';
 import ControllerDetail from './ControllerDetail';
 import Item from '../common/Item/Item';

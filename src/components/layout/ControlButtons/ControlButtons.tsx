@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap-icons';
 
 import { up, down } from '../../../lib/service-clients/volume-client';
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import { next, stop } from '../../../lib/service-clients/queue-client';
 import { SettingsContext } from '../SettingsProvider';
 import { stop as radioStop } from '../../../lib/service-clients/radio-client';
@@ -23,16 +23,13 @@ const ControlButtons: FC<IControlButtons> = ({ mediaType, setMediaType }) => {
   const { features, isScreenSmall, styles } = settings;
 
   let height;
-  let fontSize = '';
 
   if (!isScreenSmall && styles?.controlButtonSize === 'large') {
     height = '100';
-    fontSize = '40px';
   }
 
   if (!isScreenSmall && styles?.controlButtonSize === 'medium') {
     height = '70';
-    fontSize = '30px';
   }
 
   const stopAll = () => {
@@ -54,7 +51,7 @@ const ControlButtons: FC<IControlButtons> = ({ mediaType, setMediaType }) => {
           {...commonProps}
           disabled={features.isLocked || mediaType !== 'file'}
           onClick={next}
-          content={<Play style={{ fontSize }} className="volume-icon" />}
+          content={<Play className="volume-icon" />}
         />
       )}
       {features?.next && (
@@ -62,28 +59,28 @@ const ControlButtons: FC<IControlButtons> = ({ mediaType, setMediaType }) => {
           {...commonProps}
           disabled={features.isLocked || mediaType !== 'file'}
           onClick={next}
-          content={<ChevronDoubleRight style={{ fontSize }} className="volume-icon" />}
+          content={<ChevronDoubleRight className="volume-icon" />}
         />
       )}
       {features?.stop && (
         <Button
           {...commonProps}
           onClick={stopAll}
-          content={<StopFill style={{ fontSize }} className="volume-icon" />}
+          content={<StopFill className="volume-icon" />}
         />
       )}
       {features?.volume && (
         <Button
           {...commonProps}
           onClick={up}
-          content={<VolumeUp style={{ fontSize }} className="volume-icon" />}
+          content={<VolumeUp className="volume-icon" />}
         />
       )}
       {features?.volume && (
         <Button
           {...commonProps}
           onClick={down}
-          content={<VolumeDown style={{ fontSize }} className="volume-icon" />}
+          content={<VolumeDown className="volume-icon" />}
         />
       )}
     </>

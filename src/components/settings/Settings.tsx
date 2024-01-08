@@ -17,7 +17,7 @@ import styles from './Settings.module.css';
 import LogList from './logs/LogList/LogList';
 import Metadata from './metadata/Metadata/Metadata';
 import SettingsActions from './SettingsActions';
-import Button from '../Button';
+import Button from '../common/Button/Button';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -31,7 +31,6 @@ const Settings = () => {
   const { preferences, screen } = settings || {};
   const [actionsOpen, setActionsOpen] = useState(false);
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
 
   useEffect(() => {
     if (searchParams.get('mode')) {
@@ -57,7 +56,6 @@ const Settings = () => {
       }}
       text={buttonMode}
       height={buttonHeight}
-      style={{ fontSize }}
     />
   );
 

@@ -5,7 +5,7 @@ import CategoryRow from '../CategoryRow/CategoryRow';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 
 interface ICategories {
   onClose: Function,

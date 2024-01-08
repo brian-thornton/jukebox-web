@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import { Download } from 'react-bootstrap-icons';
 
-import Button from './Button';
+import Button from './common/Button/Button';
 import { downloadTrack } from '../lib/service-clients/librarian-client';
 import { ITrack } from './interface';
 import './DownloadButton.css';

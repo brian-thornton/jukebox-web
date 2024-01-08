@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import styles from './StartsWithFilter.module.css';
 
 interface IStartsWithFilter {

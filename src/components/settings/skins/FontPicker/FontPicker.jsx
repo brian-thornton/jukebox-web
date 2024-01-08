@@ -7,7 +7,7 @@ import { calculatePageSize, supportedFonts } from '../../../../lib/helper/styleH
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { Skin } from '../../../shapes';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 
 const propTypes = {
   editFont: PropTypes.string.isRequired,

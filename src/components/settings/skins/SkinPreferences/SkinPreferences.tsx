@@ -6,7 +6,7 @@ import { FC, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import NameInput from '../../../common/NameInput/NameInput';
 import { ISkin } from '../../../interface';
 

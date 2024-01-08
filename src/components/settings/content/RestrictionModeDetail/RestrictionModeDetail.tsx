@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from 'react';
 import { TrashFill } from 'react-bootstrap-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import NoResults from '../../../common/NoResults/NoResults';

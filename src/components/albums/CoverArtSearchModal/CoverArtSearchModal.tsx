@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { IAlbum } from '../../interface';
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 import NameInput from '../../common/NameInput/NameInput';
 import { saveCoverArt } from '../../../lib/service-clients/librarian-client';
 import styles from './CoverArtSearchModal.module.css';

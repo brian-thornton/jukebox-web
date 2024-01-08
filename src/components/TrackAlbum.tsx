@@ -33,8 +33,7 @@ const TrackAlbum: FC<ITrackAlbum> = ({ album }) => {
             if (settings?.features?.albums) {
               navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
             }
-          }
-          }
+          }}
         >
           <Card.Img src={coverArt} style={{ height: heightAndWidth, width: heightAndWidth }} />
         </Card>

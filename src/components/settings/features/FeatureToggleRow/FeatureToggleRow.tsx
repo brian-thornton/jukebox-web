@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import Item from '../../../common/Item/Item';
 import styles from './FeatureToggleRow.module.css';
 

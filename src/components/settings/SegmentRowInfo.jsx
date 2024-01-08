@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import { createSegment, removeSegment } from '../../lib/service-clients/lighting-client';
 import Item from '../common/Item/Item';
 import { SettingsContext } from '../layout/SettingsProvider';

@@ -1,9 +1,10 @@
 import { FC, useContext } from 'react';
 
-import { enqueue } from '../lib/service-clients/queue-client';
-import { ITrack } from './interface';
-import { applyLighting } from '../lib/helper/lightingHelper';
-import { SettingsContext } from './layout/SettingsProvider';
+import { enqueue } from '../../lib/service-clients/queue-client';
+import { ITrack } from '../interface';
+import { applyLighting } from '../../lib/helper/lightingHelper';
+import { SettingsContext } from '../layout/SettingsProvider';
+import styles from './EnqueueLink.module.css'
 
 interface IEnqueueLink {
   mode?: string,
@@ -20,7 +21,7 @@ const EnqueueLink: FC<IEnqueueLink> = ({
 
   return (
     <div
-      style={{ marginTop: '20px' }}
+      className={styles.enqueueLink}
       onClick={() => {
         applyLighting(settings, 'Enqueue');
         enqueue(track);

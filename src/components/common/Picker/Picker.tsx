@@ -4,7 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { FC, useContext } from 'react';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 
 interface IPicker {

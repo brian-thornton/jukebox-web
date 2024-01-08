@@ -3,7 +3,7 @@ import { Search, X } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import './Jukebox.scss';
 import { SettingsContext } from './SettingsProvider';
 

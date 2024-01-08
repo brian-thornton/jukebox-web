@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import classes from './Confirm.module.css';
 
@@ -16,16 +16,11 @@ const Confirm: FC<IConfirm> = ({ onConfirm, onCancel, text }) => {
   const { styles, isScreenSmall } = useContext(SettingsContext);
 
   if (styles) {
-    const { controlButtonSize, fontColor, trackBackgroundColor } = styles;
-    const buttonSize = controlButtonSize === 'small' ? '' : '60';
-    const fontSize = controlButtonSize === 'small' ? '' : '20px';
+    const { fontColor, trackBackgroundColor } = styles;
     const marginTop = isScreenSmall ? '60px' : '0px';
 
     const button = (content: any, onClick: any) => (
       <Button
-        height={buttonSize}
-        width={buttonSize}
-        style={{ fontSize }}
         onClick={onClick}
         content={content}
       />

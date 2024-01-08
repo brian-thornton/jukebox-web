@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ButtonGroup } from 'react-bootstrap';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import CategoryDetail from '../CategoryDetail/CategoryDetail';
 import { updateSettings } from '../../../../lib/service-clients/settings-client';
 
@@ -15,7 +15,6 @@ const CategoryList = () => {
   const [selectedCategory, setSelectedCategory] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
   useEffect(() => setItemsPerPage(calculatePageSize('item', 250, 60)), []);
-  const [selectedKey, setSelectedKey] = useState('ON');
 
   const onSetKey = (cateogry, key) => {
     const deepClone = JSON.parse(JSON.stringify(settings));

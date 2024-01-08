@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { ITrack, IQueue } from '../../interface';
+import { ITrack } from '../../interface';
 import AddToPlaylistButton from '../../common/AddToPlaylistButton/AddToPlaylistButton';
 import DownloadButton from '../../DownloadButton';
 import EnqueueButton from '../../EnqueueButton';

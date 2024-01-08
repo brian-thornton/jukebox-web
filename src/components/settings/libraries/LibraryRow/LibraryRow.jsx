@@ -1,5 +1,5 @@
 import { PropTypes } from 'prop-types';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import {
   PencilSquare,
   Search,
@@ -13,7 +13,7 @@ import {
   scan,
 } from '../../../../lib/service-clients/librarian-client';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import Item from '../../../common/Item/Item';
 import { Library } from '../../../shapes';
 import { SettingsContext } from '../../../layout/SettingsProvider';

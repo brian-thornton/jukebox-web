@@ -6,7 +6,7 @@ import { FC, useContext, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { updateSettings } from '../../../../lib/service-clients/settings-client';
 

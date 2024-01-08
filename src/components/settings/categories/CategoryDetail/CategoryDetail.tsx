@@ -3,7 +3,7 @@ import { FC, useContext, useEffect, useState } from 'react';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import NameInput from '../../../common/NameInput/NameInput';
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import { getByCategory } from '../../../../lib/service-clients/librarian-client';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Item from '../../../common/Item/Item';

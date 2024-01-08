@@ -3,8 +3,12 @@
 }
 
 .queueContainer {
-  margin-top: 60px !important;
-  padding-right: 0 !important;
+  display: flex;
+  flex-flow: column;
+  margin-top: 0;
+  width: 100%;
+  min-width: 100%;
+  background-color: transparent;
 }
 
 .trackName {

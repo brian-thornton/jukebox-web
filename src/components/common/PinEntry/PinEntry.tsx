@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../Button';
+import Button from '../Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './PinEntry.module.css';
 

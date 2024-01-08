@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import FilePicker from '../../../common/FilePicker/FilePicker';
 import { Skin } from '../../../shapes';

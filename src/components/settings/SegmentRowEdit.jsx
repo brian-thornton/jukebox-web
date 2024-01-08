@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import Item from '../common/Item/Item';
 import { SettingsContext } from '../layout/SettingsProvider';
 import {

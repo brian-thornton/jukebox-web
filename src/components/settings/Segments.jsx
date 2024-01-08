@@ -1,5 +1,5 @@
 import { PlusSquare } from 'react-bootstrap-icons';
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew/AddNew';
 import { updateSettings } from '../../lib/service-clients/settings-client';

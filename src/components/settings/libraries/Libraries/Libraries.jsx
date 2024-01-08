@@ -10,7 +10,7 @@ import {
   scan,
 } from '../../../../lib/service-clients/librarian-client';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import LibraryAdd from '../LibraryAdd/LibraryAdd';
 import NoResults from '../../../common/NoResults/NoResults';
 import LibraryInfoAndGlobalControls from '../LibraryInfoAndGlobalControls/LibraryInfoAndGlobalControls';

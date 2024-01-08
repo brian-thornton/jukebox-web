@@ -1,4 +1,3 @@
-import Col from 'react-bootstrap/Col';
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,20 +18,18 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
   const { isScreenSmall, styles } = settings || {};
   const { controlButtonSize } = styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
-  const fontSize = (!controlButtonSize || controlButtonSize === 'small') ? '' : '25px';
   const colLayout = ((!controlButtonSize || controlButtonSize === 'small') && !isScreenSmall);
 
   const albumButton = (onClick: any, name: any) => (
-    <Col lg={colLayout ? '6' : '12'} xl={colLayout ? '6' : '12'} sm="12" xs="12" className={classes.adminRow}>
+    <div className={classes.albumButton}>
       <ControlButton
         onClick={onClick}
         text={name}
         width="100%"
         height={buttonHeight}
-        style={{ fontSize }}
         disabled={false}
       />
-    </Col>
+    </div>
   );
 
   const coverControls = (

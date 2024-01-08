@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 
-import Button from '../Button';
+import Button from '../common/Button/Button';
 import './Jukebox.scss';
 import { SettingsContext } from './SettingsProvider';
 import { ILibrary } from '../interface';
@@ -68,7 +68,6 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
       {!isScreenSmall && settings?.features?.albums && !applyWidth && !search && pathname === '/albums' && preferences?.showAlbumTable && (
         <Button
           width={applyWidth ? height : ''}
-          height={height}
           disabled={features?.isLocked}
           onClick={(() => setDisplay(display === 'grid' ? 'covers' : 'grid'))}
           content={display === 'grid' ? <Grid style={{ fontSize }} /> : <Grid3x3 style={{ fontSize }} />}
@@ -77,7 +76,6 @@ const JukeboxNavRight: FC<IJukeboxNavRight> = ({
       {!screen?.isMobile && (
         <Button
           width={applyWidth ? height : ''}
-          height={height}
           onClick={() => {
             setIsPinOpen(true);
           }}

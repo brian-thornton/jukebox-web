@@ -4,7 +4,7 @@ import { FC, useContext, useState } from 'react';
 
 import styles from './AddNew.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import Button from '../../Button';
+import Button from '../Button/Button';
 import NameInput from '../NameInput/NameInput';
 
 interface IAddNew {
@@ -21,12 +21,10 @@ const AddNew: FC<IAddNew> = ({
   cancelText, confirmText, fields, onCancel, onConfirm, title, dropdowns,
 }) => {
   const settings = useContext(SettingsContext);
-  const { isScreenSmall } = settings;
   const [fieldValues, setFieldValues] = useState(fields);
   const [localDropdowns, setLocalDropdowns] = useState(dropdowns);
 
   const confirmStyle = {
-    marginTop: isScreenSmall ? '60px' : '0px',
     color: settings?.styles?.fontColor,
   };
 

@@ -8,7 +8,7 @@ import { FormattedMessage } from 'react-intl';
 import ControlButtons from './ControlButtons/ControlButtons';
 import AnimatedMeter from '../common/AnimatedMeter/AnimatedMeter';
 import { SettingsContext } from './SettingsProvider';
-import Button from '../Button';
+import Button from '../common/Button/Button';
 
 import './Jukebox.scss';
 

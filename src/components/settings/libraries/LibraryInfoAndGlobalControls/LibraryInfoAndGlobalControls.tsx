@@ -2,7 +2,7 @@ import { FC, useContext, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MenuAppFill } from 'react-bootstrap-icons';
 
-import Button from '../../../Button';
+import Button from '../../../common/Button/Button';
 import Confirm from '../../../common/Confirm/Confirm';
 import styles from './LibraryInfoAndGlobalControls.module.css';
 

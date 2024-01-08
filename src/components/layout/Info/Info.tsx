@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import QRCode from "react-qr-code";
-import Button from '../../Button';
+import Button from '../../common/Button/Button';
 
 import classes from  './Info.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
