@@ -1,12 +1,13 @@
 .addNewCard {
-  background: transparent !important;
-  min-height: 200px !important;
-  height: 100% !important;
-  border-color: black !important;
+  background: transparent;
+  min-height: 200px;
+  height: 100%;
+  border-color: black;
+  width: 100%;
 }
 
 .addNewFormLabel {
-  margin-right: 10px !important;
+  margin-right: 10px;
 }
 
 .addNewText {
@@ -17,4 +18,13 @@
 
 .addNewTitle {
   text-align: center;
+}
+
+.contentContainer {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+  width: 80%;
+  margin-top: 30px;
 }

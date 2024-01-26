@@ -34,7 +34,6 @@ const AlbumCoverList: FC<IAlbumCoverList> = ({
   const paginator = (
     <Paginator
       onPageChange={(page: any) => setSelectedPage(page)}
-      selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={pageSize}
       disableRandom={search?.length > 0 || display !== 'covers'}

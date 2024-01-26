@@ -7,7 +7,7 @@ import {
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Row from 'react-bootstrap/Row';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
@@ -22,7 +22,7 @@ import {
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/service-clients/settings-client';
 import AddNew from '../common/AddNew/AddNew';
-import Button from '../common/Button/Button';
+import Button from '../common/Buttons/Button/Button';
 import CloneController from './CloneController';
 import ControllerDetail from './ControllerDetail';
 import Item from '../common/Item/Item';

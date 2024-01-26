@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { getBase64 } from '../../../../lib/helper/localStorageHelper';
 

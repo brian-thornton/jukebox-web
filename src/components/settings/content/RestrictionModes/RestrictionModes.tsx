@@ -3,7 +3,7 @@ import { PencilSquare, Trash } from 'react-bootstrap-icons';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import AddNew from '../../../common/AddNew/AddNew';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import RestrictionModeDetail from '../RestrictionModeDetail/RestrictionModeDetail';
 import { SettingsContext } from '../../../layout/SettingsProvider';

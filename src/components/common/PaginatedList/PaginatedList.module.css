@@ -17,3 +17,15 @@
   align-items: center !important;
   justify-content: center !important;
 }
+
+.paginatorButtons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1024px) {
+  .paginatorButtons {
+    display: none;
+  }
+}

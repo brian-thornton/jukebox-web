@@ -3,7 +3,7 @@ import { FC, useEffect, useState, useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { PlayFill } from 'react-bootstrap-icons';
 
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import { play } from '../../../lib/service-clients/radio-client';
 import RadioCategories from '../RadioCategories/RadioCategories';
 import RadioCategoriesMobile from '../RadioCategoriesMobile/RadioCategoriesMobile';
@@ -72,7 +72,6 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
       pageSize={realPageSize}
       onItemClick={() => { }}
       totalItems={300}
-      hideButtons={screen?.isMobile}
     />
   )
 

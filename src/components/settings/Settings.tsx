@@ -2,8 +2,8 @@ import { useContext, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import CabinetConfiguration from './CabinetConfiguration';
-import ContentWithControls from '../common/ContentWithControls/ContentWithControls';
-import ControlButton from '../common/ControlButton/ControlButton';
+import ContentWithControls from '../layout/ContentWithControls/ContentWithControls';
+import ControlButton from '../common/Buttons/ControlButton/ControlButton';
 import Libraries from './libraries/Libraries/Libraries';
 import Preferences from './preferences/Preferences/Preferences';
 import Features from './features/Features';
@@ -17,7 +17,7 @@ import styles from './Settings.module.css';
 import LogList from './logs/LogList/LogList';
 import Metadata from './metadata/Metadata/Metadata';
 import SettingsActions from './SettingsActions';
-import Button from '../common/Button/Button';
+import Button from '../common/Buttons/Button/Button';
 
 const Settings = () => {
   const settings = useContext(SettingsContext);
@@ -29,7 +29,7 @@ const Settings = () => {
   const [searchParams] = useSearchParams();
   const { controlButtonSize } = settings.styles || {};
   const { preferences, screen } = settings || {};
-  const [actionsOpen, setActionsOpen] = useState(false);
+  const [actionsOpen, setActionsOpen] = useState(true);
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
 
   useEffect(() => {
@@ -101,11 +101,17 @@ const Settings = () => {
     setControls(leftControls());
   }
 
+  useEffect(() => {
+    //alert(actionsOpen)
+  }, [actionsOpen]);
+
   if (screen?.isMobile) {
     return (
-      <div style={{paddingTop: '60px'}}>
-        {!actionsOpen && <Button style={{fontSize: '20px'}} content="..." onClick={() => setActionsOpen(true)} />}
-        {actionsOpen && <SettingsActions setMode={setMode} onClose={() => setActionsOpen(false)} />}
+      <div>
+        <div className={styles.settingsControlsContainer} >
+          {!actionsOpen && <Button style={{ fontSize: '20px' }} content="<< Back to Menu" onClick={() => setActionsOpen(true)} />}
+          {actionsOpen && <SettingsActions setMode={setMode} onClose={() => setActionsOpen(false)} />}
+        </div>
         {!actionsOpen && content()}
       </div>
     );

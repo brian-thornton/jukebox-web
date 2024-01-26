@@ -7,7 +7,7 @@ import ColorCopy from '../ColorCopy/ColorCopy';
 import Item from '../../../common/Item/Item';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import ColorPicker from '../ColorPicker/ColorPicker';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import Paginator from '../../../common/Paginator/Paginator';
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
 import { handlers } from '../../../../lib/helper/gesture-helper';

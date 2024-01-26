@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { ITrack } from '../../interface';
 import { enqueueTop, next, removeTracksFromQueue } from '../../../lib/service-clients/queue-client';
 import { useIntl } from 'react-intl';
-import SideBySide from '../../common/SideBySide/SideBySide';
+import SideBySide from '../../layout/SideBySide/SideBySide';
 
 interface IQueueTrackActions {
   track?: ITrack,

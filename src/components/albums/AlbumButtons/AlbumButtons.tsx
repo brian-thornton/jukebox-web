@@ -3,10 +3,10 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { PlusSquare } from 'react-bootstrap-icons';
 import { useIntl } from 'react-intl';
 
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import { enqueueTracks, enqueueTracksTop, next } from '../../../lib/service-clients/queue-client';
 import { ITrack, IQueue } from '../../interface';
-import ControlButton from '../../common/ControlButton/ControlButton';
+import ControlButton from '../../common/Buttons/ControlButton/ControlButton';
 import styles from './AlbumButtons.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';

@@ -8,7 +8,7 @@ import {
 } from 'react-bootstrap-icons';
 
 import { up, down } from '../../../lib/service-clients/volume-client';
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import { next, stop } from '../../../lib/service-clients/queue-client';
 import { SettingsContext } from '../SettingsProvider';
 import { stop as radioStop } from '../../../lib/service-clients/radio-client';

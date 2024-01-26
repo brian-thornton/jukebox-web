@@ -7,7 +7,7 @@ import {
   removeTracksFromPlaylist,
 } from '../../../lib/service-clients/playlist-client';
 import { useIntl } from 'react-intl';
-import SideBySide from '../../common/SideBySide/SideBySide';
+import SideBySide from '../../layout/SideBySide/SideBySide';
 
 interface IPlaylistTrackActions {
   track?: ITrack,

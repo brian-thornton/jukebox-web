@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import { PlayFill } from 'react-bootstrap-icons';
 
 import { enqueueTracksTop, next } from '../../../../lib/service-clients/queue-client';
-import Button from '../../../common/Button/Button';
+import Button from '../Button/Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import { ITrack } from '../../../../components/interface';
 

@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import LightingControllers from '../../LightingControllers';
 import SkinSegmentConfiguration from '../SkinSegmentConfiguration/SkinSegmentConfiguration';
 import { ISkin } from '../../../interface';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 
 interface ISkinLights {
   onClose: Function,

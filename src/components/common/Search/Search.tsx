@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { BackspaceFill } from 'react-bootstrap-icons';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button/Button';
+import Button from '../Buttons/Button/Button';
 import styles from './Search.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { applyLighting } from '../../../lib/helper/lightingHelper';

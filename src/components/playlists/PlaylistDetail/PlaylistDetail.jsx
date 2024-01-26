@@ -9,7 +9,7 @@ import {
   deletePlaylist,
   add,
 } from '../../../lib/service-clients/playlist-client';
-import ContentWithControls from '../../common/ContentWithControls/ContentWithControls';
+import ContentWithControls from '../../layout/ContentWithControls/ContentWithControls';
 import NoResults from '../../common/NoResults/NoResults';
 import AddNew from '../../common/AddNew/AddNew';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -116,7 +116,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     setSelectedPage,
     pageSize: realPageSize,
     totalItems: tracks.length,
-    hideButtons: screen.isMobile,
   }
 
   const content = () => {
@@ -175,7 +174,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
           {isScreenSmall && (
             <PaginatedList
               applyTopMargin
-              topLevelControls={controls}
               {...paginatorProps}
             />
           )}

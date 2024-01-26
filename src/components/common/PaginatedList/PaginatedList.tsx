@@ -15,7 +15,6 @@ interface IPaginatedList {
   pageSize: number,
   applyTopMargin?: boolean,
   onItemClick: Function,
-  hideButtons?: boolean,
 }
 
 const PaginatedList: FC<IPaginatedList> = ({
@@ -25,7 +24,6 @@ const PaginatedList: FC<IPaginatedList> = ({
   totalItems,
   setSelectedPage,
   pageSize,
-  hideButtons = false,
 }) => {
   const swipe = useSwipeable(
     handlers(setSelectedPage, selectedPage, Math.ceil((totalItems || items?.length) / pageSize)),
@@ -35,7 +33,7 @@ const PaginatedList: FC<IPaginatedList> = ({
   return (
     <div className={styles.paginatedListContainer} {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>
       {topLevelControls && (
-        {topLevelControls}
+        { topLevelControls }
       )}
       {items && items.length > 0 && (
         <>
@@ -56,19 +54,16 @@ const PaginatedList: FC<IPaginatedList> = ({
             ))}
             {!standardItems && items}
           </div>
-          {!hideButtons && (
-            <>
-              {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
-                <Paginator
-                  disableRandom
-                  onPageChange={(page: any) => setSelectedPage(page)}
-                  selectedPage={selectedPage}
-                  totalItems={totalItems || items.length}
-                  pageSize={pageSize}
-                />
-              )}
-            </>
-          )}
+          <div className={styles.paginatorButtons}>
+            {Math.ceil((totalItems || items.length) / pageSize) > 1 && (
+              <Paginator
+                disableRandom
+                onPageChange={(page: any) => setSelectedPage(page)}
+                totalItems={totalItems || items.length}
+                pageSize={pageSize}
+              />
+            )}
+          </div>
         </>
       )}
     </div>

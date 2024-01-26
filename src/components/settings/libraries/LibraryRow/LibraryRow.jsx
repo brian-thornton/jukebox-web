@@ -13,7 +13,7 @@ import {
   scan,
 } from '../../../../lib/service-clients/librarian-client';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import Item from '../../../common/Item/Item';
 import { Library } from '../../../shapes';
 import { SettingsContext } from '../../../layout/SettingsProvider';

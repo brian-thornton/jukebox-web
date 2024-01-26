@@ -2,7 +2,7 @@ import { FC, useContext, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { MenuAppFill } from 'react-bootstrap-icons';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import Confirm from '../../../common/Confirm/Confirm';
 import styles from './LibraryInfoAndGlobalControls.module.css';
 
@@ -83,7 +83,7 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
           onClick={() => {
             setIsMenuOpen(true)
           }}
-          content={<MenuAppFill />}
+          content="Library Options"
         />
       )}
       {!screen?.isMobile && !isDeleteAllConfirmOpen && (

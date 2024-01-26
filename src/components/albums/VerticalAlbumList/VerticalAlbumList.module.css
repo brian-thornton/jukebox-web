@@ -1,12 +1,13 @@
 
 .listContainer {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  display: flex;
+  flex-direction: row;
 }
 
 .verticalAlbumContainer {
-  margin-left: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  margin-right: 0;
 }
+

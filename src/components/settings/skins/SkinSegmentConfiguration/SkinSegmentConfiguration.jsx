@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import Item from '../../../common/Item/Item';
 import './SkinSegmentConfiguration.scss';
 import Paginator from '../../../common/Paginator/Paginator';

@@ -5,7 +5,7 @@ import {
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import InRowDeleteConfirmation from '../../../common/InRowDeleteConfirmation/InRowDeleteConfirmation';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import Item from '../../../common/Item/Item';
 import { updateSettings } from '../../../../lib/service-clients/settings-client';
 

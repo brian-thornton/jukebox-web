@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { FC, useContext, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import CategoryPicker from '../CategoryPicker/CategoryPicker';
 import DownloadCoverArtPicker from '../DownloadCoverArtPreference/DownloadCoverArtPreference';
 import NameInput from '../../../common/NameInput/NameInput';

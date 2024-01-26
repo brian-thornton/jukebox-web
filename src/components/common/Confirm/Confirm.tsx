@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../Button/Button';
+import Button from '../Buttons/Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import classes from './Confirm.module.css';
 

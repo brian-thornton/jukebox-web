@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import ControlButton from '../../common/ControlButton/ControlButton';
+import ControlButton from '../../common/Buttons/ControlButton/ControlButton';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import classes from './AlbumAdminButtons.module.css';
 

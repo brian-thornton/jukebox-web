@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { FC, useContext } from 'react';
 import { useIntl } from 'react-intl';
 
-import ControlButton from '../../common/ControlButton/ControlButton';
+import ControlButton from '../../common/Buttons/ControlButton/ControlButton';
 import { clearQueue, enqueueTracks } from '../../../lib/service-clients/queue-client';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';

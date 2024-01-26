@@ -3,14 +3,14 @@ import { useContext, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
 
 import { applyLighting } from '../../../lib/helper/lightingHelper';
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import Confirm from '../../common/Confirm/Confirm';
 import {
   clearQueue,
   removeTracksFromQueue,
 } from '../../../lib/service-clients/queue-client';
-import ContentWithControls from '../../common/ContentWithControls/ContentWithControls';
-import PlayNowButton from '../../PlayNowButton';
+import ContentWithControls from '../../layout/ContentWithControls/ContentWithControls';
+import PlayNowButton from '../../common/Buttons/PlayNowButton';
 import NoResults from '../../common/NoResults/NoResults';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { calculatePageSize } from '../../../lib/helper/styleHelper';
@@ -96,7 +96,6 @@ const Queue = () => {
             pageSize={itemsPerPage}
             totalItems={totalTracks}
             onItemClick={() => { }}
-            hideButtons={screen?.isMobile}
           />
         )}
         {clearConfirm && confirm}

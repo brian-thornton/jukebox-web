@@ -1,10 +1,9 @@
-import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { FC, useContext, useState } from 'react';
 
 import styles from './AddNew.module.css';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import Button from '../Button/Button';
+import Button from '../Buttons/Button/Button';
 import NameInput from '../NameInput/NameInput';
 
 interface IAddNew {
@@ -37,10 +36,10 @@ const AddNew: FC<IAddNew> = ({
   };
 
   return (
-    <Card className={styles.addNewCard} style={confirmStyle}>
-      <Card.Body style={{ background: settings?.styles?.trackBackgroundColor }}>
-        <Card.Title className={styles.addNewTitle}>{title}</Card.Title>
-        <Card.Text className={styles.addNewText}>
+    <div className={styles.addNewCard} style={confirmStyle}>
+      <div style={{ background: settings?.styles?.trackBackgroundColor }}>
+        <div className={styles.addNewTitle}>{title}</div>
+        <div className={styles.addNewText}>
           <div className={styles.contentContainer}>
             {Object.keys(fieldValues).map(f => (
               <NameInput
@@ -66,15 +65,15 @@ const AddNew: FC<IAddNew> = ({
               </Form.Group>
             ))}
           </div>
-        </Card.Text>
+        </div>
         <div className={styles.addNewText}>
           <Button onClick={onCancel} content={cancelText} />
           <Button onClick={() => {
             onConfirm(fieldValues, localDropdowns);
           }} content={confirmText} />
         </div>
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 

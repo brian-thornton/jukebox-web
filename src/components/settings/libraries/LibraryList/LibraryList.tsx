@@ -61,7 +61,6 @@ const LibraryList: FC<ILibraryList> = ({
       pageSize={realPageSize}
       totalItems={libraries.length}
       onItemClick={() => { }}
-      hideButtons={screen?.isMobile}
     />
   );
 };

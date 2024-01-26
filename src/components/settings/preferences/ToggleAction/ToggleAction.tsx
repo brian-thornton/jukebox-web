@@ -2,7 +2,7 @@ import { FC, useContext } from 'react';
 import { useIntl } from 'react-intl';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import SideBySide from '../../../common/SideBySide/SideBySide';
+import SideBySide from '../../../layout/SideBySide/SideBySide';
 import { updatePreference } from '../../../../lib/helper/preferenceHelper';
 
 interface IToggleActions {

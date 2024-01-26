@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import styles from './RadioCategories.module.css';
 
 interface IRadioCategories {

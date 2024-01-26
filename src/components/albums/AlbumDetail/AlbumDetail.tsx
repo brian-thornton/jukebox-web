@@ -11,7 +11,7 @@ import RestrictionModes from '../../settings/content/RestrictionModes/Restrictio
 import { getQueue } from '../../../lib/service-clients/queue-client';
 import AlbumCoverAndButtons from '../AlbumCoverAndButtons/AlbumCoverAndButtons';
 import { ITrack } from '../../interface';
-import TrackActions from '../../TrackActions';
+import TrackActions from '../TrackActions';
 
 const AlbumDetail = () => {
   const { state } = useLocation();

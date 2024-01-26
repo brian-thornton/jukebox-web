@@ -11,7 +11,7 @@ import { SettingsContext } from '../../../layout/SettingsProvider';
 import { deepCloneSkin } from '../../../../lib/helper/styleHelper';
 import SkinList from '../SkinList/SkinList';
 import SkinGenerator from '../SkinGenerator/SkinGenerator';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import styles from './Skins.module.css';
 
 const propTypes = {

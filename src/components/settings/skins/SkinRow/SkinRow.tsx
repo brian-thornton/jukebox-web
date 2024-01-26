@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import Item from '../../../common/Item/Item';
 import styles from './SkinRow.module.css'
 

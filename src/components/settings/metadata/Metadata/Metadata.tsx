@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from 'react';
 import { injectIntl } from 'react-intl';
 
 import { getArtistsByGenre, linkGenereToLibrary } from '../../../../lib/service-clients/metadata-client';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import Loading from '../../../common/Loading/Loading';
 import { calculatePageSize } from '../../../../lib/helper/styleHelper';
@@ -55,7 +55,6 @@ const Metadata = () => {
           setSelectedPage={setSelectedPage}
           pageSize={itemsPerPage}
           onItemClick={() => { }}
-          hideButtons={screen?.isMobile}
         />
       )}
       {isLoading && <Loading text="Loading..." />}

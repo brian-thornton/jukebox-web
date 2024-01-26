@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../common/Button/Button';
+import Button from '../common/Buttons/Button/Button';
 import { SettingsContext } from '../layout/SettingsProvider';
 import AddNew from '../common/AddNew/AddNew';
 import { updateSettings } from '../../lib/service-clients/settings-client';

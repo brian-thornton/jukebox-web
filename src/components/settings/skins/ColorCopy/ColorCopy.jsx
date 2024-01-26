@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import { FormattedMessage } from 'react-intl';
 
 import { deleteSkin, createSkin } from '../../../../lib/service-clients/style-client';
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import { Skin } from '../../../shapes';
 
 const propTypes = {

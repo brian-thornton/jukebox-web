@@ -5,12 +5,12 @@ import { handlers } from '../../../lib/helper/gesture-helper';
 import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack, IQueue } from '../../interface';
-import AddToPlaylistButton from '../../common/AddToPlaylistButton/AddToPlaylistButton';
-import EnqueueButton from '../../EnqueueButton';
+import AddToPlaylistButton from '../../common/Buttons/AddToPlaylistButton/AddToPlaylistButton';
+import EnqueueButton from '../../common/Buttons/EnqueueButton';
 import Item from '../../common/Item/Item';
 import Paginator from '../../common/Paginator/Paginator';
-import PlayNowButton from '../../PlayNowButton';
-import TrackActions from '../../TrackActions';
+import PlayNowButton from '../../common/Buttons/PlayNowButton';
+import TrackActions from '../TrackActions';
 import AlbumTrackButtons from '../AlbumTrackButtons/AlbumTrackButtons';
 import classes from './AlbumTracks.module.css';
 
@@ -101,7 +101,6 @@ const AlbumTracks: FC<IAlbumTracks> = ({ tracks, queue, setQueue, clickedTrack, 
           <Paginator
             disableRandom
             onPageChange={(page: any) => setSelectedPage(page)}
-            selectedPage={selectedPage}
             totalItems={tracks.length}
             pageSize={pageSize}
           />

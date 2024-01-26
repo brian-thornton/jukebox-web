@@ -9,9 +9,9 @@ const Queue = React.lazy(() => import('../queue/Queue/Queue'));
 const RadioList = React.lazy(() => import('../radio/RadioList/RadioList'));
 const Search = React.lazy(() => import('../common/Search/Search'));
 const Settings = React.lazy(() => import('../settings/Settings'));
-const Tracks = React.lazy(() => import('../Tracks'));
+const Tracks = React.lazy(() => import('../albums/Tracks/Tracks'));
 const WithKeyboardInput = React.lazy(() => import('./WithKeyboardInput'));
-const Info = React.lazy(() => import('./Info/Info'));
+const Info = React.lazy(() => import('./Navigation/Info/Info'));
 
 interface IJukeboxRoutes {
   display: string,

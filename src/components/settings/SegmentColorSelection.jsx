@@ -15,7 +15,7 @@ import {
   demoEffect,
 } from '../../lib/service-clients/lighting-client';
 import { deleteSkin, createSkin } from '../../lib/service-clients/style-client';
-import Button from '../common/Button/Button';
+import Button from '../common/Buttons/Button/Button';
 import ColorPicker from './skins/ColorPicker/ColorPicker';
 import ControllerEffects from './ControllerEffects';
 import ControllerPalettes from './ControllerPalettes';

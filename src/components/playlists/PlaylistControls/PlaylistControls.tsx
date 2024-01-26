@@ -11,10 +11,11 @@ import { FormattedMessage } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
 import { runPlaylist, enqueuePlaylist, shuffle } from '../../../lib/helper/playlist-helper';
-import Button from '../../common/Button/Button';
-import ControlButton from '../../common/ControlButton/ControlButton';
+import Button from '../../common/Buttons/Button/Button';
+import ControlButton from '../../common/Buttons/ControlButton/ControlButton';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';
+import styles from './PlaylistControls.module.css';
 
 interface IPlaylistControls {
   isEmpty: boolean,
@@ -37,7 +38,7 @@ const PlaylistControls: FC<IPlaylistControls> = ({
 }) => {
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
-  const { features, isScreenSmall } = settings;
+  const { features } = settings;
   const { controlButtonSize } = settings?.styles || {};
   const buttonHeight = (!controlButtonSize || controlButtonSize === 'small') ? '' : '50';
 
@@ -46,7 +47,7 @@ const PlaylistControls: FC<IPlaylistControls> = ({
       {flag && (
         <ControlButton
           height={buttonHeight}
-          width="100%"
+          width="200px"
           disabled={showDeleteModal}
           onClick={handler}
           text={text}
@@ -58,46 +59,42 @@ const PlaylistControls: FC<IPlaylistControls> = ({
 
   return (
     <>
-      {!isScreenSmall && (
-        <>
-          {controlButton(<FormattedMessage id="go_back" />, () => navigate('/playlists'))}
-          {controlButton(<FormattedMessage id="run" />, () => runPlaylist(tracks), features?.play)}
-          {controlButton(<FormattedMessage id="enqueue" />, () => enqueuePlaylist(tracks), features?.queue)}
-          {controlButton(<FormattedMessage id="shuffle" />, () => shuffle(name, tracks, reloadTracks))}
-          {controlButton(<FormattedMessage id="save_as" />, () => setIsSaveAsOpen(true))}
-          {controlButton(<FormattedMessage id="delete" />, () => setShowDeleteModal(true), features?.deletePlaylist)}
-        </>
-      )}
-      {isScreenSmall && (
-        <>
-          <Button disabled={showDeleteModal} onClick={() => navigate('/playlists')} icon={<ArrowLeft />} />
-          {features?.play && (
-            <Button
-              disabled={showDeleteModal || isEmpty}
-              onClick={() => runPlaylist(tracks)}
-              icon={<CaretRightFill />}
-            />
-          )}
-          {features?.queue && (
-            <Button
-              disabled={showDeleteModal || isEmpty}
-              onClick={() => enqueuePlaylist(tracks)}
-              icon={<ListOl />}
-            />
-          )}
-          <Button disabled={showDeleteModal || isEmpty} onClick={() => shuffle(name, tracks, reloadTracks)} icon={<Shuffle />} />
+      <div className={styles.desktop}>
+        {controlButton(<FormattedMessage id="go_back" />, () => navigate('/playlists'))}
+        {controlButton(<FormattedMessage id="run" />, () => runPlaylist(tracks), features?.play)}
+        {controlButton(<FormattedMessage id="enqueue" />, () => enqueuePlaylist(tracks), features?.queue)}
+        {controlButton(<FormattedMessage id="shuffle" />, () => shuffle(name, tracks, reloadTracks))}
+        {controlButton(<FormattedMessage id="save_as" />, () => setIsSaveAsOpen(true))}
+        {controlButton(<FormattedMessage id="delete" />, () => setShowDeleteModal(true), features?.deletePlaylist)}
+      </div>
+      <div className={styles.mobile}>
+        <Button disabled={showDeleteModal} onClick={() => navigate('/playlists')} icon={<ArrowLeft />} />
+        {features?.play && (
           <Button
             disabled={showDeleteModal || isEmpty}
-            onClick={() => setIsSaveAsOpen(true)}
-            icon={<Save />}
+            onClick={() => runPlaylist(tracks)}
+            icon={<CaretRightFill />}
           />
+        )}
+        {features?.queue && (
           <Button
-            disabled={showDeleteModal}
-            onClick={() => setShowDeleteModal(true)}
-            icon={<XLg />}
+            disabled={showDeleteModal || isEmpty}
+            onClick={() => enqueuePlaylist(tracks)}
+            icon={<ListOl />}
           />
-        </>
-      )}
+        )}
+        <Button disabled={showDeleteModal || isEmpty} onClick={() => shuffle(name, tracks, reloadTracks)} icon={<Shuffle />} />
+        <Button
+          disabled={showDeleteModal || isEmpty}
+          onClick={() => setIsSaveAsOpen(true)}
+          icon={<Save />}
+        />
+        <Button
+          disabled={showDeleteModal}
+          onClick={() => setShowDeleteModal(true)}
+          icon={<XLg />}
+        />
+      </div>
     </>
   );
 };

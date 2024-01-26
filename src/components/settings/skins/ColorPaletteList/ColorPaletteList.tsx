@@ -53,7 +53,6 @@ const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
       <Paginator
         disableRandom
         onPageChange={(page: any) => setSelectedPage(page)}
-        selectedPage={selectedPage}
         totalItems={colorPallets.length}
         pageSize={realPageSize}
       />

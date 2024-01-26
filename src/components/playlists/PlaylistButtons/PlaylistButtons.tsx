@@ -1,12 +1,12 @@
 import { CaretDownFill, CaretUpFill, TrashFill } from 'react-bootstrap-icons';
 import { FC } from 'react';
 
-import PlayNowButton from '../../PlayNowButton';
+import PlayNowButton from '../../common/Buttons/PlayNowButton';
 import {
   addTrackAtPosition,
   removeTracksFromPlaylist,
 } from '../../../lib/service-clients/playlist-client';
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import { ITrack } from '../../interface';
 
 interface IPlaylistButtons {

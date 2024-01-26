@@ -101,7 +101,7 @@ const Features = () => {
         {selectedFeature && (
           <AccessActions name={selectedFeature} value={settings.features[selectedFeature]} onClose={() => setSelectedFeature(null)} />
         )}
-      </div >
+      </div>
     );
   }
 

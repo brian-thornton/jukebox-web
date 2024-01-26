@@ -11,7 +11,7 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import styles from './ColorPicker.module.css';
 

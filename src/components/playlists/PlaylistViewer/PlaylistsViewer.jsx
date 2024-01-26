@@ -11,8 +11,8 @@ import { getStatus, updateStatus } from '../../../lib/service-clients/status-cli
 import { headerFooterReserve } from '../../../lib/helper/styleHelper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import AddNew from '../../common/AddNew/AddNew';
-import ContentWithControls from '../../common/ContentWithControls/ContentWithControls';
-import ControlButton from '../../common/ControlButton/ControlButton';
+import ContentWithControls from '../../layout/ContentWithControls/ContentWithControls';
+import ControlButton from '../../common/Buttons/ControlButton/ControlButton';
 import PaginatedList from '../../common/PaginatedList/PaginatedList';
 import PlaylistDetail from '../PlaylistDetail/PlaylistDetail';
 import PlaylistRow from '../PlaylistRow/PlaylistRow';
@@ -83,7 +83,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
       {!addMode && (
         <ControlButton
           text={<FormattedMessage id="add" />}
-          width="100%"
+          width={settings?.screen.isMobile ? "375" : "75"}
           onClick={() => setAddMode(true)}
           height={buttonHeight}
         />

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import SideBySide from '../../../common/SideBySide/SideBySide';
+import SideBySide from '../../../layout/SideBySide/SideBySide';
 
 interface ILibraryMenuMobile {
   onClose: Function,
@@ -25,7 +25,7 @@ const LibraryMenuMobile: FC<ILibraryMenuMobile> = ({ onClose, showOnline, setSho
   ];
 
   return (
-    <SideBySide data={actions} />
+    <SideBySide data={actions} /> 
   );
 };
 

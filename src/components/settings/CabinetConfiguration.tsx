@@ -1,21 +1,13 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import './CabinetConfiguration.scss';
+import styles from './CabinetConfiguration.module.css';
 import { FormattedMessage } from 'react-intl';
 
 import LightingControllers from './LightingControllers';
 
 const CabinetConfiguration = () => (
-  <>
-    <Container fluid className="cabinet-container">
-      <Row>
-        <FormattedMessage id="cabinet_configuration" />
-      </Row>
-      <Row>
-        <LightingControllers />
-      </Row>
-    </Container>
-  </>
+  <div className={styles.container}>
+    <FormattedMessage id="cabinet_configuration" />
+    <LightingControllers />
+  </div>
 );
 
 export default CabinetConfiguration;

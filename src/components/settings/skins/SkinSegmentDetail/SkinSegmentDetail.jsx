@@ -2,7 +2,7 @@ import { PropTypes } from 'prop-types';
 import { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../../common/Button/Button';
+import Button from '../../../common/Buttons/Button/Button';
 import { getCurrentState } from '../../../../lib/service-clients/lighting-client';
 import { Segments } from '../../Segments';
 import SegmentColorSelection from '../../SegmentColorSelection';

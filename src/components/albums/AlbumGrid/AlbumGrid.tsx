@@ -18,12 +18,11 @@ interface IAlbumGrid {
 }
 
 const AlbumGrid: FC<IAlbumGrid> = ({
-  albums, setSelectedPage, selectedPage, totalAlbums, pageSize, disableRandom,
+  albums, setSelectedPage, totalAlbums, pageSize, disableRandom,
 }) => {
   const paginator = (
     <Paginator
       onPageChange={(page: any) => setSelectedPage(page)}
-      selectedPage={selectedPage}
       totalItems={totalAlbums}
       pageSize={pageSize}
       disableRandom={disableRandom}

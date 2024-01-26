@@ -1,15 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
 import { FC, useContext } from 'react';
-import Row from 'react-bootstrap/Row';
 
 import { handlers } from '../../../lib/helper/gesture-helper';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import AlbumCover from '../AlbumCover/AlbumCover';
 import { IAlbum } from '../../interface';
-import { ListGroup } from 'react-bootstrap';
 import styles from './VerticalAlbumList.module.css';
 
 interface IAlbumList {
@@ -35,27 +31,19 @@ const AlbumList: FC<IAlbumList> = ({
   };
 
   return (
-    <Container {...swipe} className={styles.verticalAlbumContainer}>
-      <ListGroup>
-        {albums?.map((album: IAlbum) => (
-          <ListGroup.Item key={album.path} style={itemStyle}>
-            <Container fluid className={styles.listContainer}>
-              <Row
-                onClick={() => {
-                  navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
-                }}>
-                <Col xs="3">
-                  <AlbumCover album={album} isListCover={true} />
-                </Col>
-                <Col xs="9">
-                  {album.name}
-                </Col>
-              </Row>
-            </Container>
-          </ListGroup.Item>
-        ))}
-      </ListGroup>
-    </Container>
+    <div {...swipe} className={styles.verticalAlbumContainer}>
+      {albums?.map((album: IAlbum) => (
+        <div key={album.path} style={itemStyle}>
+          <div className={styles.listContainer}
+            onClick={() => {
+              navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
+            }}>
+            <AlbumCover album={album} isListCover={true} />
+            {album.name}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 };
 

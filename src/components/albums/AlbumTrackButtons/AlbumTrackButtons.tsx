@@ -2,10 +2,10 @@ import { FC, useContext } from 'react';
 
 import { SettingsContext } from '../../layout/SettingsProvider';
 import { ITrack } from '../../interface';
-import AddToPlaylistButton from '../../common/AddToPlaylistButton/AddToPlaylistButton';
-import DownloadButton from '../../DownloadButton';
-import EnqueueButton from '../../EnqueueButton';
-import PlayNowButton from '../../PlayNowButton';
+import AddToPlaylistButton from '../../common/Buttons/AddToPlaylistButton/AddToPlaylistButton';
+import DownloadButton from '../../common/Buttons/DownloadButton';
+import EnqueueButton from '../../common/Buttons/EnqueueButton';
+import PlayNowButton from '../../common/Buttons/PlayNowButton';
 
 interface IAlbumTrackButtons {
   track: ITrack,

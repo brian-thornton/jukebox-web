@@ -2,7 +2,7 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import { FC, useContext } from 'react';
 
-import Button from '../Button/Button';
+import Button from '../Buttons/Button/Button';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './FilePicker.module.css';
 

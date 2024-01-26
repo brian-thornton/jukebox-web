@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import SideBySide from '../../common/SideBySide/SideBySide';
+import SideBySide from '../../layout/SideBySide/SideBySide';
 
 interface IRadioCategoriesMobile {
   category: string,

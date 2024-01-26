@@ -2,7 +2,7 @@ import { PencilSquare } from 'react-bootstrap-icons';
 import { FC, useContext } from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import Button from '../../common/Button/Button';
+import Button from '../../common/Buttons/Button/Button';
 import Item from '../../common/Item/Item';
 import { IPlaylist } from '../../interface';
 import { SettingsContext } from '../../layout/SettingsProvider';

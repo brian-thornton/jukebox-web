@@ -14,8 +14,8 @@ import { supportedFonts } from './lib/helper/styleHelper';
 import { updateSettings } from './lib/service-clients/settings-client';
 import JukeboxRoutes from './components/layout/JukeboxRoutes';
 
-const JukeboxFooter = React.lazy(() => import("./components/layout/JukeboxFooter"));
-const JukeboxHeader = React.lazy(() => import("./components/layout/JukeboxHeader/JukeboxHeader"));
+const JukeboxFooter = React.lazy(() => import("./components/layout/Navigation/JukeboxFooter/JukeboxFooter"));
+const JukeboxHeader = React.lazy(() => import("./components/layout/Navigation/JukeboxHeader/JukeboxHeader"));
 const PinEntry = React.lazy(() => import("./components/common/PinEntry/PinEntry"));
 
 function App() {
