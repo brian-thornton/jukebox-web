@@ -47,7 +47,7 @@ const SkinFonts: FC<ISkinFonts> = ({ onClose, skin }) => {
       <Button
         disabled={!skin.isEditable}
         // @ts-ignore
-        style={{ fontFamily: colors[name] }}
+        style={{ fontFamily: display }}
         onClick={() => {
           setEditFont(name);
           setIsFontModalOpen(true);

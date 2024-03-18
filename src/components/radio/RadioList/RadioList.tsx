@@ -17,18 +17,16 @@ interface IRadioList {
   setMediaType: Function,
 }
 
-const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
+const RadioList: FC<IRadioList> = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
   const { preferences, screen } = settings;
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(12);
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [realPageSize, setRealPageSize] = useState<number | null>(12);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
   const { stations } = useStations(selectedCategory, selectedPage, realPageSize);
 
   useEffect(() => {
-    if (realPageSize === 0 && !isLoaded) {
       const reserve = headerFooterReserve(settings);
       const height = bigButtons(settings) ? 70 : 60;
       const itemHeight = height;
@@ -39,7 +37,6 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
       } else {
         setRealPageSize(Math.floor(viewPortHeight / itemHeight));
       }
-    }
   }, []);
 
   const tune = (station: any) => {
@@ -63,7 +60,7 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
     }
   ));
 
-  const StationList = () => (
+  const StationList = () => (realPageSize && realPageSize > 0) ? (
     <PaginatedList
       // @ts-ignore
       items={items()}
@@ -73,7 +70,7 @@ const RadioList: FC<IRadioList> =  ({ setMediaType }) => {
       onItemClick={() => { }}
       totalItems={300}
     />
-  )
+  ) : <></>;
 
   return (
     <>

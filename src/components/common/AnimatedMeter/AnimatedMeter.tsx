@@ -1,9 +1,9 @@
-import './AnimatedMeter.scss';
+import styles from  './AnimatedMeter.module.css';
 
 const AnimatedMeter = () => (
   <div id="bars">
     {Array(10).fill(null).map((_, index) => (
-      <div key={index} className="bar" />
+      <div key={index} className={styles.bar} />
     ))}
   </div>
 );

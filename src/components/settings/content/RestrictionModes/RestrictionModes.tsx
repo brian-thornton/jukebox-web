@@ -132,14 +132,14 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
             setIsDeleteOpen(false);
             setSelectedRestrictionMode(undefined);
           }}
-          text={intl.formatMessage({id: "delete_restriction_group_text"})}
+          text={intl.formatMessage({ id: "delete_restriction_group_text" })}
         />
       )}
       {restrictionGroups?.length === 0 && !isAddOpen && !isDeleteOpen && (
         <NoResults
           applyMargin={false}
-          title={intl.formatMessage({id: "no_restriction_groups_title"})}
-          text={intl.formatMessage({id: "no_restriction_groups_title"})}
+          title={intl.formatMessage({ id: "no_restriction_groups_title" })}
+          text={intl.formatMessage({ id: "no_restriction_groups_title" })}
           controls={(
             <>
               <Button content={<FormattedMessage id="add" />} onClick={() => setIsAddOpen(true)} />
@@ -160,7 +160,7 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
       )}
       {!selectedRestrictionMode && isAddOpen && !isDeleteOpen && (
         <AddNew
-          title={intl.formatMessage({id: "add_restriction_group"})}
+          title={intl.formatMessage({ id: "add_restriction_group" })}
           dropdowns={[{ name: <FormattedMessage id="group_type" />, options: ['whitelist', 'blacklist'], value: 'whitelist' }]}
           onConfirm={onAddRestrictionGroup}
           confirmText='Add'
@@ -171,7 +171,16 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
       )}
       {!selectedRestrictionMode && !isAddOpen && !isDeleteOpen && restrictionGroups?.length > 0 && (
         <PaginatedList
-          topLevelControls={album ? <></> : <Button content={<FormattedMessage id="add" />} onClick={() => setIsAddOpen(true)} />}
+          topLevelControls={
+            !addMode ? (
+              <Button
+                content={<FormattedMessage id="add" />}
+                onClick={() => setIsAddOpen(true)}
+              />
+            ) : (
+              <></>
+            )
+          }
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}

@@ -24,7 +24,7 @@ const FontPicker = ({
   const availableFonts = supportedFonts.google.families;
   const start = selectedPage === 1 ? 0 : ((selectedPage * itemsPerPage) - itemsPerPage);
 
-  useEffect(() => setItemsPerPage(calculatePageSize('item', 350)), []);
+  useEffect(() => setItemsPerPage(calculatePageSize('item', 150)), []);
 
   const updateFont = (fontName) => {
     deleteSkin(skin.name).then(() => {

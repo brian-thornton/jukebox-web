@@ -14,6 +14,7 @@ import {
 } from '../../../../lib/service-clients/librarian-client';
 
 import { ILibrary } from '../../../interface';
+import styles from './CategoryDetail.module.css'
 
 interface ICategoryDetail {
   category: {
@@ -65,7 +66,7 @@ const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
   useEffect(() => loadCategory(), []);
 
   return (
-    <>
+    <div className={styles.categoryDetailContainer}>
       <Button content="Cancel" onClick={onClose} />
       <NameInput
         defaultValue={category.category}
@@ -79,7 +80,7 @@ const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
         pageSize={itemsPerPage}
         onItemClick={() => {}}
       />
-    </>
+    </div>
   )
 };
 

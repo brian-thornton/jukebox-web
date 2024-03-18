@@ -25,20 +25,25 @@ const Item: FC<IItem> = ({
   includeCheckbox,
   onCheck,
   checked,
-}) => (
-  <div className={classes.itemContainer} onClick={(e) => {
-    if (onClick) {
-      onClick();
-    }
-  }}>
-    <div className={classes.itemLeft}>
-      {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
-      {text}
-    </div>
-    <div className={classes.buttons}>
-      {buttons}
-    </div>
-  </div >
-);
+  font,
+}) => {
+  const dynamicStyle = { fontFamily: font };
+
+  return (
+    <div className={classes.itemContainer} onClick={(e) => {
+      if (onClick) {
+        onClick();
+      }
+    }}>
+      <div className={classes.itemLeft} style={dynamicStyle}>
+        {includeCheckbox && <CheckToggle isChecked={checked} onClick={onCheck} />}
+        {text}
+      </div>
+      <div className={classes.buttons}>
+        {buttons}
+      </div>
+    </div >
+  );
+}
 
 export default Item;

@@ -32,9 +32,7 @@ const PaginatedList: FC<IPaginatedList> = ({
 
   return (
     <div className={styles.paginatedListContainer} {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>
-      {topLevelControls && (
-        { topLevelControls }
-      )}
+      {topLevelControls}
       {items && items.length > 0 && (
         <>
           <div className={styles.paginatedListGroup}>

@@ -44,21 +44,15 @@ const Metadata = () => {
     ))
   );
 
-  return (
-    <>
-      {!isLoading && (
-        <PaginatedList
-          // @ts-ignore
-          items={items()}
-          totalItems={genres.length}
-          selectedPage={selectedPage}
-          setSelectedPage={setSelectedPage}
-          pageSize={itemsPerPage}
-          onItemClick={() => { }}
-        />
-      )}
-      {isLoading && <Loading text="Loading..." />}
-    </>
+  return isLoading ? <Loading text="Loading..." /> : (
+    <PaginatedList
+      items={items()}
+      totalItems={genres.length}
+      selectedPage={selectedPage}
+      setSelectedPage={setSelectedPage}
+      pageSize={itemsPerPage}
+      onItemClick={() => { }}
+    />
   );
 };
 

@@ -83,7 +83,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
       {!addMode && (
         <ControlButton
           text={<FormattedMessage id="add" />}
-          width={settings?.screen.isMobile ? "375" : "75"}
+          width={settings?.screen.isMobile ? "375" : "100%"}
           onClick={() => setAddMode(true)}
           height={buttonHeight}
         />

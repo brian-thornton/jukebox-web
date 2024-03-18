@@ -2,9 +2,10 @@ import Nav from 'react-bootstrap/Nav';
 import { useContext } from 'react';
 
 import { SettingsContext } from '../SettingsProvider';
-import Button from '../../common/Buttons/Button/Button';
 import NavLink from './NavLink';
 import NavButton from './NavButton';
+import CategoryButtons from './CategoryButtons';
+import CategoryLinks from './CategoryLinks';
 
 const JukeboxNavLeft = () => {
   const settings = useContext(SettingsContext);
@@ -44,20 +45,7 @@ const JukeboxNavLeft = () => {
           {albums && (
             <>
               {navLink('albums')}
-              {settings.categories.map(c => (
-                <>
-                  {c !== 'Albums' && c.enabled === 'ON' && (
-                    <Nav.Link
-                      disabled={features.isLocked}
-                      style={{ fontFamily: styles.headerFont }}
-                      href={`/albums/categories/${c.category.replace(' ', '%20')}`}
-                    >
-                      {c.category}
-                    </Nav.Link>
-                  )
-                  }
-                </>
-              ))}
+              <CategoryLinks />
             </>
           )}
           {navItems(navLink)}
@@ -68,21 +56,7 @@ const JukeboxNavLeft = () => {
           {albums && (
             <>
               {navButton('albums')}
-              {settings.categories.map(c => (
-                <>
-                  {c !== 'Albums' && c.enabled === 'ON' && (
-                    <Button
-                      style={{
-                        fontSize,
-                        fontFamily: settings.buttonFont,
-                      }}
-                      disabled={features.isLocked}
-                      content={c.category}
-                      onClick={() => window.location.replace(`/albums/categories/${c.category.replace(' ', '%20')}`)}
-                    />
-                  )}
-                </>
-              ))}
+              <CategoryButtons />
             </>
           )}
           {navItems(navButton)}
