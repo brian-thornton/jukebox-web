@@ -55,20 +55,14 @@ const Track: FC<ITrack> = ({
   const pathParts = track.path.split('/');
   const albumFolder = pathParts[pathParts.length - 2];
 
-  if (isScreenSmall) {
-    return (
-      <>
-        {<Item
-          text={`${albumFolder} - ${track.name}`} onClick={() => {
-            if (settings?.isScreenSmall && setTrackClicked) {
-              setTrackClicked(track);
-            }
-          }} />}
-      </>
-    );
-  }
-
-  return (
+  return isScreenSmall ? (
+    <Item
+      text={`${albumFolder} - ${track.name}`} onClick={() => {
+        if (settings?.isScreenSmall && setTrackClicked) {
+          setTrackClicked(track);
+        }
+      }} />
+  ) : (
     <>
       {!clicked && (
         <div className={styles.trackRow}>

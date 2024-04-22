@@ -13,17 +13,21 @@ interface ISearch {
   setSearchText: Function,
 }
 
+interface IKeyboardRowProps {
+  customButton?: any,
+  keys: Array<any>
+}
+
 const Search: FC<ISearch> = ({ setSearchText }) => {
   const [lightingApplied, setLightingApplied] = useState(false);
   const settings = useContext(SettingsContext);
   const navigate = useNavigate();
-  const { isScreenSmall } = settings;
   const [localSearch, setLocalSearch] = useState('');
 
   const inputButton = (value: any) => (
     <Button
-      width={isScreenSmall ? '50' : '75'}
-      height={isScreenSmall ? '50' : '75'}
+      width={'75'}
+      height={'75'}
       onClick={() => {
         setLocalSearch(`${localSearch}${value}`);
       }}
@@ -33,8 +37,8 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
 
   const backspace = () => (
     <Button
-      width={isScreenSmall ? '50' : '75'}
-      height={isScreenSmall ? '50' : '75'}
+      width={'75'}
+      height={'75'}
       onClick={() => {
         setLocalSearch(`${localSearch.slice(0, -1)}`);
       }}
@@ -64,11 +68,6 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
       content={text}
     />
   );
-
-  interface IKeyboardRowProps {
-    customButton?: any,
-    keys: Array<any>
-  }
 
   const handleKeyDown = (event: any) => {
     if (event.key === 'Enter') {
@@ -105,14 +104,12 @@ const Search: FC<ISearch> = ({ setSearchText }) => {
         <KeyboardRow keys={['Z', 'X', 'C', 'V', 'B', 'N', 'M', '.']} />
         <div className={styles.searchRow}>
           <Button
-            hideOnSmall
             width="500"
             height="55"
             onClick={() => setLocalSearch(`${localSearch} `)}
             content={<FormattedMessage id="space" />}
           />
           <Button
-            hideOnSmall
             width="150"
             height="55"
             onClick={() => {

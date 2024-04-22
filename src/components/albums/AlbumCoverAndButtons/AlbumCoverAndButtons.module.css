@@ -41,7 +41,6 @@
   @media (max-width: 768px) {
     display: flex;
     align-items: start;
-    justify-content: center;
     margin-top: 0px;
   }
 }

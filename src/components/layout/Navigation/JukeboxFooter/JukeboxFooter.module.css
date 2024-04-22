@@ -8,7 +8,13 @@
   left: 60px;
 }
 
+@media (max-width: 768px) {
+  .nowPlaying {
+    display: none;
+  }
+}
+
 .volumeIcon {
   color: #FFFFFF;
-  font-size: 20px; 
+  font-size: 20px;
 }
