@@ -21,8 +21,8 @@ const propTypes = {
 const SkinColors = ({ skin, onClose }) => {
   const [isColorCopyOpen, setIsColorCopyOpen] = useState(false);
   const settings = useContext(SettingsContext);
+  const { rowPageSize } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
   const [isColorModalOpen, setIsColorModalOpen] = useState(false);
   const [colorMode, setColorMode] = useState();
   const [allowGradient, setAllowGradient] = useState();
@@ -47,13 +47,7 @@ const SkinColors = ({ skin, onClose }) => {
     lighting: skin.lighting,
     wallpaper: skin.wallpaper,
   });
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-
-  useEffect(() => {
-    const itemHeight = 55;
-    const viewPortHeight = Math.floor(window.innerHeight - 250);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-  }, []);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
   useEffect(() => {
     deleteSkin(skin.name).then(() => {
@@ -138,14 +132,13 @@ const SkinColors = ({ skin, onClose }) => {
         <div className={styles.skinColorContainer} {...swipe}>
           <Button content="Back to Skin" onClick={onClose} />
           <ListGroup className="styleEditorContent">
-            {rows.slice(realStart, (realStart + realPageSize)).map(r => r)}
+            {rows.slice(realStart, (realStart + rowPageSize)).map(r => r)}
           </ListGroup>
           <Paginator
             disableRandom
             onPageChange={page => setSelectedPage(page)}
             selectedPage={selectedPage}
             totalItems={rows.length}
-            pageSize={realPageSize}
           />
         </div>
       )}

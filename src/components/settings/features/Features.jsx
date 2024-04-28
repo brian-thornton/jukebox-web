@@ -4,7 +4,6 @@ import { FormattedMessage } from 'react-intl';
 import Paginator from '../../common/Paginator/Paginator';
 import { updateSettings } from '../../../lib/service-clients/settings-client';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import { calculatePageSize } from '../../../lib/helper/styleHelper';
 import ToggleRow from './FeatureToggleRow/FeatureToggleRow';
 import AccessActions from '../AccessActions';
 import styles from './Feature.module.css';
@@ -12,20 +11,10 @@ import styles from './Feature.module.css';
 const Features = () => {
   const [features, setFeatures] = useState();
   const settings = useContext(SettingsContext);
-  const { screen } = settings;
+  const { screen, rowPageSize } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
   const [selectedFeature, setSelectedFeature] = useState();
-
-  useEffect(() => {
-    if (screen.isMobile) {
-      setRealPageSize(11);
-    } else {
-      setRealPageSize(calculatePageSize('item', 300));
-    }
-  }, []);
-
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
   const updateFeature = (name, value) => {
     const deepClone = JSON.parse(JSON.stringify(settings));
@@ -87,14 +76,13 @@ const Features = () => {
       <div className={styles.featuresContainer}>
         {!selectedFeature && (
           <>
-            {features.slice(realStart, (realStart + realPageSize)).map(key => (
+            {features.slice(realStart, (realStart + rowPageSize)).map(key => (
               settingRow(key)))}
             <Paginator
               disableRandom
               onPageChange={page => setSelectedPage(page)}
               selectedPage={selectedPage}
               totalItems={features.length}
-              pageSize={realPageSize}
             />
           </>
         )}

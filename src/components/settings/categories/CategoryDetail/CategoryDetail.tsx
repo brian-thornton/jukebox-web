@@ -1,7 +1,6 @@
 import { FC, useContext, useEffect, useState } from 'react';
 
 import { SettingsContext } from '../../../layout/SettingsProvider';
-import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import NameInput from '../../../common/NameInput/NameInput';
 import Button from '../../../common/Buttons/Button/Button';
 import { getByCategory } from '../../../../lib/service-clients/librarian-client';
@@ -26,14 +25,11 @@ interface ICategoryDetail {
 
 const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
   const settings = useContext(SettingsContext);
+  const { rowPageSize = 1 } = settings;
   const [updatedCategory, setUpdatedCategory] = useState({ name: category });
   const [categoryLibs, setCategoryLibs] = useState([]);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(Number || undefined);
-  const [realPageSize, setRealPageSize] = useState(0);
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-  useEffect(() => setItemsPerPage(calculatePageSize('item', 250, 60)), []);
-  useEffect(() => setRealPageSize(calculatePageSize('item', 300)), []);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
   const onRemoveFromCategory = async (library: ILibrary) => {
     const libraries = await getLibraries();
@@ -44,7 +40,7 @@ const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
   };
 
   const items = () => (
-    categoryLibs.slice(realStart, (realStart + realPageSize)).map((library: ILibrary) => (
+    categoryLibs.slice(realStart, (realStart + rowPageSize)).map((library: ILibrary) => (
       <Item
         text={library.name}
         buttons={(
@@ -77,7 +73,7 @@ const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
         totalItems={settings?.categories?.length}
         selectedPage={selectedPage}
         setSelectedPage={setSelectedPage}
-        pageSize={itemsPerPage}
+        pageSize={rowPageSize}
         onItemClick={() => {}}
       />
     </div>
@@ -85,4 +81,3 @@ const CategoryDetail: FC<ICategoryDetail> = ({ category, onClose }) => {
 };
 
 export default CategoryDetail;
-

@@ -138,6 +138,8 @@ const Libraries = () => {
           handleHide={() => setShow(false)}
           handleSave={(category, allowCoverArtDownload) => {
             add({ path: document.getElementById('name').value, category, allowCoverArtDownload });
+            setShow(false);
+            loadLibraries();
           }}
         />
       )}

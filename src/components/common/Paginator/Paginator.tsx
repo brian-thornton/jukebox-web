@@ -14,7 +14,7 @@ import classes from './Paginator.module.css';
 interface IPaginator {
   onPageChange: Function,
   totalItems: number,
-  pageSize: number,
+  pageSize?: number,
   disableRandom?: boolean,
 }
 
@@ -26,8 +26,9 @@ const Paginator: FC<IPaginator> = ({
 }) => {
   const settings = useContext(SettingsContext);
   const [selectedPage, setSelectedPage] = useState(1);
-  const { styles, features } = settings || {};
-  const pages = Math.floor(totalItems / pageSize);
+  const { styles, features, rowPageSize } = settings || {};
+  // @ts-ignore
+  const pages = Math.floor(totalItems / (rowPageSize || pageSize));
   let height;
 
   if (styles?.controlButtonSize === 'large') {
@@ -70,7 +71,7 @@ const Paginator: FC<IPaginator> = ({
           hideOnSmall
           disabled={features?.isLocked}
           onClick={() => changePage(Math.floor(Math.random() * pages))}
-          content={<FormattedMessage id="page_of" values={{ page: selectedPage, pages }} />}
+          content={<FormattedMessage id="page_of" values={{ page: selectedPage }} />}
         />
       )}
       <Button

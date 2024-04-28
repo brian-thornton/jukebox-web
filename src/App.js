@@ -13,6 +13,7 @@ import { status } from './lib/service-clients/radio-client';
 import { supportedFonts } from './lib/helper/styleHelper';
 import { updateSettings } from './lib/service-clients/settings-client';
 import JukeboxRoutes from './components/layout/JukeboxRoutes';
+import { headerFooterReserve } from './lib/helper/styleHelper';
 
 const JukeboxFooter = React.lazy(() => import("./components/layout/Navigation/JukeboxFooter/JukeboxFooter"));
 const JukeboxHeader = React.lazy(() => import("./components/layout/Navigation/JukeboxHeader/JukeboxHeader"));
@@ -42,6 +43,13 @@ function App() {
     isTablet: window.outerWidth > 480 && window.outerWidth <= 1180,
     isDesktop: window.outerWidth > 1180,
     isTabletOrSmaller: window.outerWidth <= 1180,
+  }
+
+  const calculateRowPageSize = (s) => {
+    const reserve = 230;
+    const itemHeight = 45;
+    const viewPortHeight = Math.floor(window.innerHeight - reserve);
+    return Math.floor(viewPortHeight / itemHeight);
   }
 
   const onIdle = () => {
@@ -181,7 +189,7 @@ function App() {
   return (
     <div style={theme}>
       <Suspense>
-        <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, screen }}>
+        <SettingsContext.Provider value={{ ...settings, isScreenSmall: isScreenSmall, screen, rowPageSize: calculateRowPageSize() }}>
           {settings && isPinOpen && (
             <JukeboxRoot>
               <PinEntry

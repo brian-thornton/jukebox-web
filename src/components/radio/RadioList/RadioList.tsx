@@ -1,5 +1,5 @@
 import Container from 'react-bootstrap/Container';
-import { FC, useEffect, useState, useContext } from 'react';
+import { FC, useState, useContext } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { PlayFill } from 'react-bootstrap-icons';
 
@@ -9,7 +9,6 @@ import RadioCategories from '../RadioCategories/RadioCategories';
 import RadioCategoriesMobile from '../RadioCategoriesMobile/RadioCategoriesMobile';
 import { SettingsContext } from '../../layout/SettingsProvider';
 import styles from './RadioList.module.css';
-import { bigButtons, headerFooterReserve } from '../../../lib/helper/styleHelper';
 import PaginatedList from '../../common/PaginatedList/PaginatedList';
 import { useStations } from '../../../hooks/use-stations';
 
@@ -19,25 +18,11 @@ interface IRadioList {
 
 const RadioList: FC<IRadioList> = ({ setMediaType }) => {
   const settings = useContext(SettingsContext);
-  const { preferences, screen } = settings;
+  const { preferences, screen, rowPageSize } = settings;
   const [selectedCategory, setSelectedCategory] = useState('rock');
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState<number | null>(12);
   const [isGenreOpen, setIsGenreOpen] = useState(false);
-  const { stations } = useStations(selectedCategory, selectedPage, realPageSize);
-
-  useEffect(() => {
-      const reserve = headerFooterReserve(settings);
-      const height = bigButtons(settings) ? 70 : 60;
-      const itemHeight = height;
-      const viewPortHeight = Math.floor(window.innerHeight - reserve);
-
-      if (screen?.isMobile) {
-        setRealPageSize(12);
-      } else {
-        setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-      }
-  }, []);
+  const { stations } = useStations(selectedCategory, selectedPage, rowPageSize);
 
   const tune = (station: any) => {
     setMediaType('stream');
@@ -60,13 +45,13 @@ const RadioList: FC<IRadioList> = ({ setMediaType }) => {
     }
   ));
 
-  const StationList = () => (realPageSize && realPageSize > 0) ? (
+  const StationList = () => (rowPageSize && rowPageSize > 0) ? (
     <PaginatedList
       // @ts-ignore
       items={items()}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
-      pageSize={realPageSize}
+      pageSize={rowPageSize}
       onItemClick={() => { }}
       totalItems={300}
     />

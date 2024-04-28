@@ -11,7 +11,6 @@ import Loading from '../../common/Loading/Loading';
 import styles from './Tracks.module.css';
 import { applyLighting } from '../../../lib/helper/lightingHelper';
 import { handlers } from '../../../lib/helper/gesture-helper';
-import { bigButtons, headerFooterReserve } from '../../../lib/helper/styleHelper';
 import { useTracks } from '../../../hooks/use-tracks';
 
 interface ITracks {
@@ -21,20 +20,13 @@ interface ITracks {
 const Tracks: FC<ITracks> = ({ search }) => {
   const intl = useIntl();
   const settings = useContext(SettingsContext);
-  const { isScreenSmall, screen } = settings;
+  const { screen, rowPageSize } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState<number | null>();
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
-  let trackHeight = bigButtons(settings) ? 70 : 50;
-  trackHeight = isScreenSmall ? 35 : trackHeight;
-  const { totalTracks, tracks, tracksLoaded, searchInProgress } = useTracks(selectedPage, realPageSize, search);
+  const { totalTracks, tracks, tracksLoaded, searchInProgress } = useTracks(selectedPage, rowPageSize, search);
   const noResults = search && !tracks.length;
 
   useEffect(() => {
-    const reserve = headerFooterReserve(settings);
-    const itemHeight = trackHeight;
-    const viewPortHeight = Math.floor(window.innerHeight - reserve);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
     applyLighting(settings, 'Tracks');
   }, []);
 
@@ -45,7 +37,7 @@ const Tracks: FC<ITracks> = ({ search }) => {
     />
   );
 
-  const trackList = () => realPageSize && totalTracks ? (
+  const trackList = () => rowPageSize && totalTracks ? (
     <div className={styles.container} {...swipe}>
       <div className={styles.tracksContainer}>
         {content}
@@ -53,28 +45,24 @@ const Tracks: FC<ITracks> = ({ search }) => {
           <Paginator
             onPageChange={(page: any) => setSelectedPage(page)}
             totalItems={totalTracks}
-            pageSize={realPageSize}
           />
         )}
       </div>
     </div>
   ) : <></>;
 
+  const renderNoResults = (titleId: string, textId: string) => (
+    <NoResults
+      title={intl.formatMessage({ id: titleId })}
+      text={intl.formatMessage({ id: textId })}
+    />
+  );
+  
   return (
     <>
       {searchInProgress && <Loading text="Loading..." />}
-      {tracksLoaded && totalTracks === 0 && !noResults && (
-        <NoResults
-          title={intl.formatMessage({ id: 'no_tracks_title' })}
-          text={intl.formatMessage({ id: 'no_tracks_text' })}
-        />
-      )}
-      {tracksLoaded && noResults && (
-        <NoResults
-          title={intl.formatMessage({ id: 'no_search_results_title' })}
-          text={intl.formatMessage({ id: 'no_search_results_text' })}
-        />
-      )}
+      {tracksLoaded && totalTracks === 0 && !noResults && renderNoResults('no_tracks_title', 'no_tracks_text')}
+      {tracksLoaded && noResults && renderNoResults('no_search_results_title', 'no_search_results_text')}
       {!noResults && !searchInProgress && trackList()}
     </>
   );

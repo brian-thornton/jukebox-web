@@ -56,10 +56,14 @@ const AlbumCoverList: FC<IAlbumCoverList> = ({
         <div className={styles.albumContainer} {...swipe}>
           {display !== 'grid' && albums.map(album => <Album album={album} coverArtOnly={false} />)}
           {display === 'grid' && <AlbumTable albums={albums} />}
-          {(totalAlbums > pageSize) && !screen?.isTabletOrSmaller && paginator}
         </div>
         {startsWithLocation === 'right' && !screen?.isTabletOrSmaller && !search && startsWithCol}
       </div>
+      {(totalAlbums > pageSize) && !screen?.isTabletOrSmaller && (
+          <div className={styles.paginator}>
+            {paginator}
+          </div>
+        )}
     </div >
   )
 };

@@ -92,6 +92,7 @@ interface ISettings {
   isScreenSmall?: boolean,
   search?: string,
   ip? : string,
+  rowPageSize?: number,
   screen?: {
     isMobile: boolean,
     isTablet: boolean,

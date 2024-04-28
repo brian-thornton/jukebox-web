@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from 'react-intl';
 
 import AddNew from '../../../common/AddNew/AddNew';
 import Button from '../../../common/Buttons/Button/Button';
-import { calculatePageSize } from '../../../../lib/helper/styleHelper';
 import RestrictionModeDetail from '../RestrictionModeDetail/RestrictionModeDetail';
 import { SettingsContext } from '../../../layout/SettingsProvider';
 import {
@@ -29,14 +28,13 @@ interface IRestrictionModes {
 const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }) => {
   const settings = useContext(SettingsContext);
   const intl = useIntl();
-  const { preferences, screen } = settings;
+  const { preferences, screen, rowPageSize = 1 } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(0);
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedRestrictionMode, setSelectedRestrictionMode] = useState<IRestrictionMode | undefined>(undefined);
   const [restrictionGroups, setRestrictionGroups] = useState([]);
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
   const loadRestrictionGroups = async () => {
     const data = await getRestrictionGroups();
@@ -44,7 +42,6 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
   };
 
   useEffect(() => {
-    setRealPageSize(calculatePageSize('item', 300));
     loadRestrictionGroups();
   }, []);
 
@@ -115,7 +112,7 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
 
   const items = () => (
     // @ts-ignore
-    restrictionGroups.slice(realStart, (realStart + realPageSize)).map((restrictionGroup: any) => (
+    restrictionGroups.slice(realStart, (realStart + rowPageSize)).map((restrictionGroup: any) => (
       {
         text: `${restrictionGroup.name} (${restrictionGroup.type})`,
         buttons: itemButtons(restrictionGroup),
@@ -184,7 +181,7 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
-          pageSize={realPageSize}
+          pageSize={rowPageSize}
           applyTopMargin={album ? true : false}
           onItemClick={() => { }}
         />

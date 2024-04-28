@@ -144,6 +144,7 @@ export interface ISettings {
   },
   search?: string,
   ip?: string,
+  rowPageSize?: number,
 }
 
 export interface IColors {

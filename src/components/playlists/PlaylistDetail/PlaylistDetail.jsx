@@ -32,19 +32,10 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isSaveAsOpen, setIsSaveAsOpen] = useState(false);
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
-  const { isScreenSmall, screen } = settings;
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-  const { controlButtonSize } = settings.styles;
-  const trackHeight = controlButtonSize === 'small' ? 55 : 85;
+  const { isScreenSmall, screen, rowPageSize } = settings;
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
   const [clickedTrack, setClickedTrack] = useState();
   const [clickedIndex, setClickedIndex] = useState();
-
-  useEffect(() => {
-    const itemHeight = isScreenSmall ? 40 : trackHeight;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-  }, []);
 
   useEffect(() => {
     if (!showDeleteModal) {
@@ -80,7 +71,7 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     <PlaylistButtons name={name} track={track} index={index} reloadTracks={loadTracks} />
   );
 
-  const items = () => tracks.slice(realStart, (realStart + realPageSize)).map((track, index) => (
+  const items = () => tracks.slice(realStart, (realStart + rowPageSize)).map((track, index) => (
     {
       text: track.name,
       buttons: itemButtons(track, index),
@@ -114,7 +105,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     items: items(),
     selectedPage,
     setSelectedPage,
-    pageSize: realPageSize,
     totalItems: tracks.length,
   }
 

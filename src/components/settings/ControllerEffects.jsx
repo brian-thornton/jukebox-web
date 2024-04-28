@@ -1,5 +1,5 @@
 import { ListGroup } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PropTypes } from 'prop-types';
 import { useSwipeable } from 'react-swipeable';
 import { FormattedMessage } from 'react-intl';
