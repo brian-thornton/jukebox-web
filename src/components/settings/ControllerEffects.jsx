@@ -8,7 +8,7 @@ import Item from '../common/Item/Item';
 import Paginator from '../common/Paginator/Paginator';
 import { handlers } from '../../lib/helper/gesture-helper';
 import { ControllerState } from '../shapes';
-import { SettingsContext } from 'components/layout/SettingsProvider';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   controllerState: ControllerState.isRequired,

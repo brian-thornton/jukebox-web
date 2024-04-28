@@ -4,7 +4,7 @@ import { generateComplementaryColorPalettes, shuffle } from '../../../../lib/hel
 import Paginator from '../../../common/Paginator/Paginator';
 
 import styles from './ColorPaletteList.module.css';
-import { SettingsContext } from 'components/layout/SettingsProvider';
+import { SettingsContext } from '../../../layout/SettingsProvider';
 
 interface IColorPaletteList {
   onSelect: (palette: any) => {};

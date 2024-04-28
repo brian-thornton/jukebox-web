@@ -3,7 +3,7 @@ import { FC, useState, useContext } from 'react';
 import SkinRow from '../SkinRow/SkinRow';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { ISkin } from '../../../interface';
-import { SettingsContext } from 'components/layout/SettingsProvider';
+import { SettingsContext } from '../../../layout/SettingsProvider';
 
 interface ISkinList {
   skins: Array<ISkin>,

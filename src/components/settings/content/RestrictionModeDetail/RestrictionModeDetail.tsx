@@ -7,7 +7,7 @@ import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import NoResults from '../../../common/NoResults/NoResults';
 import { updateRestrictionGroup } from '../../../../lib/service-clients/settings-client';
 import { IRestrictionMode } from '../../../interface';
-import { SettingsContext } from 'components/layout/SettingsProvider';
+import { SettingsContext } from '../../../layout/SettingsProvider';
 
 interface IRestrictionModeDetail {
   restrictionMode: IRestrictionMode,

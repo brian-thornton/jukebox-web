@@ -7,7 +7,7 @@ import Item from '../common/Item/Item';
 import { applyPreset, getPresets, getCurrentState } from '../../lib/service-clients/lighting-client';
 import PaginatedList from '../common/PaginatedList/PaginatedList';
 import { Controller } from '../shapes';
-import { SettingsContext } from 'components/layout/SettingsProvider';
+import { SettingsContext } from '../layout/SettingsProvider';
 
 const propTypes = {
   controller: Controller.isRequired,
