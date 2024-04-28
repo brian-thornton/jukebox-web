@@ -1,8 +1,9 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useContext } from 'react';
 
 import SkinRow from '../SkinRow/SkinRow';
 import PaginatedList from '../../../common/PaginatedList/PaginatedList';
 import { ISkin } from '../../../interface';
+import { SettingsContext } from 'components/layout/SettingsProvider';
 
 interface ISkinList {
   skins: Array<ISkin>,
@@ -15,18 +16,13 @@ const SkinList: FC<ISkinList> = ({
   setEditSkin,
   setSelectedSkin,
 }) => {
+  const settings = useContext(SettingsContext);
+  const { rowPageSize = 1 } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(Number);
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
-
-  useEffect(() => {
-    const itemHeight = 55;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-  }, []);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
   const skinRows = skins && skins.length > 0 ?
-    skins.slice(realStart, (realStart + realPageSize)).map(skin => (
+    skins.slice(realStart, (realStart + rowPageSize)).map(skin => (
       <SkinRow
         skin={skin}
         setEditSkin={setEditSkin}
@@ -40,7 +36,7 @@ const SkinList: FC<ISkinList> = ({
       items={skinRows}
       selectedPage={selectedPage}
       setSelectedPage={setSelectedPage}
-      pageSize={realPageSize}
+      pageSize={rowPageSize}
       totalItems={skins.length}
     />
   ) : <></>;

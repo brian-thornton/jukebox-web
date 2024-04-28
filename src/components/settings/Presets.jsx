@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import Button from '../common/Buttons/Button/Button';
-import { calculatePageSize } from '../../lib/helper/styleHelper';
 import Item from '../common/Item/Item';
 import { applyPreset, getPresets, getCurrentState } from '../../lib/service-clients/lighting-client';
 import PaginatedList from '../common/PaginatedList/PaginatedList';
 import { Controller } from '../shapes';
+import { SettingsContext } from 'components/layout/SettingsProvider';
 
 const propTypes = {
   controller: Controller.isRequired,
@@ -15,13 +15,12 @@ const propTypes = {
 };
 
 const Presets = ({ controller, onClose, onSelect }) => {
+  const settings = useContext(SettingsContext);
+  const { rowPageSize } = settings;
   const [presets, setPresets] = useState();
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
 
   const loadPresets = () => {
-    setRealPageSize(calculatePageSize('item', 350));
-
     getCurrentState(controller.ip);
 
     getPresets(controller.ip).then((data) => {
@@ -29,11 +28,11 @@ const Presets = ({ controller, onClose, onSelect }) => {
     });
   };
 
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
   useEffect(loadPresets, []);
 
-  const items = () => presets.slice(realStart, (realStart + realPageSize)).map(preset => (
+  const items = () => presets.slice(realStart, (realStart + rowPageSize)).map(preset => (
     <Item
       text={preset.n}
       buttons={(
@@ -58,7 +57,6 @@ const Presets = ({ controller, onClose, onSelect }) => {
           items={items()}
           selectedPage={selectedPage}
           setSelectedPage={setSelectedPage}
-          pageSize={realPageSize}
           totalItems={presets.length}
         />
       )}

@@ -1,9 +1,10 @@
-import { FC, useEffect, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useContext } from 'react';
 
 import { generateComplementaryColorPalettes, shuffle } from '../../../../lib/helper/palette';
 import Paginator from '../../../common/Paginator/Paginator';
 
 import styles from './ColorPaletteList.module.css';
+import { SettingsContext } from 'components/layout/SettingsProvider';
 
 interface IColorPaletteList {
   onSelect: (palette: any) => {};
@@ -14,16 +15,11 @@ interface ColorPalette {
 }
 
 const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
+  const settings = useContext(SettingsContext);
+  const { rowPageSize = 1 } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState(Number);
-  const realStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
   const colorPallets = useMemo(() => generateComplementaryColorPalettes(1000), []);
-
-  useEffect(() => {
-    const itemHeight = 35;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-  }, []);
 
   const onClick = (palette: any) => {
     palette.colors = shuffle(palette.colors);
@@ -37,7 +33,7 @@ const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
 
   const colorPalletPanels = (
     <div className={styles.paletteContainer}>
-      {colorPallets.slice(realStart, (realStart + realPageSize)).map((colorPallet: ColorPalette) => (
+      {colorPallets.slice(realStart, (realStart + rowPageSize)).map((colorPallet: ColorPalette) => (
         <div className={styles.colorsContainer}>
           {colorPallet.colors.map((color: string) => (
             <div className={styles.color} style={{ backgroundColor: color }} onClick={() => onClick(colorPallet)} />
@@ -54,7 +50,6 @@ const ColorPaletteList: FC<IColorPaletteList> = ({ onSelect }) => {
         disableRandom
         onPageChange={(page: any) => setSelectedPage(page)}
         totalItems={colorPallets.length}
-        pageSize={realPageSize}
       />
     </>
   );

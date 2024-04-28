@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSwipeable } from 'react-swipeable';
 import { PropTypes } from 'prop-types';
@@ -8,6 +8,7 @@ import Item from '../common/Item/Item';
 import Paginator from '../common/Paginator/Paginator';
 import { handlers } from '../../lib/helper/gesture-helper';
 import { ControllerState } from '../shapes';
+import { SettingsContext } from 'components/layout/SettingsProvider';
 
 const propTypes = {
   controllerState: ControllerState.isRequired,
@@ -15,18 +16,13 @@ const propTypes = {
 };
 
 const ControllerPalettes = ({ controllerState, onSelect }) => {
+  const settings = useContext(SettingsContext);
+  const { rowPageSize } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
-  const [realPageSize, setRealPageSize] = useState();
-  const paletteStart = selectedPage === 1 ? 0 : ((selectedPage * realPageSize) - realPageSize);
+  const paletteStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
-  useEffect(() => {
-    const itemHeight = 55;
-    const viewPortHeight = Math.floor(window.innerHeight - 200);
-    setRealPageSize(Math.floor(viewPortHeight / itemHeight));
-  }, []);
-
-  const end = paletteStart + realPageSize;
+  const end = paletteStart + rowPageSize;
 
   return (
     <>
@@ -45,7 +41,6 @@ const ControllerPalettes = ({ controllerState, onSelect }) => {
         onPageChange={page => setSelectedPage(page)}
         selectedPage={selectedPage}
         totalItems={controllerState?.palettes.length}
-        pageSize={realPageSize}
       />
     </>
   );
