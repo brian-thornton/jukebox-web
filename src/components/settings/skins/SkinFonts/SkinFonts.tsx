@@ -65,32 +65,27 @@ const SkinFonts: FC<ISkinFonts> = ({ onClose, skin }) => {
     fontRow('buttonFont', 'Button Font'),
   ];
 
-  return (
-    <>
-      {isFontModalOpen && (
-        <FontPicker
-          onCancel={() => setIsFontModalOpen(false)}
-          skin={skin}
-          editFont={editFont}
-          onComplete={() => {
-            setIsFontModalOpen(false);
-            window.location.replace(`/settings?skin=${skin.name}&mode=style&tab=fonts`);
-          }}
-        />
-      )}
-      {!isFontModalOpen && (
-        <div className={styles.skinFontsContainer}>
-          <Button content="Back to Skin" onClick={onClose} />
-          {rows.slice(start, (start + itemsPerPage)).map(r => r)}
-          <Paginator
-            disableRandom
-            onPageChange={(page: number) => setSelectedPage(page)}
-            totalItems={4}
-            pageSize={itemsPerPage}
-          />
-        </div>
-      )}
-    </>
+  return isFontModalOpen ? (
+    <FontPicker
+      onCancel={() => setIsFontModalOpen(false)}
+      skin={skin}
+      editFont={editFont}
+      onComplete={() => {
+        setIsFontModalOpen(false);
+        window.location.replace(`/settings?skin=${skin.name}&mode=style&tab=fonts`);
+      }}
+    />
+  ) : (
+    <div className={styles.skinFontsContainer}>
+      <Button content="Back to Skin" onClick={onClose} />
+      {rows.slice(start, (start + itemsPerPage)).map(r => r)}
+      <Paginator
+        disableRandom
+        onPageChange={(page: number) => setSelectedPage(page)}
+        totalItems={4}
+        pageSize={itemsPerPage}
+      />
+    </div>
   );
 };
 

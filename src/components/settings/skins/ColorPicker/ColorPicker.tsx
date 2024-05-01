@@ -1,12 +1,9 @@
 import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-import Container from 'react-bootstrap/Container';
 import { FC, useEffect, useState, useContext } from 'react';
 // @ts-ignore
 import { ChromePicker } from 'react-color';
 
-import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import { FormattedMessage } from 'react-intl';
@@ -80,6 +77,39 @@ const ColorPicker: FC<IColorPicker> = ({
     color: settings?.styles?.fontColor,
   };
 
+  const SolidColorTabBody = () => (
+    <div className={styles.solidRow}>
+      {picker(solidColor, '50%', (colorData: ISolidColor) => {
+        setSolidColor(colorData)
+        formatColor();
+      })}
+      <div style={{ backgroundColor: colorString, width: '40%', height: '20vh' }}><FormattedMessage id="example" /></div>
+    </div>
+  );
+
+  const GradientTabBody = () => (
+    <div className={styles.solidRow}>
+      {picker(gradientA, '50%', (colorData: IGradientColor) => setGradientA(colorData))}
+      {picker(gradientB, '50%', (colorData: IGradientColor) => setGradientB(colorData))}
+      <div style={{ background: colorString, height: '40vh', width: '100%' }}><FormattedMessage id="example" /></div>
+      <Form.Label className={styles.formLabel} style={formLabelStyle}>
+        <FormattedMessage id="opacity" />
+      </Form.Label>
+      <Form.Range onChange={e => setOpacity(parseInt(e.target.value))} />
+    </div>
+  );
+
+  const TransparentTabBody = () => (
+    <Card className={styles.transparentCardStyle} style={transparentCardSkin}>
+      <Card.Title className={styles.colorPickerTitle}><FormattedMessage id="transparent_title" /></Card.Title>
+      <Card.Body>
+        <Card.Text className={styles.colorPickerText}>
+          <FormattedMessage id="transparent_text" />
+        </Card.Text>
+      </Card.Body>
+    </Card>
+  );
+
   return (
     <>
       {!solidOnly && (
@@ -87,47 +117,13 @@ const ColorPicker: FC<IColorPicker> = ({
           <Card.Body>
             <Tabs onSelect={e => setColorType(e)}>
               <Tab eventKey="solid" title="Solid Color">
-                <Container fluid>
-                  <Row>
-                    <Col lg="3" md="3" sm="3">
-                      {picker(solidColor, '50%', (colorData: ISolidColor) => setSolidColor(colorData))}
-                    </Col>
-                    <Col lg="6" md="6" sm="6">
-                      <div style={{ backgroundColor: colorString, height: '40vh', width: '100%' }}><FormattedMessage id="example" /></div>
-                    </Col>
-                  </Row>
-                </Container>
+                <SolidColorTabBody />
               </Tab>
               <Tab eventKey="gradient" title="Gradient">
-                <Container fluid>
-                  <Row>
-                    <Col lg="3" md="3" sm="3">
-                      {picker(gradientA, '50%', (colorData: IGradientColor) => setGradientA(colorData))}
-                    </Col>
-                    <Col lg="3" md="3" sm="3">
-                      {picker(gradientB, '50%', (colorData: IGradientColor) => setGradientB(colorData))}
-                    </Col>
-                    <Col lg="6" md="6" sm="6">
-                      <div style={{ background: colorString, height: '40vh', width: '100%' }}><FormattedMessage id="example" /></div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Form.Label className={styles.formLabel} style={formLabelStyle}>
-                      <FormattedMessage id="opacity" />
-                    </Form.Label>
-                    <Form.Range onChange={e => setOpacity(parseInt(e.target.value))} />
-                  </Row>
-                </Container>
+                <GradientTabBody />
               </Tab>
               <Tab eventKey="transparent" title="Transparent">
-                <Card className={styles.transparentCardStyle} style={transparentCardSkin}>
-                  <Card.Title className={styles.colorPickerTitle}><FormattedMessage id="transparent_title" /></Card.Title>
-                  <Card.Body>
-                    <Card.Text className={styles.colorPickerText}>
-                      <FormattedMessage id="transparent_text" />
-                    </Card.Text>
-                  </Card.Body>
-                </Card>
+                <TransparentTabBody />
               </Tab>
             </Tabs>
             <Button
