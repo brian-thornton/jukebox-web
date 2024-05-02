@@ -13,17 +13,11 @@ import { PropTypes } from 'prop-types';
 import { FormattedMessage } from 'react-intl';
 
 import './LightingControllers.scss';
-import {
-  discover,
-  createSegment,
-  reset,
-  powerOff,
-} from '../../lib/service-clients/lighting-client';
+import { discover, powerOff } from '../../lib/service-clients/lighting-client';
 import { SettingsContext } from '../layout/SettingsProvider';
 import { updateSettings } from '../../lib/service-clients/settings-client';
 import AddNew from '../common/AddNew/AddNew';
 import Button from '../common/Buttons/Button/Button';
-import CloneController from './CloneController';
 import ControllerDetail from './ControllerDetail';
 import Item from '../common/Item/Item';
 import Loading from '../common/Loading/Loading';
@@ -61,7 +55,6 @@ const LightingControllers = ({
   const [networkControllers, setNetworkControllers] = useState();
   const [updatedControllerName, setsUpdateControllerName] = useState();
   const [isPresetsOpen, setIsPresetsOpen] = useState(false);
-  const [cloneSource, setCloneSource] = useState();
 
   const discoverControllers = () => {
     setDiscoveryInProgress(true);
@@ -140,35 +133,6 @@ const LightingControllers = ({
     saveSettings(deepClone);
   };
 
-  const onSetName = async (controller) => {
-    const deepClone = JSON.parse(JSON.stringify(settings));
-    const updatedController = deepClone.controllers?.find(c => c.ip === controller.ip);
-
-    if (!updatedController) {
-      if (!deepClone.controllers) {
-        deepClone.controllers = [
-          {
-            name: controller.name,
-            ip: controller.ip,
-            segments: [],
-          },
-        ];
-      }
-    } else {
-      updatedController.name = updatedControllerName;
-    }
-
-    saveSettings(deepClone);
-  };
-
-  const pushSegmentsFromMetadata = async (controller) => {
-    if (controller.segments) {
-      for (const segment of controller.segments) {
-        await createSegment(controller.ip, segment.start, segment.stop);
-      }
-    }
-  };
-
   const buttonProps = controller => ({
     disabled: !controller.online,
     className: 'lighting-controller-button',
@@ -199,89 +163,34 @@ const LightingControllers = ({
         )}
         buttons={(
           <>
-            {!skin && controller.ip === cloneSource?.ip && (
-              <CloneController
-                cloneSource={cloneSource}
-                setCloneSource={setCloneSource}
-                networkControllers={networkControllers}
+            {allowRemove && experimentalMode && (
+              <Button
+                className="lighting-controller-button"
+                onClick={() => onControllerRemove(controller.ip)}
+                icon={<TrashFill />}
               />
             )}
-            {controller.ip !== cloneSource?.ip && (
+            {allowConfigure && (
               <>
-                {allowRemove && experimentalMode && (
+                {experimentalMode && (
                   <Button
-                    className="lighting-controller-button"
-                    onClick={() => onControllerRemove(controller.ip)}
-                    icon={<TrashFill />}
+                    {...buttonProps(controller)}
+                    onClick={() => {
+                      setIsConfigureOpen(true);
+                      setSelectedController(controller);
+                      onConfigure(controller);
+                    }}
+                    icon={<PencilSquare />}
                   />
                 )}
-                {allowConfigure && (
-                  <>
-                    {experimentalMode && (
-                      <Button
-                        {...buttonProps(controller)}
-                        onClick={() => {
-                          setIsConfigureOpen(true);
-                          setSelectedController(controller);
-                          onConfigure(controller);
-                        }}
-                        icon={<PencilSquare />}
-                      />
-                    )}
-                    {!skin && (
-                      <>
-                        {experimentalMode && (
-                          <>
-                            <Button
-                              className="lighting-controller-button"
-                              onClick={() => {
-                                setCloneSource(controller);
-                              }}
-                              content={<FormattedMessage id="clone" />}
-                            />
-                            <Button
-                              {...buttonProps(controller)}
-                              onClick={() => {
-                                onSetName(controller);
-                              }}
-                              content={<FormattedMessage id="save" />}
-                            />
-                            <Button
-                              {...buttonProps(controller)}
-                              onClick={() => {
-                                pushSegmentsFromMetadata(controller);
-                              }}
-                              content={<FormattedMessage id="push_segments" />}
-                            />
-                          </>
-                        )}
-                        <Button
-                          {...buttonProps(controller)}
-                          onClick={() => {
-                            powerOff(controller.ip);
-                          }}
-                          content={<Power />}
-                        />
-                        <Button
-                          {...buttonProps(controller)}
-                          onClick={() => {
-                            setIsPresetsOpen(true);
-                            setSelectedController(controller);
-                          }}
-                          content={<FormattedMessage id="presets" />}
-                        />
-                        {experimentalMode && (
-                          <Button
-                            {...buttonProps(controller)}
-                            onClick={() => {
-                              reset(controller.ip);
-                            }}
-                            content={<FormattedMessage id="reset" />}
-                          />
-                        )}
-                      </>
-                    )}
-                  </>
+                {!skin && (
+                  <Button
+                    {...buttonProps(controller)}
+                    onClick={() => {
+                      powerOff(controller.ip);
+                    }}
+                    content={<Power />}
+                  />
                 )}
               </>
             )}
