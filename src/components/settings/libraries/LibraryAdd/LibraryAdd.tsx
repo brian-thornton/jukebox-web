@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 
 import Button from '../../../common/Buttons/Button/Button';
@@ -7,6 +7,8 @@ import DownloadCoverArtPreference from '../DownloadCoverArtPreference/DownloadCo
 import NameInput from '../../../common/NameInput/NameInput';
 import styles from './LibraryAdd.module.css';
 import { ILibrary } from '../../../interface';
+import { getDirectories } from '../../../../lib/service-clients/file-system-client';
+import Item from 'components/common/Item/Item';
 
 interface ILibraryAdd {
   setShow: Function,
@@ -26,6 +28,14 @@ const LibraryAdd: FC<ILibraryAdd> = ({
   const [selectedCategory, setSelectedCategory] = useState(library?.category || '');
   const [downloadCoverArtDirty, setDownloadCoverArtDirty] = useState(false);
   const [editLibrary, setEditLibrary] = useState(library);
+  const [currentPath, setCurrentPath] = useState<string>('/');
+  const [directories, setDirectories] = useState<string[]>([]);
+
+  useEffect(() => {
+    getDirectories(currentPath).then((data) => {
+      setDirectories(data);
+    });
+  }, [])
 
   const onSelectDownloadPreference = (value: any) => {
     setAllowCoverArtDownload(value);
@@ -37,7 +47,21 @@ const LibraryAdd: FC<ILibraryAdd> = ({
       <div className={styles.text}>
         <FormattedMessage id={library ? 'edit_library' : 'add_library'} />
       </div>
-      <NameInput name="Path" placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
+      <div className={styles.nameAndSave}>
+        <div style={{ paddingTop: '5px', width: '80vw' }}>
+          <NameInput defaultValue={editLibrary?.path} name="Path" placeholder={editLibrary?.path || intl.formatMessage({ id: 'path' })} />
+        </div>
+        <div style={{ paddingBottom: '10px', display: 'flex', flexDirection: 'row' }}>
+          <Button
+            content={<FormattedMessage id="cancel" />}
+            onClick={() => {
+              setShow(false);
+              setSelectedLibrary(null);
+            }}
+          />
+          <Button content={<FormattedMessage id="save" />} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
+        </div>
+      </div>
       <CategoryPicker
         onSelectCategory={(category: any) => {
           setEditLibrary({ ...editLibrary, category });
@@ -46,15 +70,28 @@ const LibraryAdd: FC<ILibraryAdd> = ({
         category={editLibrary?.category || library?.category}
       />
       <DownloadCoverArtPreference library={library} onSelect={onSelectDownloadPreference} />
-      <div className={styles.buttonRow}>
-        <Button
-          content={<FormattedMessage id="cancel" />}
-          onClick={() => {
-            setShow(false);
-            setSelectedLibrary(null);
-          }}
-        />
-        <Button content={<FormattedMessage id="save" />} onClick={() => handleSave(selectedCategory, allowCoverArtDownload)} />
+      <div style={{ height: '55vh', overflow: 'scroll' }}>
+        {directories.map((directory) => (
+          <div
+            className={styles.directoryRow}
+          >;
+            <div style={{ width: '90vw', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+              <div
+                onClick={() => {
+                  setCurrentPath(`${currentPath}${directory}/`);
+                  getDirectories(`${currentPath}${directory}/`).then((data) => {
+                    setDirectories(data);
+                  });
+                }}>
+                {directory}
+              </div>
+              <Button content="Select" onClick={
+                () => {
+                  setEditLibrary({ ...editLibrary, path: `${currentPath}${directory}/` });
+                }} />
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

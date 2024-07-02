@@ -1,0 +1,10 @@
+.pickerRow {
+  display: flex;
+  width: 40vw;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.categorySelect {
+  width: 300px;;
+}
