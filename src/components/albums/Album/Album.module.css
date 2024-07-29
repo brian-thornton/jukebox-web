@@ -1,21 +1,19 @@
-.albumCardBody {
-  color: var(--font-color) !important;
-  font-family: var(--button-font) !important;
-  font-size: 14px !important;
-  margin: 0 !important;
-  overflow: hidden;
-  padding: 0 !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  background-color: var(--track-background-color) !important;
-}
-
 .albumCard {
-  background: var(--background-color) !important;
-  border-color: #708090 !important;
-  color: white !important;
-  margin: 5px !important;
-  padding: 0 !important;
+  background: var(--background-color);
+  border-color: #708090;
+  color: white;
+  margin: 5px;
+  padding: 0;
 };
 
-
+.albumCardBody {
+  background-color: var(--track-background-color);
+  color: var(--font-color);
+  font-family: var(--button-font);
+  font-size: 14px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

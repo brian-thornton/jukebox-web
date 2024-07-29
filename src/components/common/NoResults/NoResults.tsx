@@ -1,4 +1,3 @@
-import Card from 'react-bootstrap/Card';
 import { FC } from 'react';
 
 import styles from './NoResults.module.css';
@@ -16,17 +15,15 @@ const NoResults: FC<INoResults> = ({
 }) => (
   <div className={styles.noResultsContainer}>
     <div className={styles.noResultsRow}>
-      <Card className={styles.noResultsCard}>
-        <Card.Body>
-          <Card.Title className={styles.noResultsTitle}>{title}</Card.Title>
-          <Card.Text className={styles.noResultsText}>
+      <div className={styles.noResultsCard}>
+          <h3 className={styles.noResultsTitle}>{title}</h3>
+          <div className={styles.noResultsText}>
             {text}
-          </Card.Text>
+          </div>
           <div className={styles.noResultsText}>
             {controls}
           </div>
-        </Card.Body>
-      </Card>
+      </div>
     </div>
   </div>
 );

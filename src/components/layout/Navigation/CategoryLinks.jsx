@@ -3,17 +3,9 @@ import Nav from 'react-bootstrap/Nav';
 
 import { SettingsContext } from '../SettingsProvider';
 
-const CategoryButtons = () => {
+const CategoryLinks = () => {
   const settings = useContext(SettingsContext);
   const { features } = settings;
-  const { navButtonSize } = settings.styles;
-  let height = navButtonSize === 'large' ? '100' : '35';
-  let fontSize = navButtonSize === 'large' ? '40px' : '';
-
-  if (navButtonSize === 'medium') {
-    height = '70';
-    fontSize = '30px';
-  }
 
   return (
     <>
@@ -35,4 +27,4 @@ const CategoryButtons = () => {
   )
 };
 
-export default CategoryButtons;
+export default CategoryLinks;

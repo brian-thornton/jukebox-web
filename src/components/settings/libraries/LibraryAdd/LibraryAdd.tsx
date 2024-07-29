@@ -8,7 +8,7 @@ import NameInput from '../../../common/NameInput/NameInput';
 import styles from './LibraryAdd.module.css';
 import { ILibrary } from '../../../interface';
 import { getDirectories } from '../../../../lib/service-clients/file-system-client';
-import Item from 'components/common/Item/Item';
+import FolderSelect from '../FolderSelect/FolderSelect';
 
 interface ILibraryAdd {
   setShow: Function,
@@ -70,29 +70,10 @@ const LibraryAdd: FC<ILibraryAdd> = ({
         category={editLibrary?.category || library?.category}
       />
       <DownloadCoverArtPreference library={library} onSelect={onSelectDownloadPreference} />
-      <div style={{ height: '55vh', overflow: 'scroll' }}>
-        {directories.map((directory) => (
-          <div
-            className={styles.directoryRow}
-          >;
-            <div style={{ width: '90vw', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-              <div
-                onClick={() => {
-                  setCurrentPath(`${currentPath}${directory}/`);
-                  getDirectories(`${currentPath}${directory}/`).then((data) => {
-                    setDirectories(data);
-                  });
-                }}>
-                {directory}
-              </div>
-              <Button content="Select" onClick={
-                () => {
-                  setEditLibrary({ ...editLibrary, path: `${currentPath}${directory}/` });
-                }} />
-            </div>
-          </div>
-        ))}
-      </div>
+      {currentPath}
+      <FolderSelect onSelect={(directory: string) => (
+        setEditLibrary({ ...editLibrary, path: `${currentPath}${directory}/` })
+      )} />
     </div>
   );
 };

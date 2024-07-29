@@ -11,15 +11,7 @@ const JukeboxNavLeft = () => {
   const settings = useContext(SettingsContext);
   const { isScreenSmall, styles, features } = settings;
   const { playlists, tracks, queue, albums, genres } = features || {};
-  const { navButtonSize } = settings.styles;
   const navLink = feature => <NavLink feature={feature} />;
-  let height = navButtonSize === 'large' ? '100' : '35';
-  let fontSize = navButtonSize === 'large' ? '40px' : '';
-
-  if (navButtonSize === 'medium') {
-    height = '70';
-    fontSize = '30px';
-  }
 
   const navButton = feature => (
     <>

@@ -25,6 +25,7 @@ const Button: FC<IButton> = ({
   hideOnSmall,
 }) => {
   const settings = useContext(SettingsContext);
+  console.log(settings)
   const { controlButtonSize } = settings.styles || {};
   const { styles } = settings || {};
   const [isHover, setIsHover] = useState(false);

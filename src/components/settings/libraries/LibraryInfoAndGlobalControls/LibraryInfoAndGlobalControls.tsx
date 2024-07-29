@@ -20,6 +20,7 @@ interface ILibraryInfoAndGlobalControls {
   showOnline: boolean,
   setShowOnline: Function,
   setIsMenuOpen: Function,
+  setDeleteConfirmOpen: Function,
 }
 
 const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
@@ -34,6 +35,7 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
   showOnline,
   setShowOnline,
   setIsMenuOpen,
+  setDeleteConfirmOpen,
 }) => {
   const intl = useIntl();
   const [isDeleteAllConfirmOpen, setIsDeleteAllConfirmOpen] = useState(false);
@@ -57,7 +59,14 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
   );
 
   const deleteAllButton = (
-    <Button disabled={isScanning} onClick={() => setIsDeleteAllConfirmOpen(true)} content={<FormattedMessage id="delete_all" />} />
+    <Button
+      disabled={isScanning}
+      onClick={() => {
+        setDeleteConfirmOpen(true);
+        setIsDeleteAllConfirmOpen(true)
+      }}
+      content={<FormattedMessage id="delete_all" />}
+    />
   );
 
   const discoverButton = (
@@ -71,10 +80,13 @@ const LibraryInfoAndGlobalControls: FC<ILibraryInfoAndGlobalControls> = ({
       {isDeleteAllConfirmOpen && (
         <Confirm
           text={intl.formatMessage({ id: 'delete_libraries_text' })}
-          onCancel={() => setIsDeleteAllConfirmOpen(false)}
+          onCancel={() => {
+            setDeleteConfirmOpen(false);
+            setIsDeleteAllConfirmOpen(false);
+          }}
           onConfirm={() => {
             onDeleteAll();
-            setIsCategoryConfigOpen(false);
+            setDeleteConfirmOpen(false);
           }}
         />
       )}

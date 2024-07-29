@@ -36,7 +36,7 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
   }
 
   return !coverArtLoading ? (
-    <Card
+    <div
       className={classes.albumCard}
       style={albumCardStyle}
       onClick={() => {
@@ -47,11 +47,11 @@ const Album: FC<IAlbum> = ({ album, coverArtOnly }) => {
     >
       <Card.Img src={coverArt} className={albumImageClass} />
       {!coverArtOnly && (
-        <Card.Body className={classes.albumCardBody}>
+        <div className={classes.albumCardBody}>
           {showAlbumName && album.name}
-        </Card.Body>
+        </div>
       )}
-    </Card>
+    </div>
   ) : null;
 };
 

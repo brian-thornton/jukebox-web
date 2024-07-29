@@ -1,10 +1,10 @@
 .albumButton {
-  padding: 0 !important;
+  padding: 0;
 }
 
 .albumControlButton {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
+  margin-bottom: 0px;
+  margin-top: 0px;
 }
 
 .buttonRow {

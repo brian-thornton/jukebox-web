@@ -31,6 +31,7 @@ const Libraries = () => {
   const [isCategoryConfigOpen, setIsCategoryConfigOpen] = useState(false);
   const [selectedLibrary, setSelectedLibrary] = useState();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const handleShow = () => setShow(true);
   const handleDiscover = () => setShowDiscover(true);
   const { libraries, isLoading, loadLibraries } = useLibraries(settings);
@@ -120,17 +121,20 @@ const Libraries = () => {
             setIsCategoryConfigOpen={setIsCategoryConfigOpen}
             showOnline={showOnline}
             setIsMenuOpen={setIsMenuOpen}
+            setDeleteConfirmOpen={setDeleteConfirmOpen}
           />
-          <LibraryList
-            libraries={libraries}
-            reloadLibraries={loadLibraries}
-            setCurrentScan={setCurrentScan}
-            setSelectedLibrary={setSelectedLibrary}
-            showOnline={showOnline}
-          />
+          {!deleteConfirmOpen && (
+            <LibraryList
+              libraries={libraries}
+              reloadLibraries={loadLibraries}
+              setCurrentScan={setCurrentScan}
+              setSelectedLibrary={setSelectedLibrary}
+              showOnline={showOnline}
+            />
+          )}
         </div>
       )}
-      {!showDiscover && !isCategoryConfigOpen && (selectedLibrary || show) && (
+      {!showDiscover && !isCategoryConfigOpen && !deleteConfirmOpen && (selectedLibrary || show) && (
         <LibraryAdd
           library={selectedLibrary}
           setSelectedLibrary={setSelectedLibrary}

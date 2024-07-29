@@ -1,0 +1,26 @@
+.directoryRow {
+  align-items: start;
+  background-color: var(--track-background-color);
+  color: var(--font-color);
+  display: flex;
+  flex-direction: row;
+  font-family: var(--list-font);
+  justify-content: space-between;
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+  width: 100%;
+}
+
+.folderSelectContainer {
+  height: '55vh';
+  overflow: 'scroll';
+}
+
+.rowContent {
+  display: 'flex';
+  flex-direction: 'row';
+  justify-content: 'space-between';
+  width: '90vw';
+}

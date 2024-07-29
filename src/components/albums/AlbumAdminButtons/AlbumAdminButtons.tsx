@@ -39,30 +39,26 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
     </>
   );
 
-  return (
+  return settings?.features?.admin && !isScreenSmall ? (
     <>
-      {settings?.features?.admin && !isScreenSmall && (
+      {colLayout && (
         <>
-          {colLayout && (
-            <>
-              <div className={classes.buttonRow}>
-                {coverControls}
-              </div>
-              <div className={classes.buttonRow}>
-                {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
-              </div>
-            </>
-          )}
-          {!colLayout && (
-            <div className={classes.buttonRow}>
-              {coverControls}
-              {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
-            </div>
-          )}
+          <div className={classes.buttonRow}>
+            {coverControls}
+          </div>
+          <div className={classes.buttonRow}>
+            {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
+          </div>
         </>
       )}
+      {!colLayout && (
+        <div className={classes.buttonRow}>
+          {coverControls}
+          {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
+        </div>
+      )}
     </>
-  );
+  ) : null;
 };
 
 export default AlbumAdminButtons;
