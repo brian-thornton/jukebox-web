@@ -9,8 +9,6 @@ const NoAlbumsLoaded = () => {
     <NoResults
       title={intl.formatMessage({ id: 'no_albums_loaded_title' })}
       text={intl.formatMessage({ id: 'no_albums_loaded_text' })}
-      applyMargin={false}
-      onGoBack={() => { }}
     />
   )
 };

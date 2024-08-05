@@ -45,7 +45,7 @@ const AlbumList: FC<IAlbumList> = ({
     <>
       {loadComplete && totalAlbums === 0 && !noResults && <NoAlbumsLoaded />}
       {noResults && <NoAlbumSearchResults />}
-      {!isLoading && !noResults && screen?.isMobile && (
+      {!noResults && screen?.isMobile && (
         <VerticalAlbumList
           albums={albums}
           selectedPage={selectedPage}

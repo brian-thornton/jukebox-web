@@ -186,8 +186,6 @@ function App() {
     "--font-size": fontSize,
   }
 
-  console.log(theme)
-
   return (
     <div style={theme}>
       <Suspense>

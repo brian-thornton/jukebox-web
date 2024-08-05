@@ -41,7 +41,7 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
 
   return settings?.features?.admin && !isScreenSmall ? (
     <>
-      {colLayout && (
+      {colLayout ? (
         <>
           <div className={classes.buttonRow}>
             {coverControls}
@@ -50,8 +50,7 @@ const AlbumAdminButtons: FC<IAlbumAdminButtons> = ({
             {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}
           </div>
         </>
-      )}
-      {!colLayout && (
+      ) : (
         <div className={classes.buttonRow}>
           {coverControls}
           {albumButton(() => setConfirmRestriction(true), <FormattedMessage id="restrict_content" />)}

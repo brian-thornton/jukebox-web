@@ -112,7 +112,6 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
     if (isEmpty) {
       return (
         <NoResults
-          applyMargin={false}
           title={<FormattedMessage id="empty_playlist_title" />}
           text={<FormattedMessage id="empty_playlist_text" />}
         />

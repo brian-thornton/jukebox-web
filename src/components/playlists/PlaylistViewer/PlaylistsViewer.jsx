@@ -68,13 +68,16 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
   const items = () => playlists.map(playlist => (
     <PlaylistRow
       playlist={playlist}
-      addMode={tracks?.length && !added && settings}
-      onAdd={() => {
-        addTracksToPlaylist(playlist.name, tracks);
-        setAdded(true);
-        navigate(-1);
+      addMode={tracks?.length && !added}
+      onSelect={() => {
+        if (tracks?.length) {
+          addTracksToPlaylist(playlist.name, tracks);
+          setAdded(true);
+          navigate(-1);
+        } else {
+          selectPlaylist(playlist.name)
+        }
       }}
-      onSelect={() => selectPlaylist(playlist.name)}
     />
   ));
 
@@ -83,7 +86,7 @@ const PlaylistsViewer = ({ currentPlaylist }) => {
       {!addMode && (
         <ControlButton
           text={<FormattedMessage id="add" />}
-          width={settings?.screen.isMobile ? "375" : "100%"}
+          width={settings?.screen.isMobile ? "97%" : "100%"}
           onClick={() => setAddMode(true)}
           height={buttonHeight}
         />

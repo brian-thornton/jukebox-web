@@ -15,7 +15,7 @@ interface IJukeboxNavSearchButtons {
 
 const JukeboxNavSearchButtons: FC<IJukeboxNavSearchButtons> = ({ search, setSearch, clearSearch, lastModule }) => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
+  const { features, screen } = settings;
   const navigate = useNavigate();
   const { navButtonSize } = settings.styles || {};
   const applyWidth = (navButtonSize === 'large' || navButtonSize === 'medium');

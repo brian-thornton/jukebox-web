@@ -9,8 +9,6 @@ const NoAlbumSearchResults = () => {
     <NoResults
       title={intl.formatMessage({ id: 'no_search_results_title' })}
       text={intl.formatMessage({ id: 'no_search_results_text' })}
-      applyMargin={false}
-      onGoBack={() => { }}
     />
   )
 };

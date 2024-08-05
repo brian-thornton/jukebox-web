@@ -24,7 +24,7 @@ const AlbumList: FC<IAlbumList> = ({
   const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
 
   const itemStyle = {
-    background: settings?.styles?.trackBackgroundColor,
+    background: 'settings?.styles?.trackBackgroundColor',
     color: settings?.styles?.fontColor,
     margin: '3px',
     padding: '0px',
@@ -39,7 +39,9 @@ const AlbumList: FC<IAlbumList> = ({
               navigate(`/albums/${album.id}`, { state: { currentAlbum: album, prevUrl: window.location.pathname } });
             }}>
             <AlbumCover album={album} isListCover={true} />
-            {album.name}
+            <div className={styles.albumName}>
+              {album.name}
+            </div>
           </div>
         </div>
       ))}

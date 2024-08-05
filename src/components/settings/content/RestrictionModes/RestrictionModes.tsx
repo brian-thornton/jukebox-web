@@ -134,7 +134,6 @@ const RestrictionModes: FC<IRestrictionModes> = ({ addMode, addComplete, album }
       )}
       {restrictionGroups?.length === 0 && !isAddOpen && !isDeleteOpen && (
         <NoResults
-          applyMargin={false}
           title={intl.formatMessage({ id: "no_restriction_groups_title" })}
           text={intl.formatMessage({ id: "no_restriction_groups_title" })}
           controls={(

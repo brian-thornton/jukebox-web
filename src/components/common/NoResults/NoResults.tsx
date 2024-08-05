@@ -5,13 +5,11 @@ import styles from './NoResults.module.css';
 interface INoResults {
   text?: string,
   title?: string,
-  controls?: any,
-  applyMargin?: boolean,
-  onGoBack?: Function,
+  controls?: any
 }
 
 const NoResults: FC<INoResults> = ({
-  text, title, controls, applyMargin = true, onGoBack,
+  text, title, controls
 }) => (
   <div className={styles.noResultsContainer}>
     <div className={styles.noResultsRow}>

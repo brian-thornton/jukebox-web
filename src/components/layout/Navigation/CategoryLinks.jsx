@@ -5,7 +5,7 @@ import { SettingsContext } from '../SettingsProvider';
 
 const CategoryLinks = () => {
   const settings = useContext(SettingsContext);
-  const { features } = settings;
+  const { features, styles } = settings;
 
   return (
     <>
@@ -14,7 +14,7 @@ const CategoryLinks = () => {
           {c !== 'Albums' && c.enabled === 'ON' && (
             <Nav.Link
               disabled={features.isLocked}
-              style={{ fontFamily: styles.headerFont }}
+              style={{ fontFamily: styles?.headerFont }}
               href={`/albums/categories/${c.category.replace(' ', '%20')}`}
             >
               {c.category}

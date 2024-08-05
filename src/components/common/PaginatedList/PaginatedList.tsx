@@ -31,7 +31,7 @@ const PaginatedList: FC<IPaginatedList> = ({
   const standardItems = items && items.length > 0 && !isValidElement(items[0]);
 
   return (
-    <div className={styles.paginatedListContainer} {...swipe} style={{ paddingLeft: 0, paddingRight: 0 }}>
+    <div className={styles.paginatedListContainer} {...swipe}>
       {topLevelControls}
       {items && items.length > 0 && (
         <>

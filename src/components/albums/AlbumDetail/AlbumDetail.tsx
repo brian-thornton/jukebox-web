@@ -77,7 +77,7 @@ const AlbumDetail = () => {
           {!clickedTrack && (
             <div className={styles.albumTracks}>
               {!isCustomSearchOpen && !isConfirmRemoveCoverArtOpen && (
-                <div className={styles.albumTracks}>
+                // <div className={styles.albumTracks}>
                   <AlbumTracks
                     clickedTrack={clickedTrack}
                     queue={queue}
@@ -85,7 +85,7 @@ const AlbumDetail = () => {
                     setQueue={setQueue}
                     tracks={tracks}
                   />
-                </div>
+                // </div>
               )}
               {!isCustomSearchOpen && isConfirmRemoveCoverArtOpen && (
                 <Confirm

@@ -8,7 +8,6 @@ import GoToAlbumButton from '../../common/Buttons/GoToAlbumButton';
 import PlayNowButton from '../../common/Buttons/PlayNowButton';
 import EnqueueButton from '../../common/Buttons/EnqueueButton';
 import { SettingsContext } from '../../layout/SettingsProvider';
-import './Track.scss';
 import styles from './TrackButtons.module.css';
 
 interface ITrackButtons {

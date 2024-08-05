@@ -2,6 +2,13 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+  height: 70vh;
+
+  @media screen and (max-width: 768px) {
+    height: unset;
+  }
 }
 
 .sideBySideItem {

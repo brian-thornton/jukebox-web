@@ -82,7 +82,6 @@ const Queue = () => {
   const content = () => {
     return isEmpty ? (
       <NoResults
-        applyMargin={false}
         title={intl.formatMessage({ id: 'queue_empty_title' })}
         text={intl.formatMessage({ id: 'queue_empty_text' })}
       />

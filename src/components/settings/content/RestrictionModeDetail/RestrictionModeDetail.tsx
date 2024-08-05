@@ -43,10 +43,8 @@ const RestrictionModeDetail: FC<IRestrictionModeDetail> = ({ restrictionMode, on
 
   return restrictionMode.content?.length < 1 ? (
     <NoResults
-      applyMargin={false}
       title={intl.formatMessage({ id: "no_restrictions_title" })}
       text={intl.formatMessage({ id: "no_restrictions_text" })}
-      onGoBack={onClose}
     />
   ) : (
     <PaginatedList

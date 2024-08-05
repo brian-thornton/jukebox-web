@@ -9,8 +9,6 @@ const NoPlaylists = () => {
     <NoResults
       title={intl.formatMessage({ id: 'no_playlists_title' })}
       text={intl.formatMessage({ id: 'no_playlists_text' })}
-      applyMargin={false}
-      onGoBack={() => { }}
     />
   )
 };
