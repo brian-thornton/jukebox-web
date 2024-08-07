@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
+import { useSwipeable } from 'react-swipeable';
 
+import { handlers } from '../../../lib/helper/gesture-helper';
 import Paginator from '../../common/Paginator/Paginator';
 import { updateSettings } from '../../../lib/service-clients/settings-client';
 import { SettingsContext } from '../../layout/SettingsProvider';
@@ -13,6 +15,7 @@ const Features = () => {
   const settings = useContext(SettingsContext);
   const { screen, rowPageSize } = settings;
   const [selectedPage, setSelectedPage] = useState(1);
+  const swipe = useSwipeable(handlers(setSelectedPage, selectedPage));
   const [selectedFeature, setSelectedFeature] = useState();
   const realStart = selectedPage === 1 ? 0 : ((selectedPage * rowPageSize) - rowPageSize);
 
@@ -73,7 +76,7 @@ const Features = () => {
 
   if (features) {
     return (
-      <div className={styles.featuresContainer}>
+      <div className={styles.featuresContainer} {...swipe}>
         {!selectedFeature && (
           <>
             {features.slice(realStart, (realStart + rowPageSize)).map(key => (

@@ -5,6 +5,7 @@ import { coverDimensions, headerFooterReserve } from '../../../lib/helper/styleH
 import { SettingsContext } from '../../layout/SettingsProvider';
 import Loading from '../../common/Loading/Loading';
 import AlbumGrid from '../../albums/AlbumGrid/AlbumGrid';
+import NoResults from '../../common/NoResults/NoResults';
 
 interface IGenreAlbums {
   genre: string,
@@ -57,6 +58,12 @@ const GenreAlbums: FC<IGenreAlbums> = ({ genre }) => {
           totalAlbums={totalAlbums}
           pageSize={pageSize}
           disableRandom={true}
+        />
+      )}
+      {!isLoading && genreAlbums.length === 0 && (
+        <NoResults
+          title={"No Albums Found"}
+          text={"No music found matching the selected genre."}
         />
       )}
     </>

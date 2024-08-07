@@ -1,48 +1,68 @@
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
 
-import Picker from '../../common/Picker/Picker';
 import GenreAlbums from '../GenreAlbums/GenreAlbums';
+import SideBySide from '../../layout/SideBySide/SideBySide';
 
 const Genres = () => {
   const intl = useIntl();
-  const [genre, setGenre] = useState();
+  const [genre, setGenre] = useState<string>();
 
-  const genreItem = (genreName: any) => (
+  const actions = [
     {
-      title: intl.formatMessage({id: genreName}),
-      buttonText: intl.formatMessage({id: 'go_to'}, { name: genreName }),
-      onClick: () => setGenre(genreName),
-    }
-  );
+      text: intl.formatMessage({ id: 'rock' }),
+      action: () => setGenre('rock')
+    },
+    {
+      text: intl.formatMessage({ id: 'disco' }),
+      action: () => setGenre('disco')
+    },
+    {
+      text: intl.formatMessage({ id: 'pop' }),
+      action: () => setGenre('pop')
+    },
+    {
+      text: intl.formatMessage({ id: 'rap' }),
+      action: () => setGenre('rap')
+    },
+    {
+      text: intl.formatMessage({ id: 'dance' }),
+      action: () => setGenre('dance')
+    },
+    {
+      text: intl.formatMessage({ id: 'blues' }),
+      action: () => setGenre('blues')
+    },
+    {
+      text: intl.formatMessage({ id: 'country' }),
+      action: () => setGenre('country')
+    },
+    {
+      text: intl.formatMessage({ id: 'hiphop' }),
+      action: () => setGenre('hiphop')
+    },
+    {
+      text: intl.formatMessage({ id: 'jazz' }),
+      action: () => setGenre('jazz')
+    },
+    {
+      text: intl.formatMessage({ id: 'metal' }),
+      action: () => setGenre('metal')
+    },
+    {
+      text: intl.formatMessage({ id: 'punk' }),
+      action: () => setGenre('punk')
+    },
+    {
+      text: intl.formatMessage({ id: 'classicrock' }),
+      action: () => setGenre('classicrock')
+    },
+  ];
 
-  return (
-    <>
-      {!genre && (
-        <Picker
-          applyPadding
-          items={[
-            genreItem('rock'),
-            genreItem('disco'),
-            genreItem('pop'),
-            genreItem('rap'),
-            genreItem('dance'),
-            genreItem('blues'),
-            genreItem('country'),
-            genreItem('hiphop'),
-            genreItem('jazz'),
-            genreItem('metal'),
-            genreItem('punk'),
-            genreItem('celtic'),
-            genreItem('classicrock'),
-            genreItem('folk'),
-            genreItem('jamband'),
-            genreItem('raggae'),
-          ]}
-        />
-      )}
-      {genre && <GenreAlbums genre={genre} />}
-    </>
+  return genre ? (
+    <GenreAlbums genre={genre} />
+  ) : (
+    <SideBySide data={actions} />
   );
 };
 

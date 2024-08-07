@@ -3,11 +3,14 @@
   flex-direction: column;
   background: transparent;
   border-color: black;
-  height: 80vh;
-  width: 90vw;
-  min-height: 80vh;
+  height: 70vh;
+  width: 95vw;
+  min-height: 70vh;
   border: 1px solid var(--font-color);
   background-color: transparent;
+  padding: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .confirmText {

@@ -12,11 +12,10 @@ interface IConfirm {
 }
 
 const Confirm: FC<IConfirm> = ({ onConfirm, onCancel, text }) => {
-  const { styles, isScreenSmall } = useContext(SettingsContext);
+  const { styles } = useContext(SettingsContext);
 
   if (styles) {
     const { fontColor } = styles;
-    const marginTop = isScreenSmall ? '60px' : '0px';
 
     const button = (content: any, onClick: any) => (
       <Button
@@ -26,7 +25,7 @@ const Confirm: FC<IConfirm> = ({ onConfirm, onCancel, text }) => {
     );
 
     return (
-      <div className={classes.confirmCard} style={{ color: fontColor, marginTop }}>
+      <div className={classes.confirmCard} style={{ color: fontColor }}>
         <h3 className={classes.confirmText}>{text}</h3>
         <div className={classes.confirmText}>
           {button(<FormattedMessage id="no" />, onCancel)}
