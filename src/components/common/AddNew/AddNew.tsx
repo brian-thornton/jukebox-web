@@ -37,7 +37,7 @@ const AddNew: FC<IAddNew> = ({
 
   return (
     <div className={styles.addNewCard} style={confirmStyle}>
-      <div style={{ background: settings?.styles?.trackBackgroundColor }}>
+      <div style={{ background: 'transparent' }}>
         <div className={styles.addNewTitle}>{title}</div>
         <div className={styles.addNewText}>
           <div className={styles.contentContainer}>

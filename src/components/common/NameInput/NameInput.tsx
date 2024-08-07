@@ -19,7 +19,7 @@ const NameInput: FC<INameInput> = ({
 
   return (
     <InputGroup className="mb-3">
-      <InputGroup.Text id="basic-addon1">{name}</InputGroup.Text>
+      {name && <InputGroup.Text id="basic-addon1">{name}</InputGroup.Text>}
       <FormControl
         id="name"
         placeholder={placeholder ? intl.formatMessage({ id: "name" }) : undefined }

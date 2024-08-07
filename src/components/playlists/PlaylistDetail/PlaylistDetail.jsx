@@ -154,17 +154,24 @@ const PlaylistDetail = ({ name, handleBackToPlaylists }) => {
       )}
       {!showDeleteModal && !clickedTrack && (
         <>
-          {!isScreenSmall && (
+          {!isScreenSmall ? (
             <ContentWithControls
               controls={controls}
               content={content()}
             />
-          )}
-          {isScreenSmall && (
-            <PaginatedList
-              applyTopMargin
-              {...paginatorProps}
-            />
+          ) : (
+            <>
+              {isEmpty && (
+                <NoResults
+                  title={<FormattedMessage id="empty_playlist_title" />}
+                  text={<FormattedMessage id="empty_playlist_text" />}
+                />
+              )}
+              <PaginatedList
+                applyTopMargin
+                {...paginatorProps}
+              />
+            </>
           )}
         </>
       )}
